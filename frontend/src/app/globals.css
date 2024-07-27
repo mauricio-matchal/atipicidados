@@ -3,31 +3,55 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --background: rgb(196, 196, 196);
+  --background-color: #E5E7F6;
+  --fundo: #27339A;
+  --texto: black;
+  --texto-botao: white;
+  --placeholder-color: rgb(116, 116, 116);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+[data-theme='dark'] {
+  --background: #191F54;
+  --background-color: #27339A;
+  --fundo: #F6E5E5;
+  --texto: #F6E5E5;
+  --texto-botao: #191F54;
+  --placeholder-color: #F6E5E5;
+}
+
+@layer base {
+  h1 {
+    @apply text-[28px] font-bold;
+  }
+  h2 {
+    @apply text-[24px] font-bold;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer components {
+  input::placeholder {
+    color: var(--placeholder-color);
+  }
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .input {
+    @apply w-[380px] h-[47px] rounded-[10px] py-[14px] px-[18px];
+    background-color: var(--background);
+  }
+
+  .entrar {
+    @apply flex w-[380px] h-[47px] items-center justify-center rounded-[10px] py-[14px] px-[10px];
+    background-color: var(--fundo);
+    color: var(--texto-botao)
+  }
+
+  .fundo {
+    background-color: var(--background-color);
+  }
+
+  main {
+    background-color: var(--background);
   }
 }
