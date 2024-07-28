@@ -10,9 +10,11 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/node": "^22.0.0",
     "typescript": "^5.5.4"
   },
   "dependencies": {
+    "crypto": "^1.0.1",
     "fastify": "^4.28.1"
   }
 }
