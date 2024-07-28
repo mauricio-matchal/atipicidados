@@ -1,51 +1,45 @@
+"use client";
+
 import Image from "next/image";
 import logo from "../../public/logo.svg"
-import Link from "next/link";
-//import { useState } from "react";
-//import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function Home() {
-  {/*const [formData, setFormData] = useState({ email: "", senha: "" });
-  const [message, setMessage] = useState("");
-  const router = useRouter();
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  //const [email, setEmail] = useState('');
+  //const [password, setPassword] = useState('');
+  //const [rememberMe, setRememberMe] = useState(false);
 
-  const handleChange = (e: { target: { name: string; value: string } }) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+  {/*useEffect(() => {
+    // Carregar os dados do localStorage quando a página for carregada
+    const storedEmail = localStorage.getItem('email');
+    const storedPassword = localStorage.getItem('password');
+    const storedRememberMe = localStorage.getItem('rememberMe') === 'true';
+
+    if (storedEmail && storedPassword && storedRememberMe) {
+      setEmail(storedEmail);
+      setPassword(storedPassword);
+      setRememberMe(storedRememberMe);
+    }
+  }, []);*/}
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
   };
 
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-     
-    //coisas do themoviedb niny e alfabeto, mudar tudo ao integrar
-
-    try {
-      const response = await fetch("http://localhost:1895/login", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.senha,
-        }),
-      });
-
-      const result = await response.json();
-
-      if (response.ok) {
-        setMessage("Login bem sucedido");
-        localStorage.setItem("token", result.token);
-        router.push("/home");
-      } else {
-        setMessage(result.error || "Falha ao logar usuário");
-      }
-    } catch (error) {
-      setMessage("Falha ao logar usuário");
+  {/*const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (rememberMe) {
+      localStorage.setItem('email', email);
+      localStorage.setItem('password', password);
+      localStorage.setItem('rememberMe', 'true');
+    } else {
+      localStorage.removeItem('email');
+      localStorage.removeItem('password');
+      localStorage.removeItem('rememberMe');
     }
+
+    
   };*/}
 
   return (
@@ -65,33 +59,52 @@ export default function Home() {
 
           <div className="flex flex-col gap-[10px] w-full">
             <input
-            className="input"
+            className="login"
             type="text"
             name="email"
             placeholder="E-mail ou CPF"
+            //value={email}
+            //onChange={(e) => setEmail(e.target.value)}
             required />
 
-            <input
-            className="input"
-            type="text"
-            name="senha"
-            placeholder="Senha"
-            required />
+            <div className="relative w-full">
+              <input
+                type={passwordVisible ? 'text' : 'password'}
+                className="login"
+                name="senha"
+                placeholder="Senha"
+                //value={password}
+                //onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute inset-y-0 right-0 px-4 py-2 bg-gray-300 rounded-r-md"
+              >
+                {passwordVisible ? 'Hide' : 'Show'}
+              </button>
+            </div>
 
             <div className="flex px-[10px] text-[14px] justify-between w-full">
-              <p className="font-regular">Lembrar de mim</p>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  className="checkbox hover:none"
+                  //checked={rememberMe}
+                  //onChange={(e) => setRememberMe(e.target.checked)}
+                />
+                Lembrar de mim
+              </label>
               <p className="font-medium cursor-pointer">Esqueceu a senha?</p>
             </div>
           </div>
 
-          {/*link usado aqui so pro redirecionamento do bota, nao usar dessa forma*/}
-          <Link href='/home'>
-            <button
-            type="submit"
-            className="entrar">
-              Entrar
-            </button>
-          </Link>
+          <button
+          type="submit"
+          className="entrar botao">
+            Entrar
+          </button>
         </form>
       </div>
     </main>

@@ -8,10 +8,11 @@ export default function Home() {
       <NavBar />
 
       <div className="px-[137px] pt-[30px]">
-        <div className="flex justify-between">
-          <div className="flex flex-col w-[340px]">
-            <h2 className="mb-7">Página inicial</h2>
-            <h3 className="mb-[22px]">Membros cadastrados</h3>
+        <div className="flex flex-col w-[340px] justify-between">
+            <h2 className="mb-2">Nome da Unidade</h2>
+            <button className="flex justify-start">
+                <h4 className="mb-[32px]">Mais informações</h4>
+            </button>
             <div className="relative w-full">
               <input 
               type="text" 
@@ -48,24 +49,17 @@ export default function Home() {
                  />
                 Atendido
               </label>
-            </div>
+            
           </div>
 
-          <div className="flex gap-[10px]">
-            <button className="botao">
-              <Link href='/cadastro/colaborador'>+ Colaborador</Link>
-            </button>
-            <button className="botao">
-              <Link href='/cadastro/unidade'>+ Unidade</Link>
-            </button>
-            <button className="botao">
-              <Link href='/cadastro/gerente'>+ Gerente</Link>
-            </button>
-          </div>
         </div>
 
         <div className="mt-[42px]">
-          <Card />
+            <h3 className="mb-4 ml-[5px]">Membros cadastrados</h3>
+
+            <div>
+              <Card />
+            </div>
         </div>
       </div>
     </main>

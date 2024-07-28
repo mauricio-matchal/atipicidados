@@ -3,12 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --background: rgb(196, 196, 196);
+  --background: rgb(224, 224, 224);
   --background-color: #E5E7F6;
   --fundo: #27339A;
   --texto: black;
   --texto-botao: white;
   --placeholder-color: rgb(116, 116, 116);
+  --checkbox: #27339A;
+  --check: white;
 }
 
 [data-theme='dark'] {
@@ -18,6 +20,8 @@
   --texto: #F6E5E5;
   --texto-botao: #191F54;
   --placeholder-color: #F6E5E5;
+  --checkbox: #191F54;
+  --check: #F6E5E5;
 }
 
 @layer base {
@@ -26,6 +30,14 @@
   }
   h2 {
     @apply text-[24px] font-bold;
+  }
+  h3 {
+    @apply text-[18px] font-bold;
+  }
+
+  h4 {
+    @apply text-[14px] font-medium;
+    color: var(--fundo);
   }
 }
 
@@ -36,22 +48,44 @@
 }
 
 @layer utilities {
-  .input {
+  .login {
     @apply w-[380px] h-[47px] rounded-[10px] py-[14px] px-[18px];
     background-color: var(--background);
   }
 
-  .entrar {
-    @apply flex w-[380px] h-[47px] items-center justify-center rounded-[10px] py-[14px] px-[10px];
+  .input {
+    @apply rounded-[10px] py-[10px] px-[8px];
+    background-color: var(--background);
+  }
+
+  .botao {
+    @apply flex  h-[47px] items-center justify-center rounded-[12px] py-[12px] px-[10px];
     background-color: var(--fundo);
-    color: var(--texto-botao)
+    color: var(--texto-botao);
+  }
+
+  .entrar {
+    @apply w-[380px] rounded-[10px] py-[14px];
   }
 
   .fundo {
     background-color: var(--background-color);
   }
 
+  .checkbox {
+    @apply w-[16px] h-[16px] mr-[8px];
+    color: var(--check);
+  }
+
+  .checkbox:checked {
+    @apply bg-[var(--checkbox)];
+  }
+
+  .titulo {
+    @apply font-semibold text-[16px];
+  }
+
   main {
-    background-color: var(--background);
+    background-color: rgb(250, 250, 250);
   }
 }
