@@ -1,10 +1,10 @@
-import crypto from 'crypto';
+import { webcrypto } from 'crypto';
 
 //Generating a AES GCM encryption/decryption key for data securiity.
 class CreateKey {
     async generateKey(): Promise<{  exportedKey: JsonWebKey }> {
         try {
-            const newkey = await window.crypto.subtle.generateKey(
+            const newkey = await webcrypto.subtle.generateKey(
                 {
                     name: 'AES-GCM',
                     length: 256,
@@ -13,7 +13,7 @@ class CreateKey {
                 ['encrypt', 'decrypt']
             );
 
-            const exportedKey = await window.crypto.subtle.exportKey('jwk', newkey);
+            const exportedKey = await webcrypto.subtle.exportKey('jwk', newkey);
             return { exportedKey }
         } catch (err) {
           console.error(err);
