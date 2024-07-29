@@ -2,6 +2,7 @@ import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import { routes } from './routes';
 
+//Defining random poort
 const app = Fastify({ logger: true})
 
 const start = async () => {
@@ -13,7 +14,6 @@ const start = async () => {
 
     try{
         await app.listen({port: 3456 })
-        app.log.info('Server listening on http://localhost:3456');
     } catch(err) {
         process.exit(1)
     }
