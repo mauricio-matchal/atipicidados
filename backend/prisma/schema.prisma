@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Gerente {
+  id        Int       @id @default(autoincrement())
+  nome      String
+  email     String    @unique
+  telefone  String    @unique
+
+
+}
+
+model colaborador{
+  id       Int    @id @default(autoincrement())
+  nome     String
+  nascimento DateTime
+  telefone String
+  titulo   String
+  formacao String
+  genero   String
+  raca     String
+
+
+}
+
+// generos [masculino, feminino, nao binário, prefiro nao informar]
+// raça [branco, negro, amarelo, indigena, outra]
+
+
+model paciente{
+  id        Int           @id @default(autoincrement())
+  nome      String        
+    //segue aqui informações que precisam estar no cadastro  
+}
+
+model unidade{
+  id        Int           @id @default(autoincrement())
+  endereco  String
+  // pacientes precisa ser uma lista do tipo paciente
+  // colaboradores precisa ser uma lista do tipo colaboradores 
+  // gerentes precisa ser uma lista do tipo gerentes 
+
+}
