@@ -1,0 +1,73 @@
+import {Card} from "@/components/Card";
+import NavBar from "@/components/NavBar";
+import Link from "next/link";
+
+export default function Home() {
+  return (
+    <main className="flex flex-col min-h-screen">
+      <NavBar />
+
+      <div className="px-[137px] pt-[30px]">
+        <div className="flex justify-between">
+          <div className="flex flex-col w-[340px]">
+            <h2 className="mb-7">Página inicial</h2>
+            <h3 className="mb-[22px]">Membros cadastrados</h3>
+            <div className="relative w-full">
+              <input 
+              type="text" 
+              className='input w-full h-[35px] mb-1'
+              placeholder="Buscar membro..." />
+
+              <button
+                type="button"
+                className="absolute inset-y-0 right-0 px-4 py-2 bg-gray-300 rounded-r-md"
+              >
+                Q
+              </button>
+            </div>
+
+            <div className="flex justify-around">
+              <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    className="checkbox hover:none"
+                    />
+                  Gerente
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    className="checkbox hover:none"
+                    />
+                  Colaborador
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    className="checkbox hover:none"
+                 />
+                Atendido
+              </label>
+            </div>
+          </div>
+
+          <div className="flex gap-[10px]">
+            <button className="botao">
+              <Link href='/cadastro/colaborador'>+ Colaborador</Link>
+            </button>
+            <button className="botao">
+              <Link href='/cadastro/unidade'>+ Unidade</Link>
+            </button>
+            <button className="botao">
+              <Link href='/cadastro/gerente'>+ Gerente</Link>
+            </button>
+          </div>
+        </div>
+
+        <div className="mt-[42px]">
+          <Card />
+        </div>
+      </div>
+    </main>
+  );
+}
