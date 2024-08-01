@@ -1,4 +1,6 @@
-import {Card} from "@/components/Card";
+import PlusIcon from "@/assets/icons/plus";
+import SearchIcon from "@/assets/icons/search";
+import { Card } from "@/components/Card";
 import NavBar from "@/components/NavBar";
 import Link from "next/link";
 
@@ -13,39 +15,39 @@ export default function Home() {
             <h2 className="mb-7">Página inicial</h2>
             <h3 className="mb-[22px]">Membros cadastrados</h3>
             <div className="relative w-full">
-              <input 
-              type="text" 
-              className='input w-full h-[35px] mb-1'
-              placeholder="Buscar membro..." />
+              <input
+                type="text"
+                className='input w-full h-[35px] mb-2 pb-1'
+                placeholder="Buscar membro..." />
 
               <button
                 type="button"
-                className="absolute inset-y-0 right-0 px-4 py-2 bg-gray-300 rounded-r-md"
+                className="absolute inset-y-0 right-0 px-[10px] py-2 pb-4 bg-gray-300 rounded-r-md"
               >
-                Q
+                <SearchIcon color="black" />
               </button>
             </div>
 
             <div className="flex justify-around">
               <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    className="checkbox hover:none"
-                    />
-                  Gerente
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    className="checkbox hover:none"
-                    />
-                  Colaborador
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    className="checkbox hover:none"
-                 />
+                <input
+                  type="checkbox"
+                  className="checkbox hover:none"
+                />
+                Gerente
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  className="checkbox hover:none"
+                />
+                Colaborador
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  className="checkbox hover:none"
+                />
                 Atendido
               </label>
             </div>
@@ -53,13 +55,22 @@ export default function Home() {
 
           <div className="flex gap-[10px]">
             <button className="botao">
-              <Link href='/cadastro/colaborador'>+ Colaborador</Link>
+              <Link href='/cadastro/colaborador' className="flex flex-row gap-1 items-center">
+                <PlusIcon style={{ color: 'var(--texto-botao)' }} />
+                <p>Colaborador</p>
+              </Link>
             </button>
             <button className="botao">
-              <Link href='/cadastro/unidade'>+ Unidade</Link>
+              <Link href='/cadastro/unidade' className="flex flex-row gap-1 items-center">
+                <PlusIcon style={{ color: 'var(--texto-botao)' }} />
+                <p>Unidade</p>
+              </Link>
             </button>
             <button className="botao">
-              <Link href='/cadastro/gerente'>+ Gerente</Link>
+              <Link href='/cadastro/gerente' className="flex flex-row gap-1 items-center">
+                <PlusIcon style={{ color: 'var(--texto-botao)' }} />
+                <p>Gerente</p>
+              </Link>
             </button>
           </div>
         </div>

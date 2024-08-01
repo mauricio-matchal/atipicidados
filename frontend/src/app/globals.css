@@ -54,12 +54,12 @@
   }
 
   .input {
-    @apply rounded-[10px] py-[10px] px-[8px];
+    @apply rounded-[10px] py-[10px] pb-[11px] px-[10px];
     background-color: var(--background);
   }
 
   .botao {
-    @apply flex  h-[47px] items-center justify-center rounded-[12px] py-[12px] px-[10px];
+    @apply flex  h-[47px] items-center justify-center rounded-[12px] py-[12px] pl-[10px] pr-[16px] drop-shadow-button;
     background-color: var(--fundo);
     color: var(--texto-botao);
   }
