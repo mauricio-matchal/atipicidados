@@ -29,6 +29,7 @@ const config: Config = {
     },
     dropShadow: {
       button: '0 4px 14px rgba(0, 0, 0, 0.25)',
+      menu: '0 4px 50px rgba(0, 0, 0, 0.4)',
     }
   },
   plugins: [],

@@ -30,7 +30,7 @@ export default function Home() {
   // }
 
   return (
-    <main className="flex flex-col min-h-screen items-center">
+    <main className="flex flex-col min-h-screen items-center bg-[#F0F0F3]">
       <NavBar />
       <div className="flex flex-col gap-6 min-w-[700px] mx-10 mt-10">
         <h2>Cadastro Colaborador</h2>
@@ -48,7 +48,7 @@ export default function Home() {
           <TextInput placeholder="Endereço da terapia (ex.: Rua X, Bairro Y, nº10)" />
           <SelectInput options={["Mãe", "Pai", "Mãe e Pai", "Outra composição"]} placeholder={"Composição familiar"} />
         </section>
-        
+
         <section className="flex flex-col gap-2 mb-20">
           <h3 className="ml-2">Escola</h3>
           <TextInput placeholder="Nome da escola" />
