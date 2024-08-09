@@ -3,6 +3,7 @@
 import Image from "next/image";
 import logo from "../../public/logo.svg"
 import { useState } from "react";
+import Link from "next/link";
 
 export default function Home() {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -96,7 +97,9 @@ export default function Home() {
                 />
                 Lembrar de mim
               </label>
-              <p className="font-medium cursor-pointer">Esqueceu a senha?</p>
+              <Link href='/recuperarsenha'>
+                <p className="font-medium cursor-pointer">Esqueceu a senha?</p>
+              </Link>
             </div>
           </div>
 

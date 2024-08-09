@@ -42,7 +42,9 @@ export default function NavBar() {
                         <div className="rounded-full w-11 h-11 bg-blue-800"></div>
                     </Link>
 
-                    <p>config</p>
+                    <Link href="/configuracoes">
+                        <p>config</p>
+                    </Link>
                 </div>
             </div>
         </div>
