@@ -29,8 +29,8 @@ model colaborador{
   telefone String
   titulo   String
   formacao String
-  genero   String
-  raca     String
+  genero   Genero
+  raca     Raca
 
 
 }
@@ -52,4 +52,19 @@ model unidade{
   // colaboradores precisa ser uma lista do tipo colaboradores 
   // gerentes precisa ser uma lista do tipo gerentes 
 
+}
+
+
+enum Raca {
+  BRANCA
+  NEGRA
+  AMARELA
+  INDIGENA
+  OUTRA
+}
+
+enum Genero {
+  MASCULINO
+  FEMININO
+  PREFIRO_NAO_INFORMAR
 }

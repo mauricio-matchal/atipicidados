@@ -1,22 +1,12 @@
-import Fastify from 'fastify';
-import cors from '@fastify/cors';
-import { routes } from './routes';
+import express from 'express';
+import { userRouter } from './routes/routes'; 
 
-//Defining random poort
-const app = Fastify({ logger: true})
+const port = Number(process.env.EXPRESS_PORT) || 3002;
 
-const start = async () => {
+const app = express();
+app.use(express.json());
+app.use(userRouter);
 
-    await app.register(cors, {
-        origin: "*",
-    });
-    await app.register(routes);
-
-    try{
-        await app.listen({port: 3456 })
-    } catch(err) {
-        process.exit(1)
-    }
-}
-
-start();
+app.listen(port, () => {
+    console.log(`Está rodando na porta ${port}`);
+});
