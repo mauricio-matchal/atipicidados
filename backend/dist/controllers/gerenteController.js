@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createUserGerente = void 0;
+exports.getUserGerenteId = exports.getUserGerente = exports.createUserGerente = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const createUserGerente = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
@@ -29,3 +29,38 @@ const createUserGerente = (request, response) => __awaiter(void 0, void 0, void 
     }
 });
 exports.createUserGerente = createUserGerente;
+const getUserGerente = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email } = request.body;
+    if (!email) {
+        return response.status(400).json({ error: "O campo email é obrigatório." });
+    }
+    try {
+        const userGerente = yield prisma.gerente.findUnique({
+            where: { email }
+        });
+        if (!userGerente) {
+            return response.status(404).json({ error: "Gerente não encontrado." });
+        }
+        return response.status(200).json(userGerente);
+    }
+    catch (error) {
+        return response.status(500).json({ error: error.message });
+    }
+});
+exports.getUserGerente = getUserGerente;
+const getUserGerenteId = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = request.params;
+    try {
+        const userGerente = yield prisma.gerente.findUnique({
+            where: { id: Number(id) }
+        });
+        if (!userGerente) {
+            return response.status(404).json({ error: "Gerente não encontrado." });
+        }
+        return response.status(200).json(userGerente);
+    }
+    catch (error) {
+        return response.status(500).json({ error: error.message });
+    }
+});
+exports.getUserGerenteId = getUserGerenteId;
