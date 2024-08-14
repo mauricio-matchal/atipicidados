@@ -5,14 +5,19 @@ import { gerentesRouter } from '../routes/gerentesRoutes';
 const prisma = new PrismaClient();
 
 export const createUserGerente = async (request: Request, response: Response) => {
-    const {nome, email, telefone} = request.body;
+    const {nome, email, cpf, rg, telefone, raca, unidadeId} = request.body;
 
     try{
         const userGerente = await prisma.gerente.create({
             data:{
                 nome,
                 email,
-                telefone
+                telefone,
+                cpf,
+                raca,
+                unidadeId,
+                rg
+
             }
         });
         return response.json(userGerente);
