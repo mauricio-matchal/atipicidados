@@ -13,13 +13,17 @@ exports.getUserGerenteId = exports.getUserGerente = exports.createUserGerente = 
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const createUserGerente = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
-    const { nome, email, telefone } = request.body;
+    const { nome, email, cpf, rg, telefone, raca, unidadeId } = request.body;
     try {
         const userGerente = yield prisma.gerente.create({
             data: {
                 nome,
                 email,
-                telefone
+                telefone,
+                cpf,
+                raca,
+                unidadeId,
+                rg
             }
         });
         return response.json(userGerente);
