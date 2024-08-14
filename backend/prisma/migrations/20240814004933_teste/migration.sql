@@ -1,31 +1,22 @@
-/*
-  Warnings:
+-- CreateEnum
+CREATE TYPE "Raca" AS ENUM ('BRANCA', 'NEGRA', 'AMARELA', 'INDIGENA', 'OUTRA');
 
-  - You are about to drop the `colaborador` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `paciente` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `unidade` table. If the table is not empty, all the data it contains will be lost.
-  - A unique constraint covering the columns `[cpf]` on the table `Gerente` will be added. If there are existing duplicate values, this will fail.
-  - A unique constraint covering the columns `[rg]` on the table `Gerente` will be added. If there are existing duplicate values, this will fail.
-  - Added the required column `cpf` to the `Gerente` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `raca` to the `Gerente` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `rg` to the `Gerente` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `unidadeId` to the `Gerente` table without a default value. This is not possible if the table is not empty.
+-- CreateEnum
+CREATE TYPE "Genero" AS ENUM ('MASCULINO', 'FEMININO', 'PREFIRO_NAO_INFORMAR');
 
-*/
--- AlterTable
-ALTER TABLE "Gerente" ADD COLUMN     "cpf" INTEGER NOT NULL,
-ADD COLUMN     "raca" "Raca" NOT NULL,
-ADD COLUMN     "rg" INTEGER NOT NULL,
-ADD COLUMN     "unidadeId" INTEGER NOT NULL;
+-- CreateTable
+CREATE TABLE "Gerente" (
+    "id" SERIAL NOT NULL,
+    "nome" TEXT NOT NULL,
+    "cpf" INTEGER NOT NULL,
+    "rg" INTEGER NOT NULL,
+    "email" TEXT NOT NULL,
+    "telefone" TEXT NOT NULL,
+    "raca" "Raca" NOT NULL,
+    "unidadeId" INTEGER NOT NULL,
 
--- DropTable
-DROP TABLE "colaborador";
-
--- DropTable
-DROP TABLE "paciente";
-
--- DropTable
-DROP TABLE "unidade";
+    CONSTRAINT "Gerente_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "Colaborador" (
@@ -69,6 +60,18 @@ CREATE TABLE "_PacienteColaboradores" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Gerente_cpf_key" ON "Gerente"("cpf");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Gerente_rg_key" ON "Gerente"("rg");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Gerente_email_key" ON "Gerente"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Gerente_telefone_key" ON "Gerente"("telefone");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Colaborador_cpf_key" ON "Colaborador"("cpf");
 
 -- CreateIndex
@@ -82,12 +85,6 @@ CREATE UNIQUE INDEX "_PacienteColaboradores_AB_unique" ON "_PacienteColaboradore
 
 -- CreateIndex
 CREATE INDEX "_PacienteColaboradores_B_index" ON "_PacienteColaboradores"("B");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Gerente_cpf_key" ON "Gerente"("cpf");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Gerente_rg_key" ON "Gerente"("rg");
 
 -- AddForeignKey
 ALTER TABLE "Gerente" ADD CONSTRAINT "Gerente_unidadeId_fkey" FOREIGN KEY ("unidadeId") REFERENCES "Unidade"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
