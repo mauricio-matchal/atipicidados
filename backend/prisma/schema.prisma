@@ -43,25 +43,28 @@ model Colaborador {
 
 model Paciente {
   id             Int           @id @default(autoincrement())
+  analise        Boolean
   nome           String  
   cpf            String
   rg             String
   nomemae        String
   nomepai        String 
   unidadeId      Int
-  rgdocfile      String
-  fotofile       String
-  compresfile    String
-  laudofile      String
-  geralfile      String
-  educacaofile   String
-  saudefile      String
-  gestacaofile   String
-  nascimentofile String
-  autonomiafile  String
-  comportamentofile   String
-  desenvolimentofile  String
-  pedagogicofile String
+  email          String
+  telefone       String
+  rgdocfile      String?
+  fotofile       String?
+  compresfile    String?
+  laudofile      String?
+  geralfile      String?
+  educacaofile   String?
+  saudefile      String?
+  gestacaofile   String?
+  nascimentofile String?
+  autonomiafile  String?
+  comportamentofile   String?
+  desenvolimentofile  String?
+  pedagogicofile String?
   raca           Raca
   unidade        Unidade        @relation(fields: [unidadeId], references: [id])
   colaboradores  Colaborador[]  @relation("PacienteColaboradores")
@@ -69,6 +72,7 @@ model Paciente {
 
 model Unidade {
   id            Int           @id @default(autoincrement())
+  nome          String
   endereco      String
   pacientes     Paciente[]
   colaboradores Colaborador[]

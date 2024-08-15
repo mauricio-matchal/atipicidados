@@ -4,6 +4,8 @@ import { gerentesRouter } from '../routes/gerentesRoutes';
 
 const prisma = new PrismaClient();
 
+
+// quando criar gerente, sempre usar o id 0 para unidades. 
 export const createUserGerente = async (request: Request, response: Response) => {
     const {nome, email, cpf, rg, telefone, raca, unidadeId} = request.body;
 
@@ -14,8 +16,8 @@ export const createUserGerente = async (request: Request, response: Response) =>
                 email,
                 telefone,
                 cpf,
-                raca,
                 unidadeId,
+                raca,
                 rg
 
             }

@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUserGerenteId = exports.getUserGerente = exports.createUserGerente = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
+// quando criar gerente, sempre usar o id 0 para unidades. 
 const createUserGerente = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     const { nome, email, cpf, rg, telefone, raca, unidadeId } = request.body;
     try {
@@ -21,8 +22,8 @@ const createUserGerente = (request, response) => __awaiter(void 0, void 0, void 
                 email,
                 telefone,
                 cpf,
-                raca,
                 unidadeId,
+                raca,
                 rg
             }
         });
