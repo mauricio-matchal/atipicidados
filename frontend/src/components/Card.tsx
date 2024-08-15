@@ -1,5 +1,5 @@
 import Image from "next/image";
-import perfil from '../../public/perfil.png'
+import perfil from '../../public/images/perfil.png'
 import Link from "next/link";
 
 export function Card() {

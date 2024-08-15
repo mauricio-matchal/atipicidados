@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import logo from "../../public/logo.svg"
+import logos from "../../public/images/logos.svg"
+import { SlashedEyeIcon, OpenEyeIcon } from "../../public/icons/Icons";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -51,9 +52,9 @@ export default function Home() {
 
       <div className="flex bg-blue-100 w-[60%] flex-col justify-center items-center gap-10">
         <Image 
-        src={logo}
-        alt="logo atipicidades"
-        width={120}/>
+        src={logos}
+        alt="logos atipicidades"
+        />
 
         <form className="flex flex-col justify-center items-center gap-9">
           <h1>Acesse sua conta</h1>
@@ -83,7 +84,7 @@ export default function Home() {
                 onClick={togglePasswordVisibility}
                 className="absolute inset-y-0 right-0 px-4 py-2 bg-gray-300 rounded-r-md"
               >
-                {passwordVisible ? 'Hide' : 'Show'}
+                {passwordVisible ? <SlashedEyeIcon /> : <OpenEyeIcon />}
               </button>
             </div>
 
@@ -103,11 +104,20 @@ export default function Home() {
             </div>
           </div>
 
-          <button
-          type="submit"
-          className="entrar botao">
-            Entrar
-          </button>
+          <div className="flex flex-col gap-2 w-full">
+            <button
+            type="submit"
+            className="entrar botao">
+              Entrar
+            </button>
+
+            <Link href='/precadastro'>
+              <button
+              className="botaoreverse w-full">
+                Fazer o pré-cadastro
+              </button>
+            </Link>
+          </div>
         </form>
       </div>
     </main>

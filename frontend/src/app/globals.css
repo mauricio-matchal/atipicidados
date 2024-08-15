@@ -36,6 +36,10 @@
   }
 
   h4 {
+    @apply text-[18px] font-semibold;
+  }
+
+  h5 {
     @apply text-[14px] font-medium;
     color: var(--fundo);
   }
@@ -59,13 +63,21 @@
   }
 
   .botao {
-    @apply flex  h-[47px] items-center justify-center rounded-[12px] py-[12px] pl-[10px] pr-[16px] drop-shadow-button;
+    @apply flex  h-[47px] items-center justify-center rounded-[12px] py-[12px] pl-[10px] pr-[16px] drop-shadow-button border-2;
     background-color: var(--fundo);
+    border-color: var(--fundo);
     color: var(--texto-botao);
   }
 
+  .botaoreverse {
+    @apply flex  h-[47px] items-center justify-center rounded-[12px] py-[12px] pl-[10px] pr-[16px] drop-shadow-button border-2;
+    background-color: transparent;
+    color: var(--fundo);
+    border-color: var(--fundo);
+  }
+
   .entrar {
-    @apply w-[380px] rounded-[10px] py-[14px];
+    @apply rounded-[10px] py-[14px];
   }
 
   .fundo {

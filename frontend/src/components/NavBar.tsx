@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import logo from '../../public/logo.svg';
+import { ConfigIcon } from "../../public/icons/Icons";
 import { usePathname } from "next/navigation";
 
 export default function NavBar() {
@@ -43,7 +44,7 @@ export default function NavBar() {
                     </Link>
 
                     <Link href="/configuracoes">
-                        <p>config</p>
+                        <ConfigIcon />
                     </Link>
                 </div>
             </div>

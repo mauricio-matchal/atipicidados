@@ -17,7 +17,7 @@ export default function Home() {
             
             <p className="mt-5 mb-11">Enviaremos uma nova senha aleatória para o e-mail cadastrado em sua conta. A senha enviada deve ser usada em seu próximo acesso. Cuidado, após a mudança da senha essa ação não poderá ser desfeita.</p>
             
-            <Link href="/confirmacao">
+            <Link href="/recuperarsenha/confirmacao">
                 <button className="botao w-[286px]">Enviar nova senha</button>
             </Link>
         </div>
