@@ -22,8 +22,8 @@ model Gerente {
 model Colaborador {
   id          Int        @id @default(autoincrement())
   nome        String   
-  cpf         Int        @unique
-  rg          Int        @unique
+  cpf         String        @unique
+  rg          String        @unique
   nascimento  DateTime
   telefone    String     @unique
   titulo      String
