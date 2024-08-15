@@ -1,10 +1,12 @@
 "use client";
+import CheckInput from "@/components/CheckInput";
 import FileInput from "@/components/FileInput";
 import NavBar from "@/components/NavBar";
 import SelectInput from "@/components/SelectInput";
 import TextInput from "@/components/TextInput";
 import { Input } from "@/components/ui/input";
 import { Link } from "lucide-react";
+import { useState } from "react";
 
 // import { Button } from "@/components/ui/button";
 // import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -17,23 +19,18 @@ import { Link } from "lucide-react";
 // })
 
 export default function Home() {
-  // const form = useForm<z.infer<typeof formSchema>>({
-  //   resolver: zodResolver(formSchema),
-  //   defaultValues: {
-  //     username: "",
-  //   },
-  // })
+  const [selectedCheckboxOptions, setSelectedCheckboxOptions] = useState<string[]>([]);
 
-  // function onSubmit(values: z.infer<typeof formSchema>) {
-  //   // Do something with the form values.
-  //   // ✅ This will be type-safe and validated.
-  //   console.log(values)
-  // }
+  const handleCheckboxChange = (options: string[]) => {
+    setSelectedCheckboxOptions(options);
+    console.log(selectedCheckboxOptions);
+  };
 
   return (
     <main className="flex flex-col min-h-screen items-center bg-[#F0F0F3]">
       <NavBar />
       <div className="flex flex-col gap-6 min-w-[700px] mx-10 mt-16">
+        <CheckInput options={["Pai", "Mãe"]} title={"Parentes"} onChange={handleCheckboxChange} />
         <h2 className="text-3xl font-extrabold">Cadastro Colaborador</h2>
         <p className="-mt-5">Descrição...</p>
         <section className="flex flex-col gap-2">

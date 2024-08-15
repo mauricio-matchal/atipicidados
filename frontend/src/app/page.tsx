@@ -51,9 +51,9 @@ export default function Home() {
       </div>
 
       <div className="flex bg-blue-100 w-[60%] flex-col justify-center items-center gap-10">
-        <Image 
-        src={logos}
-        alt="logos atipicidades"
+        <Image
+          src={logos}
+          alt="logos atipicidades"
         />
 
         <form className="flex flex-col justify-center items-center gap-9">
@@ -61,13 +61,13 @@ export default function Home() {
 
           <div className="flex flex-col gap-[10px] w-full">
             <input
-            className="login"
-            type="text"
-            name="email"
-            placeholder="E-mail ou CPF"
-            //value={email}
-            //onChange={(e) => setEmail(e.target.value)}
-            required />
+              className="login"
+              type="text"
+              name="email"
+              placeholder="E-mail ou CPF"
+              //value={email}
+              //onChange={(e) => setEmail(e.target.value)}
+              required />
 
             <div className="relative w-full">
               <input
@@ -93,8 +93,8 @@ export default function Home() {
                 <input
                   type="checkbox"
                   className="checkbox hover:none"
-                  //checked={rememberMe}
-                  //onChange={(e) => setRememberMe(e.target.checked)}
+                //checked={rememberMe}
+                //onChange={(e) => setRememberMe(e.target.checked)}
                 />
                 Lembrar de mim
               </label>
@@ -106,14 +106,14 @@ export default function Home() {
 
           <div className="flex flex-col gap-2 w-full">
             <button
-            type="submit"
-            className="entrar botao">
+              type="submit"
+              className="entrar botao">
               Entrar
             </button>
 
             <Link href='/precadastro'>
               <button
-              className="botaoreverse w-full">
+                className="botaoreverse w-full">
                 Fazer o pré-cadastro
               </button>
             </Link>

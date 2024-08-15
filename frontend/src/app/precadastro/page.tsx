@@ -6,14 +6,14 @@ export default function Home() {
   return (
     <main className="flex flex-col min-h-screen">
       <Image
-          src={logo}
-          alt="logo atipicidades"
-          width={60} 
-          className="ml-[57px] mt-5"/>
-            
+        src={logo}
+        alt="logo atipicidades"
+        width={60}
+        className="ml-[57px] mt-5" />
 
-      <div className="mx-[147px] mt-[44px] flex flex-col gap-[37px]">
-        <h2>Pré-cadastro</h2>
+
+      <div className="mt-[44px] flex flex-col gap-[37px]">
+        <h2 className="ml-[147px]">Pré-cadastro</h2>
 
         <Form />
       </div>

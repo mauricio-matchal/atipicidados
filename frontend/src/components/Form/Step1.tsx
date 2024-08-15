@@ -3,13 +3,25 @@ import { StepProps } from './types';
 import SelectInput from '../SelectInput';
 import TextInput from '../TextInput';
 import FileInput from '../FileInput';
+import DateInput from '../DateInput';
 
 const Step1: React.FC<StepProps> = ({ formData, setFormData, nextStep }) => {
   return (
-    <div className='flex flex-col gap-[162px]'>
-      <div className='flex flex-col gap-[42px]'>
+    <div className='flex flex-col gap-[162px] w-screen'>
+      <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Geral</h4>
+
+          <div className='flex w-full gap-[12px]'>
+            <FileInput placeholder='Foto 3x4' className='min-w-[260px]' />
+            <TextInput placeholder='Nome completo' />
+          </div>
+
+          <div className='flex w-full gap-[12px]'>
+            <DateInput />
+            <TextInput placeholder='RG' className='min-w-[220px]' />
+            <TextInput placeholder='CPF' className='min-w-[220px]' />
+          </div>
 
           <div className='flex w-full gap-[12px]'>
             <SelectInput options={["Masculino", "Feminino", "Intersexo", "Outro sexo", "Prefiro não dizer o sexo"]} placeholder={"Sexo"} />
@@ -58,16 +70,16 @@ const Step1: React.FC<StepProps> = ({ formData, setFormData, nextStep }) => {
         </div>
       </div>
 
-      <div className='flex flex-row justify-between items-center'>
+      {/* Rodapé */}
+      <div className='relative flex flex-row justify-between items-center mx-[147px]'>
         <button></button>
 
-        <div>
-          1 de 4 
+        <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+          1 de 4
         </div>
 
         <button onClick={nextStep} className='botao'>Próximo</button>
       </div>
-
     </div>
   );
 };
