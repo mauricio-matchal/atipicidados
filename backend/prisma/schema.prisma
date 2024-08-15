@@ -10,13 +10,16 @@ datasource db {
 model Gerente {
   id         Int       @id @default(autoincrement())
   nome       String
-  cpf        Int       @unique
-  rg         Int       @unique
+  cpf        String       @unique
+  rg         String      @unique
   email      String    @unique
   telefone   String    @unique
   raca       Raca
   unidadeId  Int
   unidade    Unidade   @relation(fields: [unidadeId], references: [id])
+  rgdocfile      String?
+  fotofile       String?
+  compresfile    String?
 }
 
 model Colaborador {
@@ -33,12 +36,32 @@ model Colaborador {
   unidadeId   Int
   unidade     Unidade        @relation(fields: [unidadeId], references: [id])
   pacientes   Paciente[]     @relation("PacienteColaboradores")
+  rgdocfile      String?
+  fotofile       String?
+  compresfile    String?
 }
 
 model Paciente {
   id             Int           @id @default(autoincrement())
-  nome           String   
+  nome           String  
+  cpf            String
+  rg             String
+  nomemae        String
+  nomepai        String 
   unidadeId      Int
+  rgdocfile      String
+  fotofile       String
+  compresfile    String
+  laudofile      String
+  geralfile      String
+  educacaofile   String
+  saudefile      String
+  gestacaofile   String
+  nascimentofile String
+  autonomiafile  String
+  comportamentofile   String
+  desenvolimentofile  String
+  pedagogicofile String
   raca           Raca
   unidade        Unidade        @relation(fields: [unidadeId], references: [id])
   colaboradores  Colaborador[]  @relation("PacienteColaboradores")
