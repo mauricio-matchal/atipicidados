@@ -1,13 +1,15 @@
-import { useEffect, useRef, useState } from 'react';
-import { JSX, ClassAttributes, InputHTMLAttributes } from "react";
+import { JSX, ClassAttributes, useState, useRef, useEffect } from "react";
 import { CSSTransition } from 'react-transition-group';
 
-interface SelectInputProps extends JSX.IntrinsicAttributes, ClassAttributes<HTMLDivElement>, InputHTMLAttributes<HTMLDivElement> {
+interface SelectInputProps extends JSX.IntrinsicAttributes, ClassAttributes<HTMLDivElement> {
   placeholder: string;
   options: string[];
+  onChange?: (selectedOption: string) => void;
+  className?: string; 
+  style?: React.CSSProperties; 
 }
 
-export default function SelectInput({ options, placeholder, ...props }: SelectInputProps) {
+export default function SelectInput({ options, placeholder, onChange, className, style, ...props }: SelectInputProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const ref = useRef<HTMLDivElement>(null);
@@ -19,6 +21,9 @@ export default function SelectInput({ options, placeholder, ...props }: SelectIn
   const handleOptionClick = (option: string) => {
     setSelectedOption(option);
     setIsOpen(false);
+    if (onChange) {
+      onChange(option);
+    }
   };
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -40,7 +45,7 @@ export default function SelectInput({ options, placeholder, ...props }: SelectIn
   }, [isOpen]);
 
   return (
-    <div className="relative inline-block text-left w-full" ref={ref} {...props}>
+    <div className={`relative inline-block text-left w-full ${className}`} style={style} ref={ref} {...props}>
       <div className={`${isOpen ? 'opacity-60' : 'opacity-100'}`}>
         <button
           type="button"
@@ -56,9 +61,8 @@ export default function SelectInput({ options, placeholder, ...props }: SelectIn
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path d="M1 5L7 11L13 5" stroke="#0B0C0E" stroke-opacity="0.8" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M1 5L7 11L13 5" stroke="#0B0C0E" strokeOpacity="0.8" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-
         </button>
       </div>
 
@@ -78,7 +82,6 @@ export default function SelectInput({ options, placeholder, ...props }: SelectIn
                   </div>
                 }
                 <button
-                  key={index}
                   className="block w-full text-left px-3.5 py-[8px] text-sm hover:bg-black/[0.07] focus:outline-none focus:bg-black/[0.07]"
                   onClick={() => handleOptionClick(option)}
                 >

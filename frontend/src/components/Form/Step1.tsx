@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StepProps } from './types';
 import SelectInput from '../SelectInput';
 import TextInput from '../TextInput';
@@ -16,6 +16,12 @@ const Step1: React.FC<StepProps> = ({ formData, setFormData, nextStep }) => {
       ...JSON,
       [key]: value,
     });
+  };
+
+  const [hasRelatorio, setHasRelatorio] = useState(false);
+
+  const handleRelatorioChange = (selectedOption: string) => {
+    setHasRelatorio(selectedOption === 'Sim, possui relatório escolar');
   };
 
   return (
@@ -37,28 +43,14 @@ const Step1: React.FC<StepProps> = ({ formData, setFormData, nextStep }) => {
 
           <div className='flex w-full gap-[12px]'>
             <SelectInput options={["Masculino", "Feminino", "Intersexo", "Outro sexo", "Prefiro não dizer o sexo"]} placeholder={"Sexo"} />
-            <SelectInput options={["Sim, possui NIS", "Não possui NIS"]} placeholder={"Possui NIS?"} />
-            <SelectInput options={["Sim, recebe BPC", "Não recebe BPC"]} placeholder={"Recebe BPC?"} />
+            <SelectInput options={["Amarelo", "Branco", "Indígena", "Pardo", "Preto"]} placeholder={"Raça/cor"} />
+            <TextInput placeholder='CEP' className='min-w-[220px]' />
           </div>
 
           <div className='flex w-full gap-[12px]'>
-            <TextInput placeholder="Gênero" />
-            <SelectInput options={["Sim, recebe Bolsa Família", "Não recebe Bolsa Família"]} placeholder={"Recebe Bolsa Família?"} />
+            <TextInput placeholder="Endereço" />
+            <SelectInput options={["Salvador", "Lauro de Freitas", "Camaçari", "Catu"]} placeholder={"Cidade"} />
           </div>
-
-          <div className='flex w-full gap-[12px]'>
-            <SelectInput options={["Sim, possui ADI", "Não possui ADI"]} placeholder={"Possui ADI?"} />
-            <SelectInput options={["Sim, tem Passe Livre", "Não tem Passe Livre"]} placeholder={"Tem Passe Livre municipal e intermunicipal?"} />
-          </div>
-
-          <div className='flex w-full gap-[12px]'>
-            <TextInput placeholder="Responsável no atendimento" />
-            <FileInput placeholder="Carteira CIPTEA" />
-          </div>
-
-          <TextInput placeholder="Endereço da terapia (ex.: Rua X, Bairro Y, nº10)" />
-
-          <SelectInput options={["Mãe", "Pai", "Mãe e Pai", "Outra composição"]} placeholder={"Composição familiar"} />
         </div>
 
         <div className='flex flex-col gap-[12px]'>
@@ -66,19 +58,34 @@ const Step1: React.FC<StepProps> = ({ formData, setFormData, nextStep }) => {
 
           <div className='flex w-full gap-[12px]'>
             <TextInput placeholder="Nome da escola" />
-            <TextInput placeholder="Série" />
+            <SelectInput placeholder="Série" options={["1ª série", "2ª série", "3ª série", "4ª série", "5ª série", '6ª série', '8ª série']} className='min-w-[260px]' />
           </div>
 
           <TextInput placeholder="Endereço da escola" />
 
           <div className='flex w-full gap-[12px]'>
-            <SelectInput placeholder={"Tipo"} options={["Pública", "Particular", "Outro tipo de escola"]} />
-            <TextInput placeholder="Tempo de estudo (em anos)" />
+            <SelectInput placeholder={"Cidade da escola"} options={["Salvador", "Lauro de Freitas", "Camaçari", "Catu"]} />
+            <SelectInput options={["Sim, possui ADI", "Não possui ADI"]} placeholder={"Possui ADI?"} />
+          </div>
+          
+          <div className='flex w-full gap-[12px]'>
+            <SelectInput placeholder={"Tipo da escola"} options={["Pública", "Particular"]} className='min-w-[260px]' />
+            <SelectInput placeholder={"Há quanto tempo estuda na escola?"} options={["Menos de 1 ano" ,"1 ano", "2 anos", "3 anos", "4 anos", "5 anos", "6 anos", "7 anos", "8 anos", "9 anos", "10 anos", "Mais de 10 anos"]} />
           </div>
 
-          <FileInput placeholder="Relatório Escolar" />
-
-          <TextInput placeholder="Responsável no atendimento" />
+          <div className='flex w-full gap-[12px]'>
+            <SelectInput 
+              placeholder={"Possui relatório escolar?"} 
+              options={["Sim, possui relatório escolar", "Não possui relatório escolar"]} 
+              onChange={handleRelatorioChange} 
+            />
+            <FileInput 
+              placeholder="Relatório Escolar"
+              className={`transition-opacity duration-300 w-full ${hasRelatorio ? 'opacity-100' : 'opacity-40'} ${hasRelatorio ? '' : 'cursor-not-allowed'}`} 
+              disabled={!hasRelatorio}
+              style={{ pointerEvents: hasRelatorio ? 'auto' : 'none' }} 
+            />
+          </div>
         </div>
       </div>
 
@@ -90,7 +97,7 @@ const Step1: React.FC<StepProps> = ({ formData, setFormData, nextStep }) => {
           1 de 4
         </div>
 
-        <button onClick={nextStep} className='botao'>Próximo</button>
+        <button onClick={nextStep} className='botao'>Próxima página</button>
       </div>
     </div>
   );
