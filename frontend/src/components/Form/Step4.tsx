@@ -6,13 +6,17 @@ import TextInput from '../TextInput';
 import CheckInput from '../CheckInput';
 import FileInput from '../FileInput';
 import NumberInput from '../NumberInput';
+import Termo from '../Termo';
 
 const Step4: React.FC<StepProps> = ({ formData, setFormData, prevStep }) => {
   const [selectedCheckboxOptions, setSelectedCheckboxOptions] = useState<string[]>([]);
+  
   const [hasMedicacao, setHasMedicacao] = useState(false);
   const [hasDiagnostico, setHasDiagnostico] = useState(false);
   const [hasComorbidade, setHasComorbidade] = useState(false);
   const [hasAsma, setHasAsma] = useState(false);
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleCheckboxChange = (options: string[]) => {
     setSelectedCheckboxOptions(options);
@@ -33,6 +37,14 @@ const Step4: React.FC<StepProps> = ({ formData, setFormData, prevStep }) => {
 
   const handleAsmaChange = (selectedOption: string) => {
     setHasAsma(selectedOption === 'Sim, tem asma');
+  };
+
+  const handleTermoClick = () => {
+    setIsModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setIsModalVisible(false);
   };
   
   return (
@@ -128,6 +140,24 @@ const Step4: React.FC<StepProps> = ({ formData, setFormData, prevStep }) => {
 
           <TextInput placeholder='Alguma informação de saúde relevante?' className='h-[86px]'/>
 
+        </div>
+
+        <div className="flex items-center ml-[14px]">
+          <input
+            type="checkbox"
+            className="
+              relative w-4 h-4 appearance-none bg-white/[0.4] border-[1px] focus:outline-none rounded-[4px] mr-2
+              checked:bg-blue-800 checked:border-none
+              hover:ring hover:ring-offset-indigo-400 hover:cursor-pointer
+              after:content-[''] after:w-full after:h-full after:absolute after:left-0 after:top-0 after:bg-no-repeat after:bg-center after:bg-[length:16px] 
+              checked:after:bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNCA4TDcuMjUgMTEuNzVMMTEuNzUgMy43NSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4K')]
+          "
+          //checked={rememberMe}
+          //onChange={(e) => setRememberMe(e.target.checked)}
+          />
+          
+          Eu aceito o <div className='termo pl-[5px]' onClick={handleTermoClick}>Termo de Compromisso e Privacidade</div>
+          <Termo isVisible={isModalVisible} onClose={closeModal} />
         </div>
       </div>
 
