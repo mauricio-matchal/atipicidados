@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StepProps } from './types';
 import SelectInput from '../SelectInput';
 import TextInput from '../TextInput';
@@ -6,6 +6,18 @@ import FileInput from '../FileInput';
 import DateInput from '../DateInput';
 
 const Step1: React.FC<StepProps> = ({ formData, setFormData, nextStep }) => {
+  const [JSON, setJSON] = useState({
+    "1": "",
+    "2": ""
+  });
+  
+  const handleInputChange = (key: string, value: string) => {
+    setJSON({
+      ...JSON,
+      [key]: value,
+    });
+  };
+
   return (
     <div className='flex flex-col gap-[162px] w-screen'>
       <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
@@ -14,7 +26,7 @@ const Step1: React.FC<StepProps> = ({ formData, setFormData, nextStep }) => {
 
           <div className='flex w-full gap-[12px]'>
             <FileInput placeholder='Foto 3x4' className='min-w-[260px]' />
-            <TextInput placeholder='Nome completo' />
+            <TextInput placeholder='Nome completo' value={JSON["2"]} onChange={(e) => handleInputChange("2", e.target.value)} />
           </div>
 
           <div className='flex w-full gap-[12px]'>

@@ -40,7 +40,7 @@ export default function SelectInput({ options, placeholder, ...props }: SelectIn
   }, [isOpen]);
 
   return (
-    <div className="relative inline-block text-left" ref={ref} {...props}>
+    <div className="relative inline-block text-left w-full" ref={ref} {...props}>
       <div className={`${isOpen ? 'opacity-60' : 'opacity-100'}`}>
         <button
           type="button"
