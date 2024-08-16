@@ -8,9 +8,50 @@ import FileInput from '../FileInput';
 import NumberInput from '../NumberInput';
 import Termo from '../Termo';
 
+type Step4State = {
+  infosaude: {
+    diagnostico: string;
+    datadiagnostico: string;
+    medicacao: string;
+    qualmedicacao: string;
+    medico: string;
+    medicocontato: string;
+    objetivo: string;
+    comorbidade: string;
+    qualcomorbidade: string;
+    providencias: string;
+    doenca: [];
+    alergia: [];
+    asma: string;
+    relatorio: string;
+    relevante: string;
+  }
+};
+
+
 const Step4: React.FC<StepProps> = ({ formData, setFormData, prevStep }) => {
   const [selectedCheckboxOptions, setSelectedCheckboxOptions] = useState<string[]>([]);
-  
+
+  const [Step4, setStep4] = useState<Step4State>({
+    infosaude: {
+      diagnostico: "",
+      datadiagnostico: "",
+      medicacao: "",
+      qualmedicacao: "",
+      medico: "",
+      medicocontato: "",
+      objetivo: "",
+      comorbidade: "",
+      qualcomorbidade: "",
+      providencias: "",
+      doenca: [],
+      alergia: [],
+      asma: "",
+      relatorio: "",
+      relevante: "",
+    }
+  });
+
   const [hasMedicacao, setHasMedicacao] = useState(false);
   const [hasDiagnostico, setHasDiagnostico] = useState(false);
   const [hasComorbidade, setHasComorbidade] = useState(false);
@@ -18,25 +59,56 @@ const Step4: React.FC<StepProps> = ({ formData, setFormData, prevStep }) => {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const handleCheckboxChange = (options: string[]) => {
+  const handleInputChange = (section: keyof Step4State, key: string, value: string) => {
+    setStep4((prevState) => ({
+      ...prevState,
+      [section]: {
+        ...prevState[section],
+        [key]: value,
+      },
+    }));
+  };
+
+  const handleInputChangeList = (section: keyof Step4State, key: string, value: string[]) => {
+    setStep4((prevState) => ({
+      ...prevState,
+      [section]: {
+        ...prevState[section],
+        [key]: value,
+      },
+    }));
+  };
+
+  const handleDoencaChange = (options: string[]) => {
     setSelectedCheckboxOptions(options);
-    console.log(selectedCheckboxOptions);
+    // console.log(selectedCheckboxOptions);
+    handleInputChangeList("infosaude", "doenca", options);
+  };
+
+  const handleAlergiaChange = (options: string[]) => {
+    setSelectedCheckboxOptions(options);
+    // console.log(selectedCheckboxOptions);
+    handleInputChangeList("infosaude", "alergia", options);
   };
 
   const handleMedicacaoChange = (selectedOption: string) => {
     setHasMedicacao(selectedOption === 'Sim, toma alguma medicação');
+    handleInputChange("infosaude", "medicacao", selectedOption);
   };
 
   const handleDiagnosticoChange = (selectedOption: string) => {
     setHasDiagnostico(selectedOption === 'Sim, tem diagnóstico');
+    handleInputChange("infosaude", "diagnostico", selectedOption);
   };
 
   const handleComorbidadeChange = (selectedOption: string) => {
     setHasComorbidade(selectedOption === 'Sim, possui alguma comorbidade');
+    handleInputChange("infosaude", "comorbidade", selectedOption);
   };
 
   const handleAsmaChange = (selectedOption: string) => {
     setHasAsma(selectedOption === 'Sim, tem asma');
+    handleInputChange("infosaude", "asma", selectedOption);
   };
 
   const handleTermoClick = () => {
@@ -46,99 +118,109 @@ const Step4: React.FC<StepProps> = ({ formData, setFormData, prevStep }) => {
   const closeModal = () => {
     setIsModalVisible(false);
   };
-  
+
+  const reveal = () => {
+    console.log(Step4);
+  }
+
   return (
     <div className='flex flex-col gap-[162px] w-screen'>
       <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
 
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Informações de saúde</h4>
-
+          <button onClick={reveal}>reveal</button>
           <div className='flex w-full gap-[12px]'>
             <SelectInput
-             options={["Sim, tem diagnóstico", "Não tem diagnóstico"]}
-             placeholder={"Tem diagnóstico?"}
-             className='min-w-[300px]'
-             onChange={handleDiagnosticoChange}
-              />
+              options={["Sim, tem diagnóstico", "Não tem diagnóstico"]}
+              placeholder={"Tem diagnóstico?"}
+              className='min-w-[300px]'
+              onChange={handleDiagnosticoChange}
+            />
             <DateInput
-              className={`transition-opacity duration-300 w-full ${hasDiagnostico ? 'opacity-100' : 'opacity-40'} ${hasDiagnostico ? '' : 'cursor-not-allowed'}`} 
+              className={`transition-opacity duration-300 w-full ${hasDiagnostico ? 'opacity-100' : 'opacity-40'} ${hasDiagnostico ? '' : 'cursor-not-allowed'}`}
               disabled={!hasDiagnostico}
-              style={{ pointerEvents: hasDiagnostico ? 'auto' : 'none' }} 
+              style={{ pointerEvents: hasDiagnostico ? 'auto' : 'none' }}
+              value={Step4.infosaude.datadiagnostico} onChange={(e) => { handleInputChange("infosaude", "datadiagnostico", e.target.value) }}
             />
           </div>
 
           <div className='flex w-full gap-[12px]'>
             <SelectInput
-             options={["Sim, toma alguma medicação", "Não toma alguma medicação"]}
-             placeholder={"Toma alguma medicação?"}
-             className='min-w-[300px]'
-             onChange={handleMedicacaoChange}
-              />
+              options={["Sim, toma alguma medicação", "Não toma alguma medicação"]}
+              placeholder={"Toma alguma medicação?"}
+              className='min-w-[300px]'
+              onChange={handleMedicacaoChange}
+            />
             <TextInput
               placeholder='Qual(is) medicação(ões)?'
-              className={`transition-opacity duration-300 w-full ${hasMedicacao ? 'opacity-100' : 'opacity-40'} ${hasMedicacao ? '' : 'cursor-not-allowed'}`} 
+              className={`transition-opacity duration-300 w-full ${hasMedicacao ? 'opacity-100' : 'opacity-40'} ${hasMedicacao ? '' : 'cursor-not-allowed'}`}
               disabled={!hasMedicacao}
-              style={{ pointerEvents: hasMedicacao ? 'auto' : 'none' }} 
-              />
+              style={{ pointerEvents: hasMedicacao ? 'auto' : 'none' }}
+              value={Step4.infosaude.qualmedicacao} onChange={(e) => { handleInputChange("infosaude", "qualmedicacao", e.target.value) }}
+            />
           </div>
-          
+
           <div className='flex w-full gap-[12px]'>
             <TextInput
-            placeholder="Médico responsável"
-            className={`transition-opacity duration-300 w-full ${hasMedicacao ? 'opacity-100' : 'opacity-40'} ${hasMedicacao ? '' : 'cursor-not-allowed'}`} 
-            disabled={!hasMedicacao}
-            style={{ pointerEvents: hasMedicacao ? 'auto' : 'none' }} 
+              placeholder="Médico responsável"
+              className={`transition-opacity duration-300 w-full ${hasMedicacao ? 'opacity-100' : 'opacity-40'} ${hasMedicacao ? '' : 'cursor-not-allowed'}`}
+              disabled={!hasMedicacao}
+              style={{ pointerEvents: hasMedicacao ? 'auto' : 'none' }}
+              value={Step4.infosaude.medico} onChange={(e) => { handleInputChange("infosaude", "medico", e.target.value) }}
             />
             <NumberInput
-            placeholder="Contato do médico responsável"
-            className={`transition-opacity duration-300 min-w-[300px] ${hasMedicacao ? 'opacity-100' : 'opacity-40'} ${hasMedicacao ? '' : 'cursor-not-allowed'}`} 
-            disabled={!hasMedicacao}
-            style={{ pointerEvents: hasMedicacao ? 'auto' : 'none' }} 
-             />
+              placeholder="Contato do médico responsável"
+              className={`transition-opacity duration-300 min-w-[300px] ${hasMedicacao ? 'opacity-100' : 'opacity-40'} ${hasMedicacao ? '' : 'cursor-not-allowed'}`}
+              disabled={!hasMedicacao}
+              style={{ pointerEvents: hasMedicacao ? 'auto' : 'none' }}
+              value={Step4.infosaude.medicocontato} onChange={(e) => { handleInputChange("infosaude", "medicocontato", e.target.value) }}
+            />
           </div>
 
           <TextInput
             placeholder='Objetivo da medicação'
-            className={`transition-opacity duration-300 w-full ${hasMedicacao ? 'opacity-100' : 'opacity-40'} ${hasMedicacao ? '' : 'cursor-not-allowed'}`} 
+            className={`transition-opacity duration-300 w-full ${hasMedicacao ? 'opacity-100' : 'opacity-40'} ${hasMedicacao ? '' : 'cursor-not-allowed'}`}
             disabled={!hasMedicacao}
-            style={{ pointerEvents: hasMedicacao ? 'auto' : 'none' }} 
-           />
-        
+            style={{ pointerEvents: hasMedicacao ? 'auto' : 'none' }}
+            value={Step4.infosaude.objetivo} onChange={(e) => { handleInputChange("infosaude", "objetivo", e.target.value) }}
+          />
+
           <div className='flex w-full gap-[12px]'>
             <SelectInput
-             options={["Sim, possui alguma comorbidade", "Não possui alguma comorbidade"]}
-             placeholder={"Possui alguma comorbidade?"}
-             className='min-w-[300px]'
-             onChange={handleComorbidadeChange} />
-            <TextInput 
+              options={["Sim, possui alguma comorbidade", "Não possui alguma comorbidade"]}
+              placeholder={"Possui alguma comorbidade?"}
+              className='min-w-[300px]'
+              onChange={handleComorbidadeChange} />
+            <TextInput
               placeholder='Qual(is) comorbidade(s)?'
-              className={`transition-opacity duration-300 w-full ${hasComorbidade ? 'opacity-100' : 'opacity-40'} ${hasComorbidade ? '' : 'cursor-not-allowed'}`} 
+              className={`transition-opacity duration-300 w-full ${hasComorbidade ? 'opacity-100' : 'opacity-40'} ${hasComorbidade ? '' : 'cursor-not-allowed'}`}
               disabled={!hasComorbidade}
-              style={{ pointerEvents: hasComorbidade ? 'auto' : 'none' }} 
-             />
+              style={{ pointerEvents: hasComorbidade ? 'auto' : 'none' }}
+              value={Step4.infosaude.qualcomorbidade} onChange={(e) => { handleInputChange("infosaude", "qualcomorbidade", e.target.value) }}
+            />
           </div>
 
-          <TextInput placeholder='Providências tomadas após o diagnóstico ou suspeita' />
+          <TextInput placeholder='Providências tomadas após o diagnóstico ou suspeita' value={Step4.infosaude.providencias} onChange={(e) => { handleInputChange("infosaude", "providencias", e.target.value) }} />
 
-          <CheckInput title='Possui alguma doença?' options={["Diabetes", "Pressão alta", "Nenhuma"]} onChange={handleCheckboxChange}/>
-          <CheckInput title='Possui alguma alergia?' options={["Rinite", "Sinusite", "Nenhuma"]} onChange={handleCheckboxChange}/>
+          <CheckInput title='Possui alguma doença?' options={["Diabetes", "Pressão alta", "Nenhuma"]} onChange={handleDoencaChange} />
+          <CheckInput title='Possui alguma alergia?' options={["Rinite", "Sinusite", "Nenhuma"]} onChange={handleAlergiaChange} />
 
           <div className='flex w-full gap-[12px]'>
             <SelectInput
-             options={["Sim, tem asma", "Não tem asma"]}
+              options={["Sim, tem asma", "Não tem asma"]}
               placeholder={"Tem asma?"}
               className='min-w-[300px]'
-              onChange={handleAsmaChange}  />
+              onChange={handleAsmaChange} />
             <FileInput
               placeholder="Relatório do diagnóstico"
-              className={`transition-opacity duration-300 w-full ${hasAsma ? 'opacity-100' : 'opacity-40'} ${hasAsma ? '' : 'cursor-not-allowed'}`} 
+              className={`transition-opacity duration-300 w-full ${hasAsma ? 'opacity-100' : 'opacity-40'} ${hasAsma ? '' : 'cursor-not-allowed'}`}
               disabled={!hasAsma}
-              style={{ pointerEvents: hasAsma ? 'auto' : 'none' }} 
-              />
+              style={{ pointerEvents: hasAsma ? 'auto' : 'none' }}
+            />
           </div>
 
-          <TextInput placeholder='Alguma informação de saúde relevante?' className='h-[86px]'/>
+          <TextInput placeholder='Alguma informação de saúde relevante?' className='h-[86px]' value={Step4.infosaude.relevante} onChange={(e) => { handleInputChange("infosaude", "relevante", e.target.value) }} />
 
         </div>
 
@@ -155,7 +237,7 @@ const Step4: React.FC<StepProps> = ({ formData, setFormData, prevStep }) => {
           //checked={rememberMe}
           //onChange={(e) => setRememberMe(e.target.checked)}
           />
-          
+
           Eu aceito o <div className='termo pl-[5px]' onClick={handleTermoClick}>Termo de Compromisso e Privacidade</div>
           <Termo isVisible={isModalVisible} onClose={closeModal} />
         </div>
@@ -163,7 +245,7 @@ const Step4: React.FC<StepProps> = ({ formData, setFormData, prevStep }) => {
 
       {/* Rodapé */}
       <div className='relative flex flex-row justify-between items-center mx-[147px]'>
-      <button onClick={prevStep} className='botao'>Página anterior</button>
+        <button onClick={prevStep} className='botao'>Página anterior</button>
 
         <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
           4 de 4

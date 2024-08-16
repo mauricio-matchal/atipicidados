@@ -5,8 +5,8 @@ interface SelectInputProps extends JSX.IntrinsicAttributes, ClassAttributes<HTML
   placeholder: string;
   options: string[];
   onChange?: (selectedOption: string) => void;
-  className?: string; 
-  style?: React.CSSProperties; 
+  className?: string;
+  style?: React.CSSProperties;
 }
 
 export default function SelectInput({ options, placeholder, onChange, className, style, ...props }: SelectInputProps) {
@@ -49,7 +49,7 @@ export default function SelectInput({ options, placeholder, onChange, className,
       <div className={`${isOpen ? 'opacity-60' : 'opacity-100'}`}>
         <button
           type="button"
-          className="py-[11px] leading-[19px] px-4 bg-[#7481F6] bg-opacity-40 rounded-xl focus:outline-none focus:bg-[#ABB1DC] flex items-center justify-between w-full"
+          className="py-[11px] leading-[19px] text-sm px-3 bg-[#7481F6] bg-opacity-40 rounded-xl focus:outline-none focus:bg-[#ABB1DC] flex items-center justify-between w-full"
           onClick={toggleOpen}
         >
           {selectedOption || `${placeholder}...`}
