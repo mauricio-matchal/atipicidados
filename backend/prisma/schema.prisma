@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,42 +8,93 @@ datasource db {
 }
 
 model Gerente {
-  id        Int       @id @default(autoincrement())
-  nome      String
-  email     String    @unique
-  telefone  String    @unique
-
-
+  id         Int       @id @default(autoincrement())
+  nome       String
+  cpf        String       @unique
+  rg         String      @unique
+  email      String    @unique
+  telefone   String    @unique
+  raca       Raca
+  unidadeId  Int
+  unidade    Unidade   @relation(fields: [unidadeId], references: [id])
+  rgdocfile      String?
+  fotofile       String?
+  compresfile    String?
 }
 
-model colaborador{
-  id       Int    @id @default(autoincrement())
-  nome     String
-  nascimento DateTime
-  telefone String
-  titulo   String
-  formacao String
-  genero   String
-  raca     String
-
-
+model Colaborador {
+  id          Int        @id @default(autoincrement())
+  nome        String   
+  cpf         String        @unique
+  rg          String        @unique
+  nascimento  DateTime
+  telefone    String     @unique
+  titulo      String
+  formacao    String
+  genero      Genero
+  raca        Raca
+  unidadeId   Int
+  unidade     Unidade        @relation(fields: [unidadeId], references: [id])
+  pacientes   Paciente[]     @relation("PacienteColaboradores")
+  rgdocfile      String?
+  fotofile       String?
+  compresfile    String?
 }
 
-// generos [masculino, feminino, nao binário, prefiro nao informar]
-// raça [branco, negro, amarelo, indigena, outra]
 
-
-model paciente{
-  id        Int           @id @default(autoincrement())
-  nome      String        
-    //segue aqui informações que precisam estar no cadastro  
+model Paciente {
+  id             Int           @id @default(autoincrement())
+  analise        Boolean       @default(true)
+  nome           String?  
+  cpf            String?
+  rg             String?
+  nascimentodata     String?
+  nomemae        String?
+  nomepai        String?
+  unidadeId      Int          @default(1)
+  email          String?
+  telefone       String?
+  rgdocfile      String?
+  fotofile       String? //analise
+  compresfile    String?
+  laudofile      String? //analise
+  relescolar     String? // analise
+  gestacao         Json?
+  nascimento       Json?
+  autonomia        Json?
+  comportamento    Json?
+  desenvolimento   Json?
+  pedagogico     Json?
+  geral          Json? // analise
+  mae            Json? // analise
+  pai            Json? // analise
+  maisinfo       Json? // analise
+  escola         Json? // analise
+  saudeinfo      Json? // analise
+  raca           Raca?
+  unidade        Unidade        @relation(fields: [unidadeId], references: [id])
+  colaboradores  Colaborador[]  @relation("PacienteColaboradores")
 }
 
-model unidade{
-  id        Int           @id @default(autoincrement())
-  endereco  String
-  // pacientes precisa ser uma lista do tipo paciente
-  // colaboradores precisa ser uma lista do tipo colaboradores 
-  // gerentes precisa ser uma lista do tipo gerentes 
+model Unidade {
+  id            Int           @id @default(autoincrement())
+  nome          String
+  endereco      String
+  pacientes     Paciente[]
+  colaboradores Colaborador[]
+  gerentes      Gerente[]
+}
 
+enum Raca {
+  BRANCA
+  NEGRA
+  AMARELA
+  INDIGENA
+  OUTRA
+}
+
+enum Genero {
+  MASCULINO
+  FEMININO
+  PREFIRO_NAO_INFORMAR
 }

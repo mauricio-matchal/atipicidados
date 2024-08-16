@@ -23,8 +23,10 @@ type Step4State = {
     doenca: [];
     alergia: [];
     asma: string;
-    relatorio: string;
     relevante: string;
+  }
+  relatorio: {
+    relatorio: string;
   }
 };
 
@@ -47,8 +49,10 @@ const Step4: React.FC<StepProps> = ({ formData, setFormData, prevStep }) => {
       doenca: [],
       alergia: [],
       asma: "",
-      relatorio: "",
       relevante: "",
+    },
+    relatorio: {
+      relatorio: "",
     }
   });
 
