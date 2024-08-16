@@ -6,22 +6,30 @@ const prisma = new PrismaClient();
 
 //considerar 0 como valor default para unidade id
 
+// export const createPacienteAnalise = async(request: Request, response: Response) => {
+//     const {geral, escola, mae, pai, maisinfo, saudeinfo} =  request.body;
+
+//     try {
+//         const userPaciente = await prisma.pacienteanalise
+//     }
+
+// }
+
 export const createUserPaciente = async (request: Request, response: Response) => {
-    const {analise, nome, cpf, rg, nomemae, nomepai, unidadeId, raca, email, telefone} = request.body;
+    const {geral, pai, mae, maisinfo, escola, saudeinfo, fotofile, laudofile, relescolar, } =  request.body;
 
     try{
         const userPaciente = await prisma.paciente.create({
             data:{
-                analise,
-                nome, 
-                cpf, 
-                rg, 
-                nomemae, 
-                nomepai,
-                unidadeId, 
-                raca,
-                email, 
-                telefone
+                geral,
+                pai,
+                mae,
+                maisinfo,
+                escola,
+                saudeinfo,
+                fotofile,
+                laudofile, 
+                relescolar
             }
         });
         return response.json(userPaciente);
