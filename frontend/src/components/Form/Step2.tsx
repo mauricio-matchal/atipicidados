@@ -4,72 +4,76 @@ import SelectInput from '../SelectInput';
 import DateInput from '../DateInput';
 import NumberInput from '../NumberInput';
 
-type Step2State = {
-  mae: {
-    nome: string;
-    data: string;
-    rg: string;
-    cpf: string;
-    escolaridade: string;
-    telefone: string;
-    email: string;
-  }
-  pai: {
-    nome: string;
-    data: string;
-    rg: string;
-    cpf: string;
-    escolaridade: string;
-    telefone: string;
-    email: string;
-  }
+type maeState = {
+  nome: string;
+  data: string;
+  rg: string;
+  cpf: string;
+  escolaridade: string;
+  telefone: string;
+  email: string;
+};
+type paiState = {
+  nome: string;
+  data: string;
+  rg: string;
+  cpf: string;
+  escolaridade: string;
+  telefone: string;
+  email: string;
+  presente: string;
 };
 
-
-const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateFormData: (data: Step2State) => void }> = ({ nextStep, prevStep, updateFormData }) => {
-  const [Step2, setStep2] = useState<Step2State>({
-    mae: {
-      nome: "",
-      data: "",
-      rg: "",
-      cpf: "",
-      escolaridade: "",
-      telefone: "",
-      email: "",
-    },
-    pai: {
-      nome: "",
-      data: "",
-      rg: "",
-      cpf: "",
-      escolaridade: "",
-      telefone: "",
-      email: ""
-    }
+const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateMae: (data: maeState) => void; updatePai: (data: paiState) => void}> = ({ nextStep, prevStep, updateMae, updatePai }) => {
+  const [Step21, setStep21] = useState<maeState>({
+    nome: "",
+    data: "",
+    rg: "",
+    cpf: "",
+    escolaridade: "",
+    telefone: "",
+    email: "",
+  });
+  const [Step22, setStep22] = useState<paiState>({
+    nome: "",
+    data: "",
+    rg: "",
+    cpf: "",
+    escolaridade: "",
+    telefone: "",
+    email: "",
+    presente: ""
   });
 
-  const handleInputChange = (section: keyof Step2State, key: string, value: string) => {
-    setStep2((prevState) => ({
+  const handleInputChange1 = (key: string, value: string) => {
+    setStep21((prevState) => ({
       ...prevState,
-      [section]: {
-        ...prevState[section],
-        [key]: value,
-      },
+      [key]: value,
+    }));
+  };
+  const handleInputChange2 = (key: string, value: string) => {
+    setStep22((prevState) => ({
+      ...prevState,
+      [key]: value,
     }));
   };
 
   const reveal = () => {
-    console.log(Step2);
+    console.log(Step21);
+    console.log(Step22);
   }
 
   const [responsavelOutro, setResponsavelOutro] = useState(false);
 
+  // Fazer o JSON para o outro responsavel
   const handleResponsavelChange = (selectedOption: string) => {
     setResponsavelOutro(selectedOption === 'Outro');
+    handleInputChange2("presente", selectedOption);
   };
 
   const handleNext = () => {
-    updateFormData(Step2);
+    updateMae(Step21);
+    updatePai(Step22);
     nextStep();
   };
 
@@ -81,12 +85,12 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateFormDa
           <h4 className='pl-2'>Mãe</h4>
           <button onClick={reveal}>reveal</button>
 
-          <TextInput placeholder="Nome completo da mãe" value={Step2.mae.nome} onChange={(e) => handleInputChange("mae", "nome", e.target.value)} />
+          <TextInput placeholder="Nome completo da mãe" value={Step21.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
 
           <div className='flex w-full gap-[12px]'>
-            <DateInput value={Step2.mae.data} onChange={(e) => handleInputChange("mae", "data", e.target.value)} />
-            <TextInput placeholder='RG da mãe' className='min-w-[220px]' value={Step2.mae.rg} onChange={(e) => handleInputChange("mae", "rg", e.target.value)} />
-            <TextInput placeholder='CPF da mãe' className='min-w-[220px]' value={Step2.mae.cpf} onChange={(e) => handleInputChange("mae", "cpf", e.target.value)} />
+            <DateInput value={Step21.data} onChange={(e) => handleInputChange1("data", e.target.value)} />
+            <TextInput placeholder='RG da mãe' className='min-w-[220px]' value={Step21.rg} onChange={(e) => handleInputChange1("rg", e.target.value)} />
+            <TextInput placeholder='CPF da mãe' className='min-w-[220px]' value={Step21.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
           </div>
 
           <div className='flex w-full gap-[12px]'>
@@ -100,22 +104,22 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateFormDa
                 "Cursando ensino superior",
                 "Ensino superior completo"
               ]}
-              onChange={(value) => handleInputChange("mae", "escolaridade", value)}
+              onChange={(value) => handleInputChange1("escolaridade", value)}
             />
-            <NumberInput placeholder="Telefone de contato" value={Step2.mae.telefone} onChange={(e) => handleInputChange("mae", "telefone", e.target.value)} />
-            <TextInput placeholder="E-mail" value={Step2.mae.email} onChange={(e) => handleInputChange("mae", "email", e.target.value)} />
+            <NumberInput placeholder="Telefone de contato" value={Step21.telefone} onChange={(e) => handleInputChange1("telefone", e.target.value)} />
+            <TextInput placeholder="E-mail" value={Step21.email} onChange={(e) => handleInputChange1("email", e.target.value)} />
           </div>
         </div>
 
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Pai</h4>
 
-          <TextInput placeholder="Nome completo do pai" value={Step2.pai.nome} onChange={(e) => handleInputChange("pai", "nome", e.target.value)} />
+          <TextInput placeholder="Nome completo do pai" value={Step22.nome} onChange={(e) => handleInputChange2("nome", e.target.value)} />
 
           <div className='flex w-full gap-[12px]'>
-            <DateInput value={Step2.pai.data} onChange={(e) => handleInputChange("pai", "data", e.target.value)} />
-            <TextInput placeholder='RG do pai' className='min-w-[220px]' value={Step2.pai.rg} onChange={(e) => handleInputChange("pai", "rg", e.target.value)} />
-            <TextInput placeholder='CPF do pai' className='min-w-[220px]' value={Step2.pai.cpf} onChange={(e) => handleInputChange("pai", "cpf", e.target.value)} />
+            <DateInput value={Step22.data} onChange={(e) => handleInputChange2("data", e.target.value)} />
+            <TextInput placeholder='RG do pai' className='min-w-[220px]' value={Step22.rg} onChange={(e) => handleInputChange2("rg", e.target.value)} />
+            <TextInput placeholder='CPF do pai' className='min-w-[220px]' value={Step22.cpf} onChange={(e) => handleInputChange2("cpf", e.target.value)} />
           </div>
 
           <div className='flex w-full gap-[12px]'>
@@ -129,10 +133,10 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateFormDa
                 "Cursando ensino superior",
                 "Ensino superior completo"
               ]}
-              onChange={(value) => handleInputChange("pai", "escolaridade", value)}
+              onChange={(value) => handleInputChange2("escolaridade", value)}
             />
-            <NumberInput placeholder="Telefone de contato" value={Step2.pai.telefone} onChange={(e) => handleInputChange("pai", "telefone", e.target.value)} />
-            <TextInput placeholder="E-mail" value={Step2.pai.email} onChange={(e) => handleInputChange("pai", "email", e.target.value)} />
+            <NumberInput placeholder="Telefone de contato" value={Step22.telefone} onChange={(e) => handleInputChange2("telefone", e.target.value)} />
+            <TextInput placeholder="E-mail" value={Step22.email} onChange={(e) => handleInputChange2("email", e.target.value)} />
           </div>
         </div>
 

@@ -9,21 +9,54 @@ import { FormData } from './types';
 const Form: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
-    step1Data: null,
-    step2Data: null,
-    step3Data: null,
-    step4Data: null
+    geral: null,
+    escola: null,
+    mae: null,
+    pai: null,
+    maisinfo: null,
+    infosaude: null
   });
 
   const nextStep = () => setCurrentStep(currentStep + 1);
   const prevStep = () => setCurrentStep(currentStep - 1);
 
-  const updateFormData = (step: number, data: any) => {
+  const updateGeral = (data: any) => {
     setFormData((prevData) => ({
       ...prevData,
-      [`step${step}Data`]: data,
+      [`geral`]: data,
     }));
   };
+  const updateEscola = (data: any) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [`escola`]: data,
+    }));
+  };
+  const updateMae = (data: any) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [`mae`]: data,
+    }));
+  };
+  const updatePai = (data: any) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [`pai`]: data,
+    }));
+  };
+  const updateMaisInfo = (data: any) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [`maisinfo`]: data,
+    }));
+  };
+  const updateInfoSaude = (data: any) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [`infosaude`]: data,
+    }));
+  };
+
 
   const reveal = () => {
     console.log(formData);
@@ -47,17 +80,33 @@ const Form: React.FC = () => {
     case 1:
       return <>
         <button onClick={reveal}>reveal</button>
-        <Step1 nextStep={nextStep} updateFormData={(data) => updateFormData(1, data)} />;
+        <Step1
+          nextStep={nextStep}
+          updateGeral={(data) => updateGeral(data)}
+          updateEscola={(data) => updateEscola(data)}
+        />;
       </>
     case 2:
-      return <Step2 nextStep={nextStep} prevStep={prevStep} updateFormData={(data) => updateFormData(2, data)} />;
+      return <Step2
+        nextStep={nextStep}
+        prevStep={prevStep}
+        updateMae={(data) => updateMae(data)}
+        updatePai={(data) => updatePai(data)}
+      />;
     case 3:
-      return <Step3 nextStep={nextStep} prevStep={prevStep} updateFormData={(data) => updateFormData(3, data)} />;
+      return <Step3
+        nextStep={nextStep}
+        prevStep={prevStep}
+        updateMaisInfo={(data) => updateMaisInfo(data)}
+      />;
     case 4:
       return <>
         <button onClick={reveal}>reveal</button>
         <button onClick={handleUserCreation}>rodar a rota</button>
-        <Step4 prevStep={prevStep} updateFormData={(data) => updateFormData(4, data)} />;
+        <Step4
+          prevStep={prevStep}
+          updateInfoSaude={(data) => updateInfoSaude(data)}
+        />;
       </>
     default:
       return null;
