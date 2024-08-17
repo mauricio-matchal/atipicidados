@@ -36,7 +36,7 @@ type Step1State = {
 };
 
 
-const Step1: React.FC<StepProps> = ({ formData, setFormData, nextStep }) => {
+const Step1: React.FC<{ nextStep: () => void; updateFormData: (data: Step1State) => void }> = ({ nextStep, updateFormData }) => {
   const [Step1, setStep1] = useState<Step1State>({
     geral: {
       nome: "",
@@ -85,6 +85,11 @@ const Step1: React.FC<StepProps> = ({ formData, setFormData, nextStep }) => {
 
   const handleRelatorioChange = (selectedOption: string) => {
     setHasRelatorio(selectedOption === 'Sim, possui relatório escolar');
+  };
+
+  const handleNext = () => {
+    updateFormData(Step1);
+    nextStep();
   };
 
   return (
@@ -161,7 +166,7 @@ const Step1: React.FC<StepProps> = ({ formData, setFormData, nextStep }) => {
           1 de 4
         </div>
 
-        <button onClick={nextStep} className='botao'>Próxima página</button>
+        <button onClick={handleNext} className='botao'>Próxima página</button>
       </div>
     </div>
   );

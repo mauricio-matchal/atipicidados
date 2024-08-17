@@ -9,23 +9,56 @@ import { FormData } from './types';
 const Form: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    age: 0,
+    step1Data: null,
+    step2Data: null,
+    step3Data: null,
+    step4Data: null
   });
 
   const nextStep = () => setCurrentStep(currentStep + 1);
   const prevStep = () => setCurrentStep(currentStep - 1);
 
+  const updateFormData = (step: number, data: any) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [`step${step}Data`]: data,
+    }));
+  };
+
+  const reveal = () => {
+    console.log(formData);
+  }
+
+  const handleUserCreation = async () => {
+    try {
+      const teste = await fetch("http://localhost:3002/pacientes/", {
+        method: "POST",
+        body: JSON.stringify(formData),
+        headers: { 'Content-Type': 'application/json' }
+      })
+      const response = await teste.json();
+      console.log(response);
+    } catch {
+
+    }
+  }
+
   switch (currentStep) {
     case 1:
-      return <Step1 formData={formData} setFormData={setFormData} nextStep={nextStep} />;
+      return <>
+        <button onClick={reveal}>reveal</button>
+        <Step1 nextStep={nextStep} updateFormData={(data) => updateFormData(1, data)} />;
+      </>
     case 2:
-      return <Step2 formData={formData} setFormData={setFormData} nextStep={nextStep} prevStep={prevStep} />;
+      return <Step2 nextStep={nextStep} prevStep={prevStep} updateFormData={(data) => updateFormData(2, data)} />;
     case 3:
-      return <Step3 formData={formData} setFormData={setFormData} nextStep={nextStep} prevStep={prevStep} />;
+      return <Step3 nextStep={nextStep} prevStep={prevStep} updateFormData={(data) => updateFormData(3, data)} />;
     case 4:
-      return <Step4 formData={formData} setFormData={setFormData} prevStep={prevStep} />;
+      return <>
+        <button onClick={reveal}>reveal</button>
+        <button onClick={handleUserCreation}>rodar a rota</button>
+        <Step4 prevStep={prevStep} updateFormData={(data) => updateFormData(4, data)} />;
+      </>
     default:
       return null;
   }

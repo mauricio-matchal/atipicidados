@@ -26,7 +26,7 @@ type Step2State = {
 };
 
 
-const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; }> = ({ nextStep, prevStep }) => {
+const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateFormData: (data: Step2State) => void }> = ({ nextStep, prevStep, updateFormData }) => {
   const [Step2, setStep2] = useState<Step2State>({
     mae: {
       nome: "",
@@ -66,6 +66,11 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; }> = ({ next
 
   const handleResponsavelChange = (selectedOption: string) => {
     setResponsavelOutro(selectedOption === 'Outro');
+  };
+
+  const handleNext = () => {
+    updateFormData(Step2);
+    nextStep();
   };
 
   return (
@@ -168,7 +173,7 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; }> = ({ next
           2 de 4
         </div>
 
-        <button onClick={nextStep} className='botao'>Próxima página</button>
+        <button onClick={handleNext} className='botao'>Próxima página</button>
       </div>
     </div>
   );

@@ -31,7 +31,7 @@ type Step4State = {
 };
 
 
-const Step4: React.FC<StepProps> = ({ formData, setFormData, prevStep }) => {
+const Step4: React.FC<{ prevStep: () => void; updateFormData: (data: Step4State) => void }> = ({ prevStep, updateFormData }) => {
   const [selectedCheckboxOptions, setSelectedCheckboxOptions] = useState<string[]>([]);
 
   const [Step4, setStep4] = useState<Step4State>({
@@ -126,6 +126,10 @@ const Step4: React.FC<StepProps> = ({ formData, setFormData, prevStep }) => {
   const reveal = () => {
     console.log(Step4);
   }
+
+  const handleSubmit = () => {
+    updateFormData(Step4);
+  };
 
   return (
     <div className='flex flex-col gap-[162px] w-screen'>
@@ -255,7 +259,7 @@ const Step4: React.FC<StepProps> = ({ formData, setFormData, prevStep }) => {
           4 de 4
         </div>
 
-        <button className='botao' type='submit'>Enviar</button>
+        <button className='botao' type='submit' onClick={handleSubmit}>Enviar</button>
       </div>
     </div>
   );

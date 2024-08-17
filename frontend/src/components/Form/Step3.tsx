@@ -22,7 +22,7 @@ type Step3State = {
   }
 };
 
-const Step3: React.FC<StepProps> = ({ nextStep, prevStep }) => {
+const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateFormData: (data: Step3State) => void }> = ({ nextStep, prevStep, updateFormData }) => {
   const [selectedCheckboxOptions, setSelectedCheckboxOptions] = useState<string[]>([]);
   const [hasNIS, setHasNIS] = useState(false);
   const [hasAtendimento, setHasAtendimento] = useState(false);
@@ -63,6 +63,20 @@ const Step3: React.FC<StepProps> = ({ nextStep, prevStep }) => {
     }));
   };
 
+  const handleTest = async () => {
+    try {
+      const teste = await fetch("http://localhost:3002/pacientes/", {
+        method: "POST",
+        body: JSON.stringify(Step3),
+        headers: { 'Content-Type': 'application/json' }
+      })
+      const response = await teste.json();
+      console.log(response);
+    } catch {
+
+    }
+  }
+
   const reveal = () => {
     console.log(Step3);
   }
@@ -87,12 +101,18 @@ const Step3: React.FC<StepProps> = ({ nextStep, prevStep }) => {
     handleInputChange("maisinfo", "possuiterapia", selectedOption);
   };
 
+  const handleNext = () => {
+    updateFormData(Step3);
+    nextStep();
+  };
+
   return (
     <div className='flex flex-col gap-[162px] w-screen'>
       <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Mais informações</h4>
           <button onClick={reveal}>reveal</button>
+          <button onClick={handleTest}>teste</button>
 
           <div className='flex w-full gap-[12px]'>
             <SelectInput
@@ -156,7 +176,7 @@ const Step3: React.FC<StepProps> = ({ nextStep, prevStep }) => {
               style={{ pointerEvents: hasAtendimento ? 'auto' : 'none' }}
               value={Step3.maisinfo.enderecoterapia} onChange={(e) => handleInputChange("maisinfo", "enderecoterapia", e.target.value)}
             />
-            <TextInput placeholder="Renda familiar" value={Step3.maisinfo.renda} onChange={(e) => handleInputChange("maisinfo", "renda", e.target.value)}/>
+            <TextInput placeholder="Renda familiar" value={Step3.maisinfo.renda} onChange={(e) => handleInputChange("maisinfo", "renda", e.target.value)} />
           </div>
 
           <CheckInput
@@ -198,7 +218,7 @@ const Step3: React.FC<StepProps> = ({ nextStep, prevStep }) => {
           3 de 4
         </div>
 
-        <button onClick={nextStep} className='botao'>Próxima página</button>
+        <button onClick={handleNext} className='botao'>Próxima página</button>
       </div>
     </div>
   );
