@@ -106,6 +106,7 @@ const Form: React.FC = () => {
         <Step4
           prevStep={prevStep}
           updateInfoSaude={(data) => updateInfoSaude(data)}
+          handleFormDataSubmit={handleUserCreation}
         />;
       </>
     default:

@@ -26,7 +26,7 @@ type Step4State = {
 };
 
 
-const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State) => void }> = ({ prevStep, updateInfoSaude }) => {
+const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State) => void; handleFormDataSubmit: () => void }> = ({ prevStep, updateInfoSaude, handleFormDataSubmit }) => {
   const [selectedCheckboxOptions, setSelectedCheckboxOptions] = useState<string[]>([]);
 
   const [Step4, setStep4] = useState<Step4State>({
@@ -113,6 +113,7 @@ const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State
 
   const handleSubmit = () => {
     updateInfoSaude(Step4);
+    handleFormDataSubmit();
   };
 
   return (
