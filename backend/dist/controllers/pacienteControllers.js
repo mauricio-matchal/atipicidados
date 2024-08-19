@@ -9,22 +9,36 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createUserUnidade = void 0;
+exports.createUserPaciente = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
-const createUserUnidade = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
-    const { nome, endereco } = request.body;
+//considerar 0 como valor default para unidade id
+// export const createPacienteAnalise = async(request: Request, response: Response) => {
+//     const {geral, escola, mae, pai, maisinfo, saudeinfo} =  request.body;
+//     try {
+//         const userPaciente = await prisma.pacienteanalise
+//     }
+// }
+const createUserPaciente = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    const { geral, pai, mae, maisinfo, escola, saudeinfo, fotofile, laudofile, relescolar, } = request.body;
     try {
-        const userUnidade = yield prisma.unidade.create({
+        const userPaciente = yield prisma.paciente.create({
             data: {
-                nome,
-                endereco
+                geral,
+                pai,
+                mae,
+                maisinfo,
+                escola,
+                saudeinfo,
+                fotofile,
+                laudofile,
+                relescolar
             }
         });
-        return response.json(userUnidade);
+        return response.json(userPaciente);
     }
     catch (error) {
         return response.status(400).json({ error: error.message });
     }
 });
-exports.createUserUnidade = createUserUnidade;
+exports.createUserPaciente = createUserPaciente;

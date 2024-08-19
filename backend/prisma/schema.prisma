@@ -41,31 +41,37 @@ model Colaborador {
   compresfile    String?
 }
 
+
 model Paciente {
   id             Int           @id @default(autoincrement())
-  analise        Boolean
-  nome           String  
-  cpf            String
-  rg             String
-  nomemae        String
-  nomepai        String 
-  unidadeId      Int
-  email          String
-  telefone       String
+  analise        Boolean       @default(true)
+  nome           String?  
+  cpf            String?
+  rg             String?
+  nascimentodata     String?
+  nomemae        String?
+  nomepai        String?
+  unidadeId      Int          @default(1)
+  email          String?
+  telefone       String?
   rgdocfile      String?
-  fotofile       String?
+  fotofile       String? //analise
   compresfile    String?
-  laudofile      String?
-  geralfile      String?
-  educacaofile   String?
-  saudefile      String?
-  gestacaofile   String?
-  nascimentofile String?
-  autonomiafile  String?
-  comportamentofile   String?
-  desenvolimentofile  String?
-  pedagogicofile String?
-  raca           Raca
+  laudofile      String? //analise
+  relescolar     String? // analise
+  gestacao         Json?
+  nascimento       Json?
+  autonomia        Json?
+  comportamento    Json?
+  desenvolimento   Json?
+  pedagogico     Json?
+  geral          Json? // analise
+  mae            Json? // analise
+  pai            Json? // analise
+  maisinfo       Json? // analise
+  escola         Json? // analise
+  saudeinfo      Json? // analise
+  raca           Raca?
   unidade        Unidade        @relation(fields: [unidadeId], references: [id])
   colaboradores  Colaborador[]  @relation("PacienteColaboradores")
 }
