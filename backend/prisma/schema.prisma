@@ -9,6 +9,7 @@ datasource db {
 
 model Gerente {
   id         Int       @id @default(autoincrement())
+  password   String
   nome       String
   cpf        String       @unique
   rg         String      @unique
