@@ -10,18 +10,18 @@ export default function Home() {
 
   const handleSendNewPassword = async (email: string) => {
     try {
-      // const response = await fetch("https//localhost:3002/", {
-      //   method: "POST", // Changed to POST
-      //   body: JSON.stringify(email), // Correctly formatted body
-      //   headers: { 'Content-Type': 'application/json' }
-      // });
+      const response = await fetch("https//localhost:3002/", {
+        method: "POST", // Changed to POST
+        body: JSON.stringify(email), // Correctly formatted body
+        headers: { 'Content-Type': 'application/json' }
+      });
 
-      // if (!response.ok) {
-      //   throw new Error('Password sending failed');
-      // }
+      if (!response.ok) {
+        throw new Error('Password sending failed');
+      }
 
-      // const data = await response.json();
-      // console.log(data);
+      const data = await response.json();
+      console.log(data);
       router.push("/confirmacao")
     } catch (error) {
       console.log("Erro no envio de nova senha", error)
