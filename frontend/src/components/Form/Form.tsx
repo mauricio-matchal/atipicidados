@@ -14,7 +14,7 @@ const Form: React.FC = () => {
     mae: null,
     pai: null,
     maisinfo: null,
-    infosaude: null
+    saudeinfo: null
   });
 
   const nextStep = () => setCurrentStep(currentStep + 1);
@@ -53,7 +53,7 @@ const Form: React.FC = () => {
   const updateInfoSaude = (data: any) => {
     setFormData((prevData) => ({
       ...prevData,
-      [`infosaude`]: data,
+      [`saudeinfo`]: data,
     }));
   };
 
