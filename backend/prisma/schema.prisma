@@ -28,13 +28,15 @@ model Colaborador {
   nome        String   
   cpf         String        @unique
   rg          String        @unique
-  nascimento  DateTime
+  nascimento  DateTime?
   telefone    String     @unique
-  titulo      String
-  formacao    String
-  genero      Genero
+  titulo      String?
+  formacao    String?
+  genero      Genero?
   raca        Raca
-  unidadeId   Int
+  email      String     @unique
+  password   String
+  unidadeId   Int             @default(1)
   unidade     Unidade        @relation(fields: [unidadeId], references: [id])
   pacientes   Paciente[]     @relation("PacienteColaboradores")
   rgdocfile      String?
@@ -53,7 +55,8 @@ model Paciente {
   nomemae        String?
   nomepai        String?
   unidadeId      Int          @default(1)
-  email          String?
+  email          String?      @unique
+  password       String?    
   telefone       String?
   rgdocfile      String?
   fotofile       String? //analise

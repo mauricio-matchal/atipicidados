@@ -5,6 +5,7 @@ import {unidadeRouter} from './unidadeRouter';
 import {pacienteRouter} from './pacienteRouter';
 
 
+
 export const userRouter = Router();
 userRouter.use(cors());
 userRouter.use('/gerentes', gerentesRouter)

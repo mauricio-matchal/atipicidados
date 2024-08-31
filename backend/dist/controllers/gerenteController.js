@@ -15,10 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.gerenteLogin = exports.getUserGerenteId = exports.getUserGerente = exports.createUserGerente = void 0;
 const client_1 = require("@prisma/client");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const bcrypt_1 = require("bcrypt");
+const bcryptjs_1 = require("bcryptjs");
 const secrets_1 = require("../secrets");
 const prisma = new client_1.PrismaClient();
-// Quando criar gerente, sempre usar o id 0 para unidades. 
+// Quando criar gerente, sempre usar o id 0 pra unidades. 
 const createUserGerente = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     const { nome, email, cpf, rg, telefone, raca, unidadeId, password } = request.body;
     try {
@@ -31,7 +31,7 @@ const createUserGerente = (request, response) => __awaiter(void 0, void 0, void 
                 unidadeId,
                 raca,
                 rg,
-                password: (0, bcrypt_1.hashSync)(password, 10)
+                password: (0, bcryptjs_1.hashSync)(password, 10)
             }
         });
         return response.json(userGerente);
@@ -85,7 +85,7 @@ const gerenteLogin = (request, response) => __awaiter(void 0, void 0, void 0, fu
         if (!userGerente) {
             return response.status(404).json({ error: "Email não encontrado" });
         }
-        const isPasswordValid = yield (0, bcrypt_1.compare)(password, userGerente.password);
+        const isPasswordValid = yield (0, bcryptjs_1.compare)(password, userGerente.password);
         if (!isPasswordValid) {
             return response.status(401).json({
                 error: true,
