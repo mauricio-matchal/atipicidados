@@ -6,7 +6,7 @@ import { sendPassword } from '../email/sendpassowordbyemail';
 export const colaboradorRouter = Router();
 colaboradorRouter.use(cors());
 colaboradorRouter.post('/', createUserColaborador);
-colaboradorRouter.post('/buscar', getUserColaborador);
+colaboradorRouter.get('/buscar', getUserColaborador);
 colaboradorRouter.post('/login', colaboradorLogin )
 colaboradorRouter.post('/senha',sendPassword )
 
