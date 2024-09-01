@@ -11,8 +11,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUserGerenteId = exports.getUserGerente = exports.createUserGerente = void 0;
 const client_1 = require("@prisma/client");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const bcryptjs_1 = require("bcryptjs");
+const secrets_1 = require("../secrets");
 const prisma = new client_1.PrismaClient();
-// quando criar gerente, sempre usar o id 0 para unidades. 
+// Quando criar gerente, sempre usar o id 0 pra unidades. 
 const createUserGerente = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     const { nome, email, cpf, rg, telefone, raca, unidadeId } = request.body;
     try {
@@ -24,7 +27,8 @@ const createUserGerente = (request, response) => __awaiter(void 0, void 0, void 
                 cpf,
                 unidadeId,
                 raca,
-                rg
+                rg,
+                password: (0, bcryptjs_1.hashSync)(password, 10)
             }
         });
         return response.json(userGerente);
@@ -69,3 +73,39 @@ const getUserGerenteId = (request, response) => __awaiter(void 0, void 0, void 0
     }
 });
 exports.getUserGerenteId = getUserGerenteId;
+const gerenteLogin = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email, password } = request.body;
+    try {
+        const userGerente = yield prisma.gerente.findUnique({
+            where: { email }
+        });
+        if (!userGerente) {
+            return response.status(404).json({ error: "Email não encontrado" });
+        }
+        const isPasswordValid = yield (0, bcryptjs_1.compare)(password, userGerente.password);
+        if (!isPasswordValid) {
+            return response.status(401).json({
+                error: true,
+                message: 'Erro: Senha incorreta'
+            });
+        }
+        const token = jsonwebtoken_1.default.sign({
+            userId: userGerente.id
+        }, secrets_1.JWT_SECRET);
+        return response.json({
+            error: false,
+            message: 'Login realizado',
+            token,
+            gerente: {
+                id: userGerente.id,
+            }
+        });
+    }
+    catch (error) {
+        return response.status(500).json({
+            error: true,
+            message: 'Erro interno do servidor'
+        });
+    }
+});
+exports.gerenteLogin = gerenteLogin;
