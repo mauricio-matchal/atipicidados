@@ -1,10 +1,16 @@
+
 import { Router } from 'express';
 import cors from 'cors';
 import { createUserGerente, getUserGerente, getUserGerenteId } from '../controllers/gerenteController';
+import { validateGerente } from './../middleware/validateGerente';
+import GerenteCreateInputSchema from './../../prisma/generated/zod/validateSchema';
 
 export const gerentesRouter = Router();
 gerentesRouter.use(cors());
-gerentesRouter.post('/', createUserGerente);
+
+// Validação usando Zod antes de criar um gerente
+gerentesRouter.post('/', validateGerente(GerenteCreateInputSchema), createUserGerente);
 gerentesRouter.post('/buscar', getUserGerente);
 gerentesRouter.get('/:id', getUserGerenteId);
 
+export default gerentesRouter;
