@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { Prisma, PrismaClient } from "@prisma/client";
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { SENHA_DE_APP_JULIO } from "../secrets";
 
 const prisma = new PrismaClient();
