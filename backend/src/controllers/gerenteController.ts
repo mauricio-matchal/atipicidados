@@ -1,36 +1,34 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
-import { gerentesRouter } from '../routes/gerentesRoutes';
+import jwt from 'jsonwebtoken';
+import bcrypt, { compare, hashSync } from 'bcrypt';
+import { JWT_SECRET } from '../secrets';
 
 const prisma = new PrismaClient();
 
-
-// quando criar gerente, sempre usar o id 0 para unidades. 
+// Quando criar gerente, sempre usar o id 0 para unidades. 
 export const createUserGerente = async (request: Request, response: Response) => {
-    const {nome, email, cpf, rg, telefone, raca, unidadeId} = request.body;
-
-    try{
+    const { nome, email, cpf, rg, telefone, raca, unidadeId, password } = request.body;
+    
+    try {
         const userGerente = await prisma.gerente.create({
-            data:{
+            data: {
                 nome,
                 email,
                 telefone,
                 cpf,
                 unidadeId,
                 raca,
-                rg
-
+                rg,
+                password: hashSync(password, 10)
             }
         });
         return response.json(userGerente);
+    } catch (error: any) {
+        return response.status(400).json({ error: error.message });
     }
-    catch(error:any){
-        return response.status(400).json({error:error.message});
-    }
-
-
-    
 }
+
 export const getUserGerente = async (request: Request, response: Response) => {
     const { email } = request.body;
 
@@ -51,10 +49,10 @@ export const getUserGerente = async (request: Request, response: Response) => {
     } catch (error: any) {
         return response.status(500).json({ error: error.message });
     }
-}  
+}
 
 export const getUserGerenteId = async (request: Request, response: Response) => {
-    const { id } = request.params; 
+    const { id } = request.params;
 
     try {
         const userGerente = await prisma.gerente.findUnique({
@@ -71,6 +69,42 @@ export const getUserGerenteId = async (request: Request, response: Response) => 
     }
 }
 
+export const gerenteLogin = async (request: Request, response: Response) => {
+    const { email, password } = request.body;
 
+    try {
+        const userGerente = await prisma.gerente.findUnique({
+            where: { email }
+        });
 
+        if (!userGerente) {
+            return response.status(404).json({ error: "Email não encontrado" });
+        }
 
+        const isPasswordValid = await compare(password, userGerente.password);
+        if (!isPasswordValid) {
+            return response.status(401).json({
+                error: true,
+                message: 'Erro: Senha incorreta'
+            });
+        }
+
+        const token = jwt.sign({
+            userId: userGerente.id
+        }, JWT_SECRET);
+
+        return response.json({
+            error: false,
+            message: 'Login realizado',
+            token,
+            gerente: {
+                id: userGerente.id,
+            }
+        });
+    } catch (error: any) {
+        return response.status(500).json({
+            error: true,
+            message: 'Erro interno do servidor'
+        });
+    }
+}
