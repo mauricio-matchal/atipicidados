@@ -81,23 +81,23 @@ export default function Home() {
       case ("Colaborador"):
         url = "https://localhost:3002/colaborador"
         break;
-      case ("Usuário"):
-        url = "https://localhost:3002/usuario"
+      case ("Paciente"):
+        url = "https://localhost:3002/paciente"
         break;
     }
     try {
-      // const response = await fetch(url, {
-      //   method: "POST", // Changed to POST
-      //   body: JSON.stringify({ email: loginData.email, password: loginData.password }), // Correctly formatted body
-      //   headers: { 'Content-Type': 'application/json' }
-      // });
+      const response = await fetch(url, {
+        method: "POST", // Changed to POST
+        body: JSON.stringify({ email: loginData.email, password: loginData.password }), // Correctly formatted body
+        headers: { 'Content-Type': 'application/json' }
+      });
 
-      // if (!response.ok) {
-      //   throw new Error('Login failed');
-      // }
+      if (!response.ok) {
+        throw new Error('Login failed');
+      }
 
-      // const data = await response.json();
-      // console.log(data);
+      const data = await response.json();
+      console.log(data);
       router.push('/home');
     } catch (error) {
       console.log("Erro em seu login", error);
