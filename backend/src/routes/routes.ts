@@ -11,5 +11,3 @@ userRouter.use('/gerentes', gerentesRouter)
 userRouter.use('/unidades', unidadeRouter)
 userRouter.use('/pacientes', pacienteRouter)
 //Demais rotas que faremos
-
-
