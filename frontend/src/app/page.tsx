@@ -87,8 +87,8 @@ export default function Home() {
     }
     try {
       const response = await fetch(url, {
-        method: "POST", // Changed to POST
-        body: JSON.stringify({ email: loginData.email, password: loginData.password }), // Correctly formatted body
+        method: "POST",
+        body: JSON.stringify({ email: loginData.email, password: loginData.password }),
         headers: { 'Content-Type': 'application/json' }
       });
 

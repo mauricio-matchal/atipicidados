@@ -11,8 +11,8 @@ export default function Home() {
   const handleSendNewPassword = async (email: string) => {
     try {
       const response = await fetch("https//localhost:3002/", {
-        method: "POST", // Changed to POST
-        body: JSON.stringify(email), // Correctly formatted body
+        method: "POST",
+        body: JSON.stringify(email),
         headers: { 'Content-Type': 'application/json' }
       });
 
