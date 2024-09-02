@@ -2,24 +2,30 @@ import {  type Prisma } from '@prisma/client';
 
 import { z } from 'zod';
 import { ColaboradorCreateNestedManyWithoutPacientesInputSchema, GeneroSchema, InputJsonValueSchema, NullableJsonNullValueInputSchema, PacienteCreateNestedManyWithoutColaboradoresInputSchema, RacaSchema, UnidadeCreateNestedOneWithoutGerentesInputSchema, UnidadeCreateNestedOneWithoutPacientesInputSchema } from './index';
+import { connect } from 'http2';
 
 
-export const GerenteCreateInputSchema: z.ZodType<Prisma.GerenteCreateInput> = z.object({
-    password: z.string().min(8, {message:'Sua senha precisa ter no mínimo 8 characteres'}),
-    nome: z.string().min(3,{message:'Insira um nome com pelo menos 3 characteres'}),
-    cpf: z.string().length(11, { message: 'O CPF precisa ter 11 dígitos' }),
-    rg: z.string().regex(/^[0-9]{7,14}[A-Za-z0-9]?$/, { message: 'O RG deve ter entre 7 e 14 caracteres, podendo incluir letras e dígitos verificadores' }),
-    email: z.string().email({ message: 'Digite um email váido' }),
-    telefone: z.string()
-    .min(10, { message: 'O telefone precisa ter no mínimo 10 dígitos' })
-    .max(11, { message: 'O telefone precisa ter no máximo 11 dígitos' }),
-    raca: z.lazy(() => RacaSchema),
-    rgdocfile: z.string().optional().nullable(),
-    fotofile: z.string().optional().nullable(),
-    compresfile: z.string().optional().nullable(),
-    unidade: z.lazy(() => UnidadeCreateNestedOneWithoutGerentesInputSchema)
-  }).strict();
-  export default GerenteCreateInputSchema;
+
+export const GerenteCreateInputSchema = z.object({
+  password: z.string().min(8, { message: 'Sua senha precisa ter no mínimo 8 caracteres' }),
+  nome: z.string().min(3, { message: 'Insira um nome com pelo menos 3 caracteres' }),
+  cpf: z.string().length(11, { message: 'O CPF precisa ter 11 dígitos' }),
+  rg: z.string().regex(/^[0-9]{7,14}[A-Za-z0-9]?$/, { message: 'O RG deve ter entre 7 e 14 caracteres, podendo incluir letras e dígitos verificadores' }),
+  email: z.string().email({ message: 'Digite um email válido' }),
+  telefone: z.string()
+      .min(10, { message: 'O telefone precisa ter no mínimo 10 dígitos' })
+      .max(11, { message: 'O telefone precisa ter no máximo 11 dígitos' }),
+  raca: RacaSchema,
+  rgdocfile: z.string().optional().nullable(),
+  fotofile: z.string().optional().nullable(),
+  compresfile: z.string().optional().nullable(),
+  unidadeId: z.number(),
+}).strict();
+
+export default GerenteCreateInputSchema
+
+
+  
 
   export const PacienteCreateInputSchema: z.ZodType<Prisma.PacienteCreateInput> = z.object({
     analise: z.boolean().optional(),
