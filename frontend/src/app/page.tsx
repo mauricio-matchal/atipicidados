@@ -76,13 +76,13 @@ export default function Home() {
     let url = ""
     switch (userType) {
       case ("Gerente"):
-        url = "https://localhost:3002/gerente"
+        url = "https://localhost:3002/gerentes"
         break;
       case ("Colaborador"):
-        url = "https://localhost:3002/colaborador"
+        url = "https://localhost:3002/colaboradores"
         break;
       case ("Paciente"):
-        url = "https://localhost:3002/paciente"
+        url = "https://localhost:3002/pacientes"
         break;
     }
     try {

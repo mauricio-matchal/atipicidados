@@ -1,4 +1,5 @@
 "use client";
+import Checkbox from "@/components/Checkbox";
 import TextInput from "@/components/TextInput";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -7,10 +8,27 @@ import { useState } from "react";
 export default function Home() {
   const [email, setEmail] = useState("");
   const router = useRouter();
+  const [userType, setUserType] = useState("");
+
+  const handleCheckboxChange = (value: string) => {
+    setUserType(value);
+  }
 
   const handleSendNewPassword = async (email: string) => {
+    let url = ""
+    switch (userType) {
+      case ("Gerente"):
+        url = "https://localhost:3002/gerentes/senha"
+        break;
+      case ("Colaborador"):
+        url = "https://localhost:3002/colaboradores/senha"
+        break;
+      case ("Paciente"):
+        url = "https://localhost:3002/pacientes/senha"
+        break;
+    }
     try {
-      const response = await fetch("https//localhost:3002/", {
+      const response = await fetch(url, {
         method: "POST",
         body: JSON.stringify(email),
         headers: { 'Content-Type': 'application/json' }
@@ -32,6 +50,10 @@ export default function Home() {
     console.log(email);
   }
 
+  const revealUserType = () => {
+    console.log(userType);
+  }
+
   return (
     <main className="flex min-h-screen">
       <div className="flex w-[40%] justify-center items-center">
@@ -50,6 +72,36 @@ export default function Home() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
+          <div className="flex flex-row gap-4">
+            <label className="flex items-center">
+              <Checkbox
+                value="Gerente"
+                onChange={(e) => handleCheckboxChange(e.target.value)}
+                checked={userType === "Gerente"}
+              />
+
+              Gerente
+            </label>
+            <label className="flex items-center">
+              <Checkbox
+                value="Colaborador"
+                onChange={(e) => handleCheckboxChange(e.target.value)}
+                checked={userType === "Colaborador"}
+              />
+
+              Colaborador
+            </label>
+            <label className="flex items-center">
+              <Checkbox
+                value="Paciente"
+                onChange={(e) => handleCheckboxChange(e.target.value)}
+                checked={userType === "Paciente"}
+              />
+
+              Paciente
+            </label>
+          </div>
+          <button type="button" onClick={revealUserType}>Reveal UserType</button>
           <button onClick={revealEmail}>Mostrar email</button>
           <Link href="/recuperarsenha/confirmacao">
             <button className="botao w-[250px] mt-9 font-medium" onClick={() => handleSendNewPassword(email)}>Enviar nova senha</button>
