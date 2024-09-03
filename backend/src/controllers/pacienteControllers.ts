@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import multer from 'multer';
 import path from 'path';
 import jwt from 'jsonwebtoken';
-import  { compare, hashSync } from 'bcryptjs';
+import { compare, hashSync } from 'bcryptjs';
 import { JWT_SECRET } from '../secrets';
 
 
@@ -74,42 +74,42 @@ export const createUserPaciente = async (req: Request, res: Response) => {
 };
 
 
-export const pacienteLogin = async (request: Request, response: Response) => {
-    const { email, password } = request.body;
+// export const pacienteLogin = async (request: Request, response: Response) => {
+//     const { email, password } = request.body;
 
-    try {
-        const userPaciente = await prisma.paciente.findUnique({
-            where: {email},
-        });
+//     try {
+//         const userPaciente = await prisma.paciente.findUnique({
+//             where: {email},
+//         });
 
-        if (!userPaciente || !userPaciente.password) {
-            return response.status(404).json({ error: "Email não encontrado" });
-        }
+//         if (!userPaciente || !userPaciente.password) {
+//             return response.status(404).json({ error: "Email não encontrado" });
+//         }
 
-        const isPasswordValid = await compare(password, userPaciente.password);
-        if (!isPasswordValid ) {
-            return response.status(401).json({
-                error: true,
-                message: 'Erro: Senha incorreta'
-            });
-        }
+//         const isPasswordValid = await compare(password, userPaciente.password);
+//         if (!isPasswordValid ) {
+//             return response.status(401).json({
+//                 error: true,
+//                 message: 'Erro: Senha incorreta'
+//             });
+//         }
 
-        const token = jwt.sign({
-            userId: userPaciente.id
-        }, JWT_SECRET);
+//         const token = jwt.sign({
+//             userId: userPaciente.id
+//         }, JWT_SECRET);
 
-        return response.json({
-            error: false,
-            message: 'Login realizado',
-            token,
-            paciente: {
-                id: userPaciente.id,
-            }
-        });
-    } catch (error: any) {
-        return response.status(500).json({
-            error: true,
-            message: 'Erro interno do servidor'
-        });
-    }
-}
+//         return response.json({
+//             error: false,
+//             message: 'Login realizado',
+//             token,
+//             paciente: {
+//                 id: userPaciente.id,
+//             }
+//         });
+//     } catch (error: any) {
+//         return response.status(500).json({
+//             error: true,
+//             message: 'Erro interno do servidor'
+//         });
+//     }
+// }

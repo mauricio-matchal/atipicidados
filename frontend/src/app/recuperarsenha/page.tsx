@@ -6,7 +6,9 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Home() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState({
+    email: '',
+  });
   const router = useRouter();
   const [userType, setUserType] = useState("");
 
@@ -14,18 +16,28 @@ export default function Home() {
     setUserType(value);
   }
 
-  const handleSendNewPassword = async (email: string) => {
+  const changeEmail = (data: any) => {
+    setEmail((prevData) => ({
+      ...prevData,
+      [`email`]: data,
+    }));
+  }
+
+  const handleSendNewPassword = async (email: any) => {
     let url = ""
     switch (userType) {
       case ("Gerente"):
-        url = "https://localhost:3002/gerentes/senha"
+        url = "http://localhost:3002/gerentes/senha"
         break;
       case ("Colaborador"):
-        url = "https://localhost:3002/colaboradores/senha"
+        url = "http://localhost:3002/colaboradores/senha"
         break;
       case ("Paciente"):
-        url = "https://localhost:3002/pacientes/senha"
+        url = "http://localhost:3002/pacientes/senha"
         break;
+      default:
+        console.error("Unknown user type");
+        return;
     }
     try {
       const response = await fetch(url, {
@@ -40,6 +52,7 @@ export default function Home() {
 
       const data = await response.json();
       console.log(data);
+
       router.push("/confirmacao")
     } catch (error) {
       console.log("Erro no envio de nova senha", error)
@@ -69,8 +82,8 @@ export default function Home() {
           <TextInput
             placeholder="Insira o e-mail vinculado à sua conta"
             className="mt-3 w-[380px]"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={email.email}
+            onChange={(e) => changeEmail(e.target.value)}
           />
           <div className="flex flex-row gap-4">
             <label className="flex items-center">

@@ -108,3 +108,4 @@ enum Genero {
   FEMININO
   PREFIRO_NAO_INFORMAR
 }
+

@@ -76,14 +76,17 @@ export default function Home() {
     let url = ""
     switch (userType) {
       case ("Gerente"):
-        url = "https://localhost:3002/gerentes"
+        url = "http://localhost:3002/gerentes/login"
         break;
       case ("Colaborador"):
-        url = "https://localhost:3002/colaboradores"
+        url = "http://localhost:3002/colaboradores/login"
         break;
       case ("Paciente"):
-        url = "https://localhost:3002/pacientes"
+        url = "http://localhost:3002/pacientes/login"
         break;
+      default:
+        console.error("Unknown user type");
+        return;
     }
     try {
       const response = await fetch(url, {
@@ -98,6 +101,7 @@ export default function Home() {
 
       const data = await response.json();
       console.log(data);
+
       router.push('/home');
     } catch (error) {
       console.log("Erro em seu login", error);
@@ -186,7 +190,7 @@ export default function Home() {
           <button type="button" onClick={revealUserType}>Mostrar Tipo de Usuário</button>
           <div className="flex flex-col gap-2 w-full">
             <button
-              type="submit"
+              type="button"
               className="entrar botao"
               onClick={() => handleLogin(userType)}
             >

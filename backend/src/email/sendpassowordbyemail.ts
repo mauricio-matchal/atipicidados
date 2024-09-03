@@ -34,7 +34,19 @@ export const sendPassword = async (request: Request, response: Response) => {
             from: 'Júlio César <juliomoreira0111@gmail.com>',
             to: email,
             subject: 'Recuperação de Senha',
-            html: `<p>Olá, sua nova senha para acessar é: ${newPassword}</p>`
+            html: `
+            <p style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
+                Olá <strong>${user.nome}</strong>,<br><br>
+                Recebemos um pedido para redefinir a senha da sua conta.<br><br>
+                Sua nova senha para acessar o Atipicidados é: <strong style="font-size: 18px; color: #007BFF;">${newPassword}</strong><br><br>
+                Caso deseje, você pode alterar sua senha para uma de sua escolha através das configurações da sua conta.<br><br>
+                Se você não solicitou a redefinição da senha, por favor, ignore este e-mail.<br>
+                O link de redefinição de senha expirará em 24 horas.<br><br>
+                Atenciosamente,<br>
+                <strong>Equipe Atipicidados</strong><br><br>
+                Se precisar de mais assistência, não hesite em nos contatar.
+            </p>
+            `
         }).then(async () => {
             const hashedPassword = await bcrypt.hash(newPassword, 10);
             await prisma.gerente.update({
