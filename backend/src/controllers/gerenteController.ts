@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import  { compare, hashSync } from 'bcryptjs';
+import { compare, hashSync } from 'bcryptjs';
 import { JWT_SECRET } from '../secrets';
 
 const prisma = new PrismaClient();
@@ -24,11 +24,14 @@ export const createUserGerente = async (request: Request, response: Response) =>
             }
         });
         return response.json(userGerente);
-    } catch (error: any) {
+    }
+    catch (error: any) {
         return response.status(400).json({ error: error.message });
     }
-}
 
+
+
+}
 export const getUserGerente = async (request: Request, response: Response) => {
     const { email } = request.body;
 

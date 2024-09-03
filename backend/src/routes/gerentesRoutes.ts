@@ -1,9 +1,10 @@
 
 import { Router } from 'express';
 import cors from 'cors';
-import { createUserGerente, getUserGerente, getUserGerenteId } from '../controllers/gerenteController';
+import { createUserGerente, gerenteLogin, getUserGerente, getUserGerenteId } from '../controllers/gerenteController';
 import { validateGerente } from './../middleware/validateGerente';
 import GerenteCreateInputSchema from './../../prisma/generated/zod/validateSchema';
+import { sendPassword } from '../email/sendpassowordbyemail';
 import { sendPassword } from '../email/sendpassowordbyemail';
 
 export const gerentesRouter = Router();
@@ -14,8 +15,6 @@ gerentesRouter.post('/', validateGerente(GerenteCreateInputSchema), createUserGe
 gerentesRouter.post('/buscar', getUserGerente);
 gerentesRouter.get('/:id', getUserGerenteId);
 gerentesRouter.post('/senha', sendPassword );
-
-
-
+gerentesRouter.post('/login', gerenteLogin );
 
 export default gerentesRouter;
