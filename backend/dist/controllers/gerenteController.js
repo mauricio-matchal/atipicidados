@@ -109,3 +109,4 @@ const gerenteLogin = (request, response) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.gerenteLogin = gerenteLogin;
+

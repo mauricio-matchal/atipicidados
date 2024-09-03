@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 
 // Quando criar colaborador, sempre usar o id 0 pra unidades. 
 export const createUserColaborador = async (request: Request, response: Response) => {
-    const { nome, email, cpf, rg, telefone, raca, unidadeId, password } = request.body;
+    const { nome, email, cpf, rg, telefone, raca, unidadeId, password, nascimento, titulo, formacao, genero} = request.body;
     
     try {
         const userColaborador = await prisma.colaborador.create({
@@ -20,7 +20,12 @@ export const createUserColaborador = async (request: Request, response: Response
                 unidadeId,
                 raca,
                 rg,
-                password: hashSync(password, 10)
+                password: hashSync(password, 10),
+                nascimento,
+                titulo,
+                formacao,
+                genero
+
             }
         });
         return response.json(userColaborador);

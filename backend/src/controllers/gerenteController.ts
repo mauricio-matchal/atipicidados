@@ -6,11 +6,11 @@ import { JWT_SECRET } from '../secrets';
 
 const prisma = new PrismaClient();
 
-// Quando criar gerente, sempre usar o id 0 pra unidades. 
+// Quando criar gerente, sempre usar o id 0 para unidades. 
 export const createUserGerente = async (request: Request, response: Response) => {
-    const {nome, email, cpf, rg, telefone, raca, unidadeId} = request.body;
+    const { nome, email, cpf, rg, telefone, raca, unidadeId, password } = request.body;
 
-    try{
+    try {
         const userGerente = await prisma.gerente.create({
             data:{
                 nome,
@@ -111,5 +111,3 @@ export const gerenteLogin = async (request: Request, response: Response) => {
         });
     }
 }
-
-

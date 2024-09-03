@@ -42,3 +42,4 @@ const createUserPaciente = (request, response) => __awaiter(void 0, void 0, void
     }
 });
 exports.createUserPaciente = createUserPaciente;
+
