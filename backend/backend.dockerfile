@@ -2,7 +2,6 @@ FROM node:20
 WORKDIR /backend
 COPY package*.json ./
 RUN npm install
-RUN npm rebuild bcrypt --build-from-source
 COPY prisma ./prisma
 RUN npx prisma generate
 COPY . .
