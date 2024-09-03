@@ -8,12 +8,15 @@ CREATE TYPE "Genero" AS ENUM ('MASCULINO', 'FEMININO', 'PREFIRO_NAO_INFORMAR');
 CREATE TABLE "Gerente" (
     "id" SERIAL NOT NULL,
     "nome" TEXT NOT NULL,
-    "cpf" INTEGER NOT NULL,
-    "rg" INTEGER NOT NULL,
+    "cpf" TEXT NOT NULL,
+    "rg" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "telefone" TEXT NOT NULL,
     "raca" "Raca" NOT NULL,
     "unidadeId" INTEGER NOT NULL,
+    "rgdocfile" TEXT,
+    "fotofile" TEXT,
+    "compresfile" TEXT,
 
     CONSTRAINT "Gerente_pkey" PRIMARY KEY ("id")
 );
@@ -22,8 +25,8 @@ CREATE TABLE "Gerente" (
 CREATE TABLE "Colaborador" (
     "id" SERIAL NOT NULL,
     "nome" TEXT NOT NULL,
-    "cpf" INTEGER NOT NULL,
-    "rg" INTEGER NOT NULL,
+    "cpf" TEXT NOT NULL,
+    "rg" TEXT NOT NULL,
     "nascimento" TIMESTAMP(3) NOT NULL,
     "telefone" TEXT NOT NULL,
     "titulo" TEXT NOT NULL,
@@ -31,6 +34,9 @@ CREATE TABLE "Colaborador" (
     "genero" "Genero" NOT NULL,
     "raca" "Raca" NOT NULL,
     "unidadeId" INTEGER NOT NULL,
+    "rgdocfile" TEXT,
+    "fotofile" TEXT,
+    "compresfile" TEXT,
 
     CONSTRAINT "Colaborador_pkey" PRIMARY KEY ("id")
 );
@@ -39,7 +45,24 @@ CREATE TABLE "Colaborador" (
 CREATE TABLE "Paciente" (
     "id" SERIAL NOT NULL,
     "nome" TEXT NOT NULL,
+    "cpf" TEXT NOT NULL,
+    "rg" TEXT NOT NULL,
+    "nomemae" TEXT NOT NULL,
+    "nomepai" TEXT NOT NULL,
     "unidadeId" INTEGER NOT NULL,
+    "rgdocfile" TEXT NOT NULL,
+    "fotofile" TEXT NOT NULL,
+    "compresfile" TEXT NOT NULL,
+    "laudofile" TEXT NOT NULL,
+    "geralfile" TEXT NOT NULL,
+    "educacaofile" TEXT NOT NULL,
+    "saudefile" TEXT NOT NULL,
+    "gestacaofile" TEXT NOT NULL,
+    "nascimentofile" TEXT NOT NULL,
+    "autonomiafile" TEXT NOT NULL,
+    "comportamentofile" TEXT NOT NULL,
+    "desenvolimentofile" TEXT NOT NULL,
+    "pedagogicofile" TEXT NOT NULL,
     "raca" "Raca" NOT NULL,
 
     CONSTRAINT "Paciente_pkey" PRIMARY KEY ("id")

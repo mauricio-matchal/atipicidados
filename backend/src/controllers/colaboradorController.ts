@@ -6,12 +6,12 @@ import { JWT_SECRET } from '../secrets';
 
 const prisma = new PrismaClient();
 
-// Quando criar gerente, sempre usar o id 0 pra unidades. 
-export const createUserGerente = async (request: Request, response: Response) => {
+// Quando criar colaborador, sempre usar o id 0 pra unidades. 
+export const createUserColaborador = async (request: Request, response: Response) => {
     const { nome, email, cpf, rg, telefone, raca, unidadeId, password } = request.body;
     
     try {
-        const userGerente = await prisma.gerente.create({
+        const userColaborador = await prisma.colaborador.create({
             data: {
                 nome,
                 email,
@@ -23,13 +23,13 @@ export const createUserGerente = async (request: Request, response: Response) =>
                 password: hashSync(password, 10)
             }
         });
-        return response.json(userGerente);
+        return response.json(userColaborador);
     } catch (error: any) {
         return response.status(400).json({ error: error.message });
     }
 }
 
-export const getUserGerente = async (request: Request, response: Response) => {
+export const getUserColaborador = async (request: Request, response: Response) => {
     const { email } = request.body;
 
     if (!email) {
@@ -37,51 +37,51 @@ export const getUserGerente = async (request: Request, response: Response) => {
     }
 
     try {
-        const userGerente = await prisma.gerente.findUnique({
+        const userColaborador = await prisma.colaborador.findUnique({
             where: { email }
         });
 
-        if (!userGerente) {
-            return response.status(404).json({ error: "Gerente não encontrado." });
+        if (!userColaborador) {
+            return response.status(404).json({ error: "colaborador não encontrado." });
         }
 
-        return response.status(200).json(userGerente);
+        return response.status(200).json(userColaborador);
     } catch (error: any) {
         return response.status(500).json({ error: error.message });
     }
 }
 
-export const getUserGerenteId = async (request: Request, response: Response) => {
+export const getuserColaboradorId = async (request: Request, response: Response) => {
     const { id } = request.params;
 
     try {
-        const userGerente = await prisma.gerente.findUnique({
+        const userColaborador = await prisma.colaborador.findUnique({
             where: { id: Number(id) }
         });
 
-        if (!userGerente) {
-            return response.status(404).json({ error: "Gerente não encontrado." });
+        if (!userColaborador) {
+            return response.status(404).json({ error: "colaborador não encontrado." });
         }
 
-        return response.status(200).json(userGerente);
+        return response.status(200).json(userColaborador);
     } catch (error: any) {
         return response.status(500).json({ error: error.message });
     }
 }
 
-export const gerenteLogin = async (request: Request, response: Response) => {
+export const colaboradorLogin = async (request: Request, response: Response) => {
     const { email, password } = request.body;
 
     try {
-        const userGerente = await prisma.gerente.findUnique({
+        const userColaborador = await prisma.colaborador.findUnique({
             where: { email }
         });
 
-        if (!userGerente) {
+        if (!userColaborador) {
             return response.status(404).json({ error: "Email não encontrado" });
         }
 
-        const isPasswordValid = await compare(password, userGerente.password);
+        const isPasswordValid = await compare(password, userColaborador.password);
         if (!isPasswordValid) {
             return response.status(401).json({
                 error: true,
@@ -90,15 +90,15 @@ export const gerenteLogin = async (request: Request, response: Response) => {
         }
 
         const token = jwt.sign({
-            userId: userGerente.id
+            userId: userColaborador.id
         }, JWT_SECRET);
 
         return response.json({
             error: false,
             message: 'Login realizado',
             token,
-            gerente: {
-                id: userGerente.id,
+            colaborador: {
+                id: userColaborador.id,
             }
         });
     } catch (error: any) {

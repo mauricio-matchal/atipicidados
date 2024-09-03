@@ -9,43 +9,80 @@ datasource db {
 
 model Gerente {
   id         Int       @id @default(autoincrement())
+  password   String
   nome       String
-  cpf        Int       @unique
-  rg         Int       @unique
+  cpf        String       @unique
+  rg         String      @unique
   email      String    @unique
   telefone   String    @unique
   raca       Raca
   unidadeId  Int
   unidade    Unidade   @relation(fields: [unidadeId], references: [id])
+  rgdocfile      String?
+  fotofile       String?
+  compresfile    String?
 }
 
 model Colaborador {
   id          Int        @id @default(autoincrement())
   nome        String   
-  cpf         Int        @unique
-  rg          Int        @unique
-  nascimento  DateTime
+  cpf         String        @unique
+  rg          String        @unique
+  nascimento  DateTime?
   telefone    String     @unique
-  titulo      String
-  formacao    String
-  genero      Genero
+  titulo      String?
+  formacao    String?
+  genero      Genero?
   raca        Raca
-  unidadeId   Int
+  email      String     @unique
+  password   String
+  unidadeId   Int             @default(1)
   unidade     Unidade        @relation(fields: [unidadeId], references: [id])
   pacientes   Paciente[]     @relation("PacienteColaboradores")
+  rgdocfile      String?
+  fotofile       String?
+  compresfile    String?
 }
+
 
 model Paciente {
   id             Int           @id @default(autoincrement())
-  nome           String   
-  unidadeId      Int
-  raca           Raca
+  analise        Boolean       @default(true)
+  nome           String?  
+  cpf            String?
+  rg             String?
+  nascimentodata     String?
+  nomemae        String?
+  nomepai        String?
+  unidadeId      Int          @default(1)
+  email          String?      @unique
+  password       String?    
+  telefone       String?
+  rgdocfile      String?
+  fotofile       String? //analise
+  compresfile    String?
+  laudofile      String? //analise
+  relescolar     String? // analise
+  gestacao         Json?
+  nascimento       Json?
+  autonomia        Json?
+  comportamento    Json?
+  desenvolimento   Json?
+  pedagogico     Json?
+  geral          Json? // analise
+  mae            Json? // analise
+  pai            Json? // analise
+  maisinfo       Json? // analise
+  escola         Json? // analise
+  saudeinfo      Json? // analise
+  raca           Raca?
   unidade        Unidade        @relation(fields: [unidadeId], references: [id])
   colaboradores  Colaborador[]  @relation("PacienteColaboradores")
 }
 
 model Unidade {
   id            Int           @id @default(autoincrement())
+  nome          String
   endereco      String
   pacientes     Paciente[]
   colaboradores Colaborador[]
