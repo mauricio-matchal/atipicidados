@@ -1,6 +1,0 @@
--- AlterTable
-ALTER TABLE "Colaborador" ALTER COLUMN "nascimento" DROP NOT NULL,
-ALTER COLUMN "titulo" DROP NOT NULL,
-ALTER COLUMN "formacao" DROP NOT NULL,
-ALTER COLUMN "genero" DROP NOT NULL,
-ALTER COLUMN "unidadeId" SET DEFAULT 1;

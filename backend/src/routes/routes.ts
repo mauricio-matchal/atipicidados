@@ -5,12 +5,13 @@ import {unidadeRouter} from './unidadeRouter';
 import {pacienteRouter} from './pacienteRouter';
 
 
-
 export const userRouter = Router();
 userRouter.use(cors());
 userRouter.use('/gerentes', gerentesRouter)
 userRouter.use('/unidades', unidadeRouter)
 userRouter.use('/pacientes', pacienteRouter)
+userRouter.use('/colaboradores', pacienteRouter)
+
 //Demais rotas que faremos
 
 

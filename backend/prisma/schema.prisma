@@ -1,3 +1,5 @@
+
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -6,10 +8,15 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+generator zod {
+  provider = " npx zod-prisma-types"
+}
 
-model Gerente {
+model Gerente  {
   id         Int       @id @default(autoincrement())
   password   String
+  ///@zod.string
+  
   nome       String
   cpf        String       @unique
   rg         String      @unique
@@ -28,15 +35,15 @@ model Colaborador {
   nome        String   
   cpf         String        @unique
   rg          String        @unique
-  nascimento  DateTime?
+  nascimento  DateTime
   telefone    String     @unique
-  titulo      String?
-  formacao    String?
-  genero      Genero?
+  titulo      String
+  formacao    String
+  password    String
+  genero      Genero
+  email       String     @unique
   raca        Raca
-  email      String     @unique
-  password   String
-  unidadeId   Int             @default(1)
+  unidadeId   Int
   unidade     Unidade        @relation(fields: [unidadeId], references: [id])
   pacientes   Paciente[]     @relation("PacienteColaboradores")
   rgdocfile      String?
@@ -55,8 +62,7 @@ model Paciente {
   nomemae        String?
   nomepai        String?
   unidadeId      Int          @default(1)
-  email          String?      @unique
-  password       String?    
+  email          String?
   telefone       String?
   rgdocfile      String?
   fotofile       String? //analise
