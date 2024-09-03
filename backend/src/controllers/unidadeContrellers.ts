@@ -39,7 +39,10 @@ export const addGerenteToUnidade = async(request: Request, response: Response) =
                 },
             },
         });   
-        return response.json(gerente);
+        return response.status(200).json({ 
+            error: false,
+            message: `O gerente ${gerente.nome} foi conectado a unidade ${unidade?.nome}`,
+            gerente});
 
     } catch (error:any){
         return response.status(400).json({error: error.message});
