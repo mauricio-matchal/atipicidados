@@ -186,8 +186,8 @@ export default function Home() {
               </Link>
             </div>
           </div>
-          <button type="button" onClick={revealLogin}>Mostrar Dados do Login</button>
-          <button type="button" onClick={revealUserType}>Mostrar Tipo de Usuário</button>
+          {/* <button type="button" onClick={revealLogin}>Mostrar Dados do Login</button>
+          <button type="button" onClick={revealUserType}>Mostrar Tipo de Usuário</button> */}
           <div className="flex flex-col gap-2 w-full">
             <button
               type="button"
