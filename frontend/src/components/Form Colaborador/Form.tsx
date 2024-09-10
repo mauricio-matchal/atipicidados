@@ -79,7 +79,7 @@ const Form: React.FC = () => {
   switch (currentStep) {
     case 1:
       return <>
-        {/* <button onClick={reveal}>reveal</button> */}
+        <button onClick={reveal}>reveal</button>
         <Step1
           nextStep={nextStep}
           updateGeral={(data) => updateGeral(data)}
@@ -101,7 +101,7 @@ const Form: React.FC = () => {
       />;
     case 4:
       return <>
-        {/* <button onClick={reveal}>reveal</button> */}
+        <button onClick={reveal}>reveal</button>
         <button onClick={handleUserCreation}>rodar a rota</button>
         <Step4
           prevStep={prevStep}

@@ -55,6 +55,12 @@ export default function Home() {
 
           <div className="flex gap-[10px]">
             <button className="botao">
+              <Link href='/cadastro/paciente' className="flex flex-row gap-1 items-center">
+                <PlusIcon style={{ color: 'var(--texto-botao)' }} />
+                <p>Novo Paciente</p>
+              </Link>
+            </button>
+            <button className="botao">
               <Link href='/cadastro/colaborador' className="flex flex-row gap-1 items-center">
                 <PlusIcon style={{ color: 'var(--texto-botao)' }} />
                 <p>Colaborador</p>
