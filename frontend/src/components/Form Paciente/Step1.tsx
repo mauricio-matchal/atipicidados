@@ -126,7 +126,7 @@ const Step1: React.FC<{ nextStep: () => void; updateGeral: (data: Step11State) =
         <div className='flex flex-col gap-[12px]'>
           <h2 className="font-bold">Novo Paciente</h2>
 
-          <h4 className='pl-2 place-self-start mt-10'>Crie um login e senha para o usuário</h4>
+          <h4 className='pl-2 place-self-start mt-10'>Crie um login e senha para o paciente</h4>
           <div className='flex w-full gap-3'>
             <TextInput className='w-[400px]' placeholder='E-mail' value={login.email} onChange={(e) => handleLoginChange("email", e.target.value)} />
             <TextInput className='w-[400px]' placeholder='Confirmar e-mail' value={login.confirmarEmail} onChange={(e) => handleLoginChange("confirmarEmail", e.target.value)} />
