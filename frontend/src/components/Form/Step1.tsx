@@ -28,7 +28,7 @@ type Step12State = {
 };
 
 
-const Step1: React.FC<{ nextStep: () => void; updateGeral: (data: Step11State) => void; updateEscola: (data: Step12State) => void }> = ({ nextStep, updateGeral, updateEscola }) => {
+const Step1: React.FC<{ nextStep: () => void; updateFoto: (data: any) => void; updateGeral: (data: Step11State) => void; updateEscola: (data: Step12State) => void }> = ({ nextStep, updateGeral, updateEscola, updateFoto }) => {
   const [Step11, setStep11] = useState<Step11State>({
     nome: "",
     data: "",
@@ -64,11 +64,6 @@ const Step1: React.FC<{ nextStep: () => void; updateGeral: (data: Step11State) =
     }));
   };
 
-  const reveal = () => {
-    console.log(Step11);
-    console.log(Step12);
-  }
-
   const [hasRelatorio, setHasRelatorio] = useState(false);
 
   const handleRelatorioChange = (selectedOption: string) => {
@@ -76,9 +71,18 @@ const Step1: React.FC<{ nextStep: () => void; updateGeral: (data: Step11State) =
     handleInputChange2("possuiRelatorio", selectedOption);
   };
 
+  const [fotoFile, setFotoFile] = useState<File | null>(null);
+
+  const handleFileChange = (e: any) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFotoFile(e.target.files[0]);
+    }
+  };
+
   const handleNext = () => {
     updateGeral(Step11);
     updateEscola(Step12);
+    updateFoto(fotoFile);
     nextStep();
   };
 
@@ -87,10 +91,10 @@ const Step1: React.FC<{ nextStep: () => void; updateGeral: (data: Step11State) =
       <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Geral</h4>
-          <button onClick={reveal}>reveal</button>
-
+          <button onClick={() => { console.log(Step11); console.log(Step12) }}>mostrar json</button>
+          <button onClick={() => { console.log(fotoFile) }}>mostrar foto</button>
           <div className='flex w-full gap-[12px]'>
-            <FileInput placeholder='Foto 3x4' className='min-w-[260px]' />
+            <FileInput placeholder='Foto 3x4' className='min-w-[260px]' onChange={handleFileChange} />
             <TextInput placeholder='Nome completo' value={Step11.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
           </div>
 
