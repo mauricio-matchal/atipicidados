@@ -107,10 +107,6 @@ const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State
     setIsModalVisible(false);
   };
 
-  const reveal = () => {
-    console.log(Step4);
-  }
-
   const handleSubmit = () => {
     updateInfoSaude(Step4);
     handleFormDataSubmit();
@@ -122,7 +118,7 @@ const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State
 
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Informações de saúde</h4>
-          <button onClick={reveal}>reveal</button>
+          <button onClick={() => {console.log(Step4)}}>reveal</button>
           <div className='flex w-full gap-[12px]'>
             <SelectInput
               options={["Sim, tem diagnóstico", "Não tem diagnóstico"]}

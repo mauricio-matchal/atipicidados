@@ -64,11 +64,6 @@ const Form: React.FC = () => {
     }));
   };
 
-
-  const reveal = () => {
-    console.log(formData);
-  }
-
   const handleUserCreation = async () => {
     try {
       // const formDataToSend = new FormData();
@@ -89,6 +84,7 @@ const Form: React.FC = () => {
       const teste = await fetch("http://localhost:3002/pacientes/", {
         method: "POST",
         body: JSON.stringify(formData),
+        headers: { 'Content-Type': 'application/json' }
       })
       const response = await teste.json();
       console.log(response);
@@ -100,7 +96,7 @@ const Form: React.FC = () => {
   switch (currentStep) {
     case 1:
       return <>
-        <button onClick={reveal}>reveal</button>
+        <button onClick={() => {console.log(formData)}}>Mostrar formData</button>
         <Step1
           nextStep={nextStep}
           updateGeral={(data) => updateGeral(data)}
@@ -123,8 +119,7 @@ const Form: React.FC = () => {
       />;
     case 4:
       return <>
-        <button onClick={reveal}>reveal</button>
-        <button onClick={handleUserCreation}>rodar a rota</button>
+        <button onClick={() => {console.log(formData)}}>Mostrar formData</button>
         <Step4
           prevStep={prevStep}
           updateInfoSaude={(data) => updateInfoSaude(data)}

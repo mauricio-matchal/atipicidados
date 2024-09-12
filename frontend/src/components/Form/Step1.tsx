@@ -91,8 +91,8 @@ const Step1: React.FC<{ nextStep: () => void; updateFoto: (data: any) => void; u
       <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Geral</h4>
-          <button onClick={() => { console.log(Step11); console.log(Step12) }}>mostrar json</button>
-          <button onClick={() => { console.log(fotoFile) }}>mostrar foto</button>
+          <button onClick={() => { console.log(Step11); console.log(Step12) }}>Mostrar Respostas</button>
+          <button onClick={() => { console.log(fotoFile) }}>Mostrar Foto</button>
           <div className='flex w-full gap-[12px]'>
             <FileInput placeholder='Foto 3x4' className='min-w-[260px]' onChange={handleFileChange} />
             <TextInput placeholder='Nome completo' value={Step11.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
