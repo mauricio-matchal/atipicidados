@@ -52,7 +52,7 @@ export const getUserGerente = async (request: Request, response: Response) => {
 }
 
 export const getUserGerenteId = async (request: Request, response: Response) => {
-    const { id } = request.params;
+    const { id } = request.params
 
     try {
         const userGerente = await prisma.gerente.findUnique({
