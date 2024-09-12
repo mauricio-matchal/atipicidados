@@ -14,6 +14,8 @@ gerentesRouter.post('/', validateGerente(GerenteCreateInputSchema), createUserGe
 gerentesRouter.post('/buscar', getUserGerente);
 gerentesRouter.get('/:id', getUserGerenteId);
 gerentesRouter.post('/senha', sendPassword );
-gerentesRouter.post('/login', gerenteLogin );
+
+
+
 
 export default gerentesRouter;
