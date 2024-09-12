@@ -97,7 +97,7 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
       <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Mais informações</h4>
-          <button onClick={() => {console.log(Step3)}}>reveal</button>
+          <button onClick={() => {console.log(Step3)}}>Mostrar Respostas</button>
           <button onClick={handleTest}>teste</button>
 
           <div className='flex w-full gap-[12px]'>
