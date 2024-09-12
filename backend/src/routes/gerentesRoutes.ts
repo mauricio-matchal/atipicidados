@@ -5,7 +5,6 @@ import { createUserGerente, gerenteLogin, getUserGerente, getUserGerenteId } fro
 import { validateGerente } from './../middleware/validateGerente';
 import GerenteCreateInputSchema from './../../prisma/generated/zod/validateSchema';
 import { sendPassword } from '../email/sendpassowordbyemail';
-import { sendPassword } from '../email/sendpassowordbyemail';
 
 export const gerentesRouter = Router();
 gerentesRouter.use(cors());
