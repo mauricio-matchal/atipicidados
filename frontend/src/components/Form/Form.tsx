@@ -15,6 +15,10 @@ const Form: React.FC = () => {
     maisinfo: null,
     saudeinfo: null,
     fotofile: null,
+    relescolar: null,
+    laudofile: null,
+    rgdocfile: null,
+    compresfile: null,
   });
 
   const nextStep = () => setCurrentStep(currentStep + 1);
@@ -26,6 +30,19 @@ const Form: React.FC = () => {
       [`fotofile`]: data,
     }));
   }
+  const updateRelatorio = (data: any) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [`relescolar`]: data,
+    }));
+  }
+  const updateLaudoFile = (data: any) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [`laudofile`]: data,
+    }));
+  }
+
   const updateGeral = (data: any) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -64,14 +81,14 @@ const Form: React.FC = () => {
   };
 
   const handleUserCreation = async () => {
-    const dataJSON = {
-      geral: formData.geral,
-      mae: formData.mae,
-      pai: formData.pai,
-      maisinfo: formData.maisinfo,
-      escola: formData.escola,
-      saudeinfo: formData.saudeinfo
-    };
+    // const dataJSON = {
+    //   geral: formData.geral,
+    //   mae: formData.mae,
+    //   pai: formData.pai,
+    //   maisinfo: formData.maisinfo,
+    //   escola: formData.escola,
+    //   saudeinfo: formData.saudeinfo
+    // };
 
     const data = new FormData();
 
@@ -81,12 +98,20 @@ const Form: React.FC = () => {
     data.append('maisinfo', JSON.stringify(formData.maisinfo));
     data.append('escola', JSON.stringify(formData.escola));
 
-    console.log(data);
-
     if (formData.fotofile) {
       data.append('fotofile', formData.fotofile);
-      console.log('tem arquivo')
+      console.log('tem foto')
     }
+    if (formData.relescolar) {
+      data.append('relescolar', formData.relescolar);
+      console.log('tem relatorio')
+    }
+    if (formData.laudofile) {
+      data.append('laudofile', formData.laudofile);
+      console.log('tem laudo')
+    }
+    
+    console.log(data);
 
     try {
 
@@ -111,6 +136,7 @@ const Form: React.FC = () => {
           updateGeral={(data) => updateGeral(data)}
           updateEscola={(data) => updateEscola(data)}
           updateFoto={(data) => updateFoto(data)}
+          updateRelatorio={(data) => updateRelatorio(data)}
         />;
       </>
     case 2:
@@ -133,6 +159,7 @@ const Form: React.FC = () => {
           prevStep={prevStep}
           updateInfoSaude={(data) => updateInfoSaude(data)}
           handleFormDataSubmit={handleUserCreation}
+          updateLaudoFile={(data) => updateLaudoFile(data)}
         />;
       </>
     default:
