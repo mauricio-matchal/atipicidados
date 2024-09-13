@@ -112,7 +112,7 @@ const Step1: React.FC<{
   const handleNext = () => {
     updateGeral(Step11);
     updateEscola(Step12);
-    
+
     updateFoto(fotoFile);
     updateRelatorio(relatorioFile);
     updateRG(rgFile);
@@ -134,8 +134,8 @@ const Step1: React.FC<{
           </div>
 
           <div className='flex w-full gap-[12px]'>
-            <FileInput placeholder='Foto do RG' className='min-w-[260px]' onChange={handleRGFileChange} name='rgFile' />
-            <FileInput placeholder='Comprovante de residência' className='min-w-[260px]' onChange={handleResidenciaFileChange} name='residenciaFile' />
+            <FileInput placeholder='Foto do RG' onChange={handleRGFileChange} name='rgFile' />
+            <FileInput placeholder='Comprovante de residência' onChange={handleResidenciaFileChange} name='residenciaFile' />
           </div>
 
           <div className='flex w-full gap-[12px]'>
