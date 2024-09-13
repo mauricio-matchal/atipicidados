@@ -17,12 +17,14 @@ const Form: React.FC = () => {
     fotofile: null,
     relescolar: null,
     laudofile: null,
-    rgdocfile: null,  // falta implementar
-    compresfile: null, // falta implementar
+    rgdocfile: null,
+    compresfile: null,
   });
 
   const nextStep = () => setCurrentStep(currentStep + 1);
   const prevStep = () => setCurrentStep(currentStep - 1);
+
+  // ARQUIVOS //
 
   const updateFoto = (data: any) => {
     setFormData((prevData) => ({
@@ -42,6 +44,20 @@ const Form: React.FC = () => {
       [`laudofile`]: data,
     }));
   }
+  const updateRG = (data: any) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [`rgdocfile`]: data,
+    }));
+  }
+  const updateResidencia = (data: any) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [`compresfile`]: data,
+    }));
+  }
+
+  ///////////
 
   const updateGeral = (data: any) => {
     setFormData((prevData) => ({
@@ -81,15 +97,6 @@ const Form: React.FC = () => {
   };
 
   const handleUserCreation = async () => {
-    // const dataJSON = {
-    //   geral: formData.geral,
-    //   mae: formData.mae,
-    //   pai: formData.pai,
-    //   maisinfo: formData.maisinfo,
-    //   escola: formData.escola,
-    //   saudeinfo: formData.saudeinfo
-    // };
-
     const data = new FormData();
 
     data.append('geral', JSON.stringify(formData.geral));
@@ -109,6 +116,14 @@ const Form: React.FC = () => {
     if (formData.laudofile) {
       data.append('laudofile', formData.laudofile);
       console.log('tem laudo')
+    }
+    if (formData.compresfile) {
+      data.append('compresfile', formData.compresfile);
+      console.log('tem comprovante de residencia')
+    }
+    if (formData.rgdocfile) {
+      data.append('rgdocfile', formData.rgdocfile);
+      console.log('tem rg')
     }
 
     console.log(data);
@@ -137,6 +152,8 @@ const Form: React.FC = () => {
           updateEscola={(data) => updateEscola(data)}
           updateFoto={(data) => updateFoto(data)}
           updateRelatorio={(data) => updateRelatorio(data)}
+          updateRG={(data) => updateRelatorio(data)}
+          updateResidencia={(data) => updateRelatorio(data)}
         />;
       </>
     case 2:
