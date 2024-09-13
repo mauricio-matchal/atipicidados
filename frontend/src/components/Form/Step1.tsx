@@ -73,8 +73,8 @@ const Step1: React.FC<{ nextStep: () => void; updateFoto: (data: any) => void; u
 
   const [fotoFile, setFotoFile] = useState<File | null>(null);
 
-  const handleFileChange = (e: any) => {
-    if (e.target.files && e.target.files.length > 0) {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
       setFotoFile(e.target.files[0]);
     }
   };
@@ -94,7 +94,7 @@ const Step1: React.FC<{ nextStep: () => void; updateFoto: (data: any) => void; u
           <button onClick={() => { console.log(Step11); console.log(Step12) }}>Mostrar Respostas</button>
           <button onClick={() => { console.log(fotoFile) }}>Mostrar Foto</button>
           <div className='flex w-full gap-[12px]'>
-            <FileInput placeholder='Foto 3x4' className='min-w-[260px]' onChange={handleFileChange} />
+            <FileInput placeholder='Foto 3x4' className='min-w-[260px]' onChange={handleFileChange} name='fotoFile' />
             <TextInput placeholder='Nome completo' value={Step11.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
           </div>
 

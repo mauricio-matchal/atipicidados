@@ -4,7 +4,6 @@ import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
 import Step4 from './Step4';
-import { FormData } from './types';
 
 const Form: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -15,7 +14,7 @@ const Form: React.FC = () => {
     pai: null,
     maisinfo: null,
     saudeinfo: null,
-    // fotofile: null,
+    fotofile: null,
   });
 
   const nextStep = () => setCurrentStep(currentStep + 1);
@@ -65,29 +64,39 @@ const Form: React.FC = () => {
   };
 
   const handleUserCreation = async () => {
+    const dataJSON = {
+      geral: formData.geral,
+      mae: formData.mae,
+      pai: formData.pai,
+      maisinfo: formData.maisinfo,
+      escola: formData.escola,
+      saudeinfo: formData.saudeinfo
+    };
+
+    const data = new FormData();
+
+    data.append('geral', JSON.stringify(formData.geral));
+    data.append('mae', JSON.stringify(formData.mae));
+    data.append('pai', JSON.stringify(formData.pai));
+    data.append('maisinfo', JSON.stringify(formData.maisinfo));
+    data.append('escola', JSON.stringify(formData.escola));
+
+    console.log(data);
+
+    if (formData.fotofile) {
+      data.append('fotofile', formData.fotofile);
+      console.log('tem arquivo')
+    }
+
     try {
-      // const formDataToSend = new FormData();
 
-      // if (formData.fotofile) {
-      //   formDataToSend.append('fotofile', formData.fotofile);
-      //   console.log('tem arquivo')
-      // }
-      // formDataToSend.append('geral', JSON.stringify(formData.geral));
-      // formDataToSend.append('escola', JSON.stringify(formData.escola));
-      // formDataToSend.append('mae', JSON.stringify(formData.mae));
-      // formDataToSend.append('pai', JSON.stringify(formData.pai));
-      // formDataToSend.append('maisinfo', JSON.stringify(formData.maisinfo));
-      // formDataToSend.append('saudeinfo', JSON.stringify(formData.saudeinfo));
-
-      // console.log(formDataToSend);
-
-      const teste = await fetch("http://localhost:3002/pacientes/", {
+      const response = await fetch("http://localhost:3002/pacientes/", {
         method: "POST",
-        body: JSON.stringify(formData),
-        headers: { 'Content-Type': 'application/json' }
+        body: data, // mudar caso queira colocar o blob para body: formDataToSend, 
+        // headers: { 'Content-Type': 'application/json' }
       })
-      const response = await teste.json();
-      console.log(response);
+      const result = await response.json();
+      console.log(result);
     } catch (error) {
       console.error("Erro ao criar usuário:", error);
     }
@@ -96,7 +105,7 @@ const Form: React.FC = () => {
   switch (currentStep) {
     case 1:
       return <>
-        <button onClick={() => {console.log(formData)}}>Mostrar formData</button>
+        <button onClick={() => { console.log(formData) }}>Mostrar formData</button>
         <Step1
           nextStep={nextStep}
           updateGeral={(data) => updateGeral(data)}
@@ -119,7 +128,7 @@ const Form: React.FC = () => {
       />;
     case 4:
       return <>
-        <button onClick={() => {console.log(formData)}}>Mostrar formData</button>
+        <button onClick={() => { console.log(formData) }}>Mostrar formData</button>
         <Step4
           prevStep={prevStep}
           updateInfoSaude={(data) => updateInfoSaude(data)}
