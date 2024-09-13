@@ -17,8 +17,8 @@ const Form: React.FC = () => {
     fotofile: null,
     relescolar: null,
     laudofile: null,
-    rgdocfile: null,
-    compresfile: null,
+    rgdocfile: null,  // falta implementar
+    compresfile: null, // falta implementar
   });
 
   const nextStep = () => setCurrentStep(currentStep + 1);
@@ -110,7 +110,7 @@ const Form: React.FC = () => {
       data.append('laudofile', formData.laudofile);
       console.log('tem laudo')
     }
-    
+
     console.log(data);
 
     try {
