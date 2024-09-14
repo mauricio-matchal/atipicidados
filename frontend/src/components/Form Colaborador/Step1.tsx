@@ -21,6 +21,20 @@ type Step11State = {
   data: string;
   cpf: string;
   telefone: string;
+
+  nacionalidade: string;
+  naturalidade: string;
+
+  sexo: string;
+  genero: string;
+  cor: string;
+
+  cep: string;
+  endereco: string;
+  cidade: string;
+
+  formacao:string;
+  atuacao: string;
 };
 
 const Step1: React.FC<{ 
@@ -40,6 +54,16 @@ const Step1: React.FC<{
     data: "",
     cpf: "",
     telefone: "",
+    nacionalidade: "",
+    naturalidade: "",
+    sexo: "",
+    genero: "",
+    cor: "",
+    cep: "",
+    endereco: "",
+    cidade: "",
+    formacao: "",
+    atuacao: "",
   });
 
   const [error, setError] = useState<string | null>(null);
@@ -101,9 +125,8 @@ const Step1: React.FC<{
     <div className='flex flex-col gap-[162px] w-screen'>
       <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
         <div className='flex flex-col gap-[12px]'>
-          <h2 className="font-bold">Novo Gerente</h2>
 
-          <h4 className='pl-2 place-self-start mt-10'>Crie um login e senha para o Gerente</h4>
+          <h4 className='pl-2 place-self-start mt-10'>Crie um login e senha para o Colaborador</h4>
           <div className='flex w-full gap-3'>
             <TextInput className='w-[400px]' placeholder='E-mail' value={login.email} onChange={(e) => handleLoginChange("email", e.target.value)} />
             <TextInput className='w-[400px]' placeholder='Confirmar e-mail' value={login.confirmarEmail} onChange={(e) => handleLoginChange("confirmarEmail", e.target.value)} />
@@ -130,6 +153,43 @@ const Step1: React.FC<{
               <DateInput value={Step11.data} onChange={(e) => handleInputChange1("data", e.target.value)} />           
             </div>
 
+            <div className='flex w-full gap-[12px]'>
+              <TextInput placeholder='Nacionalidade' value={Step11.nacionalidade} onChange={(e) => handleInputChange1("nacionalidade", e.target.value)} />
+              <TextInput placeholder='Naturalidade' value={Step11.naturalidade} onChange={(e) => handleInputChange1("naturalidade", e.target.value)} />
+            </div>
+
+            <div className='flex w-full gap-[12px]'>
+              <SelectInput options={["Masculino", "Feminino", "Intersexo", "Outro sexo", "Prefiro não dizer o sexo"]} placeholder={"Sexo"} onChange={(value) => handleInputChange1("sexo", value)} />
+              <SelectInput options={["Amarelo", "Branco", "Indígena", "Pardo", "Preto"]} placeholder={"Raça/cor"} onChange={(value) => handleInputChange1("cor", value)} />
+            </div>
+
+            <div className='mb-4'></div>
+
+            <div className='flex w-full gap-[12px]'>
+              <TextInput placeholder='CEP' className='min-w-[220px]' value={Step11.cep} onChange={(e) => handleInputChange1("cep", e.target.value)} />
+              <SelectInput options={["Salvador", "Lauro de Freitas", "Camaçari", "Catu"]} placeholder={"Cidade"} onChange={(value) => handleInputChange1("cidade", value)} />
+            </div>
+
+            <TextInput placeholder="Endereço" value={Step11.endereco} onChange={(e) => handleInputChange1("endereco", e.target.value)} />
+            
+            <div className='mb-4'></div>
+
+            <div className='flex w-full gap-[12px]'>
+              <SelectInput
+                placeholder={"Formação"}
+                options={[
+                  "Ensino fundamental incompleto",
+                  "Ensino fundamental completo",
+                  "Ensino médio completo",
+                  "Técnico/profissionalizante",
+                  "Cursando ensino superior",
+                  "Ensino superior completo"
+                ]}
+                onChange={(value) => handleInputChange1("formacao", value)}
+              />
+              <TextInput placeholder='Área de atuação' value={Step11.cep} onChange={(e) => handleInputChange1("cep", e.target.value)} />
+
+            </div>
           </div>
           {/* <button onClick={reveal}>reveal</button> */}
         </div>

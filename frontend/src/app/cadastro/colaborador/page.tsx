@@ -1,7 +1,7 @@
 "use client";
 import CheckInput from "@/components/CheckInput";
 import FileInput from "@/components/FileInput";
-import Form from "@/components/Form/Form Colaborador/Form";
+import Form from "@/components/Form Colaborador/Form";
 import NavBar from "@/components/NavBar";
 import SelectInput from "@/components/SelectInput";
 import TextInput from "@/components/TextInput";
