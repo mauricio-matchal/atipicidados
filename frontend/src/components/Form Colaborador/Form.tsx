@@ -6,51 +6,43 @@ import { FormData } from './types';
 const Form: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
-    geral: null,
-    escola: null,
-    mae: null,
-    pai: null,
-    maisinfo: null,
-    saudeinfo: null
+    email: null,
+    password: null,
+
+    nome: null,
+    telefone: null,
+    cpf: null,
+    unidadeId: null,
+    raca: null,
+    rg: null,
+    nascimento: null,
+    titulo: null,
+    formacao: null,
+    genero: null,
   });
 
-  const updateGeral = (data: any) => {
+  const updateForm = (data: any) => {
     setFormData((prevData) => ({
       ...prevData,
-      [`geral`]: data,
+      'nome': data.nome,
+      'telefone': data.telefone,
+      'cpf': data.cpf,
+      'unidadeId': data.unidadeId,
+      'raca': data.raca,
+      'rg': data.rg,
+      'nascimento': data.nascimento,
+      'titulo': data.titulo,
+      'formacao': data.formacao,
+      'genero': data.genero,
     }));
   };
-  const updateEscola = (data: any) => {
+  const updateLogin = (data: any) => {
     setFormData((prevData) => ({
       ...prevData,
-      [`escola`]: data,
+      'login': data.login,
+      'password': data.senha,
     }));
   };
-  const updateMae = (data: any) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [`mae`]: data,
-    }));
-  };
-  const updatePai = (data: any) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [`pai`]: data,
-    }));
-  };
-  const updateMaisInfo = (data: any) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [`maisinfo`]: data,
-    }));
-  };
-  const updateInfoSaude = (data: any) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [`saudeinfo`]: data,
-    }));
-  };
-
 
   const reveal = () => {
     console.log(formData);
@@ -76,9 +68,11 @@ const Form: React.FC = () => {
         <button onClick={reveal}>reveal</button>
         <Step1
           handleFormDataSubmit={handleUserCreation}
+          updateForm={(data) => updateForm(data)}
+          updateLogin={(data) => updateLogin(data)}
         />;
       </>
-    
+
     default:
       return null;
   }

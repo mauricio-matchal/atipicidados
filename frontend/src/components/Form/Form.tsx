@@ -152,8 +152,8 @@ const Form: React.FC = () => {
           updateEscola={(data) => updateEscola(data)}
           updateFoto={(data) => updateFoto(data)}
           updateRelatorio={(data) => updateRelatorio(data)}
-          updateRG={(data) => updateRelatorio(data)}
-          updateResidencia={(data) => updateRelatorio(data)}
+          updateRG={(data) => updateRG(data)}
+          updateResidencia={(data) => updateResidencia(data)}
         />;
       </>
     case 2:

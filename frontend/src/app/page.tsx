@@ -12,42 +12,10 @@ export default function Home() {
   const [userType, setUserType] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const router = useRouter();
-  //const [email, setEmail] = useState('');
-  //const [password, setPassword] = useState('');
-  //const [rememberMe, setRememberMe] = useState(false);
-
-  {/*useEffect(() => {
-    // Carregar os dados do localStorage quando a página for carregada
-    const storedEmail = localStorage.getItem('email');
-    const storedPassword = localStorage.getItem('password');
-    const storedRememberMe = localStorage.getItem('rememberMe') === 'true';
-
-    if (storedEmail && storedPassword && storedRememberMe) {
-      setEmail(storedEmail);
-      setPassword(storedPassword);
-      setRememberMe(storedRememberMe);
-    }
-  }, []);*/}
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
-
-  {/*const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    if (rememberMe) {
-      localStorage.setItem('email', email);
-      localStorage.setItem('password', password);
-      localStorage.setItem('rememberMe', 'true');
-    } else {
-      localStorage.removeItem('email');
-      localStorage.removeItem('password');
-      localStorage.removeItem('rememberMe');
-    }
-
-    
-  };*/}
-
   const [loginData, setLoginData] = useState({
     email: "",
     password: ""
@@ -102,7 +70,7 @@ export default function Home() {
       const data = await response.json();
       console.log(data);
 
-      router.push('/home');
+      router.push(`/home/${userType.toLowerCase()}`)
     } catch (error) {
       console.log("Erro em seu login", error);
     }

@@ -18,15 +18,18 @@ const validatePassword = (password: string) => {
 
 type Step11State = {
   nome: string;
-  data: string;
   cpf: string;
   telefone: string;
+  rg: string;
+  unidadeId: string;
+  raca: string;
 };
 
 const Step1: React.FC<{ 
-  updateFoto: (data: any) => void;
-  handleFormDataSubmit: () => void 
-}> = ({ updateFoto, handleFormDataSubmit }) => {
+  handleFormDataSubmit: () => void;
+  updateLogin: (data: any) => void;
+  updateForm: (data: any) => void;
+}> = ({handleFormDataSubmit, updateLogin, updateForm }) => {
 
   const [login, setLogin] = useState({
     email: "",
@@ -37,9 +40,11 @@ const Step1: React.FC<{
 
   const [Step11, setStep11] = useState<Step11State>({
     nome: "",
-    data: "",
     cpf: "",
     telefone: "",
+    rg: "",
+    unidadeId: "",
+    raca: "",
   });
 
   const [error, setError] = useState<string | null>(null);
@@ -93,6 +98,8 @@ const Step1: React.FC<{
       return;
     }
 
+    updateLogin(login);
+    updateForm(Step11);
     
     handleFormDataSubmit();
   };
@@ -101,7 +108,7 @@ const Step1: React.FC<{
     <div className='flex flex-col gap-[162px] w-screen'>
       <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
         <div className='flex flex-col gap-[12px]'>
-          <h2 className="font-bold">Novo Gerente</h2>
+          <h2 className='font-bold'>Novo Gerente</h2>
 
           <h4 className='pl-2 place-self-start mt-10'>Crie um login e senha para o Gerente</h4>
           <div className='flex w-full gap-3'>
@@ -127,9 +134,12 @@ const Step1: React.FC<{
             
             <div className='flex w-full gap-[12px]'>
               <TextInput placeholder='CPF' className='min-w-[220px]' value={Step11.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
-              <DateInput value={Step11.data} onChange={(e) => handleInputChange1("data", e.target.value)} />           
+              <TextInput placeholder='RG' className='min-w-[220px]' value={Step11.rg} onChange={(e) => handleInputChange1("rg", e.target.value)} />
             </div>
-
+            <div className='flex w-full gap-[12px]'>
+              <SelectInput options={["Amarelo", "Branco", "Indígena", "Pardo", "Preto"]} placeholder={"Raça/cor"} onChange={(value) => handleInputChange1("raca", value)} />
+              <TextInput placeholder='Unidade Vinculada(Número)' value={Step11.unidadeId} onChange={(e) => handleInputChange1("unidadeId", e.target.value)} />
+            </div>
           </div>
           {/* <button onClick={reveal}>reveal</button> */}
         </div>

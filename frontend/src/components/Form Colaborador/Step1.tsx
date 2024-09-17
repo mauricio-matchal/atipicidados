@@ -18,29 +18,31 @@ const validatePassword = (password: string) => {
 
 type Step11State = {
   nome: string;
-  data: string;
+  nascimento: string;
   cpf: string;
+  rg: string;
   telefone: string;
+  // nacionalidade: string;
+  // naturalidade: string;
 
-  nacionalidade: string;
-  naturalidade: string;
-
-  sexo: string;
+  // sexo: string;
   genero: string;
-  cor: string;
+  raca: string;
 
-  cep: string;
-  endereco: string;
-  cidade: string;
+  // cep: string;
+  // endereco: string;
+  // cidade: string;
+  unidadeId: string;
 
-  formacao:string;
-  atuacao: string;
+  titulo: string;
+  formacao: string;
 };
 
-const Step1: React.FC<{ 
-  updateFoto: (data: any) => void;
-  handleFormDataSubmit: () => void 
-}> = ({ updateFoto, handleFormDataSubmit }) => {
+const Step1: React.FC<{
+  updateForm: (data: any) => void;
+  updateLogin: (data: any) => void;
+  handleFormDataSubmit: () => void
+}> = ({ handleFormDataSubmit, updateForm, updateLogin }) => {
 
   const [login, setLogin] = useState({
     email: "",
@@ -51,19 +53,24 @@ const Step1: React.FC<{
 
   const [Step11, setStep11] = useState<Step11State>({
     nome: "",
-    data: "",
+    nascimento: "",
     cpf: "",
+    rg: "",
     telefone: "",
-    nacionalidade: "",
-    naturalidade: "",
-    sexo: "",
+    // nacionalidade: "",
+    // naturalidade: "",
+
+    // sexo: "",
     genero: "",
-    cor: "",
-    cep: "",
-    endereco: "",
-    cidade: "",
+    raca: "",
+
+    // cep: "",
+    // endereco: "",
+    // cidade: "",
+    unidadeId: "",
+
+    titulo: "",
     formacao: "",
-    atuacao: "",
   });
 
   const [error, setError] = useState<string | null>(null);
@@ -74,9 +81,6 @@ const Step1: React.FC<{
       [key]: value,
     }));
   };
-
-  const reveal = () => {
-  }
 
   const handleInputChange1 = (key: string, value: string) => {
     setStep11((prevState) => ({
@@ -116,8 +120,10 @@ const Step1: React.FC<{
       setError("A senha precisa ter no mínimo 8 caracteres.");
       return;
     }
-
     
+    updateForm(Step11);
+    updateLogin(login);
+
     handleFormDataSubmit();
   };
 
@@ -140,38 +146,38 @@ const Step1: React.FC<{
 
           <div className='flex flex-col gap-[12px]'>
             <button onClick={() => { console.log(fotoFile) }}>Mostrar Foto</button>
-            
+
             <div className='flex w-full gap-[12px]'>
               <FileInput placeholder='Foto 3x4' className='min-w-[260px]' onChange={handleFotoFileChange} name='fotoFile' />
               <NumberInput placeholder="Telefone de contato" value={Step11.telefone} onChange={(e) => handleInputChange1("telefone", e.target.value)} />
             </div>
-            
+
             <TextInput placeholder='Nome completo' value={Step11.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
-            
-            <div className='flex w-full gap-[12px]'>
-              <TextInput placeholder='CPF' className='min-w-[220px]' value={Step11.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
-              <DateInput value={Step11.data} onChange={(e) => handleInputChange1("data", e.target.value)} />           
-            </div>
 
             <div className='flex w-full gap-[12px]'>
+              <TextInput placeholder='CPF' className='min-w-[220px]' value={Step11.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
+              <DateInput value={Step11.nascimento} onChange={(e) => handleInputChange1("nascimento", e.target.value)} />
+            </div>
+
+            {/* <div className='flex w-full gap-[12px]'>
               <TextInput placeholder='Nacionalidade' value={Step11.nacionalidade} onChange={(e) => handleInputChange1("nacionalidade", e.target.value)} />
               <TextInput placeholder='Naturalidade' value={Step11.naturalidade} onChange={(e) => handleInputChange1("naturalidade", e.target.value)} />
-            </div>
+            </div> */}
 
             <div className='flex w-full gap-[12px]'>
               <SelectInput options={["Masculino", "Feminino", "Intersexo", "Outro sexo", "Prefiro não dizer o sexo"]} placeholder={"Sexo"} onChange={(value) => handleInputChange1("sexo", value)} />
-              <SelectInput options={["Amarelo", "Branco", "Indígena", "Pardo", "Preto"]} placeholder={"Raça/cor"} onChange={(value) => handleInputChange1("cor", value)} />
+              <SelectInput options={["Amarelo", "Branco", "Indígena", "Pardo", "Preto"]} placeholder={"Raça/cor"} onChange={(value) => handleInputChange1("raca", value)} />
             </div>
 
             <div className='mb-4'></div>
 
             <div className='flex w-full gap-[12px]'>
-              <TextInput placeholder='CEP' className='min-w-[220px]' value={Step11.cep} onChange={(e) => handleInputChange1("cep", e.target.value)} />
-              <SelectInput options={["Salvador", "Lauro de Freitas", "Camaçari", "Catu"]} placeholder={"Cidade"} onChange={(value) => handleInputChange1("cidade", value)} />
+              {/* <TextInput placeholder='CEP' className='min-w-[220px]' value={Step11.cep} onChange={(e) => handleInputChange1("cep", e.target.value)} /> */}
+              {/* <SelectInput options={["Salvador", "Lauro de Freitas", "Camaçari", "Catu"]} placeholder={"Cidade"} onChange={(value) => handleInputChange1("cidade", value)} /> */}
             </div>
 
-            <TextInput placeholder="Endereço" value={Step11.endereco} onChange={(e) => handleInputChange1("endereco", e.target.value)} />
-            
+            {/* <TextInput placeholder="Endereço" value={Step11.endereco} onChange={(e) => handleInputChange1("endereco", e.target.value)} /> */}
+
             <div className='mb-4'></div>
 
             <div className='flex w-full gap-[12px]'>
@@ -187,7 +193,11 @@ const Step1: React.FC<{
                 ]}
                 onChange={(value) => handleInputChange1("formacao", value)}
               />
-              <TextInput placeholder='Área de atuação' value={Step11.cep} onChange={(e) => handleInputChange1("cep", e.target.value)} />
+              <div className='flex w-full gap-[12px]'>
+                <TextInput placeholder='Título' value={Step11.titulo} onChange={(e) => handleInputChange1("titulo", e.target.value)} />
+                <TextInput placeholder='Unidade Vinculada(Número)' value={Step11.unidadeId} onChange={(e) => handleInputChange1("unidadeId", e.target.value)} />
+              </div>
+
 
             </div>
           </div>

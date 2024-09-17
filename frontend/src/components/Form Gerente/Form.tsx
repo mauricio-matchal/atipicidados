@@ -6,48 +6,33 @@ import { FormData } from './types';
 const Form: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
-    geral: null,
-    escola: null,
-    mae: null,
-    pai: null,
-    maisinfo: null,
-    saudeinfo: null
+    email: null,
+    password: null,
+
+    nome: null, 
+    telefone: null,
+    cpf: null,
+    rg: null,
+    raca: null,
+    unidadeId: null,
   });
 
-  const updateGeral = (data: any) => {
+  const updateForm = (data: any) => {
     setFormData((prevData) => ({
       ...prevData,
-      [`geral`]: data,
+      'nome': data.nome,
+      'telefone': data.telefone,
+      'cpf': data.cpf,
+      'rg': data.rg,
+      'raca': data.raca,
+      'unidadeId': data.unidadeId
     }));
   };
-  const updateEscola = (data: any) => {
+  const updateLogin = (data: any) => {
     setFormData((prevData) => ({
       ...prevData,
-      [`escola`]: data,
-    }));
-  };
-  const updateMae = (data: any) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [`mae`]: data,
-    }));
-  };
-  const updatePai = (data: any) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [`pai`]: data,
-    }));
-  };
-  const updateMaisInfo = (data: any) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [`maisinfo`]: data,
-    }));
-  };
-  const updateInfoSaude = (data: any) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [`saudeinfo`]: data,
+      'email': data.email,
+      'password': data.senha
     }));
   };
 
@@ -58,7 +43,7 @@ const Form: React.FC = () => {
 
   const handleUserCreation = async () => {
     try {
-      const teste = await fetch("http://localhost:3002/pacientes/", {
+      const teste = await fetch("http://localhost:3002/gerentes/", {
         method: "POST",
         body: JSON.stringify(formData),
         headers: { 'Content-Type': 'application/json' }
@@ -76,6 +61,8 @@ const Form: React.FC = () => {
         <button onClick={reveal}>reveal</button>
         <Step1
           handleFormDataSubmit={handleUserCreation}
+          updateLogin={(data) => updateLogin(data)}
+          updateForm={(data) => updateForm(data)}
         />;
       </>
     
