@@ -7,6 +7,7 @@ import { JWT_SECRET } from '../secrets';
 const prisma = new PrismaClient();
 
 // Quando criar colaborador, sempre usar o id 0 pra unidades. 
+//criar 
 export const createUserColaborador = async (request: Request, response: Response) => {
     const { nome, email, cpf, rg, telefone, raca, unidadeId, password, nascimento, titulo, formacao, genero} = request.body;
     
@@ -34,6 +35,8 @@ export const createUserColaborador = async (request: Request, response: Response
     }
 }
 
+
+//encontrar por email
 export const getUserColaborador = async (request: Request, response: Response) => {
     const { email } = request.body;
 
@@ -56,6 +59,7 @@ export const getUserColaborador = async (request: Request, response: Response) =
     }
 }
 
+//encontrar por id
 export const getuserColaboradorId = async (request: Request, response: Response) => {
     const { id } = request.params;
 
@@ -74,6 +78,7 @@ export const getuserColaboradorId = async (request: Request, response: Response)
     }
 }
 
+//login
 export const colaboradorLogin = async (request: Request, response: Response) => {
     const { email, password } = request.body;
 
@@ -114,4 +119,8 @@ export const colaboradorLogin = async (request: Request, response: Response) => 
     }
 }
 
-
+//encontrar por cpf
+//econtrar por nome
+//editar
+//deletar
+//inativar - criar atributo que represente se o gerente está ativo no projeto 

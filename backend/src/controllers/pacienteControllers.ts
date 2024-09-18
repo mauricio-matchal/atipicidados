@@ -69,3 +69,11 @@ export const createUserPaciente = async (req: Request, res: Response) => {
         }
     });
 };
+
+//encontrar por email
+//encontrar por id
+//encontrar por nome
+//encontrar por cpf
+//editar
+//deletar
+//inativar 

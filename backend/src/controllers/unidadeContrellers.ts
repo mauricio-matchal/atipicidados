@@ -5,6 +5,7 @@ import { Request, Response } from 'express';
 
 const prisma = new PrismaClient();
 
+//criar
 export const createUserUnidade = async (request: Request, response: Response) => {
     const {nome, endereco} = request.body;
 
@@ -25,6 +26,7 @@ export const createUserUnidade = async (request: Request, response: Response) =>
     
 }
 
+//adicionar gerente
 export const addGerenteToUnidade = async(request: Request, response: Response) => {
     const {gerenteId, unidadeId} = request.body;
     try{
@@ -49,3 +51,7 @@ export const addGerenteToUnidade = async(request: Request, response: Response) =
     }
     }
 
+//editar 
+//deletar
+//encontrar por id
+//encontrar por nome 
