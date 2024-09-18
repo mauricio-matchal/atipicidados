@@ -58,6 +58,11 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateMae: (
     }));
   };
 
+  const reveal = () => {
+    console.log(Step21);
+    console.log(Step22);
+  }
+
   const [responsavelOutro, setResponsavelOutro] = useState(false);
 
   // Fazer o JSON para o outro responsavel
@@ -78,7 +83,7 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateMae: (
 
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Mãe</h4>
-          <button onClick={() => {console.log(Step21);console.log(Step22)}}>Mostrar Respostas</button>
+          <button onClick={reveal}>reveal</button>
 
           <TextInput placeholder="Nome completo da mãe" value={Step21.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
 

@@ -1,7 +1,7 @@
 "use client";
 import CheckInput from "@/components/CheckInput";
 import FileInput from "@/components/FileInput";
-import Form from "@/components/Form Colaborador/Form";
+import Form from "@/components/Form Paciente/Form";
 import NavBar from "@/components/NavBar";
 import SelectInput from "@/components/SelectInput";
 import TextInput from "@/components/TextInput";
@@ -30,9 +30,7 @@ export default function Home() {
   return (
     <main className="flex flex-col min-h-screen items-center bg-[#F0F0F3]">
       <NavBar />
-      <div className="mt-[44px] flex flex-col gap-[37px]">
-        <h2 className="ml-[147px]">Novo Colaborador</h2>
-
+      <div className="mt-14 flex flex-col gap-[37px]">
         <Form />
       </div>
     </main>

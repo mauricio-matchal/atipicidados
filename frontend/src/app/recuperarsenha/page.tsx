@@ -114,8 +114,8 @@ export default function Home() {
               Paciente
             </label>
           </div>
-          <button type="button" onClick={revealUserType}>Reveal UserType</button>
-          <button onClick={revealEmail}>Mostrar email</button>
+          {/* <button type="button" onClick={revealUserType}>Reveal UserType</button>
+          <button onClick={revealEmail}>Mostrar email</button> */}
           <Link href="/recuperarsenha/confirmacao">
             <button className="botao w-[250px] mt-9 font-medium" onClick={() => handleSendNewPassword(email)}>Enviar nova senha</button>
           </Link>

@@ -27,16 +27,17 @@ type Step12State = {
   possuiRelatorio: string;
 };
 
+const validateEmail = (email: string) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
 
-const Step1: React.FC<{ 
-  nextStep: () => void;
-  updateFoto: (data: any) => void;
-  updateRelatorio: (data: any) => void;
-  updateRG: (data: any) => void;
-  updateResidencia: (data: any) => void;
-  updateGeral: (data: Step11State) => void;
-  updateEscola: (data: Step12State) => void
-}> = ({ nextStep, updateGeral, updateEscola, updateFoto, updateRelatorio, updateRG, updateResidencia }) => {
+const validatePassword = (password: string) => {
+  return password.length >= 8;
+};
+
+
+const Step1: React.FC<{ nextStep: () => void; updateGeral: (data: Step11State) => void; updateEscola: (data: Step12State) => void }> = ({ nextStep, updateGeral, updateEscola }) => {
   const [Step11, setStep11] = useState<Step11State>({
     nome: "",
     data: "",
@@ -59,6 +60,22 @@ const Step1: React.FC<{
     possuiRelatorio: "",
   })
 
+  const [login, setLogin] = useState({
+    email: "",
+    confirmarEmail: "",
+    senha: "",
+    confirmarSenha: "",
+  });
+
+  const [error, setError] = useState<string | null>(null);
+
+  const handleLoginChange: any = (key: string, value: string) => {
+    setLogin((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
+  };
+
   const handleInputChange1 = (key: string, value: string) => {
     setStep11((prevState) => ({
       ...prevState,
@@ -72,6 +89,11 @@ const Step1: React.FC<{
     }));
   };
 
+  const reveal = () => {
+    console.log(Step11);
+    console.log(Step12);
+  }
+
   const [hasRelatorio, setHasRelatorio] = useState(false);
 
   const handleRelatorioChange = (selectedOption: string) => {
@@ -79,45 +101,22 @@ const Step1: React.FC<{
     handleInputChange2("possuiRelatorio", selectedOption);
   };
 
-  // ARQUIVOS //
-
-  const [fotoFile, setFotoFile] = useState<File | null>(null);
-  const [relatorioFile, setRelatorioFile] = useState<File | null>(null);
-  const [rgFile, setRGFile] = useState<File | null>(null);
-  const [residenciaFile, setResidenciaFile] = useState<File | null>(null);
-
-  const handleFotoFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFotoFile(e.target.files[0]);
-    }
-  };
-  const handleRelatorioFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setRelatorioFile(e.target.files[0]);
-    }
-  };
-  const handleRGFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setRGFile(e.target.files[0]);
-    }
-  };
-  const handleResidenciaFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setResidenciaFile(e.target.files[0]);
-    }
-  };
-
-  //////////
-
   const handleNext = () => {
+    if (login.email !== login.confirmarEmail || login.senha !== login.confirmarSenha) {
+      setError("Os campos de e-mail e senha precisam ser iguais.");
+      return;
+    }
+    if (!validateEmail(login.email)) {
+      setError("O e-mail inserido não é válido.");
+      return;
+    }
+    if (!validatePassword(login.senha)) {
+      setError("A senha precisa ter no mínimo 8 caracteres.");
+      return;
+    }
+
     updateGeral(Step11);
     updateEscola(Step12);
-
-    updateFoto(fotoFile);
-    updateRelatorio(relatorioFile);
-    updateRG(rgFile);
-    updateResidencia(residenciaFile);
-
     nextStep();
   };
 
@@ -125,17 +124,25 @@ const Step1: React.FC<{
     <div className='flex flex-col gap-[162px] w-screen'>
       <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
         <div className='flex flex-col gap-[12px]'>
-          <h4 className='pl-2'>Geral</h4>
-          <button onClick={() => { console.log(Step11); console.log(Step12) }}>Mostrar Respostas</button>
-          <button onClick={() => { console.log(fotoFile) }}>Mostrar Foto</button>
-          <div className='flex w-full gap-[12px]'>
-            <FileInput placeholder='Foto 3x4' className='min-w-[260px]' onChange={handleFotoFileChange} name='fotoFile' />
-            <TextInput placeholder='Nome completo' value={Step11.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
+          <h2 className="font-bold">Novo Paciente</h2>
+
+          <h4 className='pl-2 place-self-start mt-10'>Crie um login e senha para o paciente</h4>
+          <div className='flex w-full gap-3'>
+            <TextInput className='w-[400px]' placeholder='E-mail' value={login.email} onChange={(e) => handleLoginChange("email", e.target.value)} />
+            <TextInput className='w-[400px]' placeholder='Confirmar e-mail' value={login.confirmarEmail} onChange={(e) => handleLoginChange("confirmarEmail", e.target.value)} />
           </div>
+          <div className='flex w-full gap-3'>
+            <TextInput className='w-[400px]' placeholder='Senha' value={login.senha} onChange={(e) => handleLoginChange("senha", e.target.value)} />
+            <TextInput className='w-[400px]' placeholder='Confirmar senha' value={login.confirmarSenha} onChange={(e) => handleLoginChange("confirmarSenha", e.target.value)} />
+          </div>
+          {error && <div className="text-[#FF0F00] font-medium">{error}</div>}
+          <div className='mb-10'></div>
+          <h4 className='pl-2'>Geral</h4>
+          {/* <button onClick={reveal}>reveal</button> */}
 
           <div className='flex w-full gap-[12px]'>
-            <FileInput placeholder='Foto do RG' onChange={handleRGFileChange} name='rgFile' />
-            <FileInput placeholder='Comprovante de residência' onChange={handleResidenciaFileChange} name='residenciaFile' />
+            <FileInput placeholder='Foto 3x4' className='min-w-[260px]' />
+            <TextInput placeholder='Nome completo' value={Step11.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
           </div>
 
           <div className='flex w-full gap-[12px]'>
@@ -187,8 +194,6 @@ const Step1: React.FC<{
               className={`transition-opacity duration-300 w-full ${hasRelatorio ? 'opacity-100' : 'opacity-40'} ${hasRelatorio ? '' : 'cursor-not-allowed'}`}
               disabled={!hasRelatorio}
               style={{ pointerEvents: hasRelatorio ? 'auto' : 'none' }}
-              name='relatorioFile'
-              onChange={handleRelatorioFileChange}
             />
           </div>
         </div>

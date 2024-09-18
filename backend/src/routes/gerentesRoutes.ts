@@ -14,6 +14,12 @@ gerentesRouter.post('/', validateGerente(GerenteCreateInputSchema), createUserGe
 gerentesRouter.post('/buscar', getUserGerente);
 gerentesRouter.get('/:id', getUserGerenteId);
 gerentesRouter.post('/senha', sendPassword );
+<<<<<<<<< Temporary merge branch 1
 gerentesRouter.post('/login', gerenteLogin );
+=========
+
+
+
+>>>>>>>>> Temporary merge branch 2
 
 export default gerentesRouter;

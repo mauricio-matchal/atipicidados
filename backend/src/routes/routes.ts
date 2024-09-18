@@ -15,3 +15,4 @@ userRouter.use('/colaboradores', pacienteRouter)
 //Demais rotas que faremos
 
 
+>>>>>>>>> Temporary merge branch 2
