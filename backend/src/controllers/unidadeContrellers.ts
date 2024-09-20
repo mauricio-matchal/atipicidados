@@ -68,7 +68,3 @@ export const addGerenteToUnidade = async(request: Request, response: Response) =
             return response.status(400).json({ error: error.message });
         }
     };
-//editar 
-//deletar
-//encontrar por id
-//encontrar por nome 

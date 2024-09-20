@@ -70,7 +70,7 @@ export default function Home() {
       const data = await response.json();
       console.log(data);
 
-      router.push(`/home/${userType.toLowerCase()}`)
+      router.push(`/home/${userType.toLowerCase()}`);
     } catch (error) {
       console.log("Erro em seu login", error);
     }

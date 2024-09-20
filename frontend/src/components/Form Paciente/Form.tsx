@@ -65,7 +65,7 @@ const Form: React.FC = () => {
   const handleUserCreation = async () => {
     try {
       const teste = await fetch("http://localhost:3002/pacientes/", {
-        method: "POST",
+        method: "PUT",
         body: JSON.stringify(formData),
         headers: { 'Content-Type': 'application/json' }
       })

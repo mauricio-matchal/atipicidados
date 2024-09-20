@@ -3,8 +3,13 @@ import SearchIcon from "@/assets/icons/search";
 import { Card } from "@/components/Card";
 import NavBar from "@/components/NavBar";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Home() {
+  const router = useRouter();
+  const { email } = router.query;
+  const [userEmail, setUserEmail] = useState("");
+
   return (
     <main className="flex flex-col min-h-screen">
       <NavBar />
@@ -88,3 +93,7 @@ export default function Home() {
     </main>
   );
 }
+function useState(arg0: string): [any, any] {
+  throw new Error("Function not implemented.");
+}
+
