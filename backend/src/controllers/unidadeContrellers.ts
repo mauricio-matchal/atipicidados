@@ -51,6 +51,23 @@ export const addGerenteToUnidade = async(request: Request, response: Response) =
     }
     }
 
+    export const getUnidadeById = async (request: Request, response: Response) => {
+        const { id } = request.params;
+    
+        try {
+            const unidade = await prisma.unidade.findUnique({
+                where: { id: Number(id) },
+            });
+    
+            if (!unidade) {
+                return response.status(404).json({ error: 'Unidade não encontrada' });
+            }
+    
+            return response.json(unidade);
+        } catch (error: any) {
+            return response.status(400).json({ error: error.message });
+        }
+    };
 //editar 
 //deletar
 //encontrar por id

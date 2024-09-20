@@ -55,7 +55,7 @@ export const getUserGerente = async (request: Request, response: Response) => {
 
 //encontrar por id
 export const getUserGerenteId = async (request: Request, response: Response) => {
-    const { id } = request.params;
+    const { id } = request.params
 
     try {
         const userGerente = await prisma.gerente.findUnique({
@@ -97,7 +97,7 @@ export const gerenteLogin = async (request: Request, response: Response) => {
             userId: userGerente.id
         }, JWT_SECRET);
 
-        return response.json({
+        return response.status(200).json({
             error: false,
             message: 'Login realizado',
             token,
