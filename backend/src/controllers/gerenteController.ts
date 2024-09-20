@@ -108,3 +108,25 @@ export const gerenteLogin = async (request: Request, response: Response) => {
         });
     }
 }
+
+export const getUserGerenteByCpf = async (request: Request, response: Response) => {
+    const { cpf } = request.params;
+
+    if (!cpf) {
+        return response.status(400).json({ error: "O campo CPF é obrigatório." });
+    }
+
+    try {
+        const userGerente = await prisma.gerente.findUnique({
+            where: { cpf }
+        });
+
+        if (!userGerente) {
+            return response.status(404).json({ error: "Gerente não encontrado." });
+        }
+
+        return response.status(200).json(userGerente);
+    } catch (error: any) {
+        return response.status(500).json({ error: error.message });
+    }
+}

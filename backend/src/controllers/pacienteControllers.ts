@@ -77,3 +77,34 @@ export const createPaciente = [
   }
 ];
 
+
+
+export const getPaciente = async (req: Request, res: Response) => {
+  try {
+    const { email, rg, cpf, telefone } = req.body;
+
+    if (!email && !rg && !cpf && !telefone) {
+      return res.status(400).json({ error: 'Informe email, rg, cpf ou telefone para realizar a busca.' });
+    }
+
+    const paciente = await prisma.paciente.findFirst({
+      where: {
+        OR: [
+          { email: email?.toString() },
+          { rg: rg?.toString() },
+          { cpf: cpf?.toString() },
+          { telefone: telefone?.toString() }
+        ]
+      }
+    });
+
+    if (!paciente) {
+      return res.status(404).json({ error: 'Paciente não encontrado.' });
+    }
+
+    res.json(paciente);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao buscar paciente.' });
+  }
+};
