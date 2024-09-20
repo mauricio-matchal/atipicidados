@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { compare, hashSync } from 'bcryptjs';
+import  { compare, hashSync } from 'bcryptjs';
 import { JWT_SECRET } from '../secrets';
 
 const prisma = new PrismaClient();
