@@ -23,7 +23,7 @@ export const sendPassword = async (request: Request, response: Response) => {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'juliomoreira0111@gmail.com', 
+                user: 'atipicidados@gmail.com', 
                 pass: senhaJulio
             }
         });
@@ -31,7 +31,7 @@ export const sendPassword = async (request: Request, response: Response) => {
         const newPassword = crypto.randomBytes(4).toString('hex');
 
         transporter.sendMail({
-            from: 'Júlio César <juliomoreira0111@gmail.com>',
+            from: 'Equipe Atipicidados <atipicidados@gmail.com>',
             to: email,
             subject: 'Recuperação de Senha',
             html: `

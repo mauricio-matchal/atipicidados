@@ -13,9 +13,8 @@ gerentesRouter.use(cors());
 gerentesRouter.post('/', validateGerente(GerenteCreateInputSchema), createUserGerente);
 gerentesRouter.post('/buscar', getUserGerente);
 gerentesRouter.get('/:id', getUserGerenteId);
-gerentesRouter.post('/senha', sendPassword );
-gerentesRouter.post('/login', gerenteLogin );
-
+gerentesRouter.post('/senha', sendPassword);
+gerentesRouter.post('/login', gerenteLogin);
 
 
 
