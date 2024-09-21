@@ -79,12 +79,12 @@ export const createPaciente = [
 
 
 
-export const getPaciente = async (req: Request, res: Response) => {
+export const getPaciente = async (request: Request, response: Response) => {
   try {
-    const { email, rg, cpf, telefone } = req.body;
+    const { email, rg, cpf, telefone } = request.params;
 
     if (!email && !rg && !cpf && !telefone) {
-      return res.status(400).json({ error: 'Informe email, rg, cpf ou telefone para realizar a busca.' });
+      return response.status(400).json({ error: 'Informe email, rg, cpf ou telefone para realizar a busca.' });
     }
 
     const paciente = await prisma.paciente.findFirst({
@@ -99,12 +99,13 @@ export const getPaciente = async (req: Request, res: Response) => {
     });
 
     if (!paciente) {
-      return res.status(404).json({ error: 'Paciente não encontrado.' });
+      return response.status(404).json({ error: 'Paciente não encontrado.' });
     }
 
-    res.json(paciente);
+    response.status(200).json({error:false, 
+      message:`O paciente ${paciente?.nome} de cpf: ${paciente.cpf? paciente.cpf : '(Não possui CPF cadastrado)'} foi encontrado`});
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Erro ao buscar paciente.' });
+    response.status(500).json({ error: 'Erro ao buscar paciente.' });
   }
 };

@@ -3,6 +3,8 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import  { compare, hashSync } from 'bcryptjs';
 import { JWT_SECRET } from '../secrets';
+import { request } from 'http';
+import { error } from 'console';
 
 const prisma = new PrismaClient();
 
@@ -98,7 +100,7 @@ export const colaboradorLogin = async (request: Request, response: Response) => 
             userId: userColaborador.id
         }, JWT_SECRET);
 
-        return response.json({
+        return response.status(200).json({
             error: false,
             message: 'Login realizado',
             token,
@@ -115,3 +117,32 @@ export const colaboradorLogin = async (request: Request, response: Response) => 
 }
 
 
+export const getColaborador = async (request: Request, response: Response) => {
+    const { cpf } = request.params; 
+
+    try {
+        const userColaborador = await prisma.colaborador.findFirst({
+            where: {
+                cpf: cpf 
+            }
+        });
+
+        if (userColaborador) {
+            return response.status(200).json({
+                error: false,
+                message: `O colaborador ${userColaborador.nome} foi encontrado`,
+                userColaborador
+            });
+        }
+
+        return response.status(404).json({
+            message: `O colaborador com o CPF ${cpf} não foi encontrado`
+        });
+
+    } catch (error: any) {
+        return response.status(500).json({
+            message: "Erro no servidor",
+            error:error.message
+        });
+    }
+};
