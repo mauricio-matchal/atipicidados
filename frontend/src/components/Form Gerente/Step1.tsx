@@ -21,15 +21,15 @@ type Step11State = {
   cpf: string;
   telefone: string;
   rg: string;
-  unidadeId: string;
+  unidadeId: number;
   raca: string;
 };
 
-const Step1: React.FC<{ 
+const Step1: React.FC<{
   handleFormDataSubmit: () => void;
   updateLogin: (data: any) => void;
   updateForm: (data: any) => void;
-}> = ({handleFormDataSubmit, updateLogin, updateForm }) => {
+}> = ({ handleFormDataSubmit, updateLogin, updateForm }) => {
 
   const [login, setLogin] = useState({
     email: "",
@@ -43,27 +43,32 @@ const Step1: React.FC<{
     cpf: "",
     telefone: "",
     rg: "",
-    unidadeId: "",
+    unidadeId: 0,
     raca: "",
   });
 
   const [error, setError] = useState<string | null>(null);
 
   const handleLoginChange: any = (key: string, value: string) => {
-    setLogin((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }));
+    setLogin((prevState) => {
+      const updatedLogin = {
+        ...prevState,
+        [key]: value,
+      };
+      updateLogin(updatedLogin);
+      return updatedLogin;
+    });
   };
 
-  const reveal = () => {
-  }
-
   const handleInputChange1 = (key: string, value: string) => {
-    setStep11((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }));
+    setStep11((prevState) => {
+      const updatedForm = {
+        ...prevState,
+        [key]: key === 'unidadeId' ? parseInt(value, 10) : value,
+      };
+      updateForm(updatedForm);
+      return updatedForm;
+    });
   };
 
   const [fotoFile, setFotoFile] = useState<File | null>(null);
@@ -98,9 +103,6 @@ const Step1: React.FC<{
       return;
     }
 
-    updateLogin(login);
-    updateForm(Step11);
-    
     handleFormDataSubmit();
   };
 
@@ -124,24 +126,48 @@ const Step1: React.FC<{
 
           <div className='flex flex-col gap-[12px]'>
             <button onClick={() => { console.log(fotoFile) }}>Mostrar Foto</button>
-            
+
             <div className='flex w-full gap-[12px]'>
               <FileInput placeholder='Foto 3x4' className='min-w-[260px]' onChange={handleFotoFileChange} name='fotoFile' />
               <NumberInput placeholder="Telefone de contato" value={Step11.telefone} onChange={(e) => handleInputChange1("telefone", e.target.value)} />
             </div>
-            
+
             <TextInput placeholder='Nome completo' value={Step11.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
-            
+
             <div className='flex w-full gap-[12px]'>
               <TextInput placeholder='CPF' className='min-w-[220px]' value={Step11.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
               <TextInput placeholder='RG' className='min-w-[220px]' value={Step11.rg} onChange={(e) => handleInputChange1("rg", e.target.value)} />
             </div>
             <div className='flex w-full gap-[12px]'>
-              <SelectInput options={["Amarelo", "Branco", "Indígena", "Pardo", "Preto"]} placeholder={"Raça/cor"} onChange={(value) => handleInputChange1("raca", value)} />
-              <TextInput placeholder='Unidade Vinculada(Número)' value={Step11.unidadeId} onChange={(e) => handleInputChange1("unidadeId", e.target.value)} />
+              <SelectInput
+                options={["Amarelo", "Branco", "Indígena", "Preto", "Outra"]}
+                placeholder={"Raça/cor"}
+                onChange={(value) => {
+                  let formattedValue = "";
+                  switch (value) {
+                    case "Amarelo":
+                      formattedValue = "AMARELA";
+                      break;
+                    case "Branco":
+                      formattedValue = "BRANCA";
+                      break;
+                    case "Indígena":
+                      formattedValue = "INDIGENA";
+                      break;
+                    case "Preto":
+                      formattedValue = "NEGRA";
+                      break;
+                    case "Outra":
+                      formattedValue = "OUTRA";
+                      break;
+                    default:
+                      formattedValue = value;
+                  }
+                  handleInputChange1("raca", formattedValue);
+                }} />
+              <TextInput placeholder='Unidade Vinculada (Número)' value={Step11.unidadeId.toString()} onChange={(e) => handleInputChange1("unidadeId", e.target.value)} />
             </div>
           </div>
-          {/* <button onClick={reveal}>reveal</button> */}
         </div>
 
         <div className="flex items-center ml-[14px]">

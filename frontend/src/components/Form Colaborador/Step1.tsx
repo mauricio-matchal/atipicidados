@@ -76,17 +76,25 @@ const Step1: React.FC<{
   const [error, setError] = useState<string | null>(null);
 
   const handleLoginChange: any = (key: string, value: string) => {
-    setLogin((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }));
+    setLogin((prevState) => {
+      const updatedLogin = {
+        ...prevState,
+        [key]: value,
+      };
+      updateLogin(updatedLogin);
+      return updatedLogin;
+    });
   };
 
   const handleInputChange1 = (key: string, value: string) => {
-    setStep11((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }));
+    setStep11((prevState) => {
+      const updatedForm = {
+        ...prevState,
+        [key]: value,
+      };
+      updateForm(updatedForm);
+      return updatedForm;
+    });
   };
 
   const [fotoFile, setFotoFile] = useState<File | null>(null);
@@ -120,10 +128,7 @@ const Step1: React.FC<{
       setError("A senha precisa ter no mínimo 8 caracteres.");
       return;
     }
-    
-    updateForm(Step11);
-    updateLogin(login);
-
+  
     handleFormDataSubmit();
   };
 

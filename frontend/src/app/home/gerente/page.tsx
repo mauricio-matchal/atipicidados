@@ -2,26 +2,59 @@
 import PlusIcon from "@/assets/icons/plus";
 import SearchIcon from "@/assets/icons/search";
 import { Card } from "@/components/Card";
-import NavBar from "@/components/NavBar";
+import NavBarGerente from "@/components/NavBarGerente";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+type Gerente = {
+  nome: string;
+  rg: string;
+  cpf: string;
+}
+
 export default function Home() {
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
+  const id = searchParams.get("id");
   const [userEmail, setUserEmail] = useState("");
+  const [userID, setUserID] = useState("");
+  const [gerenteInfo, setGerenteInfo] = useState<Gerente | null>(null);
 
   useEffect(() => {
     if (email) {
       setUserEmail(decodeURIComponent(email));
     }
-  }, [email]);
+    if (id) {
+      const decodedID = decodeURIComponent(id);
+      setUserID(decodedID);
+      fetchGerenteData(decodedID);
+    }
+  }, [email, id]);
+
+  const fetchGerenteData = async (id: any) => {
+    try {
+      const response = await fetch(`http://localhost:3002/gerentes/${id}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch gerente data");
+      }
+      const data = await response.json();
+      setGerenteInfo(data);
+    } catch (error) {
+      console.error("Error fetching gerente data:", error);
+    }
+  };
 
   return (
     <main className="flex flex-col min-h-screen">
-      <NavBar userEmail={userEmail} />
-      GERENTE
+      <NavBarGerente />
+      <p>
+        CPF: {gerenteInfo && gerenteInfo.cpf}
+      </p>
+      <p>
+        RG: {gerenteInfo && gerenteInfo.rg}
+      </p>
+      <button onClick={() => { console.log(gerenteInfo) }}>Mostrar GerenteInfo</button>
       <div className="px-[137px] pt-[30px]">
         <div className="flex justify-between">
           <div className="flex flex-col w-[340px]">

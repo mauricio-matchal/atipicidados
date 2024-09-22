@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 export default function Home() {
   const [userType, setUserType] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [id, setID] = useState("");
   const router = useRouter();
 
   const togglePasswordVisibility = () => {
@@ -69,8 +70,15 @@ export default function Home() {
 
       const data = await response.json();
       console.log(data);
+      const gerente = data.gerente
+      setID(gerente.id);
 
-      router.push(`/home/${userType.toLowerCase()}?email=${encodeURIComponent(loginData.email)}`);
+      localStorage.setItem("userEmail", loginData.email);
+      localStorage.setItem("userID", gerente.id);
+      const homeLink = `/home/${userType.toLowerCase()}?email=${encodeURIComponent(loginData.email)}&id=${encodeURIComponent(gerente.id)}`
+      localStorage.setItem("homeLink", homeLink)
+      
+      router.push(`/home/${userType.toLowerCase()}?email=${encodeURIComponent(loginData.email)}&id=${encodeURIComponent(gerente.id)}`);
     } catch (error) {
       console.log("Erro em seu login", error);
     }

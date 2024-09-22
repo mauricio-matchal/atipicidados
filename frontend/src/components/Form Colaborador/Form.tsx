@@ -39,14 +39,10 @@ const Form: React.FC = () => {
   const updateLogin = (data: any) => {
     setFormData((prevData) => ({
       ...prevData,
-      'login': data.login,
+      'email': data.email,
       'password': data.senha,
     }));
   };
-
-  const reveal = () => {
-    console.log(formData);
-  }
 
   const handleUserCreation = async () => {
     try {
@@ -65,7 +61,7 @@ const Form: React.FC = () => {
   switch (currentStep) {
     case 1:
       return <>
-        <button onClick={reveal}>reveal</button>
+        <button onClick={() => { console.log(formData) }}>Mostrar formData</button>
         <Step1
           handleFormDataSubmit={handleUserCreation}
           updateForm={(data) => updateForm(data)}
