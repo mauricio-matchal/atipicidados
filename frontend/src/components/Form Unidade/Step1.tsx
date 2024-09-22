@@ -69,8 +69,8 @@ const Step1: React.FC<{
             </div>
 
           </div>
-        </div>
 
+        </div>
         <div className="flex items-center ml-[14px]">
           <input
             type="checkbox"
