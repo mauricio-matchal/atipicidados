@@ -13,7 +13,12 @@ export default function Home() {
         <div className="flex justify-between">
           <div className="flex flex-col w-[340px]">
             <h2 className="mb-7">Página inicial</h2>
-            <h3 className="mb-[22px]">Membros cadastrados</h3>
+            <div className="flex flex-col gap-2 mb-8">
+              <h3>Minha unidade (Nome da Unidade)</h3>
+              <Link href='/unidade'>
+                <p className="font-semibold text-blue-800 cursor-pointer">Mais informações</p>
+              </Link>
+            </div>
             <div className="relative w-full">
               <input
                 type="text"
@@ -28,7 +33,7 @@ export default function Home() {
               </button>
             </div>
 
-            <div className="flex justify-around">
+            <div className="flex gap-[18px]">
               <label className="flex items-center">
                 <input
                   type="checkbox"
@@ -50,6 +55,20 @@ export default function Home() {
                 />
                 Atendido
               </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  className="checkbox hover:none"
+                />
+                Autenticado
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  className="checkbox hover:none"
+                />
+                Não autenticado
+              </label>
             </div>
           </div>
 
@@ -57,25 +76,7 @@ export default function Home() {
             <button className="botao">
               <Link href='/cadastro/paciente' className="flex flex-row gap-1 items-center">
                 <PlusIcon style={{ color: 'var(--texto-botao)' }} />
-                <p>Novo Paciente</p>
-              </Link>
-            </button>
-            <button className="botao">
-              <Link href='/cadastro/colaborador' className="flex flex-row gap-1 items-center">
-                <PlusIcon style={{ color: 'var(--texto-botao)' }} />
-                <p>Colaborador</p>
-              </Link>
-            </button>
-            <button className="botao">
-              <Link href='/cadastro/unidade' className="flex flex-row gap-1 items-center">
-                <PlusIcon style={{ color: 'var(--texto-botao)' }} />
-                <p>Unidade</p>
-              </Link>
-            </button>
-            <button className="botao">
-              <Link href='/cadastro/gerente' className="flex flex-row gap-1 items-center">
-                <PlusIcon style={{ color: 'var(--texto-botao)' }} />
-                <p>Gerente</p>
+                <p>Novo Cadastro</p>
               </Link>
             </button>
           </div>

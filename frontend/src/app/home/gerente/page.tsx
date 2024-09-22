@@ -41,7 +41,7 @@ export default function Home() {
               </button>
             </div>
 
-            <div className="flex justify-around">
+            <div className="flex gap-[18px]">
               <label className="flex items-center">
                 <input
                   type="checkbox"
@@ -67,12 +67,6 @@ export default function Home() {
           </div>
 
           <div className="flex gap-[10px]">
-            <button className="botao">
-              <Link href='/cadastro/paciente' className="flex flex-row gap-1 items-center">
-                <PlusIcon style={{ color: 'var(--texto-botao)' }} />
-                <p>Novo Paciente</p>
-              </Link>
-            </button>
             <button className="botao">
               <Link href='/cadastro/colaborador' className="flex flex-row gap-1 items-center">
                 <PlusIcon style={{ color: 'var(--texto-botao)' }} />

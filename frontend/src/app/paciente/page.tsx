@@ -2,6 +2,8 @@ import Image from "next/image";
 import NavBar from "@/components/NavBar";
 import perfil from "../../../public/images/perfil.png";
 import { Card } from "@/components/Card";
+import CheckIcon from "@/assets/icons/check";
+import Link from "next/link";
 
 export default function Home() {
     return (
@@ -11,7 +13,15 @@ export default function Home() {
         <div className="flex flex-col gap-[20px] mx-[108px] mt-[33px] text-[14px]">
             <div className="flex gap-[20px]">
                 <div className="box w-3/5 flex flex-col gap-7">
-                    <h2>Meu cadastro</h2>
+                    <div className="flex justify-between">
+                        <h2>Paciente</h2>
+                        <Link href='/autenticacao' className="flex flex-row gap-1 items-center">
+                            <button className="botao">
+                                <CheckIcon style={{ color: 'var(--texto-botao)' }} />
+                                <p>Autenticar</p>
+                            </button>
+                        </Link>
+                    </div>
 
                     <div className="flex flex-col gap-8">
                         <div className="flex items-center gap-[20px]">

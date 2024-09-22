@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     colors: {
       transparent: 'transparent',
-      white: '#FFFFFF',
+      white: '#F0F0F3',
       black: '#000000',
       blue: {
         100: '#E5E7F6',
