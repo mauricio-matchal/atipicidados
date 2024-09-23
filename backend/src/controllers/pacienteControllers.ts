@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { compare, hashSync } from 'bcryptjs';
 import { Request, Response } from 'express';
 import multer from 'multer';
 
@@ -31,7 +32,7 @@ export const createPaciente = [
       const {
         nome, cpf, rg, nascimentodata, nomemae, nomepai, email, telefone,
         gestacao, nascimento, autonomia, comportamento, desenvolimento, pedagogico,
-        geral, mae, pai, maisinfo, escola, saudeinfo, raca
+        geral, mae, pai, maisinfo, escola, saudeinfo, raca, password
       } = req.body;
 
       // Lidar com arquivos enviados
@@ -41,6 +42,7 @@ export const createPaciente = [
       const paciente = await prisma.paciente.create({
         data: {
           nome,
+          password:hashSync(password,10),
           cpf,
           rg,
           nascimentodata,
@@ -79,6 +81,8 @@ export const createPaciente = [
 
 
 
+
+
 export const getPaciente = async (request: Request, response: Response) => {
   try {
     const { email, rg, cpf, telefone } = request.params;
@@ -109,3 +113,38 @@ export const getPaciente = async (request: Request, response: Response) => {
     response.status(500).json({ error: 'Erro ao buscar paciente.' });
   }
 };
+
+export const pacienteLogin = async (request: Request, response:Response) => {
+  const {email, password} = request.body;
+
+  try{
+    const userPaciente = await prisma.paciente.findUnique({
+      where: { email}
+  });
+  if (!userPaciente ){
+    return response.status(204).json({error:true, message:`O paciente cujo o email é ${email} não existe ou ainda não foi cadastrado`});
+  }
+  const isPasswordValid = await compare(password, userPaciente.password);
+        if (!isPasswordValid) {
+            return response.status(401).json({
+                error: true,
+                message: 'Erro: Senha incorreta'
+            });
+        }
+      return response.status(200).json({
+          error: false,
+          message: 'Login realizado',
+          gerente: {
+              id: userPaciente.id,
+          }
+      });
+
+
+  }
+  catch(error:any){
+    return response.status(500).json({error:true, message: 'Erro no servidor'})
+
+  }
+
+
+}
