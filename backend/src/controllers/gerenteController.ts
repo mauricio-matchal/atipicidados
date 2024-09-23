@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { compare, hashSync } from 'bcryptjs';
+import  { compare, hashSync } from 'bcryptjs';
 import { JWT_SECRET } from '../secrets';
 
 const prisma = new PrismaClient();
@@ -106,5 +106,33 @@ export const gerenteLogin = async (request: Request, response: Response) => {
             error: true,
             message: 'Erro interno do servidor'
         });
+    }
+}
+
+export const getGerente = async (request: Request, response: Response) => {
+    const { cpf } = request.params;
+
+    if (!cpf) {
+        return response.status(400).json({ error: "O campo CPF é obrigatório." });
+    }
+
+    try {
+        const userGerente = await prisma.gerente.findUnique({
+            where: { cpf: cpf}
+        });
+
+        if (!userGerente) {
+            return response.status(404).json({ error: `O gerente de ${cpf} não foi encontrado ` });
+        }
+
+        return response.status(200).json({
+            error: false,
+            message: `O colaborador ${userGerente.nome} foi encontrado`,
+            userGerente
+        }); 
+    
+    } 
+    catch (error: any) {
+        return response.status(500).json({ error: error.message });
     }
 }
