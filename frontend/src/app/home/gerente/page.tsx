@@ -7,21 +7,17 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-type Gerente = {
-  nome: string;
-  rg: string;
-  cpf: string;
-}
-
 export default function Home() {
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
   const id = searchParams.get("id");
   const [userEmail, setUserEmail] = useState("");
   const [userID, setUserID] = useState("");
-  const [gerenteInfo, setGerenteInfo] = useState<Gerente | null>(null);
+  const [gerenteInfo, setGerenteInfo] = useState<any | null>(null);
 
   useEffect(() => {
+    const email = localStorage.getItem("userEmail");
+    const id = localStorage.getItem("userID");
     if (email) {
       setUserEmail(decodeURIComponent(email));
     }
@@ -34,7 +30,7 @@ export default function Home() {
 
   const fetchGerenteData = async (id: any) => {
     try {
-      const response = await fetch(`http://localhost:3002/gerentes/${id}`);
+      const response = await fetch(`http://localhost:3002/gerentes/id/${id}`);
       if (!response.ok) {
         throw new Error("Failed to fetch gerente data");
       }
@@ -54,7 +50,8 @@ export default function Home() {
       <p>
         RG: {gerenteInfo && gerenteInfo.rg}
       </p>
-      <button onClick={() => { console.log(gerenteInfo) }}>Mostrar GerenteInfo</button>
+
+      <button onClick={() => { console.log(gerenteInfo) }}>Mostrar gerenteInfo</button>
       <div className="px-[137px] pt-[30px]">
         <div className="flex justify-between">
           <div className="flex flex-col w-[340px]">

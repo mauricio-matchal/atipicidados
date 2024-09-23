@@ -148,3 +148,20 @@ export const getPaciente = async (request: Request, response: Response) => {
   }
 };
 
+export const getuserPacienteId = async (request: Request, response: Response) => {
+  const { id } = request.params;
+
+  try {
+      const userPaciente = await prisma.paciente.findUnique({
+          where: { id: Number(id) }
+      });
+
+      if (!userPaciente) {
+          return response.status(404).json({ error: "paciente não encontrado." });
+      }
+
+      return response.status(200).json(userPaciente);
+  } catch (error: any) {
+      return response.status(500).json({ error: error.message });
+  }
+}

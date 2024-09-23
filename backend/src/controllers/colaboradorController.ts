@@ -104,7 +104,7 @@ export const colaboradorLogin = async (request: Request, response: Response) => 
             error: false,
             message: 'Login realizado',
             token,
-            colaborador: {
+            gerente: {
                 id: userColaborador.id,
             }
         });

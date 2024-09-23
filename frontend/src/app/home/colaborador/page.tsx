@@ -11,18 +11,48 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
+  const id = searchParams.get("id");
   const [userEmail, setUserEmail] = useState("");
+  const [userID, setUserID] = useState("");
+  const [colaboradorInfo, setColaboradorInfo] = useState<any | null>(null);
 
   useEffect(() => {
+    const email = localStorage.getItem("userEmail");
+    const id = localStorage.getItem("userID");
+    const homeLink = localStorage.getItem("homeLink");
     if (email) {
       setUserEmail(decodeURIComponent(email));
     }
-  }, [email]);
-  
+    if (id) {
+      const decodedID = decodeURIComponent(id);
+      setUserID(decodedID);
+      fetchColaboradorData(decodedID);
+    }
+  }, [email, id]);
+
+  const fetchColaboradorData = async (id: any) => {
+    try {
+      const response = await fetch(`http://localhost:3002/colaboradores/id/${id}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch gerente data");
+      }
+      const data = await response.json();
+      setColaboradorInfo(data);
+    } catch (error) {
+      console.error("Error fetching gerente data:", error);
+    }
+  };
+
   return (
     <main className="flex flex-col min-h-screen">
       <NavBarColaborador />
-      COLABORADOR
+      <p>
+        CPF: {colaboradorInfo && colaboradorInfo.cpf}
+      </p>
+      <p>
+        RG: {colaboradorInfo && colaboradorInfo.rg}
+      </p>
+      <button onClick={() => { console.log(colaboradorInfo) }}>Mostrar colaboradorInfo</button>
       <div className="px-[137px] pt-[30px]">
         <div className="flex justify-between">
           <div className="flex flex-col w-[340px]">

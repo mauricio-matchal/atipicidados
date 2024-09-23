@@ -15,6 +15,7 @@ gerentesRouter.post('/buscar', getUserGerente);
 gerentesRouter.post('/senha', sendPassword);
 gerentesRouter.post('/login', gerenteLogin);
 gerentesRouter.get('/:cpf', getGerente);
+gerentesRouter.get('/id/:id', getUserGerenteId);
 
 
 
