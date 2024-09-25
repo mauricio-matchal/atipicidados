@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { Request, Response } from 'express';
+import { Request, response, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import  { compare, hashSync } from 'bcryptjs';
 import { JWT_SECRET } from '../secrets';
@@ -146,3 +146,21 @@ export const getColaborador = async (request: Request, response: Response) => {
         });
     }
 };
+
+export const getColaboradores = async (_:Request, response:Response) => {
+
+    try{
+        const colaboradores = await prisma.colaborador.findMany();
+        if (colaboradores.length === 0) {
+            return response.status(204).json({error:true, message: 'Nenhum colaborador foi encontrado'})
+        }
+        return response.status(200).json({error:false, 
+            message: 'Segue a lista de todos colaboradores',
+            colaboradores})
+
+
+    }
+    catch(eror:any){
+        return response.status(500).json({error:true, message:'Erro interno no servidor'})
+    }
+}

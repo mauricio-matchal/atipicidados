@@ -41,7 +41,6 @@ export default GerenteCreateInputSchema
     }, { message: 'A data de nascimento deve estar no formato DD/MM/YYYY' }), 
     nomemae: z.string().optional().nullable(),
     nomepai: z.string().min(3, {message:'Insira um nome com pelo menos 3 caracteres'}).optional().nullable(),
-    email: z.string().email({message:'Digite um email válido'}),
     telefone: z.string()
     .min(10, { message: 'O telefone precisa ter no mínimo 10 dígitos' })
     .max(11, { message: 'O telefone precisa ter no máximo 11 dígitos' }).optional().nullable(),
