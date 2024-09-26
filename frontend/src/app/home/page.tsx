@@ -23,7 +23,7 @@ export default function Home() {
     <main className="flex flex-col min-h-screen">
       <NavBarPaciente />
       PACIENTE
-      <div className="px-[137px] pt-[30px]">
+      <div className="px-[84px] py-[30px]">
         <div className="flex justify-between">
           <div className="flex flex-col w-[340px]">
             <h2 className="mb-7">Página inicial</h2>

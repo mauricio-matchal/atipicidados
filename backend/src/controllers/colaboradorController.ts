@@ -160,7 +160,7 @@ export const getColaboradores = async (_:Request, response:Response) => {
 
 
     }
-    catch(eror:any){
+    catch(error:any){
         return response.status(500).json({error:true, message:'Erro interno no servidor'})
     }
 }

@@ -14,6 +14,9 @@ export default function Home() {
   const [userEmail, setUserEmail] = useState("");
   const [userID, setUserID] = useState("");
   const [gerenteInfo, setGerenteInfo] = useState<any | null>(null);
+  const [pacientes, setPacientes] = useState<any[]>([]);
+  const [gerentes, setGerentes] = useState<any[]>([]);
+  const [colaboradores, setColaboradores] = useState<any[]>([]);
 
   useEffect(() => {
     const email = localStorage.getItem("userEmail");
@@ -26,6 +29,9 @@ export default function Home() {
       setUserID(decodedID);
       fetchGerenteData(decodedID);
     }
+    fetchPacientes();
+    fetchGerentes();
+    fetchColaboradores();
   }, [email, id]);
 
   const fetchGerenteData = async (id: any) => {
@@ -41,6 +47,52 @@ export default function Home() {
     }
   };
 
+  const fetchPacientes = async () => {
+    try {
+      const response = await fetch("http://localhost:3002/pacientes/getall");
+      if (!response.ok) {
+        throw new Error("Failed to fetch pacientes data");
+      }
+      const data = await response.json();
+      console.log(data.pacientes);
+      setPacientes(data.pacientes);
+    } catch (error) {
+      console.error("Error fetching pacientes data:", error);
+    }
+  };
+  const fetchGerentes = async () => {
+    try {
+      const response = await fetch("http://localhost:3002/gerentes/getall");
+      if (!response.ok) {
+        throw new Error("Failed to fetch gerentes data");
+      }
+      const data = await response.json();
+      console.log(data.gerentes);
+      setGerentes(data.gerentes);
+    } catch (error) {
+      console.error("Error fetching gerentes data:", error);
+    }
+  };
+  const fetchColaboradores = async () => {
+    try {
+      const response = await fetch("http://localhost:3002/colaboradores/getall");
+      if (!response.ok) {
+        throw new Error("Failed to fetch colaboradores data");
+      }
+      const data = await response.json();
+      console.log(data.colaboradores);
+      setColaboradores(data.colaboradores);
+    } catch (error) {
+      console.error("Error fetching gerentes data:", error);
+    }
+  };
+
+  const allMembers = [
+    ...pacientes.map((paciente) => ({ ...paciente, type: "Paciente" })),
+    ...gerentes.map((gerente) => ({ ...gerente, type: "Gerente" })),
+    ...colaboradores.map((colaborador) => ({ ...colaborador, type: "Colaborador" }))
+  ];
+
   return (
     <main className="flex flex-col min-h-screen">
       <NavBarGerente />
@@ -52,7 +104,7 @@ export default function Home() {
       </p>
 
       <button onClick={() => { console.log(gerenteInfo) }}>Mostrar gerenteInfo</button>
-      <div className="px-[137px] pt-[30px]">
+      <div className="px-[84px] py-[30px]">
         <div className="flex justify-between">
           <div className="flex flex-col w-[340px]">
             <h2 className="mb-7">Página inicial</h2>
@@ -118,8 +170,14 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="mt-[42px]">
-          <Card />
+        <div className="mt-[28px] grid grid-cols-4 gap-2 w-full max-w-full">
+          {allMembers.length > 0 ? (
+            allMembers.map((member) => (
+              <Card key={member.id} title={member.nome} cpf={member.cpf} acesso={member.type} />
+            ))
+          ) : (
+            <p>Nenhum membro encontrado.</p>
+          )}
         </div>
       </div>
     </main>

@@ -53,7 +53,7 @@ export default function Home() {
         RG: {colaboradorInfo && colaboradorInfo.rg}
       </p>
       <button onClick={() => { console.log(colaboradorInfo) }}>Mostrar colaboradorInfo</button>
-      <div className="px-[137px] pt-[30px]">
+      <div className="px-[84px] py-[30px]">
         <div className="flex justify-between">
           <div className="flex flex-col w-[340px]">
             <h2 className="mb-7">Página inicial</h2>
