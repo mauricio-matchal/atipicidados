@@ -136,3 +136,21 @@ export const getGerente = async (request: Request, response: Response) => {
         return response.status(500).json({ error: error.message });
     }
 }
+
+export const getGerentes = async (_:Request, response:Response) => {
+
+    try{
+        const gerentes = await prisma.gerente.findMany();
+        if (gerentes.length === 0) {
+            return response.status(204).json({error:true, message: 'Nenhum colaborador foi encontrado'})
+        }
+        return response.status(200).json({error:false, 
+            message: 'Segue a lista de todos colaboradores',
+            gerentes})
+
+
+    }
+    catch(eror:any){
+        return response.status(500).json({error:true, message:'Erro interno no servidor'})
+    }
+}
