@@ -56,13 +56,14 @@ model Paciente {
   id             Int           @id @default(autoincrement())
   analise        Boolean       @default(true)
   nome           String?  
-  cpf            String?
+  cpf            String 
   rg             String?
   nascimentodata     String?
   nomemae        String?
   nomepai        String?
   unidadeId      Int          @default(1)
-  email          String?
+  email          String       @unique
+  password       String
   telefone       String?
   rgdocfile      String?
   fotofile       String? //analise
@@ -108,3 +109,4 @@ enum Genero {
   FEMININO
   PREFIRO_NAO_INFORMAR
 }
+

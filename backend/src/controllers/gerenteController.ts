@@ -52,7 +52,7 @@ export const getUserGerente = async (request: Request, response: Response) => {
 }
 
 export const getUserGerenteId = async (request: Request, response: Response) => {
-    const { id } = request.params;
+    const { id } = request.params
 
     try {
         const userGerente = await prisma.gerente.findUnique({
@@ -93,7 +93,7 @@ export const gerenteLogin = async (request: Request, response: Response) => {
             userId: userGerente.id
         }, JWT_SECRET);
 
-        return response.json({
+        return response.status(200).json({
             error: false,
             message: 'Login realizado',
             token,
@@ -106,5 +106,51 @@ export const gerenteLogin = async (request: Request, response: Response) => {
             error: true,
             message: 'Erro interno do servidor'
         });
+    }
+}
+
+export const getGerente = async (request: Request, response: Response) => {
+    const { cpf } = request.params;
+
+    if (!cpf) {
+        return response.status(400).json({ error: "O campo CPF é obrigatório." });
+    }
+
+    try {
+        const userGerente = await prisma.gerente.findUnique({
+            where: { cpf: cpf}
+        });
+
+        if (!userGerente) {
+            return response.status(404).json({ error: `O gerente de ${cpf} não foi encontrado ` });
+        }
+
+        return response.status(200).json({
+            error: false,
+            message: `O colaborador ${userGerente.nome} foi encontrado`,
+            userGerente
+        }); 
+    
+    } 
+    catch (error: any) {
+        return response.status(500).json({ error: error.message });
+    }
+}
+
+export const getGerentes = async (_:Request, response:Response) => {
+
+    try{
+        const gerentes = await prisma.gerente.findMany();
+        if (gerentes.length === 0) {
+            return response.status(204).json({error:true, message: 'Nenhum gerente foi encontrado'})
+        }
+        return response.status(200).json({error:false, 
+            message: 'Segue a lista de todos gerentes',
+            gerentes})
+
+
+    }
+    catch(error:any){
+        return response.status(500).json({error:true, message:'Erro interno no servidor'})
     }
 }

@@ -49,13 +49,14 @@ CREATE TABLE "Paciente" (
     "id" SERIAL NOT NULL,
     "analise" BOOLEAN NOT NULL DEFAULT true,
     "nome" TEXT,
-    "cpf" TEXT,
+    "cpf" TEXT NOT NULL,
     "rg" TEXT,
     "nascimentodata" TEXT,
     "nomemae" TEXT,
     "nomepai" TEXT,
     "unidadeId" INTEGER NOT NULL DEFAULT 1,
-    "email" TEXT,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
     "telefone" TEXT,
     "rgdocfile" TEXT,
     "fotofile" TEXT,
@@ -117,6 +118,9 @@ CREATE UNIQUE INDEX "Colaborador_telefone_key" ON "Colaborador"("telefone");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Colaborador_email_key" ON "Colaborador"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Paciente_email_key" ON "Paciente"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_PacienteColaboradores_AB_unique" ON "_PacienteColaboradores"("A", "B");

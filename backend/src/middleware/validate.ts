@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { z, ZodError } from 'zod';
 
-export function validateGerente(zodSchema: z.ZodType<any, any>) {
+export function validate(zodSchema: z.ZodType<any, any>) {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
       zodSchema.parse(req.body);
