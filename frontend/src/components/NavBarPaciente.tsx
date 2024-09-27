@@ -34,7 +34,7 @@ export default function NavBar({ userEmail, userName }: NavBarProps) {
             fetchPacienteData(id);
         };
         if (homeLink) setHomeLink(homeLink);
-    })
+    }, [])
 
     const fetchPacienteData = async (id: any) => {
         try {
