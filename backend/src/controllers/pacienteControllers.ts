@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { compare, hashSync } from 'bcryptjs';
 import { Request, Response } from 'express';
 import multer from 'multer';
 
@@ -91,7 +92,7 @@ export const createPaciente = [
   async (req: Request, res: Response) => {
     try {
       const {
-        nome, cpf, rg, nascimentodata, nomemae, nomepai, email, telefone,
+        nome, cpf, rg, nascimentodata, nomemae, nomepai, email, telefone, password,
         gestacao, nascimento, autonomia, comportamento, desenvolimento, pedagogico,
         geral, mae, pai, maisinfo, escola, saudeinfo, raca
       } = req.body;
@@ -102,6 +103,7 @@ export const createPaciente = [
 
       const paciente = await prisma.paciente.create({
         data: {
+          password:hashSync(password, 10),
           nome,
           cpf,
           rg,
@@ -138,4 +140,73 @@ export const createPaciente = [
     }
   }
 ];
+
+
+export const pacienteLogin = async (request: Request, response:Response) => {
+  const {email, password} = request.body;
+
+  try{
+    const userPaciente = await prisma.paciente.findUnique({
+      where: { email}
+  });
+  if (!userPaciente ){
+    return response.status(204).json({error:true, message:`O paciente cujo o email é ${email} não existe ou ainda não foi cadastrado`});
+  }
+  const isPasswordValid = await compare(password, userPaciente.password);
+        if (!isPasswordValid) {
+            return response.status(401).json({
+                error: true,
+                message: 'Erro: Senha incorreta'
+            });
+        }
+      return response.status(200).json({
+          error: false,
+          message: 'Login realizado',
+          gerente: {
+              id: userPaciente.id,
+          }
+      });
+
+
+  }
+  catch(error:any){
+    return response.status(500).json({error:true, message: 'Erro no servidor'})
+
+  }
+
+
+}
+
+
+
+export const getPaciente = async (request: Request, response: Response) => {
+  try {
+    const { email, rg, cpf, telefone } = request.params;
+
+    if (!email && !rg && !cpf && !telefone) {
+      return response.status(400).json({ error: 'Informe email, rg, cpf ou telefone para realizar a busca.' });
+    }
+
+    const paciente = await prisma.paciente.findFirst({
+      where: {
+        OR: [
+          { email: email?.toString() },
+          { rg: rg?.toString() },
+          { cpf: cpf?.toString() },
+          { telefone: telefone?.toString() }
+        ]
+      }
+    });
+
+    if (!paciente) {
+      return response.status(404).json({ error: 'Paciente não encontrado.' });
+    }
+
+    response.status(200).json({error:false, 
+      message:`O paciente ${paciente?.nome} de cpf: ${paciente.cpf? paciente.cpf : '(Não possui CPF cadastrado)'} foi encontrado`});
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ error: 'Erro ao buscar paciente.' });
+  }
+};
 

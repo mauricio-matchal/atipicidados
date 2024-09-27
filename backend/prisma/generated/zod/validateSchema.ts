@@ -26,7 +26,7 @@ export default GerenteCreateInputSchema
 
   
 
-  export const PacienteCreateInputSchema: z.ZodType<Prisma.PacienteCreateInput> = z.object({
+  export const PacienteCreateInputSchema = z.object({
     analise: z.boolean().optional(),
     nome: z.string().min(3, {message:'Insira um nome com pelo menos 3 caracteres'}).optional().nullable(),
     cpf: z.string().length(11, { message: 'O CPF precisa ter 11 dígitos' }).optional().nullable(),
@@ -41,7 +41,7 @@ export default GerenteCreateInputSchema
     }, { message: 'A data de nascimento deve estar no formato DD/MM/YYYY' }), 
     nomemae: z.string().optional().nullable(),
     nomepai: z.string().min(3, {message:'Insira um nome com pelo menos 3 caracteres'}).optional().nullable(),
-    email: z.string().email({message:'Digite um email válido'}).optional().nullable(),
+    email: z.string().email({message:'Digite um email válido'}),
     telefone: z.string()
     .min(10, { message: 'O telefone precisa ter no mínimo 10 dígitos' })
     .max(11, { message: 'O telefone precisa ter no máximo 11 dígitos' }).optional().nullable(),
@@ -93,3 +93,4 @@ export default GerenteCreateInputSchema
     compresfile: z.string().optional().nullable(),
     unidadeId: z.number(),
   }).strict();
+

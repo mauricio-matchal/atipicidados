@@ -113,9 +113,30 @@ export const gerenteLogin = async (request: Request, response: Response) => {
     }
 }
 
+export const getGerente = async (request: Request, response: Response) => {
+    const { cpf } = request.params;
 
-//encontrar por cpf
-//econtrar por nome
-//editar
-//deletar
-//inativar - criar atributo que represente se o gerente está ativo no projeto 
+    if (!cpf) {
+        return response.status(400).json({ error: "O campo CPF é obrigatório." });
+    }
+
+    try {
+        const userGerente = await prisma.gerente.findUnique({
+            where: { cpf: cpf}
+        });
+
+        if (!userGerente) {
+            return response.status(404).json({ error: `O gerente de ${cpf} não foi encontrado ` });
+        }
+
+        return response.status(200).json({
+            error: false,
+            message: `O colaborador ${userGerente.nome} foi encontrado`,
+            userGerente
+        }); 
+    
+    } 
+    catch (error: any) {
+        return response.status(500).json({ error: error.message });
+    }
+}

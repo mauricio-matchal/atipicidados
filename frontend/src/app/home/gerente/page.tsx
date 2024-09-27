@@ -1,19 +1,27 @@
+"use client";
 import PlusIcon from "@/assets/icons/plus";
 import SearchIcon from "@/assets/icons/search";
 import { Card } from "@/components/Card";
 import NavBar from "@/components/NavBar";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-  const router = useRouter();
-  const { email } = router.query;
+  const searchParams = useSearchParams();
+  const email = searchParams.get("email");
   const [userEmail, setUserEmail] = useState("");
+
+  useEffect(() => {
+    if (email) {
+      setUserEmail(decodeURIComponent(email));
+    }
+  }, [email]);
 
   return (
     <main className="flex flex-col min-h-screen">
-      <NavBar />
-
+      <NavBar userEmail={userEmail} />
+      GERENTE
       <div className="px-[137px] pt-[30px]">
         <div className="flex justify-between">
           <div className="flex flex-col w-[340px]">

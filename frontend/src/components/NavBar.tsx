@@ -5,7 +5,11 @@ import logo from '../../public/logo.svg';
 import { ConfigIcon } from "../../public/icons/Icons";
 import { usePathname } from "next/navigation";
 
-export default function NavBar() {
+interface NavBarProps {
+    userEmail: string;
+}
+
+export default function NavBar({ userEmail }: NavBarProps) {
     const currentPath = usePathname();
 
     return (
@@ -38,7 +42,7 @@ export default function NavBar() {
                     <Link href='/meucadastro' className="flex gap-4 items-center">
                         <div className='flex flex-col items-end gap-[2px] font-medium text-[14px] leading-[17px]'>
                             <p>Jacob Jones</p>
-                            <p className="opacity-60">ticklishkoala607</p>
+                            <p className="opacity-60">{userEmail}</p>
                         </div>
                         <div className="rounded-full w-11 h-11 bg-blue-800"></div>
                     </Link>
