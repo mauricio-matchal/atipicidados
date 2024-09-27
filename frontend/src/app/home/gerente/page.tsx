@@ -93,10 +93,25 @@ export default function Home() {
     ...colaboradores.map((colaborador) => ({ ...colaborador, type: "Colaborador" }))
   ];
 
+
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  // selectedFilters = [Colaborador, Atendido, Gerente]
+
+  const handleFilterChange = (filter: string) => {
+    setSelectedFilters((prevFilters) =>
+      prevFilters.includes(filter)
+        ? prevFilters.filter((f) => f !== filter)
+        : [...prevFilters, filter]
+    );
+  };
+
+  const filteredMembers = allMembers.filter((member) =>
+    selectedFilters.length === 0 || selectedFilters.includes(member.type)
+  );
+
   return (
     <main className="flex flex-col min-h-screen">
       <NavBarGerente />
-
       <div className="px-[84px] py-[40px]">
         <div className="flex justify-between">
           <div className="flex flex-col w-[340px]">
@@ -127,8 +142,10 @@ export default function Home() {
                     after:content-[''] after:w-full after:h-full after:absolute after:left-0 after:top-0 after:bg-no-repeat after:bg-center after:bg-[length:16px] 
                     checked:after:bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNCA4TDcuMjUgMTEuNzVMMTEuNzUgMy43NSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4K')]
                   "
+                  checked={selectedFilters.includes("Gerente")}
+                  onChange={() => handleFilterChange("Gerente")}
                 />
-                Gerente
+                Gerentes
               </label>
               <label className="flex items-center">
                 <input
@@ -140,8 +157,10 @@ export default function Home() {
                     after:content-[''] after:w-full after:h-full after:absolute after:left-0 after:top-0 after:bg-no-repeat after:bg-center after:bg-[length:16px] 
                     checked:after:bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNCA4TDcuMjUgMTEuNzVMMTEuNzUgMy43NSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4K')]
                   "
+                  checked={selectedFilters.includes("Colaborador")}
+                  onChange={() => handleFilterChange("Colaborador")}
                 />
-                Colaborador
+                Colaboradores
               </label>
               <label className="flex items-center">
                 <input
@@ -153,8 +172,10 @@ export default function Home() {
                     after:content-[''] after:w-full after:h-full after:absolute after:left-0 after:top-0 after:bg-no-repeat after:bg-center after:bg-[length:16px] 
                     checked:after:bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNCA4TDcuMjUgMTEuNzVMMTEuNzUgMy43NSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4K')]
                   "
+                  checked={selectedFilters.includes("Paciente")}
+                  onChange={() => handleFilterChange("Paciente")}
                 />
-                Atendido
+                Atendidos
               </label>
             </div>
           </div>
@@ -182,13 +203,9 @@ export default function Home() {
         </div>
 
         <div className="mt-[28px] grid grid-cols-4 gap-2 w-full max-w-full">
-          {allMembers.length > 0 ? (
-            allMembers.map((member) => (
-              <Card key={member.id} title={member.nome} cpf={member.cpf} acesso={member.type} />
-            ))
-          ) : (
-            <p>Nenhum membro encontrado.</p>
-          )}
+          {filteredMembers.map((member) => (
+            <Card key={member.id} title={member.nome} cpf={member.cpf} acesso={member.type} />
+          ))}
         </div>
       </div>
     </main>

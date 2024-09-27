@@ -64,7 +64,7 @@ export default function Home() {
               <input
                 type="text"
                 className='input w-full h-[35px] mb-2 pb-1'
-                placeholder="Buscar membro..." />
+                placeholder="Buscar unidade..." />
 
               <button
                 type="button"

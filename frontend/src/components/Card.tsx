@@ -33,7 +33,7 @@ export function Card({ title, cpf, acesso, hasBorder = true }: CardProps) {
           <p className="font-semibold truncate w-[180px]">{title ?? "Nome desconhecido"}</p>
           <p className="font-medium text-[14px] text-[#000000]/80">{cpf ? formatCPF(cpf) : "Nenhum CPF"}</p>
           {/*cargo filtro*/}
-          <p className="font-semibold text-[14px] text-[#000000]/80">{acesso ?? "Nenhum acesso"}</p>
+          <p className="font-semibold text-[14px] text-[#000000]/80">{acesso === "Paciente" ? "Atendido(a)" : acesso === "Colaborador" ? "Colaborador(a)" : acesso ?? "Nenhum acesso"}</p>
         </div>
       </div>
 

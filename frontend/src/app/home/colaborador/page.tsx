@@ -16,6 +16,7 @@ export default function Home() {
   const [userID, setUserID] = useState("");
   const [colaboradorInfo, setColaboradorInfo] = useState<any | null>(null);
   const [pacientes, setPacientes] = useState<any[]>([]);
+  // const [pacientesAutenticados, setPacientesAutenticados] = useState<any[]>([]);
   const [gerentes, setGerentes] = useState<any[]>([]);
   const [colaboradores, setColaboradores] = useState<any[]>([]);
 
@@ -56,8 +57,10 @@ export default function Home() {
         throw new Error("Failed to fetch pacientes data");
       }
       const data = await response.json();
+      const autenticados = data.pacientes.filter((paciente: any) => paciente.analise);
       console.log(data.pacientes);
       setPacientes(data.pacientes);
+      // setPacientesAutenticados(autenticados);
     } catch (error) {
       console.error("Error fetching pacientes data:", error);
     }
@@ -95,10 +98,25 @@ export default function Home() {
     ...colaboradores.map((colaborador) => ({ ...colaborador, type: "Colaborador" }))
   ];
 
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  // selectedFilters = [Colaborador, Atendido, Gerente]
+
+  const handleFilterChange = (filter: string) => {
+    setSelectedFilters((prevFilters) =>
+      prevFilters.includes(filter)
+        ? prevFilters.filter((f) => f !== filter)
+        : [...prevFilters, filter]
+    );
+  };
+
+  const filteredMembers = allMembers.filter((member) =>
+    selectedFilters.length === 0 || selectedFilters.includes(member.type)
+  );
+
   return (
     <main className="flex flex-col min-h-screen">
       <NavBarColaborador />
-
+      {/* <button onClick={() => {console.log(pacientesAutenticados)}}>Mostrar pacientes autenticado</button> */}
       <div className="px-[84px] py-[40px]">
         <div className="flex justify-between">
           <div className="flex flex-col w-[700px]">
@@ -134,6 +152,8 @@ export default function Home() {
                     after:content-[''] after:w-full after:h-full after:absolute after:left-0 after:top-0 after:bg-no-repeat after:bg-center after:bg-[length:16px] 
                     checked:after:bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNCA4TDcuMjUgMTEuNzVMMTEuNzUgMy43NSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4K')]
                   "
+                  checked={selectedFilters.includes("Gerente")}
+                  onChange={() => handleFilterChange("Gerente")}
                 />
                 Gerente
               </label>
@@ -147,6 +167,8 @@ export default function Home() {
                     after:content-[''] after:w-full after:h-full after:absolute after:left-0 after:top-0 after:bg-no-repeat after:bg-center after:bg-[length:16px] 
                     checked:after:bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNCA4TDcuMjUgMTEuNzVMMTEuNzUgMy43NSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4K')]
                   "
+                  checked={selectedFilters.includes("Colaborador")}
+                  onChange={() => handleFilterChange("Colaborador")}
                 />
                 Colaborador
               </label>
@@ -160,6 +182,8 @@ export default function Home() {
                     after:content-[''] after:w-full after:h-full after:absolute after:left-0 after:top-0 after:bg-no-repeat after:bg-center after:bg-[length:16px] 
                     checked:after:bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNCA4TDcuMjUgMTEuNzVMMTEuNzUgMy43NSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4K')]
                   "
+                  checked={selectedFilters.includes("Paciente")}
+                  onChange={() => handleFilterChange("Paciente")}
                 />
                 Atendido
               </label>
@@ -173,6 +197,8 @@ export default function Home() {
                     after:content-[''] after:w-full after:h-full after:absolute after:left-0 after:top-0 after:bg-no-repeat after:bg-center after:bg-[length:16px] 
                     checked:after:bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNCA4TDcuMjUgMTEuNzVMMTEuNzUgMy43NSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4K')]
                   "
+                  // checked={selectedFilters.includes("Autenticado")}
+                  // onChange={() => handleFilterChange("Autenticado")}
                 />
                 Autenticado
               </label>
@@ -186,6 +212,8 @@ export default function Home() {
                     after:content-[''] after:w-full after:h-full after:absolute after:left-0 after:top-0 after:bg-no-repeat after:bg-center after:bg-[length:16px] 
                     checked:after:bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNCA4TDcuMjUgMTEuNzVMMTEuNzUgMy43NSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4K')]
                   "
+                  // checked={selectedFilters.includes("Não autenticado")}
+                  // onChange={() => handleFilterChange("Não autenticado")}
                 />
                 Não autenticado
               </label>
@@ -203,13 +231,9 @@ export default function Home() {
         </div>
 
         <div className="mt-[28px] grid grid-cols-4 gap-2 w-full max-w-full">
-          {allMembers.length > 0 ? (
-            allMembers.map((member) => (
-              <Card key={member.id} title={member.nome} cpf={member.cpf} acesso={member.type} />
-            ))
-          ) : (
-            <p>Nenhum membro encontrado.</p>
-          )}
+          {filteredMembers.map((member) => (
+            <Card key={member.id} title={member.nome} cpf={member.cpf} acesso={member.type} />
+          ))}
         </div>
       </div>
     </main>
