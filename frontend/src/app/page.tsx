@@ -75,6 +75,8 @@ export default function Home() {
 
       localStorage.setItem("userEmail", loginData.email);
       localStorage.setItem("userID", gerente.id);
+      localStorage.setItem("userNome", gerente.nome);
+      
       const homeLink = `/home/${userType.toLowerCase()}?email=${encodeURIComponent(loginData.email)}&id=${encodeURIComponent(gerente.id)}`
       localStorage.setItem("homeLink", homeLink)
       

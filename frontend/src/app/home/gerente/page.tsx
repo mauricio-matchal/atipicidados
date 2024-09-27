@@ -96,15 +96,8 @@ export default function Home() {
   return (
     <main className="flex flex-col min-h-screen">
       <NavBarGerente />
-      <p>
-        CPF: {gerenteInfo && gerenteInfo.cpf}
-      </p>
-      <p>
-        RG: {gerenteInfo && gerenteInfo.rg}
-      </p>
 
-      <button onClick={() => { console.log(gerenteInfo) }}>Mostrar gerenteInfo</button>
-      <div className="px-[84px] py-[30px]">
+      <div className="px-[84px] py-[40px]">
         <div className="flex justify-between">
           <div className="flex flex-col w-[340px]">
             <h2 className="mb-7">Página inicial</h2>
@@ -127,21 +120,39 @@ export default function Home() {
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  className="checkbox hover:none"
+                  className="
+                    relative w-4 h-4 appearance-none bg-white/[0.4] border-[1px] border-black/40 focus:outline-none rounded-[4px] mr-2
+                    checked:bg-blue-800 checked:border-none
+                    hover:ring hover:ring-offset-indigo-400 hover:cursor-pointer
+                    after:content-[''] after:w-full after:h-full after:absolute after:left-0 after:top-0 after:bg-no-repeat after:bg-center after:bg-[length:16px] 
+                    checked:after:bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNCA4TDcuMjUgMTEuNzVMMTEuNzUgMy43NSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4K')]
+                  "
                 />
                 Gerente
               </label>
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  className="checkbox hover:none"
+                  className="
+                    relative w-4 h-4 appearance-none bg-white/[0.4] border-[1px] border-black/40 focus:outline-none rounded-[4px] mr-2
+                    checked:bg-blue-800 checked:border-none
+                    hover:ring hover:ring-offset-indigo-400 hover:cursor-pointer
+                    after:content-[''] after:w-full after:h-full after:absolute after:left-0 after:top-0 after:bg-no-repeat after:bg-center after:bg-[length:16px] 
+                    checked:after:bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNCA4TDcuMjUgMTEuNzVMMTEuNzUgMy43NSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4K')]
+                  "
                 />
                 Colaborador
               </label>
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  className="checkbox hover:none"
+                  className="
+                    relative w-4 h-4 appearance-none bg-white/[0.4] border-[1px] border-black/40 focus:outline-none rounded-[4px] mr-2
+                    checked:bg-blue-800 checked:border-none
+                    hover:ring hover:ring-offset-indigo-400 hover:cursor-pointer
+                    after:content-[''] after:w-full after:h-full after:absolute after:left-0 after:top-0 after:bg-no-repeat after:bg-center after:bg-[length:16px] 
+                    checked:after:bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNCA4TDcuMjUgMTEuNzVMMTEuNzUgMy43NSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4K')]
+                  "
                 />
                 Atendido
               </label>

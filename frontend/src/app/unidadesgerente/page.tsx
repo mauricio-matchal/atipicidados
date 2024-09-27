@@ -1,0 +1,92 @@
+"use client";
+import { CardUnidade } from "@/components/Card";
+import NavBarGerente from "@/components/NavBarGerente";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import SearchIcon from "@/assets/icons/search";
+
+export default function Home() {
+  const [userEmail, setUserEmail] = useState("");
+  const [userID, setUserID] = useState("");
+  const [gerenteInfo, setGerenteInfo] = useState<any | null>(null);
+
+  const [unidades, setUnidades] = useState<any[]>([]);
+
+  useEffect(() => {
+    const email = localStorage.getItem("userEmail");
+    const id = localStorage.getItem("userID");
+    if (email) {
+      setUserEmail(decodeURIComponent(email));
+    }
+    if (id) {
+      setUserID(id);
+      fetchGerenteData(id);
+    }
+    fetchUnidades();
+  }, []);
+
+  const fetchGerenteData = async (id: any) => {
+    try {
+      const response = await fetch(`http://localhost:3002/gerentes/id/${id}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch gerente data");
+      }
+      const data = await response.json();
+      setGerenteInfo(data);
+    } catch (error) {
+      console.error("Error fetching gerente data:", error);
+    }
+  };
+
+  const fetchUnidades = async () => {
+    try {
+      const response = await fetch("http://localhost:3002/unidades/getall");
+      if (!response.ok) {
+        throw new Error("Failed to fetch unidades data");
+      }
+      const data = await response.json();
+      console.log(data.unidades);
+      setUnidades(data.unidades);
+    } catch (error) {
+      console.error("Error fetching unidades data:", error);
+    }
+  };
+  return (
+    <main className="flex flex-col min-h-screen">
+      <NavBarGerente />
+
+      <div className="px-[84px] pt-[40px]">
+        <div className="flex justify-between">
+          <div className="flex flex-col w-[340px]">
+            <h2 className="mb-7">Unidades</h2>
+
+            <div className="relative w-full">
+              <input
+                type="text"
+                className='input w-full h-[35px] mb-2 pb-1'
+                placeholder="Buscar membro..." />
+
+              <button
+                type="button"
+                className="absolute inset-y-0 right-0 px-[10px] py-2 pb-4 bg-gray-300 rounded-r-md"
+              >
+                <SearchIcon color="black" />
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <div className="mt-[28px] grid grid-cols-4 gap-2 w-full max-w-full">
+          {unidades.length > 0 ? (
+            unidades.map((unidade) => (
+              <CardUnidade key={unidade.id} title={unidade.nome} endereco={unidade.endereco} />
+            ))
+          ) : (
+            <p>Nenhum membro encontrado.</p>
+          )}
+        </div>
+      </div>
+    </main>
+  );
+}

@@ -15,6 +15,9 @@ export default function Home() {
   const [userEmail, setUserEmail] = useState("");
   const [userID, setUserID] = useState("");
   const [colaboradorInfo, setColaboradorInfo] = useState<any | null>(null);
+  const [pacientes, setPacientes] = useState<any[]>([]);
+  const [gerentes, setGerentes] = useState<any[]>([]);
+  const [colaboradores, setColaboradores] = useState<any[]>([]);
 
   useEffect(() => {
     const email = localStorage.getItem("userEmail");
@@ -28,6 +31,9 @@ export default function Home() {
       setUserID(decodedID);
       fetchColaboradorData(decodedID);
     }
+    fetchPacientes();
+    fetchGerentes();
+    fetchColaboradores();
   }, [email, id]);
 
   const fetchColaboradorData = async (id: any) => {
@@ -43,27 +49,67 @@ export default function Home() {
     }
   };
 
+  const fetchPacientes = async () => {
+    try {
+      const response = await fetch("http://localhost:3002/pacientes/getall");
+      if (!response.ok) {
+        throw new Error("Failed to fetch pacientes data");
+      }
+      const data = await response.json();
+      console.log(data.pacientes);
+      setPacientes(data.pacientes);
+    } catch (error) {
+      console.error("Error fetching pacientes data:", error);
+    }
+  };
+  const fetchGerentes = async () => {
+    try {
+      const response = await fetch("http://localhost:3002/gerentes/getall");
+      if (!response.ok) {
+        throw new Error("Failed to fetch gerentes data");
+      }
+      const data = await response.json();
+      console.log(data.gerentes);
+      setGerentes(data.gerentes);
+    } catch (error) {
+      console.error("Error fetching gerentes data:", error);
+    }
+  };
+  const fetchColaboradores = async () => {
+    try {
+      const response = await fetch("http://localhost:3002/colaboradores/getall");
+      if (!response.ok) {
+        throw new Error("Failed to fetch colaboradores data");
+      }
+      const data = await response.json();
+      console.log(data.colaboradores);
+      setColaboradores(data.colaboradores);
+    } catch (error) {
+      console.error("Error fetching gerentes data:", error);
+    }
+  };
+
+  const allMembers = [
+    ...pacientes.map((paciente) => ({ ...paciente, type: "Paciente" })),
+    ...gerentes.map((gerente) => ({ ...gerente, type: "Gerente" })),
+    ...colaboradores.map((colaborador) => ({ ...colaborador, type: "Colaborador" }))
+  ];
+
   return (
     <main className="flex flex-col min-h-screen">
       <NavBarColaborador />
-      <p>
-        CPF: {colaboradorInfo && colaboradorInfo.cpf}
-      </p>
-      <p>
-        RG: {colaboradorInfo && colaboradorInfo.rg}
-      </p>
-      <button onClick={() => { console.log(colaboradorInfo) }}>Mostrar colaboradorInfo</button>
-      <div className="px-[84px] py-[30px]">
+
+      <div className="px-[84px] py-[40px]">
         <div className="flex justify-between">
-          <div className="flex flex-col w-[340px]">
+          <div className="flex flex-col w-[700px]">
             <h2 className="mb-7">Página inicial</h2>
-            <div className="flex flex-col gap-2 mb-8">
+            <div className="flex flex-col gap-2 mb-4">
               <h3>Minha unidade (Nome da Unidade)</h3>
               <Link href='/unidade'>
                 <p className="font-semibold text-blue-800 cursor-pointer">Mais informações</p>
               </Link>
             </div>
-            <div className="relative w-full">
+            <div className="relative w-[340px]">
               <input
                 type="text"
                 className='input w-full h-[35px] mb-2 pb-1'
@@ -81,35 +127,65 @@ export default function Home() {
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  className="checkbox hover:none"
+                  className="
+                    relative w-4 h-4 appearance-none bg-white/[0.4] border-[1px] border-black/40 focus:outline-none rounded-[4px] mr-2
+                    checked:bg-blue-800 checked:border-none
+                    hover:ring hover:ring-offset-indigo-400 hover:cursor-pointer
+                    after:content-[''] after:w-full after:h-full after:absolute after:left-0 after:top-0 after:bg-no-repeat after:bg-center after:bg-[length:16px] 
+                    checked:after:bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNCA4TDcuMjUgMTEuNzVMMTEuNzUgMy43NSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4K')]
+                  "
                 />
                 Gerente
               </label>
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  className="checkbox hover:none"
+                  className="
+                    relative w-4 h-4 appearance-none bg-white/[0.4] border-[1px] border-black/40 focus:outline-none rounded-[4px] mr-2
+                    checked:bg-blue-800 checked:border-none
+                    hover:ring hover:ring-offset-indigo-400 hover:cursor-pointer
+                    after:content-[''] after:w-full after:h-full after:absolute after:left-0 after:top-0 after:bg-no-repeat after:bg-center after:bg-[length:16px] 
+                    checked:after:bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNCA4TDcuMjUgMTEuNzVMMTEuNzUgMy43NSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4K')]
+                  "
                 />
                 Colaborador
               </label>
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  className="checkbox hover:none"
+                  className="
+                    relative w-4 h-4 appearance-none bg-white/[0.4] border-[1px] border-black/40 focus:outline-none rounded-[4px] mr-2
+                    checked:bg-blue-800 checked:border-none
+                    hover:ring hover:ring-offset-indigo-400 hover:cursor-pointer
+                    after:content-[''] after:w-full after:h-full after:absolute after:left-0 after:top-0 after:bg-no-repeat after:bg-center after:bg-[length:16px] 
+                    checked:after:bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNCA4TDcuMjUgMTEuNzVMMTEuNzUgMy43NSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4K')]
+                  "
                 />
                 Atendido
               </label>
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  className="checkbox hover:none"
+                  className="
+                    relative w-4 h-4 appearance-none bg-white/[0.4] border-[1px] border-black/40 focus:outline-none rounded-[4px] mr-2
+                    checked:bg-blue-800 checked:border-none
+                    hover:ring hover:ring-offset-indigo-400 hover:cursor-pointer
+                    after:content-[''] after:w-full after:h-full after:absolute after:left-0 after:top-0 after:bg-no-repeat after:bg-center after:bg-[length:16px] 
+                    checked:after:bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNCA4TDcuMjUgMTEuNzVMMTEuNzUgMy43NSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4K')]
+                  "
                 />
                 Autenticado
               </label>
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  className="checkbox hover:none"
+                  className="
+                    relative w-4 h-4 appearance-none bg-white/[0.4] border-[1px] border-black/40 focus:outline-none rounded-[4px] mr-2
+                    checked:bg-blue-800 checked:border-none
+                    hover:ring hover:ring-offset-indigo-400 hover:cursor-pointer
+                    after:content-[''] after:w-full after:h-full after:absolute after:left-0 after:top-0 after:bg-no-repeat after:bg-center after:bg-[length:16px] 
+                    checked:after:bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNCA4TDcuMjUgMTEuNzVMMTEuNzUgMy43NSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4K')]
+                  "
                 />
                 Não autenticado
               </label>
@@ -126,8 +202,14 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="mt-[42px]">
-          <Card />
+        <div className="mt-[28px] grid grid-cols-4 gap-2 w-full max-w-full">
+          {allMembers.length > 0 ? (
+            allMembers.map((member) => (
+              <Card key={member.id} title={member.nome} cpf={member.cpf} acesso={member.type} />
+            ))
+          ) : (
+            <p>Nenhum membro encontrado.</p>
+          )}
         </div>
       </div>
     </main>

@@ -39,7 +39,7 @@ export default function Home() {
     return (
         <main className="flex flex-col min-h-screen">
             <NavBar />
-            <div className="flex flex-col gap-[20px] mx-[108px] mt-[33px] text-[14px]">
+            <div className="flex flex-col gap-[20px] px-[108px] pt-[33px] pb-[50px] text-[14px]">
                 <div className="flex gap-[20px]">
                     <div className="box w-3/5 flex flex-col gap-7">
                         <h2>Meu cadastro</h2>
@@ -90,9 +90,9 @@ export default function Home() {
                         <h3>Profissionais que me acompanham</h3>
 
                         <div className="flex flex-col">
-                            <Card />
-                            <Card />
-                            <Card />
+                            <Card hasBorder={false} />
+                            <Card hasBorder={false} />
+                            <Card hasBorder={false} />
                         </div>
                     </div>
                 </div>

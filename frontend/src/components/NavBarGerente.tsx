@@ -23,16 +23,20 @@ export default function NavBar({ userEmail, userName }: NavBarProps) {
     const [userID, setUserID] = useState("");
     const [gerenteInfo, setGerenteInfo] = useState<Gerente | null>(null);
     const [homeLink, setHomeLink] = useState("");
+    const [nome, setNome] = useState("");
 
     useEffect(() => {
         const email = localStorage.getItem("userEmail");
         const id = localStorage.getItem("userID");
         const homeLink = localStorage.getItem("homeLink");
+        const nome = localStorage.getItem("userNome");
         if (email) setUserrEmail(email);
         if (id) {
-            setUserID(id);
-            fetchGerenteData(id);
+            const decodedID = decodeURIComponent(id);
+            setUserID(decodedID);
+            fetchGerenteData(decodedID);
         };
+        if (nome) setNome(nome);
         if (homeLink) setHomeLink(homeLink);
     })
 
@@ -52,14 +56,14 @@ export default function NavBar({ userEmail, userName }: NavBarProps) {
     return (
         <div className="w-full relative">
             <nav className="absolute flex items-center px-[10px] py-[10px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                <ul className="flex gap-8 font-semibold text-[14px]">
-                    <li>
-                        <Link href={homeLink} className={currentPath.startsWith('/home') ? 'text-blue-800 font-bold' : ''}>
+                <ul className="flex gap-4 font-semibold text-[14px]">
+                    <li className={`relative`}>
+                        <Link href={homeLink} className={`flex items-center px-3 py-2.5 pt-2 ${currentPath.startsWith('/home') ? 'text-blue-800 font-bold bg-blue-800/15 rounded-lg' : 'text-gray-700'}`}>
                             Página inicial
                         </Link>
                     </li>
-                    <li>
-                        <Link href='/unidades' className={currentPath === '/unidades' ? 'text-blue-800 font-bold' : ''}>
+                    <li className={`relative`}>
+                        <Link href='/unidadesgerente' className={`flex items-center px-3 py-2.5 pt-2 ${currentPath === '/unidadesgerente' ? 'text-blue-800 font-bold bg-blue-800/15 rounded-lg' : 'text-gray-700'}`}>
                             Unidades
                         </Link>
                     </li>
