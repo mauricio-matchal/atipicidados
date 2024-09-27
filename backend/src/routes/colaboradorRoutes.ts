@@ -2,7 +2,7 @@ import { Router } from 'express';
 import cors from 'cors';
 import { createUserColaborador, getUserColaborador, colaboradorLogin, getColaborador } from '../controllers/colaboradorController';
 import { sendPassword } from '../email/sendpassowordbyemail';
-import { ColaboradorCreateInputSchema } from '../../prisma/generated/zod/validateSchema';
+import { ColaboradorCreateInputSchema } from '../../prisma/validateSchema';
 import { validate } from '../middleware/validate';
 
 export const colaboradorRouter = Router();

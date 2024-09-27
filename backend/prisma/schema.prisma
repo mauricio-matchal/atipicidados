@@ -10,6 +10,8 @@ datasource db {
 }
 generator zod {
   provider = " npx zod-prisma-types"
+    output   = "./generated/zod"
+
 }
 
 model Gerente  {

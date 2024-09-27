@@ -1,7 +1,7 @@
 import {  type Prisma } from '@prisma/client';
 
 import { z } from 'zod';
-import { ColaboradorCreateNestedManyWithoutPacientesInputSchema, GeneroSchema, InputJsonValueSchema, NullableJsonNullValueInputSchema, PacienteCreateNestedManyWithoutColaboradoresInputSchema, RacaSchema, UnidadeCreateNestedOneWithoutGerentesInputSchema, UnidadeCreateNestedOneWithoutPacientesInputSchema } from './index';
+import { ColaboradorCreateNestedManyWithoutPacientesInputSchema, GeneroSchema, InputJsonValueSchema, NullableJsonNullValueInputSchema, PacienteCreateNestedManyWithoutColaboradoresInputSchema, RacaSchema, UnidadeCreateNestedOneWithoutGerentesInputSchema, UnidadeCreateNestedOneWithoutPacientesInputSchema } from '../prisma/generated/zod';
 
 
 
