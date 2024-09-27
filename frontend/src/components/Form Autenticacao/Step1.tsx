@@ -37,16 +37,7 @@ const validatePassword = (password: string) => {
 };
 
 
-const Step1: React.FC<{
-  nextStep: () => void;
-  updateLogin: (data: any) => void;
-  updateFoto: (data: any) => void;
-  updateRelatorio: (data: any) => void;
-  updateRG: (data: any) => void;
-  updateResidencia: (data: any) => void;
-  updateGeral: (data: Step11State) => void;
-  updateEscola: (data: Step12State) => void
-}> = ({ nextStep, updateLogin, updateGeral, updateEscola, updateFoto, updateRelatorio, updateRG, updateResidencia }) => {
+const Step1: React.FC<{ nextStep: () => void; updateGeral: (data: Step11State) => void; updateEscola: (data: Step12State) => void }> = ({ nextStep, updateGeral, updateEscola }) => {
   const [Step11, setStep11] = useState<Step11State>({
     nome: "",
     data: "",
@@ -79,35 +70,29 @@ const Step1: React.FC<{
   const [error, setError] = useState<string | null>(null);
 
   const handleLoginChange: any = (key: string, value: string) => {
-    setLogin((prevState) => {
-      const updatedForm = {
-        ...prevState,
-        [key]: value,
-      };
-      updateLogin(updatedForm);
-      return updatedForm;
-    });
+    setLogin((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
   };
+
   const handleInputChange1 = (key: string, value: string) => {
-    setStep11((prevState) => {
-      const updatedForm = {
-        ...prevState,
-        [key]: value,
-      };
-      updateGeral(updatedForm);
-      return updatedForm;
-    });
+    setStep11((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
   };
   const handleInputChange2 = (key: string, value: string) => {
-    setStep12((prevState) => {
-      const updatedForm = {
-        ...prevState,
-        [key]: value,
-      };
-      updateEscola(updatedForm);
-      return updatedForm;
-    });
+    setStep12((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
   };
+
+  const reveal = () => {
+    console.log(Step11);
+    console.log(Step12);
+  }
 
   const [hasRelatorio, setHasRelatorio] = useState(false);
 
@@ -115,36 +100,6 @@ const Step1: React.FC<{
     setHasRelatorio(selectedOption === 'Sim, possui relatório escolar');
     handleInputChange2("possuiRelatorio", selectedOption);
   };
-
-  // ARQUIVOS //
-
-  const [fotoFile, setFotoFile] = useState<File | null>(null);
-  const [relatorioFile, setRelatorioFile] = useState<File | null>(null);
-  const [rgFile, setRGFile] = useState<File | null>(null);
-  const [residenciaFile, setResidenciaFile] = useState<File | null>(null);
-
-  const handleFotoFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFotoFile(e.target.files[0]);
-    }
-  };
-  const handleRelatorioFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setRelatorioFile(e.target.files[0]);
-    }
-  };
-  const handleRGFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setRGFile(e.target.files[0]);
-    }
-  };
-  const handleResidenciaFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setResidenciaFile(e.target.files[0]);
-    }
-  };
-
-  //////////
 
   const handleNext = () => {
     if (login.email !== login.confirmarEmail || login.senha !== login.confirmarSenha) {
@@ -160,11 +115,8 @@ const Step1: React.FC<{
       return;
     }
 
-    updateFoto(fotoFile);
-    updateRelatorio(relatorioFile);
-    updateRG(rgFile);
-    updateResidencia(residenciaFile);
-
+    updateGeral(Step11);
+    updateEscola(Step12);
     nextStep();
   };
 
@@ -184,19 +136,13 @@ const Step1: React.FC<{
             <TextInput className='w-[400px]' placeholder='Confirmar senha' value={login.confirmarSenha} onChange={(e) => handleLoginChange("confirmarSenha", e.target.value)} />
           </div>
           {error && <div className="text-[#FF0F00] font-medium">{error}</div>}
-
           <div className='mb-10'></div>
           <h4 className='pl-2'>Geral</h4>
-          <button onClick={() => { console.log(Step11); console.log(Step12) }}>Mostrar Respostas</button>
-          <button onClick={() => { console.log(fotoFile) }}>Mostrar Foto</button>
-          <div className='flex w-full gap-[12px]'>
-            <FileInput placeholder='Foto 3x4' className='min-w-[260px]' onChange={handleFotoFileChange} name='fotoFile' />
-            <TextInput placeholder='Nome completo' value={Step11.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
-          </div>
+          {/* <button onClick={reveal}>reveal</button> */}
 
           <div className='flex w-full gap-[12px]'>
-            <FileInput placeholder='Foto do RG' onChange={handleRGFileChange} name='rgFile' />
-            <FileInput placeholder='Comprovante de residência' onChange={handleResidenciaFileChange} name='residenciaFile' />
+            <FileInput placeholder='Foto 3x4' className='min-w-[260px]' />
+            <TextInput placeholder='Nome completo' value={Step11.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
           </div>
 
           <div className='flex w-full gap-[12px]'>
@@ -248,8 +194,6 @@ const Step1: React.FC<{
               className={`transition-opacity duration-300 w-full ${hasRelatorio ? 'opacity-100' : 'opacity-40'} ${hasRelatorio ? '' : 'cursor-not-allowed'}`}
               disabled={!hasRelatorio}
               style={{ pointerEvents: hasRelatorio ? 'auto' : 'none' }}
-              name='relatorioFile'
-              onChange={handleRelatorioFileChange}
             />
           </div>
         </div>

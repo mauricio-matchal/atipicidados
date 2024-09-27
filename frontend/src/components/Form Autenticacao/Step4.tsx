@@ -7,6 +7,7 @@ import CheckInput from '../CheckInput';
 import FileInput from '../FileInput';
 import NumberInput from '../NumberInput';
 import Termo from '../Termo';
+import CheckIcon from "@/assets/icons/check";
 
 type Step4State = {
   diagnostico: string;
@@ -26,12 +27,7 @@ type Step4State = {
 };
 
 
-const Step4: React.FC<{
-  prevStep: () => void;
-  updateLaudoFile: (data: any) => void; 
-  updateInfoSaude: (data: Step4State) => void; 
-  handleFormDataSubmit: () => void 
-}> = ({ prevStep, updateInfoSaude, handleFormDataSubmit, updateLaudoFile }) => {
+const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State) => void; handleFormDataSubmit: () => void }> = ({ prevStep, updateInfoSaude, handleFormDataSubmit }) => {
   const [selectedCheckboxOptions, setSelectedCheckboxOptions] = useState<string[]>([]);
 
   const [Step4, setStep4] = useState<Step4State>({
@@ -59,14 +55,10 @@ const Step4: React.FC<{
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleInputChange = (key: string, value: string) => {
-    setStep4((prevState) => {
-      const updatedForm = {
-        ...prevState,
-        [key]: value,
-      };
-      updateInfoSaude(updatedForm);
-      return updatedForm;
-    });
+    setStep4((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
   };
 
   const handleInputChangeList = (key: string, value: string[]) => {
@@ -75,14 +67,6 @@ const Step4: React.FC<{
       [key]: value,
     }));
   };
-
-  const [laudoFile, setLaudoFile] = useState<File | null>(null);
-
-  const handleLaudoFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setLaudoFile(e.target.files[0]);
-    }
-  }
 
   const handleDoencaChange = (options: string[]) => {
     setSelectedCheckboxOptions(options);
@@ -124,7 +108,12 @@ const Step4: React.FC<{
     setIsModalVisible(false);
   };
 
+  const reveal = () => {
+    console.log(Step4);
+  }
+
   const handleSubmit = () => {
+    updateInfoSaude(Step4);
     handleFormDataSubmit();
   };
 
@@ -134,7 +123,7 @@ const Step4: React.FC<{
 
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Informações de saúde</h4>
-          <button onClick={() => {console.log(Step4)}}>Mostrar Respostas</button>
+          <button onClick={reveal}>reveal</button>
           <div className='flex w-full gap-[12px]'>
             <SelectInput
               options={["Sim, tem diagnóstico", "Não tem diagnóstico"]}
@@ -222,8 +211,6 @@ const Step4: React.FC<{
               className={`transition-opacity duration-300 w-full ${hasAsma ? 'opacity-100' : 'opacity-40'} ${hasAsma ? '' : 'cursor-not-allowed'}`}
               disabled={!hasAsma}
               style={{ pointerEvents: hasAsma ? 'auto' : 'none' }}
-              name='laudofile'
-              onChange={handleLaudoFileChange}
             />
           </div>
 
@@ -258,7 +245,10 @@ const Step4: React.FC<{
           4 de 4
         </div>
 
-        <button className='botao' type='submit' onClick={handleSubmit}>Enviar</button>
+        <button className='botao' type='submit' onClick={handleSubmit}>
+          <CheckIcon style={{ color: 'var(--texto-botao)' }} />
+          Autenticar usuário e salvar alterações
+        </button>
       </div>
     </div>
   );

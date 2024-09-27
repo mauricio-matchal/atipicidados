@@ -104,7 +104,7 @@ export const colaboradorLogin = async (request: Request, response: Response) => 
             error: false,
             message: 'Login realizado',
             token,
-            colaborador: {
+            gerente: {
                 id: userColaborador.id,
             }
         });
@@ -160,7 +160,7 @@ export const getColaboradores = async (_:Request, response:Response) => {
 
 
     }
-    catch(eror:any){
+    catch(error:any){
         return response.status(500).json({error:true, message:'Erro interno no servidor'})
     }
 }

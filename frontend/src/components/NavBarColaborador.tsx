@@ -6,7 +6,7 @@ import { ConfigIcon } from "../../public/icons/Icons";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-type Gerente = {
+type Colaborador = {
     nome: string;
     rg: string;
     cpf: string;
@@ -21,7 +21,7 @@ export default function NavBar({ userEmail, userName }: NavBarProps) {
     const currentPath = usePathname().split('?')[0];
     const [userrEmail, setUserrEmail] = useState("");
     const [userID, setUserID] = useState("");
-    const [gerenteInfo, setGerenteInfo] = useState<Gerente | null>(null);
+    const [colaboradorInfo, setColaboradorInfo] = useState<Colaborador | null>(null);
     const [homeLink, setHomeLink] = useState("");
 
     useEffect(() => {
@@ -31,19 +31,19 @@ export default function NavBar({ userEmail, userName }: NavBarProps) {
         if (email) setUserrEmail(email);
         if (id) {
             setUserID(id);
-            fetchGerenteData(id);
+            fetchColaboradorData(id);
         };
         if (homeLink) setHomeLink(homeLink);
     })
 
-    const fetchGerenteData = async (id: any) => {
+    const fetchColaboradorData = async (id: any) => {
         try {
-            const response = await fetch(`http://localhost:3002/gerentes/${id}`);
+            const response = await fetch(`http://localhost:3002/colaboradores/id/${id}`);
             if (!response.ok) {
                 throw new Error("Failed to fetch gerente data");
             }
             const data = await response.json();
-            setGerenteInfo(data);
+            setColaboradorInfo(data);
         } catch (error) {
             console.error("Error fetching gerente data:", error);
         }
@@ -78,7 +78,7 @@ export default function NavBar({ userEmail, userName }: NavBarProps) {
                 <div className="flex items-center gap-8">
                     <Link href='/meucadastro' className="flex gap-4 items-center">
                         <div className='flex flex-col items-end gap-[2px] font-medium text-[14px] leading-[17px]'>
-                            <p>{gerenteInfo?.nome}</p>
+                            <p>{colaboradorInfo?.nome}</p>
                             <p className="opacity-60">{userrEmail}</p>
                         </div>
                         <div className="rounded-full w-11 h-11 bg-blue-800"></div>

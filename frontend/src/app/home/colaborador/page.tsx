@@ -1,19 +1,68 @@
+"use client";
 import PlusIcon from "@/assets/icons/plus";
 import SearchIcon from "@/assets/icons/search";
 import { Card } from "@/components/Card";
 import NavBar from "@/components/NavBar";
+import NavBarColaborador from "@/components/NavBarColaborador";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const searchParams = useSearchParams();
+  const email = searchParams.get("email");
+  const id = searchParams.get("id");
+  const [userEmail, setUserEmail] = useState("");
+  const [userID, setUserID] = useState("");
+  const [colaboradorInfo, setColaboradorInfo] = useState<any | null>(null);
+
+  useEffect(() => {
+    const email = localStorage.getItem("userEmail");
+    const id = localStorage.getItem("userID");
+    const homeLink = localStorage.getItem("homeLink");
+    if (email) {
+      setUserEmail(decodeURIComponent(email));
+    }
+    if (id) {
+      const decodedID = decodeURIComponent(id);
+      setUserID(decodedID);
+      fetchColaboradorData(decodedID);
+    }
+  }, [email, id]);
+
+  const fetchColaboradorData = async (id: any) => {
+    try {
+      const response = await fetch(`http://localhost:3002/colaboradores/id/${id}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch gerente data");
+      }
+      const data = await response.json();
+      setColaboradorInfo(data);
+    } catch (error) {
+      console.error("Error fetching gerente data:", error);
+    }
+  };
+
   return (
     <main className="flex flex-col min-h-screen">
-      <NavBar />
-
-      <div className="px-[137px] pt-[30px]">
+      <NavBarColaborador />
+      <p>
+        CPF: {colaboradorInfo && colaboradorInfo.cpf}
+      </p>
+      <p>
+        RG: {colaboradorInfo && colaboradorInfo.rg}
+      </p>
+      <button onClick={() => { console.log(colaboradorInfo) }}>Mostrar colaboradorInfo</button>
+      <div className="px-[84px] py-[30px]">
         <div className="flex justify-between">
           <div className="flex flex-col w-[340px]">
             <h2 className="mb-7">Página inicial</h2>
-            <h3 className="mb-[22px]">Membros cadastrados</h3>
+            <div className="flex flex-col gap-2 mb-8">
+              <h3>Minha unidade (Nome da Unidade)</h3>
+              <Link href='/unidade'>
+                <p className="font-semibold text-blue-800 cursor-pointer">Mais informações</p>
+              </Link>
+            </div>
             <div className="relative w-full">
               <input
                 type="text"
@@ -28,7 +77,7 @@ export default function Home() {
               </button>
             </div>
 
-            <div className="flex justify-around">
+            <div className="flex gap-[18px]">
               <label className="flex items-center">
                 <input
                   type="checkbox"
@@ -50,6 +99,20 @@ export default function Home() {
                 />
                 Atendido
               </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  className="checkbox hover:none"
+                />
+                Autenticado
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  className="checkbox hover:none"
+                />
+                Não autenticado
+              </label>
             </div>
           </div>
 
@@ -57,25 +120,7 @@ export default function Home() {
             <button className="botao">
               <Link href='/cadastro/paciente' className="flex flex-row gap-1 items-center">
                 <PlusIcon style={{ color: 'var(--texto-botao)' }} />
-                <p>Novo Paciente</p>
-              </Link>
-            </button>
-            <button className="botao">
-              <Link href='/cadastro/colaborador' className="flex flex-row gap-1 items-center">
-                <PlusIcon style={{ color: 'var(--texto-botao)' }} />
-                <p>Colaborador</p>
-              </Link>
-            </button>
-            <button className="botao">
-              <Link href='/cadastro/unidade' className="flex flex-row gap-1 items-center">
-                <PlusIcon style={{ color: 'var(--texto-botao)' }} />
-                <p>Unidade</p>
-              </Link>
-            </button>
-            <button className="botao">
-              <Link href='/cadastro/gerente' className="flex flex-row gap-1 items-center">
-                <PlusIcon style={{ color: 'var(--texto-botao)' }} />
-                <p>Gerente</p>
+                <p>Novo Cadastro</p>
               </Link>
             </button>
           </div>

@@ -46,25 +46,22 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateMae: (
   });
 
   const handleInputChange1 = (key: string, value: string) => {
-    setStep21((prevState) => {
-      const updatedForm = {
-        ...prevState,
-        [key]: value,
-      };
-      updateMae(updatedForm);
-      return updatedForm;
-    });
+    setStep21((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
   };
   const handleInputChange2 = (key: string, value: string) => {
-    setStep22((prevState) => {
-      const updatedForm = {
-        ...prevState,
-        [key]: value,
-      };
-      updatePai(updatedForm);
-      return updatedForm;
-    });
+    setStep22((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
   };
+
+  const reveal = () => {
+    console.log(Step21);
+    console.log(Step22);
+  }
 
   const [responsavelOutro, setResponsavelOutro] = useState(false);
 
@@ -75,6 +72,8 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateMae: (
   };
 
   const handleNext = () => {
+    updateMae(Step21);
+    updatePai(Step22);
     nextStep();
   };
 
@@ -84,7 +83,7 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateMae: (
 
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Mãe</h4>
-          <button onClick={() => {console.log(Step21);console.log(Step22)}}>Mostrar Respostas</button>
+          <button onClick={reveal}>reveal</button>
 
           <TextInput placeholder="Nome completo da mãe" value={Step21.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
 

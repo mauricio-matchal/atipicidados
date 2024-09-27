@@ -12,10 +12,10 @@ type Step11State = {
   endereco: string;
 };
 
-const Step1: React.FC<{ 
+const Step1: React.FC<{
   handleFormDataSubmit: () => void;
   updateForm: (data: any) => void;
-}> = ({handleFormDataSubmit, updateForm }) => {
+}> = ({ handleFormDataSubmit, updateForm }) => {
 
   const [Step11, setStep11] = useState<Step11State>({
     nome: "",
@@ -23,10 +23,14 @@ const Step1: React.FC<{
   });
 
   const handleInputChange1 = (key: string, value: string) => {
-    setStep11((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }));
+    setStep11((prevState) => {
+      const updatedForm = {
+        ...prevState,
+        [key]: value,
+      };
+      updateForm(updatedForm);
+      return updatedForm;
+    });
   };
 
   const [fotoFile, setFotoFile] = useState<File | null>(null);
@@ -48,8 +52,6 @@ const Step1: React.FC<{
   };
 
   const handleSubmit = () => {
-    updateForm(Step11);
-    
     handleFormDataSubmit();
   };
 
@@ -60,15 +62,15 @@ const Step1: React.FC<{
           <h2 className='font-bold'>Nova Unidade</h2>
 
           <div className='flex flex-col gap-[12px]'>
-                        
+
             <div className='flex w-full gap-[12px]'>
-              <TextInput placeholder='Nome da unidade' value={Step11.endereco} onChange={(e) => handleInputChange1("endereco", e.target.value)} />
-              <TextInput placeholder='Endereço' value={Step11.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
-            </div>     
+              <TextInput placeholder='Nome da unidade' value={Step11.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
+              <TextInput placeholder='Endereço' value={Step11.endereco} onChange={(e) => handleInputChange1("endereco", e.target.value)} />
+            </div>
 
           </div>
-        </div>
 
+        </div>
         <div className="flex items-center ml-[14px]">
           <input
             type="checkbox"

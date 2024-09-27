@@ -40,25 +40,17 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
   });
 
   const handleInputChange = (key: string, value: string) => {
-    setStep3((prevState) => {
-      const updatedForm = {
-        ...prevState,
-        [key]: value,
-      };
-      updateMaisInfo(updatedForm);
-      return updatedForm;
-    });
+    setStep3((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
   };
 
   const handleInputChangeList = (key: string, value: string[]) => {
-    setStep3((prevState) => {
-      const updatedForm = {
-        ...prevState,
-        [key]: value,
-      };
-      updateMaisInfo(updatedForm);
-      return updatedForm;
-    });
+    setStep3((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
   };
 
   const handleTest = async () => {
@@ -73,6 +65,10 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
     } catch {
 
     }
+  }
+
+  const reveal = () => {
+    console.log(Step3);
   }
 
   const handlePasseLivreChange = (options: string[]) => {
@@ -96,6 +92,7 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
   };
 
   const handleNext = () => {
+    updateMaisInfo(Step3);
     nextStep();
   };
 
@@ -104,7 +101,7 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
       <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Mais informações</h4>
-          <button onClick={() => {console.log(Step3)}}>Mostrar Respostas</button>
+          <button onClick={reveal}>reveal</button>
           <button onClick={handleTest}>teste</button>
 
           <div className='flex w-full gap-[12px]'>

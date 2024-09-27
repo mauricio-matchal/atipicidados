@@ -21,10 +21,6 @@ const Form: React.FC = () => {
     }));
   };
 
-  const reveal = () => {
-    console.log(formData);
-  }
-
   const handleUserCreation = async () => {
     try {
       const teste = await fetch("http://localhost:3002/unidades/", {
@@ -42,7 +38,7 @@ const Form: React.FC = () => {
   switch (currentStep) {
     case 1:
       return <>
-        <button onClick={reveal}>reveal</button>
+        <button onClick={() => { console.log(formData) }}>Mostrar formData</button>
         <Step1
           handleFormDataSubmit={handleUserCreation}
           updateForm={(data) => updateForm(data)}
