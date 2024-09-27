@@ -2,16 +2,11 @@
 import PlusIcon from "@/assets/icons/plus";
 import SearchIcon from "@/assets/icons/search";
 import { Card } from "@/components/Card";
-import NavBar from "@/components/NavBar";
 import NavBarColaborador from "@/components/NavBarColaborador";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const searchParams = useSearchParams();
-  const email = searchParams.get("email");
-  const id = searchParams.get("id");
   const [userEmail, setUserEmail] = useState("");
   const [userID, setUserID] = useState("");
   const [colaboradorInfo, setColaboradorInfo] = useState<any | null>(null);
@@ -19,7 +14,7 @@ export default function Home() {
   useEffect(() => {
     const email = localStorage.getItem("userEmail");
     const id = localStorage.getItem("userID");
-    const homeLink = localStorage.getItem("homeLink");
+
     if (email) {
       setUserEmail(decodeURIComponent(email));
     }
@@ -28,18 +23,18 @@ export default function Home() {
       setUserID(decodedID);
       fetchColaboradorData(decodedID);
     }
-  }, [email, id]);
+  }, []);
 
-  const fetchColaboradorData = async (id: any) => {
+  const fetchColaboradorData = async (id: string) => {
     try {
       const response = await fetch(`http://localhost:3002/colaboradores/id/${id}`);
       if (!response.ok) {
-        throw new Error("Failed to fetch gerente data");
+        throw new Error("Failed to fetch colaborador data");
       }
       const data = await response.json();
       setColaboradorInfo(data);
     } catch (error) {
-      console.error("Error fetching gerente data:", error);
+      console.error("Error fetching colaborador data:", error);
     }
   };
 
@@ -47,10 +42,10 @@ export default function Home() {
     <main className="flex flex-col min-h-screen">
       <NavBarColaborador />
       <p>
-        CPF: {colaboradorInfo && colaboradorInfo.cpf}
+        CPF: {colaboradorInfo ? colaboradorInfo.cpf : "Carregando..."}
       </p>
       <p>
-        RG: {colaboradorInfo && colaboradorInfo.rg}
+        RG: {colaboradorInfo ? colaboradorInfo.rg : "Carregando..."}
       </p>
       <button onClick={() => { console.log(colaboradorInfo) }}>Mostrar colaboradorInfo</button>
       <div className="px-[84px] py-[30px]">

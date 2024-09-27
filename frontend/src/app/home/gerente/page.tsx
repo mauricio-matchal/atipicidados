@@ -4,13 +4,9 @@ import SearchIcon from "@/assets/icons/search";
 import { Card } from "@/components/Card";
 import NavBarGerente from "@/components/NavBarGerente";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 
 export default function Home() {
-  const searchParams = useSearchParams();
-  const email = searchParams.get("email");
-  const id = searchParams.get("id");
   const [userEmail, setUserEmail] = useState("");
   const [userID, setUserID] = useState("");
   const [gerenteInfo, setGerenteInfo] = useState<any | null>(null);
@@ -32,9 +28,9 @@ export default function Home() {
     fetchPacientes();
     fetchGerentes();
     fetchColaboradores();
-  }, [email, id]);
+  }, []);
 
-  const fetchGerenteData = async (id: any) => {
+  const fetchGerenteData = async (id: string) => {
     try {
       const response = await fetch(`http://localhost:3002/gerentes/id/${id}`);
       if (!response.ok) {
@@ -60,6 +56,7 @@ export default function Home() {
       console.error("Error fetching pacientes data:", error);
     }
   };
+
   const fetchGerentes = async () => {
     try {
       const response = await fetch("http://localhost:3002/gerentes/getall");
@@ -73,6 +70,7 @@ export default function Home() {
       console.error("Error fetching gerentes data:", error);
     }
   };
+
   const fetchColaboradores = async () => {
     try {
       const response = await fetch("http://localhost:3002/colaboradores/getall");
@@ -83,7 +81,7 @@ export default function Home() {
       console.log(data.colaboradores);
       setColaboradores(data.colaboradores);
     } catch (error) {
-      console.error("Error fetching gerentes data:", error);
+      console.error("Error fetching colaboradores data:", error);
     }
   };
 
@@ -96,12 +94,10 @@ export default function Home() {
   return (
     <main className="flex flex-col min-h-screen">
       <NavBarGerente />
-      <p>
-        CPF: {gerenteInfo && gerenteInfo.cpf}
-      </p>
-      <p>
-        RG: {gerenteInfo && gerenteInfo.rg}
-      </p>
+      <Suspense fallback={<p>Carregando informações do gerente...</p>}>
+        <p>CPF: {gerenteInfo ? gerenteInfo.cpf : 'Carregando...'}</p>
+        <p>RG: {gerenteInfo ? gerenteInfo.rg : 'Carregando...'}</p>
+      </Suspense>
 
       <button onClick={() => { console.log(gerenteInfo) }}>Mostrar gerenteInfo</button>
       <div className="px-[84px] py-[30px]">

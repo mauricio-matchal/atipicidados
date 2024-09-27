@@ -34,7 +34,7 @@ export default function NavBar({ userEmail, userName }: NavBarProps) {
             fetchGerenteData(id);
         };
         if (homeLink) setHomeLink(homeLink);
-    })
+    }, [])
 
     const fetchGerenteData = async (id: any) => {
         try {

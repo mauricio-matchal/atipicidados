@@ -19,6 +19,4 @@ gerentesRouter.get('/id/:id', getUserGerenteId);
 gerentesRouter.get('/getall', getGerentes);
 
 
-
-
 export default gerentesRouter;

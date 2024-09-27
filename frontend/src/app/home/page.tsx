@@ -1,14 +1,13 @@
 "use client";
+import React, { Suspense, useEffect, useState } from "react";
 import PlusIcon from "@/assets/icons/plus";
 import SearchIcon from "@/assets/icons/search";
 import { Card } from "@/components/Card";
-import NavBar from "@/components/NavBar";
 import NavBarPaciente from "@/components/NavBarPaciente";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 
-export default function Home() {
+function Home() {
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
   const [userEmail, setUserEmail] = useState("");
@@ -18,7 +17,7 @@ export default function Home() {
       setUserEmail(decodeURIComponent(email));
     }
   }, [email]);
-  
+
   return (
     <main className="flex flex-col min-h-screen">
       <NavBarPaciente />
@@ -32,8 +31,8 @@ export default function Home() {
               <input
                 type="text"
                 className='input w-full h-[35px] mb-2 pb-1'
-                placeholder="Buscar membro..." />
-
+                placeholder="Buscar membro..."
+              />
               <button
                 type="button"
                 className="absolute inset-y-0 right-0 px-[10px] py-2 pb-4 bg-gray-300 rounded-r-md"
@@ -100,5 +99,13 @@ export default function Home() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function HomeWrapper() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Home />
+    </Suspense>
   );
 }
