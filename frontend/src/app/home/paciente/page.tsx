@@ -21,7 +21,7 @@ export default function Home() {
             fetchPacienteData(id);
         };
         if (homeLink) setHomeLink(homeLink);
-    },[], [])
+    },[],)
 
     const fetchPacienteData = async (id: any) => {
         try {
