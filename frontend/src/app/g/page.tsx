@@ -32,7 +32,7 @@ export default function Home() {
 
     const fetchPacienteData = async (id: any) => {
         try {
-            const response = await fetch(`http://localhost:3002/pacientes/id/${id}`);
+            const response = await fetch(`http://localhost:3002/gerentes/id/${id}`);
             if (!response.ok) {
                 throw new Error("Failed to fetch gerente data");
             }
@@ -56,12 +56,7 @@ export default function Home() {
             <div className="flex flex-col gap-[20px] px-[108px] pt-[33px] pb-[50px] text-[14px]">
                 <div className="flex gap-[20px]">
                     <div className="box w-3/5 flex flex-col gap-7">
-                        <div className="w-full flex flex-row justify-between">
-                            <h2>Cadastro de {pacienteInfo ? pacienteInfo.nome : "Nome"}</h2>
-                            {pacienteInfo && !pacienteInfo.analise ? (
-                                <button type="button" className="py-2 px-3 bg-blue-800 text-white rounded-lg font-medium -mr-2">Verificar</button>
-                            ) : <button type="button" className="bg-black/10 text-black/50 py-2 px-3 rounded-lg font-medium -mr-2" disabled>Verificado</button>}
-                        </div>
+                        <h2>Cadastro de {pacienteInfo ? pacienteInfo.nome : "Nome"}</h2>
 
                         <div className="flex flex-col gap-8">
                             <div className="flex items-center gap-[20px]">
@@ -90,7 +85,7 @@ export default function Home() {
                                     </div>
                                 </div>
 
-                                <div className="flex flex-col gap-6">
+                                {/* <div className="flex flex-col gap-6">
                                     <div>
                                         <p className="titulo">Data de nascimento:</p>
                                         <p>{pacienteInfo && pacienteInfo.nascimentodata ? pacienteInfo.nascimentodata : "Nascimento"}</p>
@@ -100,12 +95,12 @@ export default function Home() {
                                         <p className="titulo">Endereço:</p>
                                         <p>{pacienteInfo && pacienteInfo.geral ? pacienteInfo.geral.endereco : "Endereço"}</p>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
 
-                    <div className="box w-2/5">
+                    {/* <div className="box w-2/5">
                         <h3>Profissionais que me acompanham</h3>
 
                         <div className="flex flex-col">
@@ -201,7 +196,7 @@ export default function Home() {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </main>

@@ -109,6 +109,15 @@ export default function Home() {
     selectedFilters.length === 0 || selectedFilters.includes(member.type)
   );
 
+  // Seleciona a url certa caso o card seja de um paciente, gerente ou colaborador para enviar para a pagina certa
+  const urlToMemberPage = (member: any) => {
+    //p de paciente g de gerente e c de colaborador, dps recebe o id, e qual eh o acesso ("acs") da pessoa que esta clicando 
+    if(member.type === "Paciente" ) return `/p?id=${member.id}&acs=g`;
+    if(member.type === "Gerente" ) return `/g?id=${member.id}&acs=g`;
+    if(member.type === "Colaborador" ) return `/c?id=${member.id}&acs=g`;
+    return "";
+  }
+
   return (
     <main className="flex flex-col min-h-screen">
       <NavBarGerente />
@@ -204,7 +213,7 @@ export default function Home() {
 
         <div className="mt-[28px] grid grid-cols-4 gap-2 w-full max-w-full">
           {filteredMembers.map((member) => (
-            <Link href={`/p?id=${member.id}`} key={member.id}>
+            <Link href={urlToMemberPage(member)} key={member.id}>
               <Card key={member.id} title={member.nome} cpf={member.cpf} acesso={member.type} />
             </Link>
           ))}
