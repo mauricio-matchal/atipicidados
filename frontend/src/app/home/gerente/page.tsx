@@ -204,7 +204,9 @@ export default function Home() {
 
         <div className="mt-[28px] grid grid-cols-4 gap-2 w-full max-w-full">
           {filteredMembers.map((member) => (
-            <Card key={member.id} title={member.nome} cpf={member.cpf} acesso={member.type} />
+            <Link href={`/p?id=${member.id}`} key={member.id}>
+              <Card key={member.id} title={member.nome} cpf={member.cpf} acesso={member.type} />
+            </Link>
           ))}
         </div>
       </div>
