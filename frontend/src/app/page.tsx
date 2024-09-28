@@ -45,7 +45,7 @@ export default function Home() {
     let url = ""
     switch (userType) {
       case ("Gerente"):
-        url = "http://localhost:3002/gerentes/login"
+        url = "https://atipicidades-1.onrender.com/gerentes/login"; 
         break;
       case ("Colaborador"):
         url = "http://localhost:3002/colaboradores/login"
@@ -72,7 +72,6 @@ export default function Home() {
       console.log(data);
       const gerente = data.gerente
       setID(gerente.id);
-
       localStorage.setItem("userEmail", loginData.email);
       localStorage.setItem("userID", gerente.id);
       const homeLink = `/home/${userType.toLowerCase()}?email=${encodeURIComponent(loginData.email)}&id=${encodeURIComponent(gerente.id)}`
