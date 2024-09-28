@@ -16,3 +16,6 @@ userRouter.use('/colaboradores', colaboradorRouter)
 //Demais rotas que faremos
 
 
+userRouter.get('/', (req: Request, res: Response) => {
+    res.send('Hello World');
+});
