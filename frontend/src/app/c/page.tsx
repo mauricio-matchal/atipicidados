@@ -52,7 +52,7 @@ export default function Home() {
     return (
         <main className="flex flex-col min-h-screen">
             {getAcesso()}
-            <button onClick={() => { console.log(pacienteInfo) }}>Mostrar pacienteInfo</button>
+            {/* <button onClick={() => { console.log(pacienteInfo) }}>Mostrar pacienteInfo</button> */}
             <div className="flex flex-col gap-[20px] px-[108px] pt-[33px] pb-[50px] text-[14px]">
                 <div className="flex gap-[20px]">
                     <div className="box w-3/5 flex flex-col gap-7">
