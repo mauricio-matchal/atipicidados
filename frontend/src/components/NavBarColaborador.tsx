@@ -59,7 +59,7 @@ export default function NavBar({ userEmail, userName }: NavBarProps) {
                         </Link>
                     </li>
                     <li className={`relative`}>
-                        <Link href='/unidadesgerente' className={`flex items-center px-3 py-2.5 pt-2 ${currentPath === '/unidadesgerente' ? 'text-blue-800 font-bold bg-blue-800/15 rounded-lg' : 'text-gray-700'}`}>
+                        <Link href='/unidadescolaborador' className={`flex items-center px-3 py-2.5 pt-2 ${currentPath === '/unidadescolaborador' ? 'text-blue-800 font-bold bg-blue-800/15 rounded-lg' : 'text-gray-700'}`}>
                             Unidades
                         </Link>
                     </li>

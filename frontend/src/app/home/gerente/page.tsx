@@ -4,10 +4,11 @@ import SearchIcon from "@/assets/icons/search";
 import { Card } from "@/components/Card";
 import NavBarGerente from "@/components/NavBarGerente";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Home() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
   const id = searchParams.get("id");
@@ -54,8 +55,8 @@ export default function Home() {
         throw new Error("Failed to fetch pacientes data");
       }
       const data = await response.json();
-      console.log(data.pacientes);
       setPacientes(data.pacientes);
+      console.log(data.pacientes);
     } catch (error) {
       console.error("Error fetching pacientes data:", error);
     }
@@ -67,7 +68,6 @@ export default function Home() {
         throw new Error("Failed to fetch gerentes data");
       }
       const data = await response.json();
-      console.log(data.gerentes);
       setGerentes(data.gerentes);
     } catch (error) {
       console.error("Error fetching gerentes data:", error);
@@ -80,7 +80,6 @@ export default function Home() {
         throw new Error("Failed to fetch colaboradores data");
       }
       const data = await response.json();
-      console.log(data.colaboradores);
       setColaboradores(data.colaboradores);
     } catch (error) {
       console.error("Error fetching gerentes data:", error);
@@ -111,11 +110,21 @@ export default function Home() {
 
   // Seleciona a url certa caso o card seja de um paciente, gerente ou colaborador para enviar para a pagina certa
   const urlToMemberPage = (member: any) => {
-    //p de paciente g de gerente e c de colaborador, dps recebe o id, e qual eh o acesso ("acs") da pessoa que esta clicando 
-    if(member.type === "Paciente" ) return `/p?id=${member.id}&acs=g`;
-    if(member.type === "Gerente" ) return `/g?id=${member.id}&acs=g`;
-    if(member.type === "Colaborador" ) return `/c?id=${member.id}&acs=g`;
-    return "";
+    //p de paciente g de gerente e c de colaborador, dps recebe o id, e qual eh o acesso ("acs") da pessoa que esta 
+    localStorage.removeItem("memberId");
+    localStorage.removeItem("acs");
+
+    localStorage.setItem("memberId", member.id);
+    localStorage.setItem("acs", "g");
+    if (member.type === "Paciente") {
+      router.push(`/p`);
+    };
+    if (member.type === "Gerente") {
+      router.push(`/g`);
+    };
+    if (member.type === "Colaborador") {
+      router.push(`/c`);
+    }
   }
 
   return (
@@ -213,9 +222,9 @@ export default function Home() {
 
         <div className="mt-[28px] grid grid-cols-4 gap-2 w-full max-w-full">
           {filteredMembers.map((member) => (
-            <Link href={urlToMemberPage(member)} key={member.id}>
+            <button onClick={() => { urlToMemberPage(member) }} key={member.id} className="text-left">
               <Card key={member.id} title={member.nome} cpf={member.cpf} acesso={member.type} />
-            </Link>
+            </button>
           ))}
         </div>
       </div>

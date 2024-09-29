@@ -7,27 +7,38 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import NavBarGerente from "@/components/NavBarGerente";
 import NavBarColaborador from "@/components/NavBarColaborador";
+import NavBarPaciente from "@/components/NavBarPaciente";
 
 export default function Home() {
-    const searchParams = useSearchParams();
-    const id = searchParams.get("id");
-    const acesso = searchParams.get("acs");
+    // const searchParams = useSearchParams();
+    // const id = searchParams.get("id");
+    // const acesso = searchParams.get("acs");
 
     const [userrEmail, setUserrEmail] = useState("");
     const [userID, setUserID] = useState("");
     const [pacienteInfo, setPacienteInfo] = useState<any | null>(null);
     const [homeLink, setHomeLink] = useState("");
 
+    const [memberID, setMemberID] = useState("");
+    const [acesso, setAcesso] = useState("");
+
     useEffect(() => {
         const email = localStorage.getItem("userEmail");
         // const id = localStorage.getItem("userID");
+        const memberId = localStorage.getItem("memberId");
+        const acs = localStorage.getItem("acs");
         const homeLink = localStorage.getItem("homeLink");
         if (email) setUserrEmail(email);
-        if (id) {
-            setUserID(id);
-            fetchPacienteData(id);
+        if (memberId) {
+            setMemberID(memberId);
+            fetchPacienteData(memberId);
+            localStorage.removeItem("memberId")
         };
         if (homeLink) setHomeLink(homeLink);
+        if (acs) {
+            setAcesso(acs)
+            localStorage.removeItem("acs");
+        };
     })
 
     const fetchPacienteData = async (id: any) => {
@@ -47,12 +58,12 @@ export default function Home() {
     const getAcesso = () => {
         if(acesso === "g") return <NavBarGerente />
         if(acesso === "c") return <NavBarColaborador />
+        if(acesso === "p") return <NavBarPaciente />
     }
 
     return (
         <main className="flex flex-col min-h-screen">
             {getAcesso()}
-            {/* <button onClick={() => { console.log(pacienteInfo) }}>Mostrar pacienteInfo</button> */}
             <div className="flex flex-col gap-[20px] px-[108px] pt-[33px] pb-[50px] text-[14px]">
                 <div className="flex gap-[20px]">
                     <div className="box w-3/5 flex flex-col gap-7">

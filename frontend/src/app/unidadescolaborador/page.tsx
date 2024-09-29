@@ -4,12 +4,16 @@ import NavBarColaborador from "@/components/NavBarColaborador";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import SearchIcon from "@/assets/icons/search";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const [unidades, setUnidades] = useState<any[]>([]);
+  const router = useRouter();
+
   const [userEmail, setUserEmail] = useState("");
   const [userID, setUserID] = useState("");
-  const [colaboradorInfo, setColaboradorInfo] = useState("");
+  const [colaboradorInfo, setColaboradorInfo] = useState<any | null>(null);
+
+  const [unidades, setUnidades] = useState<any[]>([]);
 
   useEffect(() => {
     const email = localStorage.getItem("userEmail");
@@ -18,12 +22,12 @@ export default function Home() {
       setUserEmail(decodeURIComponent(email));
     }
     if (id) {
-      const decodedID = decodeURIComponent(id);
-      setUserID(decodedID);
-      fetchColaboradorData(decodedID);
+      setUserID(id);
+      fetchColaboradorData(id);
     }
     fetchUnidades();
   }, []);
+
   const fetchColaboradorData = async (id: any) => {
     try {
       const response = await fetch(`http://localhost:3002/colaboradores/id/${id}`);
@@ -36,6 +40,7 @@ export default function Home() {
       console.error("Error fetching gerente data:", error);
     }
   };
+
   const fetchUnidades = async () => {
     try {
       const response = await fetch("http://localhost:3002/unidades/getall");
@@ -49,6 +54,18 @@ export default function Home() {
       console.error("Error fetching unidades data:", error);
     }
   };
+  
+  const urlToUnidadePage = (unidade: any) => {
+    //p de paciente g de gerente e c de colaborador, dps recebe o id, e qual eh o acesso ("acs") da pessoa que esta 
+    localStorage.removeItem("unidadeId");
+    localStorage.removeItem("acs");
+
+    localStorage.setItem("unidadeId", unidade.id);
+    localStorage.setItem("acs", "c");
+
+    router.push("/unidades/nomedaunidade");
+  }
+
   return (
     <main className="flex flex-col min-h-screen">
       <NavBarColaborador />
@@ -78,7 +95,9 @@ export default function Home() {
         <div className="mt-[28px] grid grid-cols-4 gap-2 w-full max-w-full">
           {unidades.length > 0 ? (
             unidades.map((unidade) => (
-              <CardUnidade key={unidade.id} title={unidade.nome} endereco={unidade.endereco} />
+              <button onClick={() => { urlToUnidadePage(unidade) }} className="text-left">
+                <CardUnidade key={unidade.id} title={unidade.nome} endereco={unidade.endereco} />
+              </button>
             ))
           ) : (
             <p>Nenhum membro encontrado.</p>

@@ -47,17 +47,15 @@ export function CardUnidade({ title, endereco, hasBorder = true }: CardProps) {
   const borderClass = hasBorder ? 'border border-black/10' : '';
 
   return (
-    <Link href='/unidades/nomedaunidade'>
-      <div className={`flex flex-col items-start justify-around ${borderClass} bg-[#FFFFFF] hover:bg-blue-100 cursor-pointer rounded-xl`}>
-        {/* <hr /> */}
+    <div className={`flex flex-col items-start justify-around ${borderClass} bg-[#FFFFFF] hover:bg-blue-100 cursor-pointer rounded-xl`}>
+      {/* <hr /> */}
 
-        <div className="flex flex-col gap-1 py-3 pb-[14px] px-4">
-          <p className="font-semibold">{title ?? "Nome desconhecido"}</p>
-          <p className="font-medium text-[14px]">{endereco ?? "Nenhum endereco"}</p>
-        </div>
-
-        {/* <hr /> */}
+      <div className="flex flex-col gap-1 py-3 pb-[14px] px-4">
+        <p className="font-semibold">{title ?? "Nome desconhecido"}</p>
+        <p className="font-medium text-[14px]">{endereco ?? "Nenhum endereco"}</p>
       </div>
-    </Link>
+
+      {/* <hr /> */}
+    </div>
   )
 }

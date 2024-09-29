@@ -76,11 +76,12 @@ export default function Home() {
       localStorage.setItem("userEmail", loginData.email);
       localStorage.setItem("userID", gerente.id);
       localStorage.setItem("userNome", gerente.nome);
+      localStorage.setItem("userType", userType)
       
       const homeLink = `/home/${userType.toLowerCase()}?email=${encodeURIComponent(loginData.email)}&id=${encodeURIComponent(gerente.id)}`
       localStorage.setItem("homeLink", homeLink)
       
-      router.push(`/home/${userType.toLowerCase()}?email=${encodeURIComponent(loginData.email)}&id=${encodeURIComponent(gerente.id)}`);
+      router.push(`/home/${userType.toLowerCase()}`);
     } catch (error) {
       console.log("Erro em seu login", error);
     }

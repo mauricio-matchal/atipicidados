@@ -5,10 +5,12 @@ import { Card } from "@/components/Card";
 import NavBar from "@/components/NavBar";
 import NavBarColaborador from "@/components/NavBarColaborador";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Home() {
+  const router = useRouter();
+
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
   const id = searchParams.get("id");
@@ -115,11 +117,21 @@ export default function Home() {
 
   // Seleciona a url certa caso o card seja de um paciente, gerente ou colaborador para enviar para a pagina certa
   const urlToMemberPage = (member: any) => {
-    //p de paciente g de gerente e c de colaborador, dps recebe o id, e qual eh o acesso ("acs") da pessoa que esta clicando
-    if(member.type === "Paciente" ) return `/p?id=${member.id}&acs=g`;
-    if(member.type === "Gerente" ) return `/g?id=${member.id}&acs=g`;
-    if(member.type === "Colaborador" ) return `/c?id=${member.id}&acs=g`;
-    return "";
+    //p de paciente g de gerente e c de colaborador, dps recebe o id, e qual eh o acesso ("acs") da pessoa que esta 
+    localStorage.removeItem("memberId");
+    localStorage.removeItem("acs");
+
+    localStorage.setItem("memberId", member.id);
+    localStorage.setItem("acs", "c");
+    if (member.type === "Paciente") {
+      router.push(`/p`);
+    };
+    if (member.type === "Gerente") {
+      router.push(`/g`);
+    };
+    if (member.type === "Colaborador") {
+      router.push(`/c`);
+    }
   }
 
   return (
@@ -206,8 +218,8 @@ export default function Home() {
                     after:content-[''] after:w-full after:h-full after:absolute after:left-0 after:top-0 after:bg-no-repeat after:bg-center after:bg-[length:16px] 
                     checked:after:bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNCA4TDcuMjUgMTEuNzVMMTEuNzUgMy43NSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4K')]
                   "
-                  // checked={selectedFilters.includes("Autenticado")}
-                  // onChange={() => handleFilterChange("Autenticado")}
+                // checked={selectedFilters.includes("Autenticado")}
+                // onChange={() => handleFilterChange("Autenticado")}
                 />
                 Autenticado
               </label>
@@ -221,8 +233,8 @@ export default function Home() {
                     after:content-[''] after:w-full after:h-full after:absolute after:left-0 after:top-0 after:bg-no-repeat after:bg-center after:bg-[length:16px] 
                     checked:after:bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNCA4TDcuMjUgMTEuNzVMMTEuNzUgMy43NSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4K')]
                   "
-                  // checked={selectedFilters.includes("Não autenticado")}
-                  // onChange={() => handleFilterChange("Não autenticado")}
+                // checked={selectedFilters.includes("Não autenticado")}
+                // onChange={() => handleFilterChange("Não autenticado")}
                 />
                 Não autenticado
               </label>
@@ -240,10 +252,10 @@ export default function Home() {
         </div>
 
         <div className="mt-[28px] grid grid-cols-4 gap-2 w-full max-w-full">
-        {filteredMembers.map((member) => (
-            <Link href={urlToMemberPage(member)} key={member.id}>
+          {filteredMembers.map((member) => (
+            <button type="button" onClick={() => { urlToMemberPage(member) }} key={member.id} className="text-left">
               <Card key={member.id} title={member.nome} cpf={member.cpf} acesso={member.type} />
-            </Link>
+            </button>
           ))}
         </div>
       </div>

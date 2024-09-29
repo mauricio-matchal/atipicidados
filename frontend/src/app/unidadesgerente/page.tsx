@@ -4,8 +4,11 @@ import NavBarGerente from "@/components/NavBarGerente";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import SearchIcon from "@/assets/icons/search";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
   const [userEmail, setUserEmail] = useState("");
   const [userID, setUserID] = useState("");
   const [gerenteInfo, setGerenteInfo] = useState<any | null>(null);
@@ -51,6 +54,18 @@ export default function Home() {
       console.error("Error fetching unidades data:", error);
     }
   };
+
+  const urlToUnidadePage = (unidade: any) => {
+    //p de paciente g de gerente e c de colaborador, dps recebe o id, e qual eh o acesso ("acs") da pessoa que esta 
+    localStorage.removeItem("unidadeId");
+    localStorage.removeItem("acs");
+
+    localStorage.setItem("unidadeId", unidade.id);
+    localStorage.setItem("acs", "g");
+
+    router.push("/unidades/nomedaunidade");
+  }
+
   return (
     <main className="flex flex-col min-h-screen">
       <NavBarGerente />
@@ -80,7 +95,9 @@ export default function Home() {
         <div className="mt-[28px] grid grid-cols-4 gap-2 w-full max-w-full">
           {unidades.length > 0 ? (
             unidades.map((unidade) => (
-              <CardUnidade key={unidade.id} title={unidade.nome} endereco={unidade.endereco} />
+              <button onClick={() => { urlToUnidadePage(unidade) }} className="text-left">
+                <CardUnidade key={unidade.id} title={unidade.nome} endereco={unidade.endereco} />
+              </button>
             ))
           ) : (
             <p>Nenhum membro encontrado.</p>
