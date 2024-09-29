@@ -3,7 +3,7 @@ import { Router } from 'express';
 import cors from 'cors';
 import { createUserGerente, gerenteLogin, getGerente, getUserGerente, getUserGerenteId } from '../controllers/gerenteController';
 import { validate } from '../middleware/validate';
-import GerenteCreateInputSchema from './../../prisma/generated/zod/validateSchema';
+import GerenteCreateInputSchema from '../../prisma/validateSchema';
 import { sendPassword } from '../email/sendpassowordbyemail';
 
 export const gerentesRouter = Router();

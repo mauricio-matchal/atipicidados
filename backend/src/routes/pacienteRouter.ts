@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import cors from 'cors';
 import { createPaciente, getPaciente } from '../controllers/pacienteControllers';
-import { PacienteCreateInputSchema } from '../../prisma/generated/zod/validateSchema';
+import { PacienteCreateInputSchema } from '../../prisma/validateSchema';
 import { validate} from '../middleware/validate';
 
 export const pacienteRouter = Router();

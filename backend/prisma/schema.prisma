@@ -1,5 +1,3 @@
-
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,6 +8,8 @@ datasource db {
 }
 generator zod {
   provider = " npx zod-prisma-types"
+    output   = "./generated/zod"
+
 }
 
 model Gerente  {
@@ -109,4 +109,5 @@ enum Genero {
   FEMININO
   PREFIRO_NAO_INFORMAR
 }
+
 
