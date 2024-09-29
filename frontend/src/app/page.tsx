@@ -48,10 +48,10 @@ export default function Home() {
         url = "https://atipicidades-1.onrender.com/gerentes/login"; 
         break;
       case ("Colaborador"):
-        url = "http://localhost:3002/colaboradores/login"
+        url = "https://atipicidades-1.orender.com/colaboradores/login"
         break;
       case ("Paciente"):
-        url = "http://localhost:3002/pacientes/login"
+        url = "https://atipicidades-1.orender.com/pacientes/login"
         break;
       default:
         console.error("Unknown user type");
