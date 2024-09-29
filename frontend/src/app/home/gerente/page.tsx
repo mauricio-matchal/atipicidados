@@ -108,6 +108,8 @@ export default function Home() {
     selectedFilters.length === 0 || selectedFilters.includes(member.type)
   );
 
+  const [searchBy, setSearchBy] = useState("");
+
   // Seleciona a url certa caso o card seja de um paciente, gerente ou colaborador para enviar para a pagina certa
   const urlToMemberPage = (member: any) => {
     //p de paciente g de gerente e c de colaborador, dps recebe o id, e qual eh o acesso ("acs") da pessoa que esta 
@@ -139,7 +141,10 @@ export default function Home() {
               <input
                 type="text"
                 className='input w-full h-[35px] mb-2 pb-1'
-                placeholder="Buscar membro..." />
+                placeholder="Buscar membro..."
+                value={searchBy}
+                onChange={(e) => {setSearchBy(e.target.value)}} 
+              />
 
               <button
                 type="button"

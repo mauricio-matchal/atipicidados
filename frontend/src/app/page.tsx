@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import logos from "../../public/images/logos.svg"
+import logos from "../../public/images/logos.svg";
 import { SlashedEyeIcon, OpenEyeIcon } from "../../public/icons/Icons";
 import { useState } from "react";
 import Link from "next/link";
@@ -45,13 +45,18 @@ export default function Home() {
     let url = ""
     switch (userType) {
       case ("Gerente"):
-        url = "http://localhost:3002/gerentes/login"
+        url = "https://atipicidades-1.onrender.com/gerentes/login"; 
+        localStorage.setItem(userType, 'gerente');
         break;
       case ("Colaborador"):
         url = "http://localhost:3002/colaboradores/login"
+        localStorage.setItem(userType, 'colaborador');
+
         break;
       case ("Paciente"):
         url = "http://localhost:3002/pacientes/login"
+        localStorage.setItem(userType, 'paciente');
+
         break;
       default:
         console.error("Unknown user type");
@@ -72,16 +77,12 @@ export default function Home() {
       console.log(data);
       const gerente = data.gerente
       setID(gerente.id);
-
       localStorage.setItem("userEmail", loginData.email);
       localStorage.setItem("userID", gerente.id);
-      localStorage.setItem("userNome", gerente.nome);
-      localStorage.setItem("userType", userType)
-      
       const homeLink = `/home/${userType.toLowerCase()}?email=${encodeURIComponent(loginData.email)}&id=${encodeURIComponent(gerente.id)}`
       localStorage.setItem("homeLink", homeLink)
       
-      router.push(`/home/${userType.toLowerCase()}`);
+      router.push(`/home/${userType.toLowerCase()}?email=${encodeURIComponent(loginData.email)}&id=${encodeURIComponent(gerente.id)}`);
     } catch (error) {
       console.log("Erro em seu login", error);
     }
