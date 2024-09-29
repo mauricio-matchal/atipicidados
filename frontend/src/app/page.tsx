@@ -45,16 +45,16 @@ export default function Home() {
     let url = ""
     switch (userType) {
       case ("Gerente"):
-        url = "http://https://atipicidades-1.orender.com/gerentes/login"; 
+        url = "https://atipicidades-1.orender.com/gerentes/login"; 
         localStorage.setItem(userType, 'gerente');
         break;
       case ("Colaborador"):
-        url = "http://https://atipicidades-1.orender.com/colaboradores/login"
+        url = "https://atipicidades-1.orender.com/colaboradores/login"
         localStorage.setItem(userType, 'colaborador');
 
         break;
       case ("Paciente"):
-        url = "http://https://atipicidades-1.orender.com/pacientes/login"
+        url = "https://atipicidades-1.orender.com/pacientes/login"
         localStorage.setItem(userType, 'paciente');
 
         break;
