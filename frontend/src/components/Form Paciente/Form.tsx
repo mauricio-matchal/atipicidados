@@ -142,7 +142,7 @@ const Form: React.FC = () => {
 
     try {
 
-      const response = await fetch("http://localhost:3002/pacientes/", {
+      const response = await fetch("https://atipicidades-1.orender.com/pacientes/", {
         method: "POST",
         body: data, // mudar caso queira colocar o blob para body: formDataToSend, 
         // headers: { 'Content-Type': 'application/json' }
