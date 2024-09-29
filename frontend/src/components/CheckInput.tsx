@@ -45,7 +45,7 @@ export default function CheckInput({ options, title, onChange, ...props }: Check
     if (onChange && selectedOptions) {
       onChange(selectedOptions);
     }
-  }, [onChange, selectedOptions]);
+  }, [selectedOptions]);
 
   useEffect(() => {
     if (isOpen) {

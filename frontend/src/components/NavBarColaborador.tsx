@@ -12,7 +12,7 @@ type Colaborador = {
     cpf: string;
 }
 
-interface NavBarProps {
+type NavBarProps  = {
     userEmail?: string | null;
     userName?: string | null;
 }
@@ -65,7 +65,7 @@ export default function NavBar({ userEmail, userName }: NavBarProps) {
                     </li>
                 </ul>
             </nav>
-            <div className="flex justify-between fundo w-full h-[76px] py-2 px-[97px]">
+            <div className="flex justify-between fundo w-full h-[76px] py-2 px-[97px] ">
                 <Link href={homeLink}>
                     <Image
                         src={logo}
