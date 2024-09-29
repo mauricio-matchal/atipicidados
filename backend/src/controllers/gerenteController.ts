@@ -127,7 +127,7 @@ export const getGerente = async (request: Request, response: Response) => {
 
         return response.status(200).json({
             error: false,
-            message: `O colaborador ${userGerente.nome} foi encontrado`,
+            message: `O gerente ${userGerente.nome} foi encontrado`,
             userGerente
         }); 
     

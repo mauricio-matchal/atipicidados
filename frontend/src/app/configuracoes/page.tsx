@@ -1,19 +1,132 @@
-
+'use client';
 import NavBar from "@/components/NavBar";
-
+import { useRouter } from 'next/navigation'; 
+import { useState } from "react";
 
 export default function Home() {
-  return (
-    <main className="flex flex-col min-h-screen">
-      <NavBar />
+  const router = useRouter();
 
-      <div className="px-[137px] pt-[30px]">
-        <div className="flex justify-between">
-          <div className="flex flex-col w-[340px]">
+  const fetchChangePasswordData = async (id: string) => {
+    try {
+      const colaboradorData = localStorage.getItem('Colaborador');
+      const colaborador = colaboradorData?.toLowerCase();
+      console.log(colaboradorData);
+
+      const response = await fetch(`http://localhost:3002/${colaborador + 'es'}/id/${id}/changePassword`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          oldPassword: oldPassword,
+          newPassword: newPassword,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to change password");
+      }
+
+      const data = await response.json();
+      console.log(data); 
+
+    } catch (error) {
+      console.error("Error changing password:", error);
+    }
+  };
+
+  const [changePasswordIsVisible, setChangePasswordIsVisible] = useState(true);
+  const [oldPassword, setOldPassword] = useState(''); 
+  const [newPassword, setNewPassword] = useState('');
+  const [showOldPassword, setShowOldPassword] = useState(false); // Estado para mostrar/ocultar a antiga senha
+  const [showNewPassword, setShowNewPassword] = useState(false); // Estado para mostrar/ocultar a nova senha
+
+  const handleChangePassword = () => {
+    const id = localStorage.getItem('userID'); 
+    if (id) {
+      fetchChangePasswordData(id);
+      console.log('Senha mudada com sucesso');
+      router.push('/configuracoes');
+    } else {
+      console.error("User ID not found in localStorage");
+    }
+  };
+
+  function leaveAtipicidades() {
+    localStorage.clear(); 
+    router.push('/'); 
+  }
+
+  return (
+    <>
+      <NavBar />
+      <main className="flex min-h-screen">
+        <div className="px-[137px] pt-[30px]">
+          <div className="flex flex-col space-y-10">
             <h2 className="mb-7">Configurações</h2>
-          </div>    
+            <button 
+              className="botao min-w-[210px] max-w-[210px]"
+              onClick={leaveAtipicidades} 
+              aria-label="Sair do Atipicidades"
+            >
+              SAIR DO ATIPICIDADES
+            </button>
+            <div className="flex gap-10">
+              <button 
+                className="botao mt-4 max-w-[220px]" 
+                onClick={() => setChangePasswordIsVisible(!changePasswordIsVisible)}
+              >
+                Mudar senha
+              </button>
+              {changePasswordIsVisible && (
+                <div className="flex flex-col space-y-4">
+                  <div className="flex items-center relative">
+                    <input
+                      className="input px-1 py-1 flex-1"
+                      type={showOldPassword ? "text" : "password"} 
+                      placeholder="Antiga senha"
+                      value={oldPassword}
+                      onChange={(e) => setOldPassword(e.target.value)} 
+                      required 
+                    />
+                    <button
+                      type="button"
+                      className="ml-2"
+                      onClick={() => setShowOldPassword(!showOldPassword)}
+                    >
+                      {showOldPassword ? "Esconder" : "Mostrar"}
+                    </button>
+                  </div>
+                  <div className="flex items-center relative">
+                    <input
+                      className="input flex-1"
+                      type={showNewPassword ? "text" : "password"} // Altera o tipo do input
+                      placeholder="Nova senha"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)} 
+                      required 
+                    />
+                    <button
+                      type="button"
+                      className="ml-2"
+                      onClick={() => setShowNewPassword(!showNewPassword)}
+                    >
+                      {showNewPassword ? "Esconder" : "Mostrar"}
+                    </button>
+                  </div>
+                  
+                  <button 
+                    className="botao mt-2" 
+                    onClick={handleChangePassword}
+                  >
+                    Enviar nova senha
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }

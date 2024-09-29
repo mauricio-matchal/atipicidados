@@ -39,15 +39,15 @@ export default function Home() {
   };
 
   return (
+    <><NavBarColaborador />
     <main className="flex flex-col min-h-screen">
-      <NavBarColaborador />
       <p>
         CPF: {colaboradorInfo ? colaboradorInfo.cpf : "Carregando..."}
       </p>
       <p>
         RG: {colaboradorInfo ? colaboradorInfo.rg : "Carregando..."}
       </p>
-      <button onClick={() => { console.log(colaboradorInfo) }}>Mostrar colaboradorInfo</button>
+      <button onClick={() => { console.log(colaboradorInfo); } }>Mostrar colaboradorInfo</button>
       <div className="px-[84px] py-[30px]">
         <div className="flex justify-between">
           <div className="flex flex-col w-[340px]">
@@ -76,36 +76,31 @@ export default function Home() {
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  className="checkbox hover:none"
-                />
+                  className="checkbox hover:none" />
                 Gerente
               </label>
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  className="checkbox hover:none"
-                />
+                  className="checkbox hover:none" />
                 Colaborador
               </label>
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  className="checkbox hover:none"
-                />
+                  className="checkbox hover:none" />
                 Atendido
               </label>
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  className="checkbox hover:none"
-                />
+                  className="checkbox hover:none" />
                 Autenticado
               </label>
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  className="checkbox hover:none"
-                />
+                  className="checkbox hover:none" />
                 Não autenticado
               </label>
             </div>
@@ -125,6 +120,6 @@ export default function Home() {
           <Card />
         </div>
       </div>
-    </main>
+    </main></>
   );
 }

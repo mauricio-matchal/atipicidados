@@ -46,6 +46,7 @@ export default function Home() {
     switch (userType) {
       case ("Gerente"):
         url = "https://atipicidades-1.onrender.com/gerentes/login"; 
+        localStorage.setItem(userType, 'gerente');
         break;
       case ("Colaborador"):
         url = "https://atipicidades-1.onrender.com/colaboradores/login"
