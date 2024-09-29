@@ -50,13 +50,9 @@ export default function Home() {
         break;
       case ("Colaborador"):
         url = "http://localhost:3002/colaboradores/login"
-        localStorage.setItem(userType, 'colaborador');
-
         break;
       case ("Paciente"):
         url = "http://localhost:3002/pacientes/login"
-        localStorage.setItem(userType, 'paciente');
-
         break;
       default:
         console.error("Unknown user type");
