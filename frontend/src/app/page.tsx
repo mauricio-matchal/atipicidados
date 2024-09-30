@@ -49,14 +49,10 @@ export default function Home() {
         localStorage.setItem(userType, 'gerente');
         break;
       case ("Colaborador"):
-        url = "https://atipicidades-1.orender.com/colaboradores/login"
-        localStorage.setItem(userType, 'colaborador');
-
+        url = "https://atipicidades-1.onrender.com/colaboradores/login"
         break;
       case ("Paciente"):
-        url = "https://atipicidades-1.orender.com/pacientes/login"
-        localStorage.setItem(userType, 'paciente');
-
+        url = "https://atipicidades-1.onrender.com/pacientes/login"
         break;
       default:
         console.error("Unknown user type");

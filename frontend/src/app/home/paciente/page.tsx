@@ -25,7 +25,7 @@ export default function Home() {
 
     const fetchPacienteData = async (id: any) => {
         try {
-            const response = await fetch(`https://atipicidades-1.orender.com/pacientes/id/${id}`);
+            const response = await fetch(`https://atipicidades-1.onrender.com/pacientes/id/${id}`);
             if (!response.ok) {
                 throw new Error("Failed to fetch gerente data");
             }
