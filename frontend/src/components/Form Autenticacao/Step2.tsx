@@ -79,7 +79,7 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateMae: (
 
   return (
     <div className='flex flex-col gap-[162px] w-screen'>
-      <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
+      <div className='flex flex-col gap-[42px] px-5 lg:w-[840px] place-self-center'>
 
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Mãe</h4>
@@ -87,14 +87,15 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateMae: (
 
           <TextInput placeholder="Nome completo da mãe" value={Step21.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <DateInput value={Step21.data} onChange={(e) => handleInputChange1("data", e.target.value)} />
-            <TextInput placeholder='RG da mãe' className='min-w-[220px]' value={Step21.rg} onChange={(e) => handleInputChange1("rg", e.target.value)} />
-            <TextInput placeholder='CPF da mãe' className='min-w-[220px]' value={Step21.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
+            <TextInput placeholder='RG da mãe' className='min-w-[260px]' value={Step21.rg} onChange={(e) => handleInputChange1("rg", e.target.value)} />
+            <TextInput placeholder='CPF da mãe' className='min-w-[260px]' value={Step21.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
           </div>
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
+              className='md:1/3'
               placeholder={"Escolaridade"}
               options={[
                 "Ensino fundamental incompleto",
@@ -106,8 +107,8 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateMae: (
               ]}
               onChange={(value) => handleInputChange1("escolaridade", value)}
             />
-            <NumberInput placeholder="Telefone de contato" value={Step21.telefone} onChange={(e) => handleInputChange1("telefone", e.target.value)} />
-            <TextInput placeholder="E-mail" value={Step21.email} onChange={(e) => handleInputChange1("email", e.target.value)} />
+            <NumberInput className='md:1/3' placeholder="Telefone de contato" value={Step21.telefone} onChange={(e) => handleInputChange1("telefone", e.target.value)} />
+            <TextInput className='md:1/3' placeholder="E-mail" value={Step21.email} onChange={(e) => handleInputChange1("email", e.target.value)} />
           </div>
         </div>
 
@@ -116,14 +117,15 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateMae: (
 
           <TextInput placeholder="Nome completo do pai" value={Step22.nome} onChange={(e) => handleInputChange2("nome", e.target.value)} />
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <DateInput value={Step22.data} onChange={(e) => handleInputChange2("data", e.target.value)} />
-            <TextInput placeholder='RG do pai' className='min-w-[220px]' value={Step22.rg} onChange={(e) => handleInputChange2("rg", e.target.value)} />
-            <TextInput placeholder='CPF do pai' className='min-w-[220px]' value={Step22.cpf} onChange={(e) => handleInputChange2("cpf", e.target.value)} />
+            <TextInput placeholder='RG do pai' className='min-w-[260px]' value={Step22.rg} onChange={(e) => handleInputChange2("rg", e.target.value)} />
+            <TextInput placeholder='CPF do pai' className='min-w-[260px]' value={Step22.cpf} onChange={(e) => handleInputChange2("cpf", e.target.value)} />
           </div>
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
+              className='md:1/3'
               placeholder={"Escolaridade"}
               options={[
                 "Ensino fundamental incompleto",
@@ -135,8 +137,8 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateMae: (
               ]}
               onChange={(value) => handleInputChange2("escolaridade", value)}
             />
-            <NumberInput placeholder="Telefone de contato" value={Step22.telefone} onChange={(e) => handleInputChange2("telefone", e.target.value)} />
-            <TextInput placeholder="E-mail" value={Step22.email} onChange={(e) => handleInputChange2("email", e.target.value)} />
+            <NumberInput className='md:1/3' placeholder="Telefone de contato" value={Step22.telefone} onChange={(e) => handleInputChange2("telefone", e.target.value)} />
+            <TextInput className='md:1/3' placeholder="E-mail" value={Step22.email} onChange={(e) => handleInputChange2("email", e.target.value)} />
           </div>
         </div>
 
@@ -152,16 +154,16 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateMae: (
 
               <TextInput placeholder="Nome completo do responsável" />
 
-              <div className='flex w-full gap-[12px]'>
+              <div className='flex flex-col md:flex-row w-full gap-[12px]'>
                 <DateInput />
-                <TextInput placeholder='RG do responsável' className='min-w-[220px]' />
-                <TextInput placeholder='CPF do responsável' className='min-w-[220px]' />
+                <TextInput placeholder='RG do responsável' className='min-w-[260px]' />
+                <TextInput placeholder='CPF do responsável' className='min-w-[260px]' />
               </div>
 
-              <div className='flex w-full gap-[12px]'>
-                <SelectInput placeholder={"Escolaridade"} options={["Ensino fundamental incompleto", "Ensino fundamental completo", "Ensino médio completo", "Técnico/profissionalizante", "Cursando ensino superior", "Ensino superior completo"]} />
-                <NumberInput placeholder="Telefone de contato" />
-                <TextInput placeholder="E-mail" />
+              <div className='flex flex-col md:flex-row w-full gap-[12px]'>
+                <SelectInput className='md:1/3' placeholder={"Escolaridade"} options={["Ensino fundamental incompleto", "Ensino fundamental completo", "Ensino médio completo", "Técnico/profissionalizante", "Cursando ensino superior", "Ensino superior completo"]} />
+                <NumberInput className='md:1/3' placeholder="Telefone de contato" />
+                <TextInput className='md:1/3' placeholder="E-mail" />
               </div>
 
             </div>

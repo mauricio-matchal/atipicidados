@@ -41,24 +41,38 @@ export default function Home() {
   return (
     <main className="flex flex-col min-h-screen">
       <NavBarColaborador />
-      <p>
+      <p className="text-[12px]">
         CPF: {colaboradorInfo ? colaboradorInfo.cpf : "Carregando..."}
       </p>
-      <p>
+      <p className="text-[12px]">
         RG: {colaboradorInfo ? colaboradorInfo.rg : "Carregando..."}
       </p>
       <button onClick={() => { console.log(colaboradorInfo) }}>Mostrar colaboradorInfo</button>
-      <div className="px-[84px] py-[30px]">
+      <div className="px-5 md:px-[84px] py-[30px]">
         <div className="flex justify-between">
-          <div className="flex flex-col w-[340px]">
+          <div className="flex flex-col w-full">
+            <div className="flex w-full justify-between">
             <h2 className="mb-7">Página inicial</h2>
+            
+            <div className="flex gap-[10px]">
+            <button className="botao">
+              <Link href='/cadastro/paciente' className="flex flex-row gap-1 items-center">
+                <PlusIcon style={{ color: 'var(--texto-botao)' }} />
+                <p>Novo Cadastro</p>
+              </Link>
+            </button>
+            </div>
+
+            </div>
+
             <div className="flex flex-col gap-2 mb-8">
               <h3>Minha unidade (Nome da Unidade)</h3>
               <Link href='/unidade'>
                 <p className="font-semibold text-blue-800 cursor-pointer">Mais informações</p>
               </Link>
             </div>
-            <div className="relative w-full">
+
+            <div className="relative w-[280px] md:w-[340px]">
               <input
                 type="text"
                 className='input w-full h-[35px] mb-2 pb-1'
@@ -72,7 +86,7 @@ export default function Home() {
               </button>
             </div>
 
-            <div className="flex gap-[18px]">
+            <div className="flex flex-wrap gap-3 md:gap-[18px]">
               <label className="flex items-center">
                 <input
                   type="checkbox"
@@ -111,14 +125,6 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex gap-[10px]">
-            <button className="botao">
-              <Link href='/cadastro/paciente' className="flex flex-row gap-1 items-center">
-                <PlusIcon style={{ color: 'var(--texto-botao)' }} />
-                <p>Novo Cadastro</p>
-              </Link>
-            </button>
-          </div>
         </div>
 
         <div className="mt-[42px]">

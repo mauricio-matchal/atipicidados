@@ -134,17 +134,17 @@ const Step1: React.FC<{
 
   return (
     <div className='flex flex-col gap-[162px] w-screen'>
-      <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
+      <div className='flex flex-col gap-[42px] px-5 md:w-[600px] lg:w-[840px] place-self-center'>
         <div className='flex flex-col gap-[12px]'>
 
           <h4 className='pl-2 place-self-start mt-10'>Crie um login e senha para o Colaborador</h4>
-          <div className='flex w-full gap-3'>
-            <TextInput className='w-[400px]' placeholder='E-mail' value={login.email} onChange={(e) => handleLoginChange("email", e.target.value)} />
-            <TextInput className='w-[400px]' placeholder='Confirmar e-mail' value={login.confirmarEmail} onChange={(e) => handleLoginChange("confirmarEmail", e.target.value)} />
+          <div className='flex flex-col md:flex-row w-full gap-3'>
+            <TextInput className='md:w-1/2' placeholder='E-mail' value={login.email} onChange={(e) => handleLoginChange("email", e.target.value)} />
+            <TextInput className='md:w-1/2' placeholder='Confirmar e-mail' value={login.confirmarEmail} onChange={(e) => handleLoginChange("confirmarEmail", e.target.value)} />
           </div>
-          <div className='flex w-full gap-3'>
-            <TextInput className='w-[400px]' placeholder='Senha' value={login.senha} onChange={(e) => handleLoginChange("senha", e.target.value)} />
-            <TextInput className='w-[400px]' placeholder='Confirmar senha' value={login.confirmarSenha} onChange={(e) => handleLoginChange("confirmarSenha", e.target.value)} />
+          <div className='flex flex-col md:flex-row w-full gap-3'>
+            <TextInput className='md:w-1/2' placeholder='Senha' value={login.senha} onChange={(e) => handleLoginChange("senha", e.target.value)} />
+            <TextInput className='md:w-1/2' placeholder='Confirmar senha' value={login.confirmarSenha} onChange={(e) => handleLoginChange("confirmarSenha", e.target.value)} />
           </div>
           {error && <div className="text-[#FF0F00] font-medium">{error}</div>}
           <div className='mb-10'></div>
@@ -152,15 +152,15 @@ const Step1: React.FC<{
           <div className='flex flex-col gap-[12px]'>
             <button onClick={() => { console.log(fotoFile) }}>Mostrar Foto</button>
 
-            <div className='flex w-full gap-[12px]'>
-              <FileInput placeholder='Foto 3x4' className='min-w-[260px]' onChange={handleFotoFileChange} name='fotoFile' />
-              <NumberInput placeholder="Telefone de contato" value={Step11.telefone} onChange={(e) => handleInputChange1("telefone", e.target.value)} />
+            <div className='flex flex-col md:flex-row w-full gap-[12px]'>
+              <FileInput placeholder='Foto 3x4' className='md:w-1/3' onChange={handleFotoFileChange} name='fotoFile' />
+              <NumberInput className='md:w-2/3' placeholder="Telefone de contato" value={Step11.telefone} onChange={(e) => handleInputChange1("telefone", e.target.value)} />
             </div>
 
             <TextInput placeholder='Nome completo' value={Step11.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
 
-            <div className='flex w-full gap-[12px]'>
-              <TextInput placeholder='CPF' className='min-w-[220px]' value={Step11.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
+            <div className='flex flex-col md:flex-row w-full gap-[12px]'>
+              <TextInput placeholder='CPF' className='min-w-[260px]' value={Step11.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
               <DateInput value={Step11.nascimento} onChange={(e) => handleInputChange1("nascimento", e.target.value)} />
             </div>
 
@@ -169,9 +169,9 @@ const Step1: React.FC<{
               <TextInput placeholder='Naturalidade' value={Step11.naturalidade} onChange={(e) => handleInputChange1("naturalidade", e.target.value)} />
             </div> */}
 
-            <div className='flex w-full gap-[12px]'>
-              <SelectInput options={["Masculino", "Feminino", "Intersexo", "Outro sexo", "Prefiro não dizer o sexo"]} placeholder={"Sexo"} onChange={(value) => handleInputChange1("sexo", value)} />
-              <SelectInput options={["Amarelo", "Branco", "Indígena", "Pardo", "Preto"]} placeholder={"Raça/cor"} onChange={(value) => handleInputChange1("raca", value)} />
+            <div className='flex flex-col md:flex-row w-full gap-[12px]'>
+              <SelectInput className='md:w-1/2' options={["Masculino", "Feminino", "Intersexo", "Outro sexo", "Prefiro não dizer o sexo"]} placeholder={"Sexo"} onChange={(value) => handleInputChange1("sexo", value)} />
+              <SelectInput className='md:w-1/2' options={["Amarelo", "Branco", "Indígena", "Pardo", "Preto"]} placeholder={"Raça/cor"} onChange={(value) => handleInputChange1("raca", value)} />
             </div>
 
             <div className='mb-4'></div>
@@ -185,8 +185,9 @@ const Step1: React.FC<{
 
             <div className='mb-4'></div>
 
-            <div className='flex w-full gap-[12px]'>
+            <div className='flex flex-col md:flex-row w-full gap-[12px]'>
               <SelectInput
+                className='md:w-1/2'
                 placeholder={"Formação"}
                 options={[
                   "Ensino fundamental incompleto",
@@ -198,7 +199,7 @@ const Step1: React.FC<{
                 ]}
                 onChange={(value) => handleInputChange1("formacao", value)}
               />
-              <div className='flex w-full gap-[12px]'>
+              <div className='flex flex-col md:w-1/2 md:flex-row w-full gap-[12px]'>
                 <TextInput placeholder='Título' value={Step11.titulo} onChange={(e) => handleInputChange1("titulo", e.target.value)} />
                 <TextInput placeholder='Unidade Vinculada(Número)' value={Step11.unidadeId} onChange={(e) => handleInputChange1("unidadeId", e.target.value)} />
               </div>

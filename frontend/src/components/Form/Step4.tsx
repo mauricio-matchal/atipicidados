@@ -127,16 +127,16 @@ const Step4: React.FC<{
 
   return (
     <div className='flex flex-col gap-[162px] w-screen'>
-      <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
+      <div className='flex flex-col gap-[42px] px-5 lg:w-[840px] place-self-center'>
 
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Informações de saúde</h4>
           <button onClick={() => {console.log(Step4)}}>Mostrar Respostas</button>
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
               options={["Sim, tem diagnóstico", "Não tem diagnóstico"]}
               placeholder={"Tem diagnóstico?"}
-              className='min-w-[300px]'
+              className='min-w-[280px]'
               onChange={handleDiagnosticoChange}
             />
             <DateInput
@@ -147,11 +147,11 @@ const Step4: React.FC<{
             />
           </div>
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
               options={["Sim, toma alguma medicação", "Não toma alguma medicação"]}
               placeholder={"Toma alguma medicação?"}
-              className='min-w-[300px]'
+              className='min-w-[280px]'
               onChange={handleMedicacaoChange}
             />
             <TextInput
@@ -163,7 +163,7 @@ const Step4: React.FC<{
             />
           </div>
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <TextInput
               placeholder="Médico responsável"
               className={`transition-opacity duration-300 w-full ${hasMedicacao ? 'opacity-100' : 'opacity-40'} ${hasMedicacao ? '' : 'cursor-not-allowed'}`}
@@ -173,7 +173,7 @@ const Step4: React.FC<{
             />
             <NumberInput
               placeholder="Contato do médico responsável"
-              className={`transition-opacity duration-300 min-w-[300px] ${hasMedicacao ? 'opacity-100' : 'opacity-40'} ${hasMedicacao ? '' : 'cursor-not-allowed'}`}
+              className={`transition-opacity duration-300 min-w-[280px] ${hasMedicacao ? 'opacity-100' : 'opacity-40'} ${hasMedicacao ? '' : 'cursor-not-allowed'}`}
               disabled={!hasMedicacao}
               style={{ pointerEvents: hasMedicacao ? 'auto' : 'none' }}
               value={Step4.medicocontato} onChange={(e) => { handleInputChange("medicocontato", e.target.value) }}
@@ -188,11 +188,11 @@ const Step4: React.FC<{
             value={Step4.objetivo} onChange={(e) => { handleInputChange("objetivo", e.target.value) }}
           />
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
               options={["Sim, possui alguma comorbidade", "Não possui alguma comorbidade"]}
               placeholder={"Possui alguma comorbidade?"}
-              className='min-w-[300px]'
+              className='min-w-[280px]'
               onChange={handleComorbidadeChange} />
             <TextInput
               placeholder='Qual(is) comorbidade(s)?'
@@ -208,11 +208,11 @@ const Step4: React.FC<{
           <CheckInput title='Possui alguma doença?' options={["Diabetes", "Pressão alta", "Nenhuma"]} onChange={handleDoencaChange} />
           <CheckInput title='Possui alguma alergia?' options={["Rinite", "Sinusite", "Nenhuma"]} onChange={handleAlergiaChange} />
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
               options={["Sim, tem asma", "Não tem asma"]}
               placeholder={"Tem asma?"}
-              className='min-w-[300px]'
+              className='min-w-[280px]'
               onChange={handleAsmaChange} />
             <FileInput
               placeholder="Relatório do diagnóstico"

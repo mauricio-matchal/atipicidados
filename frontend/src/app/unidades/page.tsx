@@ -7,12 +7,12 @@ export default function Home() {
     <main className="flex flex-col min-h-screen">
       <NavBar />
 
-      <div className="px-[137px] pt-[30px]">
+      <div className="px-5 md:px-[84px] lg:px-[137px] pt-[30px]">
         <div className="flex justify-between">
-          <div className="flex flex-col w-[340px]">
+          <div className="flex flex-col w-full">
             <h2 className="mb-7">Unidades</h2>
             
-            <div className="relative w-full">
+            <div className="relative w-[280px] md:w-[340px]">
               <input 
               type="text" 
               className='input w-full h-[35px] mb-1'

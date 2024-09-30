@@ -98,39 +98,43 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
 
   return (
     <div className='flex flex-col gap-[162px] w-screen'>
-      <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
+      <div className='flex flex-col gap-[42px] px-5 lg:w-[840px] place-self-center'>
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Mais informações</h4>
           <button onClick={reveal}>reveal</button>
           <button onClick={handleTest}>teste</button>
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
+              className='md:1/2'
               options={["Sim, possui NIS", "Não possui NIS"]}
               placeholder={"Possui NIS?"}
               onChange={handleNISChange}
             />
             <TextInput
               placeholder="Número NIS"
-              className={`transition-opacity duration-300 ${hasNIS ? 'opacity-100' : 'opacity-40'} ${hasNIS ? '' : 'cursor-not-allowed'}`}
+              className={`transition-opacity md:1/2 duration-300 ${hasNIS ? 'opacity-100' : 'opacity-40'} ${hasNIS ? '' : 'cursor-not-allowed'}`}
               disabled={!hasNIS}
               style={{ pointerEvents: hasNIS ? 'auto' : 'none' }}
               value={Step3.numeronis} onChange={(e) => handleInputChange("numeronis", e.target.value)}
             />
           </div>
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
+              className='md:w-1/3'
               options={["Sim, recebe BPC", "Não recebe BPC"]}
               placeholder={"Recebe BPC?"}
               onChange={(value) => handleInputChange("bpc", value)}
             />
             <SelectInput
+              className='md:w-1/3'
               options={["Sim, recebe Bolsa Família", "Não recebe Bolsa Família"]}
               placeholder={"Recebe Bolsa Família?"}
               onChange={(value) => handleInputChange("bolsafamilia", value)}
             />
             <SelectInput
+              className='md:w-1/3'
               options={["Sim, tem carteira CIPTEA", "Não tem carteira CIPTEA"]}
               placeholder={"Tem carteira CIPTEA?"}
               onChange={(value) => handleInputChange("ciptea", value)}
@@ -143,30 +147,31 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
             onChange={handlePasseLivreChange}
           />
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
+              className='md:w-1/2'
               options={["Sim, possui atendimento terapêutico", "Não possui atendimento terapêutico"]}
               placeholder={"Possui atendimento terapêutico?"}
               onChange={handleAtendimentoChange}
             />
             <TextInput
               placeholder={"Qual atendimento?"}
-              className={`transition-opacity duration-300 w-full ${hasAtendimento ? 'opacity-100' : 'opacity-40'} ${hasAtendimento ? '' : 'cursor-not-allowed'}`}
+              className={`transition-opacity md:w-1/2 duration-300 w-full ${hasAtendimento ? 'opacity-100' : 'opacity-40'} ${hasAtendimento ? '' : 'cursor-not-allowed'}`}
               disabled={!hasAtendimento}
               style={{ pointerEvents: hasAtendimento ? 'auto' : 'none' }}
               value={Step3.qualterapia} onChange={(e) => handleInputChange("qualterapia", e.target.value)}
             />
           </div>
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <TextInput
               placeholder="Endereço do atendimento terapêutico"
-              className={`transition-opacity duration-300 w-full ${hasAtendimento ? 'opacity-100' : 'opacity-40'} ${hasAtendimento ? '' : 'cursor-not-allowed'}`}
+              className={`transition-opacity md:w-1/2 duration-300 w-full ${hasAtendimento ? 'opacity-100' : 'opacity-40'} ${hasAtendimento ? '' : 'cursor-not-allowed'}`}
               disabled={!hasAtendimento}
               style={{ pointerEvents: hasAtendimento ? 'auto' : 'none' }}
               value={Step3.enderecoterapia} onChange={(e) => handleInputChange("enderecoterapia", e.target.value)}
             />
-            <TextInput placeholder="Renda familiar" value={Step3.renda} onChange={(e) => handleInputChange("renda", e.target.value)} />
+            <TextInput className='md:w-1/2' placeholder="Renda familiar" value={Step3.renda} onChange={(e) => handleInputChange("renda", e.target.value)} />
           </div>
 
           <CheckInput
@@ -181,19 +186,20 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
 
               <TextInput placeholder="Nome completo" />
 
-              <div className='flex w-full gap-[12px]'>
+              <div className='flex flex-col md:flex-row w-full gap-[12px]'>
                 <DateInput />
-                <TextInput placeholder='RG' className='min-w-[220px]' />
-                <TextInput placeholder='CPF' className='min-w-[220px]' />
+                <TextInput placeholder='RG' className='md:w-1/3' />
+                <TextInput placeholder='CPF' className='md:w-1/3' />
               </div>
 
-              <div className='flex w-full gap-[12px]'>
+              <div className='flex flex-col md:flex-row w-full gap-[12px]'>
                 <SelectInput
+                  className='md:w-1/3'
                   placeholder={"Escolaridade"}
                   options={["Ensino fundamental incompleto", "Ensino fundamental completo", "Ensino médio completo", "Técnico/profissionalizante", "Cursando ensino superior", "Ensino superior completo"]}
                 />
-                <NumberInput placeholder="Telefone de contato" />
-                <TextInput placeholder="E-mail" />
+                <NumberInput className='md:w-1/3' placeholder="Telefone de contato" />
+                <TextInput className='md:w-1/3' placeholder="E-mail" />
               </div>
             </div>
           ))}

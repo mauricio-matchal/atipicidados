@@ -108,18 +108,18 @@ const Step1: React.FC<{
 
   return (
     <div className='flex flex-col gap-[162px] w-screen'>
-      <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
+      <div className='flex flex-col gap-[42px] px-5 md:w-[600px] lg:w-[840px] place-self-center'>
         <div className='flex flex-col gap-[12px]'>
           <h2 className='font-bold'>Novo Gerente</h2>
 
           <h4 className='pl-2 place-self-start mt-10'>Crie um login e senha para o Gerente</h4>
-          <div className='flex w-full gap-3'>
-            <TextInput className='w-[400px]' placeholder='E-mail' value={login.email} onChange={(e) => handleLoginChange("email", e.target.value)} />
-            <TextInput className='w-[400px]' placeholder='Confirmar e-mail' value={login.confirmarEmail} onChange={(e) => handleLoginChange("confirmarEmail", e.target.value)} />
+          <div className='flex flex-col md:flex-row w-full gap-3'>
+            <TextInput className='md:w-1/2' placeholder='E-mail' value={login.email} onChange={(e) => handleLoginChange("email", e.target.value)} />
+            <TextInput className='md:w-1/2' placeholder='Confirmar e-mail' value={login.confirmarEmail} onChange={(e) => handleLoginChange("confirmarEmail", e.target.value)} />
           </div>
-          <div className='flex w-full gap-3'>
-            <TextInput className='w-[400px]' placeholder='Senha' value={login.senha} onChange={(e) => handleLoginChange("senha", e.target.value)} />
-            <TextInput className='w-[400px]' placeholder='Confirmar senha' value={login.confirmarSenha} onChange={(e) => handleLoginChange("confirmarSenha", e.target.value)} />
+          <div className='flex flex-col md:flex-row w-full gap-3'>
+            <TextInput className='md:w-1/2' placeholder='Senha' value={login.senha} onChange={(e) => handleLoginChange("senha", e.target.value)} />
+            <TextInput className='md:w-1/2' placeholder='Confirmar senha' value={login.confirmarSenha} onChange={(e) => handleLoginChange("confirmarSenha", e.target.value)} />
           </div>
           {error && <div className="text-[#FF0F00] font-medium">{error}</div>}
           <div className='mb-10'></div>
@@ -127,18 +127,18 @@ const Step1: React.FC<{
           <div className='flex flex-col gap-[12px]'>
             <button onClick={() => { console.log(fotoFile) }}>Mostrar Foto</button>
 
-            <div className='flex w-full gap-[12px]'>
-              <FileInput placeholder='Foto 3x4' className='min-w-[260px]' onChange={handleFotoFileChange} name='fotoFile' />
-              <NumberInput placeholder="Telefone de contato" value={Step11.telefone} onChange={(e) => handleInputChange1("telefone", e.target.value)} />
+            <div className='flex flex-col md:flex-row w-full gap-[12px]'>
+              <FileInput placeholder='Foto 3x4' className='md:w-1/2' onChange={handleFotoFileChange} name='fotoFile' />
+              <NumberInput className='md:w-1/2' placeholder="Telefone de contato" value={Step11.telefone} onChange={(e) => handleInputChange1("telefone", e.target.value)} />
             </div>
 
             <TextInput placeholder='Nome completo' value={Step11.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
 
-            <div className='flex w-full gap-[12px]'>
-              <TextInput placeholder='CPF' className='min-w-[220px]' value={Step11.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
-              <TextInput placeholder='RG' className='min-w-[220px]' value={Step11.rg} onChange={(e) => handleInputChange1("rg", e.target.value)} />
+            <div className='flex flex-col md:flex-row w-full gap-[12px]'>
+              <TextInput placeholder='CPF' className='md:w-1/2' value={Step11.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
+              <TextInput placeholder='RG' className='md:w-1/2' value={Step11.rg} onChange={(e) => handleInputChange1("rg", e.target.value)} />
             </div>
-            <div className='flex w-full gap-[12px]'>
+            <div className='flex flex-col md:flex-row w-full gap-[12px]'>
               <SelectInput
                 options={["Amarelo", "Branco", "Indígena", "Preto", "Outra"]}
                 placeholder={"Raça/cor"}

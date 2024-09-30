@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import logos from "../../public/images/logos.svg";
+import logoDesktop from "../../public/images/logos.svg";
+import logoMobile from '../../public/images/logo.png';
 import { SlashedEyeIcon, OpenEyeIcon } from "../../public/icons/Icons";
 import { useState } from "react";
 import Link from "next/link";
@@ -85,19 +86,27 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen">
-      <div className="flex w-[40%] justify-center items-center">
+      <div className="hidden lg:flex w-[40%] justify-center items-center">
         <p>colocar imagem aqui</p>
       </div>
 
-      <div className="flex bg-blue-100 w-[60%] flex-col justify-center items-center gap-10">
-        <Image
-          src={logos}
-          alt="logos atipicidades"
-        />
+      <div className="flex bg-blue-100 w-full lg:w-[60%] flex-col justify-center items-center gap-10">
+        <div className="flex flex-col w-full justify-center items-center">
+          <Image
+            src={logoDesktop}
+            alt="logosDesktop atipicidades"
+            className="hidden md:flex"
+          />
+          <Image
+            src={logoMobile}
+            alt="logosDesktop atipicidades"
+            className="flex md:hidden"
+          />
+        </div>
 
-        <form className="flex flex-col justify-center items-center gap-9">
+        <form className="flex flex-col justify-center items-center gap-9 px-[7]">
           <h1>Acesse sua conta</h1>
-          <div className="flex flex-row gap-4">
+          <div className="flex flex-row gap-1 md:gap-4">
             <label className="flex items-center">
               <Checkbox
                 value="Gerente"
@@ -155,7 +164,7 @@ export default function Home() {
               </button>
             </div>
 
-            <div className="flex px-[10px] text-[14px] justify-end w-full">
+            <div className="flex px-[10px] text-[12px] md:text-[14px] justify-end w-full">
               <Link href='/recuperarsenha'>
                 <p className="font-semibold text-blue-800 cursor-pointer">Esqueceu a senha?</p>
               </Link>
