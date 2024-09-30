@@ -33,7 +33,6 @@ export default function Home() {
   const fetchGerenteData = async (id: string) => {
     try {
       const response = await fetch(`https://atipicidades-1.onrender.com/gerentes/id/${id}`);
-      const response = await fetch(`https://atipicidades-1.onrender.com/gerentes/id/${id}`);
       if (!response.ok) {
         throw new Error("Failed to fetch gerente data");
       }
@@ -61,7 +60,6 @@ export default function Home() {
   const fetchGerentes = async () => {
     try {
       const response = await fetch("https://atipicidades-1.onrender.com/gerentes/getall");
-      const response = await fetch("https://atipicidades-1.onrender.com/gerentes/getall");
       if (!response.ok) {
         throw new Error("Failed to fetch gerentes data");
       }
@@ -75,7 +73,6 @@ export default function Home() {
 
   const fetchColaboradores = async () => {
     try {
-      const response = await fetch("https://atipicidades-1.onrender.com/colaboradores/getall");
       const response = await fetch("https://atipicidades-1.onrender.com/colaboradores/getall");
       if (!response.ok) {
         throw new Error("Failed to fetch colaboradores data");
