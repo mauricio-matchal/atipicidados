@@ -22,7 +22,27 @@ export default function Home() {
   const [gerentes, setGerentes] = useState<any[]>([]);
   const [colaboradores, setColaboradores] = useState<any[]>([]);
 
+  const [filteredMembers, setFilteredMembers] = useState<any[]>([]);
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const [searchBy, setSearchBy] = useState("");
+
   useEffect(() => {
+    let filtered = allMembers;
+
+    // Filter by search term
+    if (searchBy.length > 0) {
+      filtered = filtered.filter((member) =>
+        member.nome.toLowerCase().includes(searchBy.toLowerCase())
+      );
+    }
+
+    // Filter by selected filters
+    if (selectedFilters.length > 0) {
+      filtered = filtered.filter((member) => selectedFilters.includes(member.type));
+    }
+
+    setFilteredMembers(filtered);
+
     const email = localStorage.getItem("userEmail");
     const id = localStorage.getItem("userID");
     const homeLink = localStorage.getItem("homeLink");
@@ -37,7 +57,7 @@ export default function Home() {
     fetchPacientes();
     fetchGerentes();
     fetchColaboradores();
-  }, [email, id]);
+  }, [email, id, searchBy, selectedFilters, pacientes, gerentes, colaboradores]);
 
   const fetchColaboradorData = async (id: any) => {
     try {
@@ -100,9 +120,6 @@ export default function Home() {
     ...colaboradores.map((colaborador) => ({ ...colaborador, type: "Colaborador" }))
   ];
 
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-  // selectedFilters = [Colaborador, Atendido, Gerente]
-
   const handleFilterChange = (filter: string) => {
     setSelectedFilters((prevFilters) =>
       prevFilters.includes(filter)
@@ -111,9 +128,7 @@ export default function Home() {
     );
   };
 
-  const filteredMembers = allMembers.filter((member) =>
-    selectedFilters.length === 0 || selectedFilters.includes(member.type)
-  );
+  const handleSearchBar = (e: any) => setSearchBy(e.target.value);
 
   // Seleciona a url certa caso o card seja de um paciente, gerente ou colaborador para enviar para a pagina certa
   const urlToMemberPage = (member: any) => {
@@ -152,7 +167,10 @@ export default function Home() {
               <input
                 type="text"
                 className='input w-full h-[35px] mb-2 pb-1'
-                placeholder="Buscar membro..." />
+                placeholder="Buscar membro..." 
+                value={searchBy}
+                onChange={handleSearchBar}
+                />
 
               <button
                 type="button"
