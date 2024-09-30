@@ -166,7 +166,7 @@ export const getColaboradores = async (_:Request, response:Response) => {
 }
 
 
-export const ChangePasswordByModel = async (request: Request, response: Response) => {
+export const ChangePasswordForModel = async (request: Request, response: Response) => {
     const { id } = request.params;
     const { oldPassword, newPassword } = request.body;
 

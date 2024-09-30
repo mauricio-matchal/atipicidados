@@ -5,7 +5,6 @@ import multer from 'multer';
 
 const prisma = new PrismaClient();
 
-// Configuração do multer para salvar os arquivos em uma pasta 'uploads'
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/');
@@ -183,3 +182,49 @@ export const getPacientes = async (_:Request, response:Response) => {
       return response.status(500).json({error:true, message:'Erro interno no servidor'})
   }
 }
+
+
+export const ChangePasswordForModel = async (request: Request, response: Response) => {
+  const { id } = request.params;
+  const { oldPassword, newPassword } = request.body;
+
+  try {
+      const paciente = await prisma.paciente.findUnique({
+          where: { id: Number(id) }
+      });
+
+      if (!paciente) {
+          return response.status(404).json({
+              error: true,
+              message: 'Erro: Colaborador não encontrado'
+          });
+      }
+
+      const isPasswordValid = await compare(oldPassword, paciente.password);
+      if (!isPasswordValid) {
+          return response.status(401).json({
+              error: true,
+              message: 'Erro: Senha incorreta'
+          });
+      }
+
+      await prisma.colaborador.update({
+          where: { id: Number(id) }, 
+          data: {
+              password: hashSync(newPassword,10) 
+          }
+      });
+
+      return response.status(200).json({
+          success: true,
+          message: 'Senha alterada com sucesso'
+      });
+      
+  } catch (error) {
+      console.error(error);
+      return response.status(500).json({
+          error: true,
+          message: 'Erro ao alterar a senha'
+      });
+  }
+};
