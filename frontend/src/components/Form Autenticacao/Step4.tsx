@@ -119,53 +119,53 @@ const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State
 
   return (
     <div className='flex flex-col gap-[162px] w-screen'>
-      <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
+      <div className='flex flex-col gap-[42px] px-5 lg:w-[840px] place-self-center'>
 
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Informações de saúde</h4>
           <button onClick={reveal}>reveal</button>
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
               options={["Sim, tem diagnóstico", "Não tem diagnóstico"]}
               placeholder={"Tem diagnóstico?"}
-              className='min-w-[300px]'
+              className='md:w-1/2'
               onChange={handleDiagnosticoChange}
             />
             <DateInput
-              className={`transition-opacity duration-300 w-full ${hasDiagnostico ? 'opacity-100' : 'opacity-40'} ${hasDiagnostico ? '' : 'cursor-not-allowed'}`}
+              className={`transition-opacity md:w-1/2 duration-300 w-full ${hasDiagnostico ? 'opacity-100' : 'opacity-40'} ${hasDiagnostico ? '' : 'cursor-not-allowed'}`}
               disabled={!hasDiagnostico}
               style={{ pointerEvents: hasDiagnostico ? 'auto' : 'none' }}
               value={Step4.datadiagnostico} onChange={(e) => { handleInputChange("datadiagnostico", e.target.value) }}
             />
           </div>
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
               options={["Sim, toma alguma medicação", "Não toma alguma medicação"]}
               placeholder={"Toma alguma medicação?"}
-              className='min-w-[300px]'
+              className='md:w-1/2'
               onChange={handleMedicacaoChange}
             />
             <TextInput
               placeholder='Qual(is) medicação(ões)?'
-              className={`transition-opacity duration-300 w-full ${hasMedicacao ? 'opacity-100' : 'opacity-40'} ${hasMedicacao ? '' : 'cursor-not-allowed'}`}
+              className={`transition-opacity md:w-1/2 duration-300 w-full ${hasMedicacao ? 'opacity-100' : 'opacity-40'} ${hasMedicacao ? '' : 'cursor-not-allowed'}`}
               disabled={!hasMedicacao}
               style={{ pointerEvents: hasMedicacao ? 'auto' : 'none' }}
               value={Step4.qualmedicacao} onChange={(e) => { handleInputChange("qualmedicacao", e.target.value) }}
             />
           </div>
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <TextInput
               placeholder="Médico responsável"
-              className={`transition-opacity duration-300 w-full ${hasMedicacao ? 'opacity-100' : 'opacity-40'} ${hasMedicacao ? '' : 'cursor-not-allowed'}`}
+              className={`transition-opacity md:w-1/2 duration-300 w-full ${hasMedicacao ? 'opacity-100' : 'opacity-40'} ${hasMedicacao ? '' : 'cursor-not-allowed'}`}
               disabled={!hasMedicacao}
               style={{ pointerEvents: hasMedicacao ? 'auto' : 'none' }}
               value={Step4.medico} onChange={(e) => { handleInputChange("medico", e.target.value) }}
             />
             <NumberInput
               placeholder="Contato do médico responsável"
-              className={`transition-opacity duration-300 min-w-[300px] ${hasMedicacao ? 'opacity-100' : 'opacity-40'} ${hasMedicacao ? '' : 'cursor-not-allowed'}`}
+              className={`transition-opacity md:w-1/2 duration-300 min-w-[300px] ${hasMedicacao ? 'opacity-100' : 'opacity-40'} ${hasMedicacao ? '' : 'cursor-not-allowed'}`}
               disabled={!hasMedicacao}
               style={{ pointerEvents: hasMedicacao ? 'auto' : 'none' }}
               value={Step4.medicocontato} onChange={(e) => { handleInputChange("medicocontato", e.target.value) }}
@@ -180,15 +180,15 @@ const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State
             value={Step4.objetivo} onChange={(e) => { handleInputChange("objetivo", e.target.value) }}
           />
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
               options={["Sim, possui alguma comorbidade", "Não possui alguma comorbidade"]}
               placeholder={"Possui alguma comorbidade?"}
-              className='min-w-[300px]'
+              className='md:w-1/2'
               onChange={handleComorbidadeChange} />
             <TextInput
               placeholder='Qual(is) comorbidade(s)?'
-              className={`transition-opacity duration-300 w-full ${hasComorbidade ? 'opacity-100' : 'opacity-40'} ${hasComorbidade ? '' : 'cursor-not-allowed'}`}
+              className={`transition-opacity md:w-1/2 duration-300 w-full ${hasComorbidade ? 'opacity-100' : 'opacity-40'} ${hasComorbidade ? '' : 'cursor-not-allowed'}`}
               disabled={!hasComorbidade}
               style={{ pointerEvents: hasComorbidade ? 'auto' : 'none' }}
               value={Step4.qualcomorbidade} onChange={(e) => { handleInputChange("qualcomorbidade", e.target.value) }}
@@ -200,15 +200,15 @@ const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State
           <CheckInput title='Possui alguma doença?' options={["Diabetes", "Pressão alta", "Nenhuma"]} onChange={handleDoencaChange} />
           <CheckInput title='Possui alguma alergia?' options={["Rinite", "Sinusite", "Nenhuma"]} onChange={handleAlergiaChange} />
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
               options={["Sim, tem asma", "Não tem asma"]}
               placeholder={"Tem asma?"}
-              className='min-w-[300px]'
+              className='md:w-1/2'
               onChange={handleAsmaChange} />
             <FileInput
               placeholder="Relatório do diagnóstico"
-              className={`transition-opacity duration-300 w-full ${hasAsma ? 'opacity-100' : 'opacity-40'} ${hasAsma ? '' : 'cursor-not-allowed'}`}
+              className={`transition-opacity md:w-1/2 duration-300 w-full ${hasAsma ? 'opacity-100' : 'opacity-40'} ${hasAsma ? '' : 'cursor-not-allowed'}`}
               disabled={!hasAsma}
               style={{ pointerEvents: hasAsma ? 'auto' : 'none' }}
             />

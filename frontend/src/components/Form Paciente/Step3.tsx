@@ -101,13 +101,13 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
 
   return (
     <div className='flex flex-col gap-[162px] w-screen'>
-      <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
+      <div className='flex flex-col gap-[42px] px-5 lg:w-[840px] place-self-center'>
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Mais informações</h4>
           <button onClick={() => {console.log(Step3)}}>Mostrar Respostas</button>
           <button onClick={handleTest}>teste</button>
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
               options={["Sim, possui NIS", "Não possui NIS"]}
               placeholder={"Possui NIS?"}
@@ -122,7 +122,7 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
             />
           </div>
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
               options={["Sim, recebe BPC", "Não recebe BPC"]}
               placeholder={"Recebe BPC?"}
@@ -146,7 +146,7 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
             onChange={handlePasseLivreChange}
           />
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
               options={["Sim, possui atendimento terapêutico", "Não possui atendimento terapêutico"]}
               placeholder={"Possui atendimento terapêutico?"}
@@ -161,7 +161,7 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
             />
           </div>
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <TextInput
               placeholder="Endereço do atendimento terapêutico"
               className={`transition-opacity duration-300 w-full ${hasAtendimento ? 'opacity-100' : 'opacity-40'} ${hasAtendimento ? '' : 'cursor-not-allowed'}`}
@@ -184,13 +184,13 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
 
               <TextInput placeholder="Nome completo" />
 
-              <div className='flex w-full gap-[12px]'>
+              <div className='flex flex-col md:flex-row w-full gap-[12px]'>
                 <DateInput />
-                <TextInput placeholder='RG' className='min-w-[220px]' />
-                <TextInput placeholder='CPF' className='min-w-[220px]' />
+                <TextInput placeholder='RG' className='min-w-[260px]' />
+                <TextInput placeholder='CPF' className='min-w-[260px]' />
               </div>
 
-              <div className='flex w-full gap-[12px]'>
+              <div className='flex flex-col md:flex-row w-full gap-[12px]'>
                 <SelectInput
                   placeholder={"Escolaridade"}
                   options={["Ensino fundamental incompleto", "Ensino fundamental completo", "Ensino médio completo", "Técnico/profissionalizante", "Cursando ensino superior", "Ensino superior completo"]}

@@ -1,9 +1,11 @@
 "use client";
+import CheckIcon from '../../assets/icons/check'
 import Image from "next/image";
 import NavBar from "@/components/NavBar";
 import perfil from "../../../public/images/perfil.png";
 import { Card } from "@/components/Card";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function Home() {
     const [userrEmail, setUserrEmail] = useState("");
@@ -42,7 +44,18 @@ export default function Home() {
             <div className="flex flex-col gap-[20px] mx-5 md:mx-[54px] lg:mx-[108px] mt-[33px] text-[14px]">
                 <div className="flex flex-col md:flex-row gap-[20px]">
                     <div className="box w-full md:w-3/5 flex flex-col gap-7">
-                        <h2>Meu cadastro</h2>
+                        <div className='flex w-full justify-between'>
+                            <h2>Paciente</h2>
+
+                            <div className="flex gap-[10px]">
+                                <button className="botao">
+                                  <Link href='/autenticacao' className="flex flex-row gap-1 items-center">
+                                    <CheckIcon style={{ color: 'var(--texto-botao)' }} />
+                                    <p>Autenticar</p>
+                                  </Link>
+                                </button>
+                            </div>
+                        </div>
 
                         <div className="flex flex-col  gap-8">
                             <div className="flex items-center gap-[20px]">

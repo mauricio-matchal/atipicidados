@@ -15,10 +15,10 @@ export function Card({ title, cpf, acesso }: CardProps) {
   }
 
   return (
-    <div className="flex flex-col items-start justify-around border border-black/10 bg-[#FFFFFF] hover:bg-blue-100 cursor-pointer rounded-xl">
+    <div className="flex flex-col items-start w-[280px] justify-around bg-[#FFFFFF] hover:bg-blue-100 cursor-pointer rounded-xl">
       {/* <hr className="opacity-20" /> */}
 
-      <div className="flex flex-row items-center justify-start gap-3 py-[18px] px-4 w-full">
+      <div className="flex items-center justify-start gap-3 py-[18px] px-4">
         <Image
           src={perfil}
           alt="foto de identificação colaborador"
@@ -40,8 +40,9 @@ export function Card({ title, cpf, acesso }: CardProps) {
 
 export function CardUnidade() {
   return (
+    <div className="w-[280px]">
     <Link href='/unidades/nomedaunidade'>
-      <div className="flex flex-col w-[276px] h-[93px] justify-around">
+      <div className="flex flex-col w-full h-[93px] justify-around">
         <hr />
 
         <div className="flex flex-col gap-1 my-[16.5px]">
@@ -54,5 +55,6 @@ export function CardUnidade() {
         <hr />
       </div>
     </Link>
+    </div>
   )
 }
