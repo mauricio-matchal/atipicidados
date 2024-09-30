@@ -38,7 +38,7 @@ const Form: React.FC = () => {
 
   const handleUserCreation = async () => {
     try {
-      const teste = await fetch("http://localhost:3002/gerentes/", {
+      const teste = await fetch("https://atipicidades-1.onrender.com/gerentes/", {
         method: "POST",
         body: JSON.stringify(formData),
         headers: { 'Content-Type': 'application/json' }

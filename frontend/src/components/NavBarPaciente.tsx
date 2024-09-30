@@ -38,7 +38,7 @@ export default function NavBar({ userEmail, userName }: NavBarProps) {
 
     const fetchPacienteData = async (id: any) => {
         try {
-            const response = await fetch(`http://localhost:3002/pacientes/id/${id}`);
+            const response = await fetch(`https://atipicidades-1.onrender.com/pacientes/id/${id}`);
             if (!response.ok) {
                 throw new Error("Failed to fetch gerente data");
             }

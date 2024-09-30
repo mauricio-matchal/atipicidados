@@ -1,8 +1,9 @@
 import { Router } from 'express';
 import cors from 'cors';
-import { createPaciente, getPaciente, getPacientes, getuserPacienteId, pacienteLogin } from '../controllers/pacienteControllers';
+import { ChangePasswordForModel, createPaciente, getPaciente, getPacientes, getuserPacienteId, pacienteLogin } from '../controllers/pacienteControllers';
 import { PacienteCreateInputSchema } from '../../prisma/validateSchema';
 import { validate} from '../middleware/validate';
+import { sendPassword } from '../email/sendPasswordByEmailPaciente';
 
 export const pacienteRouter = Router();
 pacienteRouter.use(cors());
@@ -11,5 +12,8 @@ pacienteRouter.get('/cpf/:cpf', getPaciente);
 pacienteRouter.post('/login', pacienteLogin);
 pacienteRouter.get('/id/:id', getuserPacienteId);
 pacienteRouter.get('/getall', getPacientes);
+pacienteRouter.post('senha', sendPassword);
+pacienteRouter.post('/id/:id/changePassword', ChangePasswordForModel)
+
 
 // validate(PacienteCreateInputSchema),

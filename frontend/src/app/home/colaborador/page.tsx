@@ -27,7 +27,7 @@ export default function Home() {
 
   const fetchColaboradorData = async (id: string) => {
     try {
-      const response = await fetch(`http://localhost:3002/colaboradores/id/${id}`);
+      const response = await fetch(`https://atipicidades-1.onrender.com/colaboradores/id/${id}`);
       if (!response.ok) {
         throw new Error("Failed to fetch colaborador data");
       }
@@ -39,15 +39,15 @@ export default function Home() {
   };
 
   return (
+    <><NavBarColaborador />
     <main className="flex flex-col min-h-screen">
-      <NavBarColaborador />
       <p className="text-[12px]">
         CPF: {colaboradorInfo ? colaboradorInfo.cpf : "Carregando..."}
       </p>
       <p className="text-[12px]">
         RG: {colaboradorInfo ? colaboradorInfo.rg : "Carregando..."}
       </p>
-      <button onClick={() => { console.log(colaboradorInfo) }}>Mostrar colaboradorInfo</button>
+      <button onClick={() => { console.log(colaboradorInfo); } }>Mostrar colaboradorInfo</button>
       <div className="px-5 md:px-[84px] py-[30px]">
         <div className="flex justify-between">
           <div className="flex flex-col w-full">
@@ -90,36 +90,31 @@ export default function Home() {
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  className="checkbox hover:none"
-                />
+                  className="checkbox hover:none" />
                 Gerente
               </label>
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  className="checkbox hover:none"
-                />
+                  className="checkbox hover:none" />
                 Colaborador
               </label>
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  className="checkbox hover:none"
-                />
+                  className="checkbox hover:none" />
                 Atendido
               </label>
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  className="checkbox hover:none"
-                />
+                  className="checkbox hover:none" />
                 Autenticado
               </label>
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  className="checkbox hover:none"
-                />
+                  className="checkbox hover:none" />
                 Não autenticado
               </label>
             </div>
@@ -131,6 +126,6 @@ export default function Home() {
           <Card />
         </div>
       </div>
-    </main>
+    </main></>
   );
 }

@@ -127,7 +127,7 @@ export const getGerente = async (request: Request, response: Response) => {
 
         return response.status(200).json({
             error: false,
-            message: `O colaborador ${userGerente.nome} foi encontrado`,
+            message: `O gerente ${userGerente.nome} foi encontrado`,
             userGerente
         }); 
     
@@ -154,3 +154,49 @@ export const getGerentes = async (_:Request, response:Response) => {
         return response.status(500).json({error:true, message:'Erro interno no servidor'})
     }
 }
+
+
+export const ChangePasswordForModel = async (request: Request, response: Response) => {
+    const { id } = request.params;
+    const { oldPassword, newPassword } = request.body;
+
+    try {
+        const gerente = await prisma.gerente.findUnique({
+            where: { id: Number(id) }
+        });
+
+        if (!gerente) {
+            return response.status(404).json({
+                error: true,
+                message: 'Erro: Colaborador não encontrado'
+            });
+        }
+
+        const isPasswordValid = await compare(oldPassword, gerente.password);
+        if (!isPasswordValid) {
+            return response.status(401).json({
+                error: true,
+                message: 'Erro: Senha incorreta'
+            });
+        }
+
+        await prisma.colaborador.update({
+            where: { id: Number(id) }, 
+            data: {
+                password: hashSync(newPassword,10) 
+            }
+        });
+
+        return response.status(200).json({
+            success: true,
+            message: 'Senha alterada com sucesso'
+        });
+        
+    } catch (error) {
+        console.error(error);
+        return response.status(500).json({
+            error: true,
+            message: 'Erro ao alterar a senha'
+        });
+    }
+};

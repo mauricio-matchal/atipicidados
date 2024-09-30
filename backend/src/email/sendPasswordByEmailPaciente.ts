@@ -11,7 +11,7 @@ export const sendPassword = async (request: Request, response: Response) => {
     const { email } = request.body;
 
     try {
-        const user = await prisma.gerente.findUnique({
+        const user = await prisma.paciente.findUnique({
             where: { email }
         });
 
@@ -23,7 +23,7 @@ export const sendPassword = async (request: Request, response: Response) => {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'atipicidados@gmail.com', 
+                user: 'juliomoreira0111@gmail.com', 
                 pass: senhaJulio
             }
         });
@@ -49,7 +49,7 @@ export const sendPassword = async (request: Request, response: Response) => {
             `
         }).then(async () => {
             const hashedPassword = await bcrypt.hash(newPassword, 10);
-            await prisma.gerente.update({
+            await prisma.paciente.update({
                 where: { email },
                 data: { password: hashedPassword }
             });
