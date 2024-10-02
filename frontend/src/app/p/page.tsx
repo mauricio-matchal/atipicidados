@@ -117,7 +117,7 @@ export default function Home() {
                     </div>
 
                     <div className="box w-2/5">
-                        <h3>Profissionais que me acompanham</h3>
+                        <h3>Profissionais que acompanham</h3>
 
                         <div className="flex flex-col">
                             <Card hasBorder={false} />

@@ -7,11 +7,13 @@ import { useState } from "react";
 import Link from "next/link";
 import Checkbox from "@/components/Checkbox";
 import { useRouter } from "next/navigation";
+import Loading from "@/components/Loading";
 
 export default function Home() {
   const [userType, setUserType] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [id, setID] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const togglePasswordVisibility = () => {
@@ -42,24 +44,24 @@ export default function Home() {
   }
 
   const handleLogin = async (userType: any) => {
+    setIsLoading(true);
     let url = ""
     switch (userType) {
       case ("Gerente"):
-        url = "http://localhost:3002/gerentes/login"; 
+        url = "http://localhost:3002/gerentes/login";
         localStorage.setItem(userType, 'gerente');
         break;
       case ("Colaborador"):
         url = "http://localhost:3002/colaboradores/login"
         localStorage.setItem(userType, 'colaborador');
-
         break;
       case ("Paciente"):
         url = "http://localhost:3002/pacientes/login"
         localStorage.setItem(userType, 'paciente');
-
         break;
       default:
         console.error("Unknown user type");
+        setIsLoading(false);
         return;
     }
     try {
@@ -81,15 +83,26 @@ export default function Home() {
       localStorage.setItem("userID", gerente.id);
       const homeLink = `/home/${userType.toLowerCase()}?email=${encodeURIComponent(loginData.email)}&id=${encodeURIComponent(gerente.id)}`
       localStorage.setItem("homeLink", homeLink)
-      
+
       router.push(`/home/${userType.toLowerCase()}?email=${encodeURIComponent(loginData.email)}&id=${encodeURIComponent(gerente.id)}`);
     } catch (error) {
       console.log("Erro em seu login", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <main className="flex min-h-screen">
+    <main className={`flex min-h-screen ${isLoading && ""}`}>
+      {isLoading && (
+        <>
+          <div className="fixed z-40 place-self-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <Loading />
+          </div>
+          <div className="fixed inset-0 bg-black/30 z-30" />
+        </>
+      )}
+
       <div className="flex w-[40%] justify-center items-center">
         <p>colocar imagem aqui</p>
       </div>
