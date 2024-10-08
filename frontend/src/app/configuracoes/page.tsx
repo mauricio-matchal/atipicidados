@@ -1,7 +1,9 @@
 'use client';
+import LogOut from "@/assets/icons/logout";
 import NavBar from "@/components/NavBar";
-import { useRouter } from 'next/navigation'; 
+import { useRouter } from 'next/navigation';
 import { useState } from "react";
+import { SlashedEyeIcon, OpenEyeIcon } from "../../../public/icons/Icons";
 
 export default function Home() {
   const router = useRouter();
@@ -28,7 +30,7 @@ export default function Home() {
       }
 
       const data = await response.json();
-      console.log(data); 
+      console.log(data);
 
     } catch (error) {
       console.error("Error changing password:", error);
@@ -36,13 +38,13 @@ export default function Home() {
   };
 
   const [changePasswordIsVisible, setChangePasswordIsVisible] = useState(true);
-  const [oldPassword, setOldPassword] = useState(''); 
+  const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [showOldPassword, setShowOldPassword] = useState(false); // Estado para mostrar/ocultar a antiga senha
   const [showNewPassword, setShowNewPassword] = useState(false); // Estado para mostrar/ocultar a nova senha
 
   const handleChangePassword = () => {
-    const id = localStorage.getItem('userID'); 
+    const id = localStorage.getItem('userID');
     if (id) {
       fetchChangePasswordData(id);
       console.log('Senha mudada com sucesso');
@@ -53,8 +55,8 @@ export default function Home() {
   };
 
   function leaveAtipicidades() {
-    localStorage.clear(); 
-    router.push('/'); 
+    localStorage.clear();
+    router.push('/');
   }
 
   return (
@@ -64,65 +66,70 @@ export default function Home() {
         <div className="px-[137px] pt-[30px]">
           <div className="flex flex-col space-y-10">
             <h2 className="mb-7">Configurações</h2>
-            <button 
-              className="botao min-w-[210px] max-w-[210px]"
-              onClick={leaveAtipicidades} 
-              aria-label="Sair do Atipicidades"
-            >
-              SAIR DO ATIPICIDADES
-            </button>
-            <div className="flex gap-10">
-              <button 
+
+            <div className="flex flex-col gap-10 min-w-[280px]">
+              {/* <button 
                 className="botao mt-4 max-w-[220px]" 
                 onClick={() => setChangePasswordIsVisible(!changePasswordIsVisible)}
               >
                 Mudar senha
-              </button>
+              </button> */}
               {changePasswordIsVisible && (
-                <div className="flex flex-col space-y-4">
-                  <div className="relative">
-                    <input
-                      className="input px-1 py-1"
-                      type={showOldPassword ? "text" : "password"} // Altera o tipo do input
-                      placeholder="Antiga senha"
-                      value={oldPassword}
-                      onChange={(e) => setOldPassword(e.target.value)} 
-                      required 
-                    />
+                <div className="flex flex-col">
+                  <h3 className="mb-4">Mudar sua senha</h3>
+                  <div className="flex flex-col space-y-3">
+                    <div className="relative">
+                      <input
+                        className="input px-1 py-1 w-full"
+                        type={showOldPassword ? "text" : "password"} // Altera o tipo do input
+                        placeholder="Antiga senha"
+                        value={oldPassword}
+                        onChange={(e) => setOldPassword(e.target.value)}
+                        required
+                      />
+                      <button
+                        type="button"
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                        onClick={() => setShowOldPassword(!showOldPassword)}
+                      >
+                        {showOldPassword ? <SlashedEyeIcon /> : <OpenEyeIcon />}
+                      </button>
+                    </div>
+                    <div className="relative">
+                      <input
+                        className="input px-1 py-1 w-full"
+                        type={showNewPassword ? "text" : "password"} // Altera o tipo do input
+                        placeholder="Nova senha"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        required
+                      />
+                      <button
+                        type="button"
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                        onClick={() => setShowNewPassword(!showNewPassword)}
+                      >
+                        {showNewPassword ? <SlashedEyeIcon /> : <OpenEyeIcon />}
+                      </button>
+                    </div>
+
                     <button
-                      type="button"
-                      className="absolute right-2 top-1/2 transform -translate-y-1/2"
-                      onClick={() => setShowOldPassword(!showOldPassword)}
+                      className="botao mt-2"
+                      onClick={handleChangePassword}
                     >
-                      {showOldPassword ? "Esconder" : "Mostrar"}
+                      Enviar nova senha
                     </button>
                   </div>
-                  <div className="relative">
-                    <input
-                      className="input"
-                      type={showNewPassword ? "text" : "password"} // Altera o tipo do input
-                      placeholder="Nova senha"
-                      value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)} 
-                      required 
-                    />
-                    <button
-                      type="button"
-                      className="absolute right-2 top-1/2 transform -translate-y-1/2"
-                      onClick={() => setShowNewPassword(!showNewPassword)}
-                    >
-                      {showNewPassword ? "Esconder" : "Mostrar"}
-                    </button>
-                  </div>
-                  
-                  <button 
-                    className="botao mt-2" 
-                    onClick={handleChangePassword}
-                  >
-                    Enviar nova senha
-                  </button>
-                </div>
+                </ div>
               )}
+              <button
+                className="botao min-w-[210px] flex flex-row gap-2"
+                onClick={leaveAtipicidades}
+                aria-label="Sair do Atipicidades"
+              >
+                <LogOut />
+                <p>Sair</p>
+              </button>
             </div>
           </div>
         </div>
