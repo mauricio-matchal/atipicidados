@@ -56,7 +56,7 @@ export type InputJsonValueType = z.infer<typeof InputJsonValueSchema>;
 
 export const TransactionIsolationLevelSchema = z.enum(['ReadUncommitted','ReadCommitted','RepeatableRead','Serializable']);
 
-export const GerenteScalarFieldEnumSchema = z.enum(['id','password','nome','cpf','rg','email','telefone','raca','unidadeId','rgdocfile','fotofile','compresfile']);
+export const GerenteScalarFieldEnumSchema = z.enum(['id','password','nascimento','nome','cpf','rg','email','telefone','raca','genero','unidadeId','rgdocfile','fotofile','compresfile']);
 
 export const ColaboradorScalarFieldEnumSchema = z.enum(['id','nome','cpf','rg','nascimento','telefone','titulo','formacao','password','genero','email','raca','unidadeId','rgdocfile','fotofile','compresfile']);
 
@@ -92,8 +92,10 @@ export type GeneroType = `${z.infer<typeof GeneroSchema>}`
 
 export const GerenteSchema = z.object({
   raca: RacaSchema,
+  genero: GeneroSchema,
   id: z.number().int(),
   password: z.string(),
+  nascimento: z.coerce.date(),
   nome: z.string(),
   cpf: z.string(),
   rg: z.string(),
@@ -202,12 +204,14 @@ export const GerenteArgsSchema: z.ZodType<Prisma.GerenteDefaultArgs> = z.object(
 export const GerenteSelectSchema: z.ZodType<Prisma.GerenteSelect> = z.object({
   id: z.boolean().optional(),
   password: z.boolean().optional(),
+  nascimento: z.boolean().optional(),
   nome: z.boolean().optional(),
   cpf: z.boolean().optional(),
   rg: z.boolean().optional(),
   email: z.boolean().optional(),
   telefone: z.boolean().optional(),
   raca: z.boolean().optional(),
+  genero: z.boolean().optional(),
   unidadeId: z.boolean().optional(),
   rgdocfile: z.boolean().optional(),
   fotofile: z.boolean().optional(),
@@ -363,12 +367,14 @@ export const GerenteWhereInputSchema: z.ZodType<Prisma.GerenteWhereInput> = z.ob
   NOT: z.union([ z.lazy(() => GerenteWhereInputSchema),z.lazy(() => GerenteWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   password: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  nascimento: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   nome: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   cpf: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   rg: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   email: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   telefone: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   raca: z.union([ z.lazy(() => EnumRacaFilterSchema),z.lazy(() => RacaSchema) ]).optional(),
+  genero: z.union([ z.lazy(() => EnumGeneroFilterSchema),z.lazy(() => GeneroSchema) ]).optional(),
   unidadeId: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   rgdocfile: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   fotofile: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
@@ -379,12 +385,14 @@ export const GerenteWhereInputSchema: z.ZodType<Prisma.GerenteWhereInput> = z.ob
 export const GerenteOrderByWithRelationInputSchema: z.ZodType<Prisma.GerenteOrderByWithRelationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   password: z.lazy(() => SortOrderSchema).optional(),
+  nascimento: z.lazy(() => SortOrderSchema).optional(),
   nome: z.lazy(() => SortOrderSchema).optional(),
   cpf: z.lazy(() => SortOrderSchema).optional(),
   rg: z.lazy(() => SortOrderSchema).optional(),
   email: z.lazy(() => SortOrderSchema).optional(),
   telefone: z.lazy(() => SortOrderSchema).optional(),
   raca: z.lazy(() => SortOrderSchema).optional(),
+  genero: z.lazy(() => SortOrderSchema).optional(),
   unidadeId: z.lazy(() => SortOrderSchema).optional(),
   rgdocfile: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   fotofile: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
@@ -546,8 +554,10 @@ export const GerenteWhereUniqueInputSchema: z.ZodType<Prisma.GerenteWhereUniqueI
   OR: z.lazy(() => GerenteWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => GerenteWhereInputSchema),z.lazy(() => GerenteWhereInputSchema).array() ]).optional(),
   password: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  nascimento: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   nome: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   raca: z.union([ z.lazy(() => EnumRacaFilterSchema),z.lazy(() => RacaSchema) ]).optional(),
+  genero: z.union([ z.lazy(() => EnumGeneroFilterSchema),z.lazy(() => GeneroSchema) ]).optional(),
   unidadeId: z.union([ z.lazy(() => IntFilterSchema),z.number().int() ]).optional(),
   rgdocfile: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   fotofile: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
@@ -558,12 +568,14 @@ export const GerenteWhereUniqueInputSchema: z.ZodType<Prisma.GerenteWhereUniqueI
 export const GerenteOrderByWithAggregationInputSchema: z.ZodType<Prisma.GerenteOrderByWithAggregationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   password: z.lazy(() => SortOrderSchema).optional(),
+  nascimento: z.lazy(() => SortOrderSchema).optional(),
   nome: z.lazy(() => SortOrderSchema).optional(),
   cpf: z.lazy(() => SortOrderSchema).optional(),
   rg: z.lazy(() => SortOrderSchema).optional(),
   email: z.lazy(() => SortOrderSchema).optional(),
   telefone: z.lazy(() => SortOrderSchema).optional(),
   raca: z.lazy(() => SortOrderSchema).optional(),
+  genero: z.lazy(() => SortOrderSchema).optional(),
   unidadeId: z.lazy(() => SortOrderSchema).optional(),
   rgdocfile: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   fotofile: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
@@ -581,12 +593,14 @@ export const GerenteScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Geren
   NOT: z.union([ z.lazy(() => GerenteScalarWhereWithAggregatesInputSchema),z.lazy(() => GerenteScalarWhereWithAggregatesInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
   password: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  nascimento: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   nome: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   cpf: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   rg: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   email: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   telefone: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   raca: z.union([ z.lazy(() => EnumRacaWithAggregatesFilterSchema),z.lazy(() => RacaSchema) ]).optional(),
+  genero: z.union([ z.lazy(() => EnumGeneroWithAggregatesFilterSchema),z.lazy(() => GeneroSchema) ]).optional(),
   unidadeId: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
   rgdocfile: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   fotofile: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
@@ -1107,12 +1121,14 @@ export const UnidadeScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Unida
 
 export const GerenteCreateInputSchema: z.ZodType<Prisma.GerenteCreateInput> = z.object({
   password: z.string(),
+  nascimento: z.coerce.date(),
   nome: z.string(),
   cpf: z.string(),
   rg: z.string(),
   email: z.string(),
   telefone: z.string(),
   raca: z.lazy(() => RacaSchema),
+  genero: z.lazy(() => GeneroSchema),
   rgdocfile: z.string().optional().nullable(),
   fotofile: z.string().optional().nullable(),
   compresfile: z.string().optional().nullable(),
@@ -1122,12 +1138,14 @@ export const GerenteCreateInputSchema: z.ZodType<Prisma.GerenteCreateInput> = z.
 export const GerenteUncheckedCreateInputSchema: z.ZodType<Prisma.GerenteUncheckedCreateInput> = z.object({
   id: z.number().int().optional(),
   password: z.string(),
+  nascimento: z.coerce.date(),
   nome: z.string(),
   cpf: z.string(),
   rg: z.string(),
   email: z.string(),
   telefone: z.string(),
   raca: z.lazy(() => RacaSchema),
+  genero: z.lazy(() => GeneroSchema),
   unidadeId: z.number().int(),
   rgdocfile: z.string().optional().nullable(),
   fotofile: z.string().optional().nullable(),
@@ -1136,12 +1154,14 @@ export const GerenteUncheckedCreateInputSchema: z.ZodType<Prisma.GerenteUnchecke
 
 export const GerenteUpdateInputSchema: z.ZodType<Prisma.GerenteUpdateInput> = z.object({
   password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  nascimento: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   rg: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   telefone: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   raca: z.union([ z.lazy(() => RacaSchema),z.lazy(() => EnumRacaFieldUpdateOperationsInputSchema) ]).optional(),
+  genero: z.union([ z.lazy(() => GeneroSchema),z.lazy(() => EnumGeneroFieldUpdateOperationsInputSchema) ]).optional(),
   rgdocfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   fotofile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   compresfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -1151,12 +1171,14 @@ export const GerenteUpdateInputSchema: z.ZodType<Prisma.GerenteUpdateInput> = z.
 export const GerenteUncheckedUpdateInputSchema: z.ZodType<Prisma.GerenteUncheckedUpdateInput> = z.object({
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  nascimento: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   rg: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   telefone: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   raca: z.union([ z.lazy(() => RacaSchema),z.lazy(() => EnumRacaFieldUpdateOperationsInputSchema) ]).optional(),
+  genero: z.union([ z.lazy(() => GeneroSchema),z.lazy(() => EnumGeneroFieldUpdateOperationsInputSchema) ]).optional(),
   unidadeId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   rgdocfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   fotofile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -1166,12 +1188,14 @@ export const GerenteUncheckedUpdateInputSchema: z.ZodType<Prisma.GerenteUnchecke
 export const GerenteCreateManyInputSchema: z.ZodType<Prisma.GerenteCreateManyInput> = z.object({
   id: z.number().int().optional(),
   password: z.string(),
+  nascimento: z.coerce.date(),
   nome: z.string(),
   cpf: z.string(),
   rg: z.string(),
   email: z.string(),
   telefone: z.string(),
   raca: z.lazy(() => RacaSchema),
+  genero: z.lazy(() => GeneroSchema),
   unidadeId: z.number().int(),
   rgdocfile: z.string().optional().nullable(),
   fotofile: z.string().optional().nullable(),
@@ -1180,12 +1204,14 @@ export const GerenteCreateManyInputSchema: z.ZodType<Prisma.GerenteCreateManyInp
 
 export const GerenteUpdateManyMutationInputSchema: z.ZodType<Prisma.GerenteUpdateManyMutationInput> = z.object({
   password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  nascimento: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   rg: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   telefone: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   raca: z.union([ z.lazy(() => RacaSchema),z.lazy(() => EnumRacaFieldUpdateOperationsInputSchema) ]).optional(),
+  genero: z.union([ z.lazy(() => GeneroSchema),z.lazy(() => EnumGeneroFieldUpdateOperationsInputSchema) ]).optional(),
   rgdocfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   fotofile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   compresfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -1194,12 +1220,14 @@ export const GerenteUpdateManyMutationInputSchema: z.ZodType<Prisma.GerenteUpdat
 export const GerenteUncheckedUpdateManyInputSchema: z.ZodType<Prisma.GerenteUncheckedUpdateManyInput> = z.object({
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  nascimento: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   rg: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   telefone: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   raca: z.union([ z.lazy(() => RacaSchema),z.lazy(() => EnumRacaFieldUpdateOperationsInputSchema) ]).optional(),
+  genero: z.union([ z.lazy(() => GeneroSchema),z.lazy(() => EnumGeneroFieldUpdateOperationsInputSchema) ]).optional(),
   unidadeId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   rgdocfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   fotofile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -1647,11 +1675,29 @@ export const StringFilterSchema: z.ZodType<Prisma.StringFilter> = z.object({
   not: z.union([ z.string(),z.lazy(() => NestedStringFilterSchema) ]).optional(),
 }).strict();
 
+export const DateTimeFilterSchema: z.ZodType<Prisma.DateTimeFilter> = z.object({
+  equals: z.coerce.date().optional(),
+  in: z.coerce.date().array().optional(),
+  notIn: z.coerce.date().array().optional(),
+  lt: z.coerce.date().optional(),
+  lte: z.coerce.date().optional(),
+  gt: z.coerce.date().optional(),
+  gte: z.coerce.date().optional(),
+  not: z.union([ z.coerce.date(),z.lazy(() => NestedDateTimeFilterSchema) ]).optional(),
+}).strict();
+
 export const EnumRacaFilterSchema: z.ZodType<Prisma.EnumRacaFilter> = z.object({
   equals: z.lazy(() => RacaSchema).optional(),
   in: z.lazy(() => RacaSchema).array().optional(),
   notIn: z.lazy(() => RacaSchema).array().optional(),
   not: z.union([ z.lazy(() => RacaSchema),z.lazy(() => NestedEnumRacaFilterSchema) ]).optional(),
+}).strict();
+
+export const EnumGeneroFilterSchema: z.ZodType<Prisma.EnumGeneroFilter> = z.object({
+  equals: z.lazy(() => GeneroSchema).optional(),
+  in: z.lazy(() => GeneroSchema).array().optional(),
+  notIn: z.lazy(() => GeneroSchema).array().optional(),
+  not: z.union([ z.lazy(() => GeneroSchema),z.lazy(() => NestedEnumGeneroFilterSchema) ]).optional(),
 }).strict();
 
 export const StringNullableFilterSchema: z.ZodType<Prisma.StringNullableFilter> = z.object({
@@ -1682,12 +1728,14 @@ export const SortOrderInputSchema: z.ZodType<Prisma.SortOrderInput> = z.object({
 export const GerenteCountOrderByAggregateInputSchema: z.ZodType<Prisma.GerenteCountOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   password: z.lazy(() => SortOrderSchema).optional(),
+  nascimento: z.lazy(() => SortOrderSchema).optional(),
   nome: z.lazy(() => SortOrderSchema).optional(),
   cpf: z.lazy(() => SortOrderSchema).optional(),
   rg: z.lazy(() => SortOrderSchema).optional(),
   email: z.lazy(() => SortOrderSchema).optional(),
   telefone: z.lazy(() => SortOrderSchema).optional(),
   raca: z.lazy(() => SortOrderSchema).optional(),
+  genero: z.lazy(() => SortOrderSchema).optional(),
   unidadeId: z.lazy(() => SortOrderSchema).optional(),
   rgdocfile: z.lazy(() => SortOrderSchema).optional(),
   fotofile: z.lazy(() => SortOrderSchema).optional(),
@@ -1702,12 +1750,14 @@ export const GerenteAvgOrderByAggregateInputSchema: z.ZodType<Prisma.GerenteAvgO
 export const GerenteMaxOrderByAggregateInputSchema: z.ZodType<Prisma.GerenteMaxOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   password: z.lazy(() => SortOrderSchema).optional(),
+  nascimento: z.lazy(() => SortOrderSchema).optional(),
   nome: z.lazy(() => SortOrderSchema).optional(),
   cpf: z.lazy(() => SortOrderSchema).optional(),
   rg: z.lazy(() => SortOrderSchema).optional(),
   email: z.lazy(() => SortOrderSchema).optional(),
   telefone: z.lazy(() => SortOrderSchema).optional(),
   raca: z.lazy(() => SortOrderSchema).optional(),
+  genero: z.lazy(() => SortOrderSchema).optional(),
   unidadeId: z.lazy(() => SortOrderSchema).optional(),
   rgdocfile: z.lazy(() => SortOrderSchema).optional(),
   fotofile: z.lazy(() => SortOrderSchema).optional(),
@@ -1717,12 +1767,14 @@ export const GerenteMaxOrderByAggregateInputSchema: z.ZodType<Prisma.GerenteMaxO
 export const GerenteMinOrderByAggregateInputSchema: z.ZodType<Prisma.GerenteMinOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   password: z.lazy(() => SortOrderSchema).optional(),
+  nascimento: z.lazy(() => SortOrderSchema).optional(),
   nome: z.lazy(() => SortOrderSchema).optional(),
   cpf: z.lazy(() => SortOrderSchema).optional(),
   rg: z.lazy(() => SortOrderSchema).optional(),
   email: z.lazy(() => SortOrderSchema).optional(),
   telefone: z.lazy(() => SortOrderSchema).optional(),
   raca: z.lazy(() => SortOrderSchema).optional(),
+  genero: z.lazy(() => SortOrderSchema).optional(),
   unidadeId: z.lazy(() => SortOrderSchema).optional(),
   rgdocfile: z.lazy(() => SortOrderSchema).optional(),
   fotofile: z.lazy(() => SortOrderSchema).optional(),
@@ -1768,6 +1820,20 @@ export const StringWithAggregatesFilterSchema: z.ZodType<Prisma.StringWithAggreg
   _max: z.lazy(() => NestedStringFilterSchema).optional()
 }).strict();
 
+export const DateTimeWithAggregatesFilterSchema: z.ZodType<Prisma.DateTimeWithAggregatesFilter> = z.object({
+  equals: z.coerce.date().optional(),
+  in: z.coerce.date().array().optional(),
+  notIn: z.coerce.date().array().optional(),
+  lt: z.coerce.date().optional(),
+  lte: z.coerce.date().optional(),
+  gt: z.coerce.date().optional(),
+  gte: z.coerce.date().optional(),
+  not: z.union([ z.coerce.date(),z.lazy(() => NestedDateTimeWithAggregatesFilterSchema) ]).optional(),
+  _count: z.lazy(() => NestedIntFilterSchema).optional(),
+  _min: z.lazy(() => NestedDateTimeFilterSchema).optional(),
+  _max: z.lazy(() => NestedDateTimeFilterSchema).optional()
+}).strict();
+
 export const EnumRacaWithAggregatesFilterSchema: z.ZodType<Prisma.EnumRacaWithAggregatesFilter> = z.object({
   equals: z.lazy(() => RacaSchema).optional(),
   in: z.lazy(() => RacaSchema).array().optional(),
@@ -1776,6 +1842,16 @@ export const EnumRacaWithAggregatesFilterSchema: z.ZodType<Prisma.EnumRacaWithAg
   _count: z.lazy(() => NestedIntFilterSchema).optional(),
   _min: z.lazy(() => NestedEnumRacaFilterSchema).optional(),
   _max: z.lazy(() => NestedEnumRacaFilterSchema).optional()
+}).strict();
+
+export const EnumGeneroWithAggregatesFilterSchema: z.ZodType<Prisma.EnumGeneroWithAggregatesFilter> = z.object({
+  equals: z.lazy(() => GeneroSchema).optional(),
+  in: z.lazy(() => GeneroSchema).array().optional(),
+  notIn: z.lazy(() => GeneroSchema).array().optional(),
+  not: z.union([ z.lazy(() => GeneroSchema),z.lazy(() => NestedEnumGeneroWithAggregatesFilterSchema) ]).optional(),
+  _count: z.lazy(() => NestedIntFilterSchema).optional(),
+  _min: z.lazy(() => NestedEnumGeneroFilterSchema).optional(),
+  _max: z.lazy(() => NestedEnumGeneroFilterSchema).optional()
 }).strict();
 
 export const StringNullableWithAggregatesFilterSchema: z.ZodType<Prisma.StringNullableWithAggregatesFilter> = z.object({
@@ -1794,24 +1870,6 @@ export const StringNullableWithAggregatesFilterSchema: z.ZodType<Prisma.StringNu
   _count: z.lazy(() => NestedIntNullableFilterSchema).optional(),
   _min: z.lazy(() => NestedStringNullableFilterSchema).optional(),
   _max: z.lazy(() => NestedStringNullableFilterSchema).optional()
-}).strict();
-
-export const DateTimeFilterSchema: z.ZodType<Prisma.DateTimeFilter> = z.object({
-  equals: z.coerce.date().optional(),
-  in: z.coerce.date().array().optional(),
-  notIn: z.coerce.date().array().optional(),
-  lt: z.coerce.date().optional(),
-  lte: z.coerce.date().optional(),
-  gt: z.coerce.date().optional(),
-  gte: z.coerce.date().optional(),
-  not: z.union([ z.coerce.date(),z.lazy(() => NestedDateTimeFilterSchema) ]).optional(),
-}).strict();
-
-export const EnumGeneroFilterSchema: z.ZodType<Prisma.EnumGeneroFilter> = z.object({
-  equals: z.lazy(() => GeneroSchema).optional(),
-  in: z.lazy(() => GeneroSchema).array().optional(),
-  notIn: z.lazy(() => GeneroSchema).array().optional(),
-  not: z.union([ z.lazy(() => GeneroSchema),z.lazy(() => NestedEnumGeneroFilterSchema) ]).optional(),
 }).strict();
 
 export const PacienteListRelationFilterSchema: z.ZodType<Prisma.PacienteListRelationFilter> = z.object({
@@ -1889,30 +1947,6 @@ export const ColaboradorMinOrderByAggregateInputSchema: z.ZodType<Prisma.Colabor
 export const ColaboradorSumOrderByAggregateInputSchema: z.ZodType<Prisma.ColaboradorSumOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   unidadeId: z.lazy(() => SortOrderSchema).optional()
-}).strict();
-
-export const DateTimeWithAggregatesFilterSchema: z.ZodType<Prisma.DateTimeWithAggregatesFilter> = z.object({
-  equals: z.coerce.date().optional(),
-  in: z.coerce.date().array().optional(),
-  notIn: z.coerce.date().array().optional(),
-  lt: z.coerce.date().optional(),
-  lte: z.coerce.date().optional(),
-  gt: z.coerce.date().optional(),
-  gte: z.coerce.date().optional(),
-  not: z.union([ z.coerce.date(),z.lazy(() => NestedDateTimeWithAggregatesFilterSchema) ]).optional(),
-  _count: z.lazy(() => NestedIntFilterSchema).optional(),
-  _min: z.lazy(() => NestedDateTimeFilterSchema).optional(),
-  _max: z.lazy(() => NestedDateTimeFilterSchema).optional()
-}).strict();
-
-export const EnumGeneroWithAggregatesFilterSchema: z.ZodType<Prisma.EnumGeneroWithAggregatesFilter> = z.object({
-  equals: z.lazy(() => GeneroSchema).optional(),
-  in: z.lazy(() => GeneroSchema).array().optional(),
-  notIn: z.lazy(() => GeneroSchema).array().optional(),
-  not: z.union([ z.lazy(() => GeneroSchema),z.lazy(() => NestedEnumGeneroWithAggregatesFilterSchema) ]).optional(),
-  _count: z.lazy(() => NestedIntFilterSchema).optional(),
-  _min: z.lazy(() => NestedEnumGeneroFilterSchema).optional(),
-  _max: z.lazy(() => NestedEnumGeneroFilterSchema).optional()
 }).strict();
 
 export const BoolFilterSchema: z.ZodType<Prisma.BoolFilter> = z.object({
@@ -2121,8 +2155,16 @@ export const StringFieldUpdateOperationsInputSchema: z.ZodType<Prisma.StringFiel
   set: z.string().optional()
 }).strict();
 
+export const DateTimeFieldUpdateOperationsInputSchema: z.ZodType<Prisma.DateTimeFieldUpdateOperationsInput> = z.object({
+  set: z.coerce.date().optional()
+}).strict();
+
 export const EnumRacaFieldUpdateOperationsInputSchema: z.ZodType<Prisma.EnumRacaFieldUpdateOperationsInput> = z.object({
   set: z.lazy(() => RacaSchema).optional()
+}).strict();
+
+export const EnumGeneroFieldUpdateOperationsInputSchema: z.ZodType<Prisma.EnumGeneroFieldUpdateOperationsInput> = z.object({
+  set: z.lazy(() => GeneroSchema).optional()
 }).strict();
 
 export const NullableStringFieldUpdateOperationsInputSchema: z.ZodType<Prisma.NullableStringFieldUpdateOperationsInput> = z.object({
@@ -2161,14 +2203,6 @@ export const PacienteUncheckedCreateNestedManyWithoutColaboradoresInputSchema: z
   create: z.union([ z.lazy(() => PacienteCreateWithoutColaboradoresInputSchema),z.lazy(() => PacienteCreateWithoutColaboradoresInputSchema).array(),z.lazy(() => PacienteUncheckedCreateWithoutColaboradoresInputSchema),z.lazy(() => PacienteUncheckedCreateWithoutColaboradoresInputSchema).array() ]).optional(),
   connectOrCreate: z.union([ z.lazy(() => PacienteCreateOrConnectWithoutColaboradoresInputSchema),z.lazy(() => PacienteCreateOrConnectWithoutColaboradoresInputSchema).array() ]).optional(),
   connect: z.union([ z.lazy(() => PacienteWhereUniqueInputSchema),z.lazy(() => PacienteWhereUniqueInputSchema).array() ]).optional(),
-}).strict();
-
-export const DateTimeFieldUpdateOperationsInputSchema: z.ZodType<Prisma.DateTimeFieldUpdateOperationsInput> = z.object({
-  set: z.coerce.date().optional()
-}).strict();
-
-export const EnumGeneroFieldUpdateOperationsInputSchema: z.ZodType<Prisma.EnumGeneroFieldUpdateOperationsInput> = z.object({
-  set: z.lazy(() => GeneroSchema).optional()
 }).strict();
 
 export const UnidadeUpdateOneRequiredWithoutColaboradoresNestedInputSchema: z.ZodType<Prisma.UnidadeUpdateOneRequiredWithoutColaboradoresNestedInput> = z.object({
@@ -2416,11 +2450,29 @@ export const NestedStringFilterSchema: z.ZodType<Prisma.NestedStringFilter> = z.
   not: z.union([ z.string(),z.lazy(() => NestedStringFilterSchema) ]).optional(),
 }).strict();
 
+export const NestedDateTimeFilterSchema: z.ZodType<Prisma.NestedDateTimeFilter> = z.object({
+  equals: z.coerce.date().optional(),
+  in: z.coerce.date().array().optional(),
+  notIn: z.coerce.date().array().optional(),
+  lt: z.coerce.date().optional(),
+  lte: z.coerce.date().optional(),
+  gt: z.coerce.date().optional(),
+  gte: z.coerce.date().optional(),
+  not: z.union([ z.coerce.date(),z.lazy(() => NestedDateTimeFilterSchema) ]).optional(),
+}).strict();
+
 export const NestedEnumRacaFilterSchema: z.ZodType<Prisma.NestedEnumRacaFilter> = z.object({
   equals: z.lazy(() => RacaSchema).optional(),
   in: z.lazy(() => RacaSchema).array().optional(),
   notIn: z.lazy(() => RacaSchema).array().optional(),
   not: z.union([ z.lazy(() => RacaSchema),z.lazy(() => NestedEnumRacaFilterSchema) ]).optional(),
+}).strict();
+
+export const NestedEnumGeneroFilterSchema: z.ZodType<Prisma.NestedEnumGeneroFilter> = z.object({
+  equals: z.lazy(() => GeneroSchema).optional(),
+  in: z.lazy(() => GeneroSchema).array().optional(),
+  notIn: z.lazy(() => GeneroSchema).array().optional(),
+  not: z.union([ z.lazy(() => GeneroSchema),z.lazy(() => NestedEnumGeneroFilterSchema) ]).optional(),
 }).strict();
 
 export const NestedStringNullableFilterSchema: z.ZodType<Prisma.NestedStringNullableFilter> = z.object({
@@ -2481,6 +2533,20 @@ export const NestedStringWithAggregatesFilterSchema: z.ZodType<Prisma.NestedStri
   _max: z.lazy(() => NestedStringFilterSchema).optional()
 }).strict();
 
+export const NestedDateTimeWithAggregatesFilterSchema: z.ZodType<Prisma.NestedDateTimeWithAggregatesFilter> = z.object({
+  equals: z.coerce.date().optional(),
+  in: z.coerce.date().array().optional(),
+  notIn: z.coerce.date().array().optional(),
+  lt: z.coerce.date().optional(),
+  lte: z.coerce.date().optional(),
+  gt: z.coerce.date().optional(),
+  gte: z.coerce.date().optional(),
+  not: z.union([ z.coerce.date(),z.lazy(() => NestedDateTimeWithAggregatesFilterSchema) ]).optional(),
+  _count: z.lazy(() => NestedIntFilterSchema).optional(),
+  _min: z.lazy(() => NestedDateTimeFilterSchema).optional(),
+  _max: z.lazy(() => NestedDateTimeFilterSchema).optional()
+}).strict();
+
 export const NestedEnumRacaWithAggregatesFilterSchema: z.ZodType<Prisma.NestedEnumRacaWithAggregatesFilter> = z.object({
   equals: z.lazy(() => RacaSchema).optional(),
   in: z.lazy(() => RacaSchema).array().optional(),
@@ -2489,6 +2555,16 @@ export const NestedEnumRacaWithAggregatesFilterSchema: z.ZodType<Prisma.NestedEn
   _count: z.lazy(() => NestedIntFilterSchema).optional(),
   _min: z.lazy(() => NestedEnumRacaFilterSchema).optional(),
   _max: z.lazy(() => NestedEnumRacaFilterSchema).optional()
+}).strict();
+
+export const NestedEnumGeneroWithAggregatesFilterSchema: z.ZodType<Prisma.NestedEnumGeneroWithAggregatesFilter> = z.object({
+  equals: z.lazy(() => GeneroSchema).optional(),
+  in: z.lazy(() => GeneroSchema).array().optional(),
+  notIn: z.lazy(() => GeneroSchema).array().optional(),
+  not: z.union([ z.lazy(() => GeneroSchema),z.lazy(() => NestedEnumGeneroWithAggregatesFilterSchema) ]).optional(),
+  _count: z.lazy(() => NestedIntFilterSchema).optional(),
+  _min: z.lazy(() => NestedEnumGeneroFilterSchema).optional(),
+  _max: z.lazy(() => NestedEnumGeneroFilterSchema).optional()
 }).strict();
 
 export const NestedStringNullableWithAggregatesFilterSchema: z.ZodType<Prisma.NestedStringNullableWithAggregatesFilter> = z.object({
@@ -2517,48 +2593,6 @@ export const NestedIntNullableFilterSchema: z.ZodType<Prisma.NestedIntNullableFi
   gt: z.number().optional(),
   gte: z.number().optional(),
   not: z.union([ z.number(),z.lazy(() => NestedIntNullableFilterSchema) ]).optional().nullable(),
-}).strict();
-
-export const NestedDateTimeFilterSchema: z.ZodType<Prisma.NestedDateTimeFilter> = z.object({
-  equals: z.coerce.date().optional(),
-  in: z.coerce.date().array().optional(),
-  notIn: z.coerce.date().array().optional(),
-  lt: z.coerce.date().optional(),
-  lte: z.coerce.date().optional(),
-  gt: z.coerce.date().optional(),
-  gte: z.coerce.date().optional(),
-  not: z.union([ z.coerce.date(),z.lazy(() => NestedDateTimeFilterSchema) ]).optional(),
-}).strict();
-
-export const NestedEnumGeneroFilterSchema: z.ZodType<Prisma.NestedEnumGeneroFilter> = z.object({
-  equals: z.lazy(() => GeneroSchema).optional(),
-  in: z.lazy(() => GeneroSchema).array().optional(),
-  notIn: z.lazy(() => GeneroSchema).array().optional(),
-  not: z.union([ z.lazy(() => GeneroSchema),z.lazy(() => NestedEnumGeneroFilterSchema) ]).optional(),
-}).strict();
-
-export const NestedDateTimeWithAggregatesFilterSchema: z.ZodType<Prisma.NestedDateTimeWithAggregatesFilter> = z.object({
-  equals: z.coerce.date().optional(),
-  in: z.coerce.date().array().optional(),
-  notIn: z.coerce.date().array().optional(),
-  lt: z.coerce.date().optional(),
-  lte: z.coerce.date().optional(),
-  gt: z.coerce.date().optional(),
-  gte: z.coerce.date().optional(),
-  not: z.union([ z.coerce.date(),z.lazy(() => NestedDateTimeWithAggregatesFilterSchema) ]).optional(),
-  _count: z.lazy(() => NestedIntFilterSchema).optional(),
-  _min: z.lazy(() => NestedDateTimeFilterSchema).optional(),
-  _max: z.lazy(() => NestedDateTimeFilterSchema).optional()
-}).strict();
-
-export const NestedEnumGeneroWithAggregatesFilterSchema: z.ZodType<Prisma.NestedEnumGeneroWithAggregatesFilter> = z.object({
-  equals: z.lazy(() => GeneroSchema).optional(),
-  in: z.lazy(() => GeneroSchema).array().optional(),
-  notIn: z.lazy(() => GeneroSchema).array().optional(),
-  not: z.union([ z.lazy(() => GeneroSchema),z.lazy(() => NestedEnumGeneroWithAggregatesFilterSchema) ]).optional(),
-  _count: z.lazy(() => NestedIntFilterSchema).optional(),
-  _min: z.lazy(() => NestedEnumGeneroFilterSchema).optional(),
-  _max: z.lazy(() => NestedEnumGeneroFilterSchema).optional()
 }).strict();
 
 export const NestedBoolFilterSchema: z.ZodType<Prisma.NestedBoolFilter> = z.object({
@@ -3071,12 +3105,14 @@ export const ColaboradorCreateManyUnidadeInputEnvelopeSchema: z.ZodType<Prisma.C
 
 export const GerenteCreateWithoutUnidadeInputSchema: z.ZodType<Prisma.GerenteCreateWithoutUnidadeInput> = z.object({
   password: z.string(),
+  nascimento: z.coerce.date(),
   nome: z.string(),
   cpf: z.string(),
   rg: z.string(),
   email: z.string(),
   telefone: z.string(),
   raca: z.lazy(() => RacaSchema),
+  genero: z.lazy(() => GeneroSchema),
   rgdocfile: z.string().optional().nullable(),
   fotofile: z.string().optional().nullable(),
   compresfile: z.string().optional().nullable()
@@ -3085,12 +3121,14 @@ export const GerenteCreateWithoutUnidadeInputSchema: z.ZodType<Prisma.GerenteCre
 export const GerenteUncheckedCreateWithoutUnidadeInputSchema: z.ZodType<Prisma.GerenteUncheckedCreateWithoutUnidadeInput> = z.object({
   id: z.number().int().optional(),
   password: z.string(),
+  nascimento: z.coerce.date(),
   nome: z.string(),
   cpf: z.string(),
   rg: z.string(),
   email: z.string(),
   telefone: z.string(),
   raca: z.lazy(() => RacaSchema),
+  genero: z.lazy(() => GeneroSchema),
   rgdocfile: z.string().optional().nullable(),
   fotofile: z.string().optional().nullable(),
   compresfile: z.string().optional().nullable()
@@ -3160,12 +3198,14 @@ export const GerenteScalarWhereInputSchema: z.ZodType<Prisma.GerenteScalarWhereI
   NOT: z.union([ z.lazy(() => GerenteScalarWhereInputSchema),z.lazy(() => GerenteScalarWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   password: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  nascimento: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   nome: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   cpf: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   rg: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   email: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   telefone: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   raca: z.union([ z.lazy(() => EnumRacaFilterSchema),z.lazy(() => RacaSchema) ]).optional(),
+  genero: z.union([ z.lazy(() => EnumGeneroFilterSchema),z.lazy(() => GeneroSchema) ]).optional(),
   unidadeId: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   rgdocfile: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   fotofile: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
@@ -3379,12 +3419,14 @@ export const ColaboradorCreateManyUnidadeInputSchema: z.ZodType<Prisma.Colaborad
 export const GerenteCreateManyUnidadeInputSchema: z.ZodType<Prisma.GerenteCreateManyUnidadeInput> = z.object({
   id: z.number().int().optional(),
   password: z.string(),
+  nascimento: z.coerce.date(),
   nome: z.string(),
   cpf: z.string(),
   rg: z.string(),
   email: z.string(),
   telefone: z.string(),
   raca: z.lazy(() => RacaSchema),
+  genero: z.lazy(() => GeneroSchema),
   rgdocfile: z.string().optional().nullable(),
   fotofile: z.string().optional().nullable(),
   compresfile: z.string().optional().nullable()
@@ -3544,12 +3586,14 @@ export const ColaboradorUncheckedUpdateManyWithoutUnidadeInputSchema: z.ZodType<
 
 export const GerenteUpdateWithoutUnidadeInputSchema: z.ZodType<Prisma.GerenteUpdateWithoutUnidadeInput> = z.object({
   password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  nascimento: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   rg: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   telefone: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   raca: z.union([ z.lazy(() => RacaSchema),z.lazy(() => EnumRacaFieldUpdateOperationsInputSchema) ]).optional(),
+  genero: z.union([ z.lazy(() => GeneroSchema),z.lazy(() => EnumGeneroFieldUpdateOperationsInputSchema) ]).optional(),
   rgdocfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   fotofile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   compresfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -3558,12 +3602,14 @@ export const GerenteUpdateWithoutUnidadeInputSchema: z.ZodType<Prisma.GerenteUpd
 export const GerenteUncheckedUpdateWithoutUnidadeInputSchema: z.ZodType<Prisma.GerenteUncheckedUpdateWithoutUnidadeInput> = z.object({
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  nascimento: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   rg: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   telefone: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   raca: z.union([ z.lazy(() => RacaSchema),z.lazy(() => EnumRacaFieldUpdateOperationsInputSchema) ]).optional(),
+  genero: z.union([ z.lazy(() => GeneroSchema),z.lazy(() => EnumGeneroFieldUpdateOperationsInputSchema) ]).optional(),
   rgdocfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   fotofile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   compresfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -3572,12 +3618,14 @@ export const GerenteUncheckedUpdateWithoutUnidadeInputSchema: z.ZodType<Prisma.G
 export const GerenteUncheckedUpdateManyWithoutUnidadeInputSchema: z.ZodType<Prisma.GerenteUncheckedUpdateManyWithoutUnidadeInput> = z.object({
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  nascimento: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   rg: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   telefone: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   raca: z.union([ z.lazy(() => RacaSchema),z.lazy(() => EnumRacaFieldUpdateOperationsInputSchema) ]).optional(),
+  genero: z.union([ z.lazy(() => GeneroSchema),z.lazy(() => EnumGeneroFieldUpdateOperationsInputSchema) ]).optional(),
   rgdocfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   fotofile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   compresfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
