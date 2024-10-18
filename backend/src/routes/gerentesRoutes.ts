@@ -11,6 +11,7 @@ gerentesRouter.use(cors());
 
 // Validação usando Zod antes de criar um gerente
 gerentesRouter.post('/', validate(GerenteCreateInputSchema), createUserGerente);
+gerentesRouter.post('/', validate(GerenteCreateInputSchema), createUserGerente);
 gerentesRouter.post('/buscar', getUserGerente);
 gerentesRouter.post('/senha', sendPassword);
 gerentesRouter.post('/login', gerenteLogin);

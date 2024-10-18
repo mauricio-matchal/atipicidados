@@ -4,7 +4,6 @@ services:
   db:
     container_name: db
     image: postgres:12
-    restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -13,6 +12,8 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
 
   backend:
     container_name: backend
@@ -26,6 +27,8 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres?schema=public
     depends_on:
       - db
+    networks:
+      - app-network
 
   pgadmin:
     container_name: pgadmin
@@ -38,6 +41,12 @@ services:
       - "8080:80"
     depends_on:
       - db
+    networks:
+      - app-network
 
 volumes:
   pgdata:
+
+networks:
+  app-network:
+    driver: bridge

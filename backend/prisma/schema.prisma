@@ -1,5 +1,3 @@
-
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,19 +8,22 @@ datasource db {
 }
 generator zod {
   provider = " npx zod-prisma-types"
+    output   = "./generated/zod"
+
 }
 
 model Gerente  {
   id         Int       @id @default(autoincrement())
-  password   String
   ///@zod.string
-  
+  password   String
+  nascimento  DateTime
   nome       String
   cpf        String       @unique
   rg         String      @unique
   email      String    @unique
   telefone   String    @unique
   raca       Raca
+  genero      Genero
   unidadeId  Int
   unidade    Unidade   @relation(fields: [unidadeId], references: [id])
   rgdocfile      String?
@@ -45,7 +46,7 @@ model Colaborador {
   raca        Raca
   unidadeId   Int
   unidade     Unidade        @relation(fields: [unidadeId], references: [id])
-  pacientes   Paciente[]     @relation("PacienteColaboradores")
+  pacientes   Paciente[]     @relation("PacienteColaboradores") 
   rgdocfile      String?
   fotofile       String?
   compresfile    String?
@@ -97,16 +98,17 @@ model Unidade {
 }
 
 enum Raca {
-  BRANCA
-  NEGRA
-  AMARELA
-  INDIGENA
-  OUTRA
+  branca
+  negra
+  amarela
+  indigena
+  outra
 }
 
 enum Genero {
-  MASCULINO
-  FEMININO
-  PREFIRO_NAO_INFORMAR
+  masculino
+  feminino
+  prefiro_nao_informar 
 }
+
 
