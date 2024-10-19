@@ -2,12 +2,13 @@ import { PrismaClient } from '@prisma/client';
 import { compare, hashSync } from 'bcryptjs';
 import { Request, Response } from 'express';
 import multer from 'multer';
+import path from 'path';
 
 const prisma = new PrismaClient();
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/');
+    cb(null, path.join(__dirname, '../../uploads')); 
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`);
@@ -16,7 +17,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 
-// Exportar a função de criação de paciente
 export const createPaciente = [
   
   upload.fields([ 
@@ -87,7 +87,7 @@ export const pacienteLogin = async (request: Request, response:Response) => {
       where: { email}
   });
   if (!userPaciente ){
-    return response.status(204).json({error:true, message:`O paciente cujo o email é ${email} não existe ou ainda não foi cadastrado`});
+    return response.status(204).json({error:true, message:`O paciente cujo o email eh ${email} não existe ou ainda não foi cadastrado`});
   }
   const isPasswordValid = await compare(password, userPaciente.password);
         if (!isPasswordValid) {
@@ -107,7 +107,7 @@ export const pacienteLogin = async (request: Request, response:Response) => {
 
   }
   catch(error:any){
-    return response.status(500).json({error:true, message: 'Erro no servidor'})
+    return response.status(500).json({error:true, message: 'Error no servidor'})
 
   }
 

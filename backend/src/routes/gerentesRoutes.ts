@@ -5,19 +5,22 @@ import { ChangePasswordForModel, createUserGerente, gerenteLogin, getGerente, ge
 import { validate } from '../middleware/validate';
 import GerenteCreateInputSchema from './../../prisma/validateSchema';
 import { sendPassword } from '../email/sendPasswordByEmailGerente';
+import { ensureAuthenticated } from '../middleware/ensureAuthenticate.ts/autheticate';
+import { refreshTokenController } from '../provider/RefreshTokenUserController';
 
 export const gerentesRouter = Router();
 gerentesRouter.use(cors());
-
+const e = ensureAuthenticated;
 // Validação usando Zod antes de criar um gerente
 gerentesRouter.post('/', validate(GerenteCreateInputSchema), createUserGerente);
-gerentesRouter.post('/buscar', getUserGerente);
-gerentesRouter.post('/senha', sendPassword);
-gerentesRouter.post('/login', gerenteLogin);
-gerentesRouter.get('/cpf/:cpf', getGerente);
-gerentesRouter.get('/id/:id', getUserGerenteId);
-gerentesRouter.get('/getall', getGerentes);
-gerentesRouter.post('/id/:id/changePassword', ChangePasswordForModel)
+gerentesRouter.post('/buscar', e,getUserGerente);
+gerentesRouter.post('/senha', e,(sendPassword));
+gerentesRouter.post('/login',gerenteLogin);
+gerentesRouter.get('/cpf/:cpf',e, getGerente);
+gerentesRouter.get('/id/:id', ensureAuthenticated,getUserGerenteId);
+gerentesRouter.get('/getall', ensureAuthenticated,getGerentes);
+gerentesRouter.post('/id/:id/changePassword', ensureAuthenticated,ChangePasswordForModel)
+gerentesRouter.post('/token', refreshTokenController )
 
 
 export default gerentesRouter;

@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import  { compare, hashSync } from 'bcryptjs';
 import { JWT_SECRET } from '../secrets';
+import { GenerateRefreshToken } from '../provider/gerenateRefreshToken';
 
 const prisma = new PrismaClient();
 
@@ -91,7 +92,20 @@ export const gerenteLogin = async (request: Request, response: Response) => {
 
         const token = jwt.sign({
             userId: userGerente.id
-        }, JWT_SECRET);
+        }, JWT_SECRET, {expiresIn:'1m'});
+
+        response.cookie('token', token, {
+            httpOnly: true,
+            secure: false, 
+            sameSite: 'lax',
+            path: '/' // Define o caminho
+ 
+        });
+        
+        
+        
+        const generateRefreshToken = new GenerateRefreshToken();
+        const refresh_token = await generateRefreshToken.execute(userGerente.id)
 
         return response.status(200).json({
             error: false,
@@ -99,6 +113,7 @@ export const gerenteLogin = async (request: Request, response: Response) => {
             token,
             gerente: {
                 id: userGerente.id,
+                refresh_token
             }
         });
     } catch (error: any) {
@@ -196,7 +211,7 @@ export const ChangePasswordForModel = async (request: Request, response: Respons
         console.error(error);
         return response.status(500).json({
             error: true,
-            message: 'Erro ao alterar a senha'
+            message: 'Ocorreu um erro'
         });
     }
 };

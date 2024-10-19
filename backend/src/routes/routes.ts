@@ -4,11 +4,12 @@ import { gerentesRouter } from './gerentesRoutes';
 import {unidadeRouter} from './unidadeRouter';
 import {pacienteRouter} from './pacienteRouter';
 import { colaboradorRouter } from './colaboradorRoutes';
+import { ensureAuthenticated } from '../middleware/ensureAuthenticate.ts/autheticate';
 
 
 export const userRouter = Router();
 userRouter.use(cors());
-userRouter.use('/gerentes', gerentesRouter)
+userRouter.use('/gerentes',gerentesRouter)
 userRouter.use('/unidades', unidadeRouter)
 userRouter.use('/pacientes', pacienteRouter)
 userRouter.use('/colaboradores', colaboradorRouter)
@@ -16,6 +17,6 @@ userRouter.use('/colaboradores', colaboradorRouter)
 //Demais rotas que faremos
 
 
-userRouter.get('/', (req: Request, res: Response) => {
+userRouter.get('/', ensureAuthenticated, (req: Request, res: Response) => {
     res.send('Hello World');
 });

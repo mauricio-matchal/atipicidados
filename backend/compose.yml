@@ -26,6 +26,8 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres?schema=public
     depends_on:
       - db
+    volumes:
+     - ./uploads:/backend/uploads
 
   pgadmin:
     container_name: pgadmin

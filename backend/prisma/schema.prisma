@@ -30,6 +30,7 @@ model Gerente  {
   rgdocfile      String?
   fotofile       String?
   compresfile    String?
+  refresh_token    RefreshToken[]
 }
 
 model Colaborador {
@@ -110,5 +111,16 @@ enum Genero {
   MASCULINO
   FEMININO
   PREFIRO_NAO_INFORMAR
+}
+
+
+
+model RefreshToken {
+  id         String  @id @default(uuid())
+  expireIn   Int
+  gerente    Gerente @relation(fields: [gerenteId], references: [id])
+  gerenteId  Int
+
+  @@map("refresh_token")
 }
 
