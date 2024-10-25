@@ -3,7 +3,7 @@ version: '3.9'
 services:
   db:
     container_name: db
-    image: postgres:12
+    image: postgres:17
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -24,7 +24,7 @@ services:
     ports:
       - "3002:3002"
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres?schema=public
+      - DATABASE_URL=postgresql://atipicidades_yaht_user:V0IbI742UWIBt5LaOjNKPHEG3Zkrvlqn@dpg-crtinrdds78s73er52gg-a.oregon-postgres.render.com/atipicidades_yaht
     depends_on:
       - db
     networks:

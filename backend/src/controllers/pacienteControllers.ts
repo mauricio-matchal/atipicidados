@@ -456,7 +456,7 @@ export const updatePacienteEscola = [
   }
 ];
 
-export const updatePaciente = [
+export const updatePacienteSaude = [
   async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
@@ -630,3 +630,19 @@ export const updatePacienteRelescolar = [
     }
   }
 ];
+
+export const updateAnalise = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const paciente = await prisma.paciente.update({
+      where: { id: Number(id) },
+      data: {
+        analise: false,
+      },
+    });
+    res.status(200).json(paciente);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao atualizar o paciente' });
+  }
+};
