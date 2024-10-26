@@ -5,8 +5,6 @@ import  { compare, hashSync } from 'bcryptjs';
 import { JWT_SECRET } from '../secrets';
 import { request } from 'http';
 import { error } from 'console';
-import { request } from 'http';
-import { error } from 'console';
 
 const prisma = new PrismaClient();
 
@@ -107,7 +105,6 @@ export const colaboradorLogin = async (request: Request, response: Response) => 
             userId: userColaborador.id
         }, JWT_SECRET);
 
-        return response.status(200).json({
         return response.status(200).json({
             error: false,
             message: 'Login realizado',

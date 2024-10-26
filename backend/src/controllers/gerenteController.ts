@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import  { compare, hashSync } from 'bcryptjs';
+import { compare, hashSync } from 'bcryptjs';
 import { JWT_SECRET } from '../secrets';
 
 const prisma = new PrismaClient();
@@ -122,7 +122,7 @@ export const getGerente = async (request: Request, response: Response) => {
 
     try {
         const userGerente = await prisma.gerente.findUnique({
-            where: { cpf: cpf}
+            where: { cpf: cpf }
         });
 
         if (!userGerente) {
@@ -133,28 +133,30 @@ export const getGerente = async (request: Request, response: Response) => {
             error: false,
             message: `O colaborador ${userGerente.nome} foi encontrado`,
             userGerente
-        }); 
-    
-    } 
+        });
+
+    }
     catch (error: any) {
         return response.status(500).json({ error: error.message });
     }
 }
 
-export const getGerentes = async (_:Request, response:Response) => {
+export const getGerentes = async (_: Request, response: Response) => {
 
-    try{
+    try {
         const gerentes = await prisma.gerente.findMany();
         if (gerentes.length === 0) {
-            return response.status(204).json({error:true, message: 'Nenhum gerente foi encontrado'})
+            return response.status(204).json({ error: true, message: 'Nenhum gerente foi encontrado' })
         }
-        return response.status(200).json({error:false, 
+        return response.status(200).json({
+            error: false,
             message: 'Segue a lista de todos gerentes',
-            gerentes})
+            gerentes
+        })
 
 
     }
-    catch(error:any){
-        return response.status(500).json({error:true, message:'Erro interno no servidor'})
+    catch (error: any) {
+        return response.status(500).json({ error: true, message: 'Erro interno no servidor' })
     }
 }

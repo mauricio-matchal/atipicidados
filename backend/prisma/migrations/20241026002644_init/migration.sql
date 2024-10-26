@@ -1,19 +1,21 @@
 -- CreateEnum
-CREATE TYPE "Raca" AS ENUM ('BRANCA', 'NEGRA', 'AMARELA', 'INDIGENA', 'OUTRA');
+CREATE TYPE "Raca" AS ENUM ('branca', 'negra', 'amarela', 'indigena', 'outra');
 
 -- CreateEnum
-CREATE TYPE "Genero" AS ENUM ('MASCULINO', 'FEMININO', 'PREFIRO_NAO_INFORMAR');
+CREATE TYPE "Genero" AS ENUM ('masculino', 'feminino', 'prefiro_nao_informar');
 
 -- CreateTable
 CREATE TABLE "Gerente" (
     "id" SERIAL NOT NULL,
     "password" TEXT NOT NULL,
+    "nascimento" TIMESTAMP(3) NOT NULL,
     "nome" TEXT NOT NULL,
     "cpf" TEXT NOT NULL,
     "rg" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "telefone" TEXT NOT NULL,
     "raca" "Raca" NOT NULL,
+    "genero" "Genero" NOT NULL,
     "unidadeId" INTEGER NOT NULL,
     "rgdocfile" TEXT,
     "fotofile" TEXT,
