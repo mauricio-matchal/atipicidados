@@ -3,32 +3,62 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { compare, hashSync } from 'bcryptjs';
 import { JWT_SECRET } from '../secrets';
+import multer from 'multer';
 
 const prisma = new PrismaClient();
 
+
+// Configuração do multer para salvar os arquivos em uma pasta 'uploads'
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, 'uploads/');
+    },
+    filename: (req, file, cb) => {
+      cb(null, `${Date.now()}-${file.originalname}`);
+    }
+  });
+  const upload = multer({ storage: storage });
+
 // Quando criar gerente, sempre usar o id 0 para unidades. 
 //criar 
-export const createUserGerente = async (request: Request, response: Response) => {
-    const { nome, email, cpf, rg, telefone, raca, unidadeId, password } = request.body;
+export const createUserGerente = 
+    [ 
+    upload.fields([ 
+        { name: 'rgdocfile', maxCount: 1 },
+        { name: 'fotofile', maxCount: 1 },
+        { name: 'compresfile', maxCount: 1 },
+      ]),
 
-    try {
-        const userGerente = await prisma.gerente.create({
-            data: {
-                nome,
-                email,
-                telefone,
-                cpf,
-                unidadeId,
-                raca,
-                rg,
-                password: hashSync(password, 10)
-            }
-        });
-        return response.json(userGerente);
-    } catch (error: any) {
-        return response.status(400).json({ error: error.message });
-    }
-}
+        async (req: Request, response: Response) => {
+        const { nome, email, cpf, rg, telefone, raca, unidadeId, password, nascimento, genero, unidade} = req.body;
+        const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+        console.log(req.files); 
+
+        try {
+            const userGerente = await prisma.gerente.create({
+                data: {
+                    nome,
+                    email,
+                    telefone,
+                    cpf,
+                    unidadeId,
+                    raca,
+                    rg,
+                    nascimento,
+                    genero, 
+                    unidade,
+                    password: hashSync(password, 10),
+                    rgdocfile: files?.['rgdocfile'] ? files['rgdocfile'][0].path : null,
+                    fotofile: files?.['fotofile'] ? files['fotofile'][0].path : null,
+                    compresfile: files?.['compresfile'] ? files['compresfile'][0].path : null
+                }
+            });
+            return response.json(userGerente);
+        } catch (error: any) {
+            return response.status(400).json({ error: error.message });
+        }
+        }   
+    ]
 
 //encontrar por email
 export const getUserGerente = async (request: Request, response: Response) => {
