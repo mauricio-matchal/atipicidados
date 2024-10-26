@@ -1,17 +1,18 @@
 import { Router } from 'express';
 import cors from 'cors';
-import { createPaciente, getPaciente, updatePacienteGestacao, updatePacienteNascimento, updatePacienteAutonomia,
+import {
+    createPaciente, getPaciente, updatePacienteGestacao, updatePacienteNascimento, updatePacienteAutonomia,
     updatePacienteComportamento, updatePacienteDesenvolvimento, updatePacientePedagogico, updatePacienteGeral,
     updatePacienteMae, updatePacientePai, updatePacienteMaisinfo, updatePacienteEscola, updatePacienteSaude,
     updatePacienteRg, updatePacienteFoto, updatePacienteCompres, updatePacienteLaudo, updatePacienteRelescolar,
     updateAnalise
- } from '../controllers/pacienteControllers';
+} from '../controllers/pacienteControllers';
 import { PacienteCreateInputSchema } from '../../prisma/validateSchema';
-import { validate} from '../middleware/validate';
+import { validate } from '../middleware/validate';
 
 export const pacienteRouter = Router();
 pacienteRouter.use(cors());
-pacienteRouter.post('/', validate(PacienteCreateInputSchema),createPaciente);
+pacienteRouter.post('/', createPaciente);
 pacienteRouter.get('/:cpf', getPaciente);
 pacienteRouter.post('/login');
 pacienteRouter.put('/putGestao', updatePacienteGestacao);
@@ -32,7 +33,7 @@ pacienteRouter.put('/putCompres', updatePacienteCompres);
 pacienteRouter.put('/putLaudo', updatePacienteLaudo);
 pacienteRouter.put('/putRelescolar', updatePacienteRelescolar);
 
-
+// , validate(PacienteCreateInputSchema)
 
 
 

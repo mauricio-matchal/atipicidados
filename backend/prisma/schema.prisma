@@ -6,36 +6,36 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 generator zod {
   provider = " npx zod-prisma-types"
-    output   = "./generated/zod"
-
+  output   = "./generated/zod"
 }
 
-model Gerente  {
-  id         Int       @id @default(autoincrement())
+model Gerente {
+  id          Int      @id @default(autoincrement())
   ///@zod.string
-  password   String
+  password    String
   nascimento  DateTime
-  nome       String
-  cpf        String       @unique
-  rg         String      @unique
-  email      String    @unique
-  telefone   String    @unique
-  raca       Raca
+  nome        String
+  cpf         String   @unique
+  rg          String   @unique
+  email       String   @unique
+  telefone    String   @unique
+  raca        Raca
   genero      Genero
-  unidadeId  Int
-  unidade    Unidade   @relation(fields: [unidadeId], references: [id])
-  rgdocfile      String?
-  fotofile       String?
-  compresfile    String?
+  unidadeId   Int
+  unidade     Unidade  @relation(fields: [unidadeId], references: [id])
+  rgdocfile   String?
+  fotofile    String?
+  compresfile String?
 }
 
 model Colaborador {
   id          Int        @id @default(autoincrement())
-  nome        String   
-  cpf         String        @unique
-  rg          String        @unique
+  nome        String
+  cpf         String     @unique
+  rg          String     @unique
   nascimento  DateTime
   telefone    String     @unique
   titulo      String
@@ -45,25 +45,24 @@ model Colaborador {
   email       String     @unique
   raca        Raca
   unidadeId   Int
-  unidade     Unidade        @relation(fields: [unidadeId], references: [id])
-  pacientes   Paciente[]     @relation("PacienteColaboradores") 
-  rgdocfile      String?
-  fotofile       String?
-  compresfile    String?
+  unidade     Unidade    @relation(fields: [unidadeId], references: [id])
+  pacientes   Paciente[] @relation("PacienteColaboradores")
+  rgdocfile   String?
+  fotofile    String?
+  compresfile String?
 }
-
 
 model Paciente {
   id             Int           @id @default(autoincrement())
   analise        Boolean       @default(true)
-  nome           String?  
-  cpf            String 
+  nome           String?
+  cpf            String
   rg             String?
-  nascimentodata     String?
+  nascimentodata String?
   nomemae        String?
   nomepai        String?
-  unidadeId      Int          @default(1)
-  email          String       @unique
+  unidadeId      Int           @default(1)
+  email          String        @unique
   password       String
   telefone       String?
   rgdocfile      String?
@@ -71,11 +70,11 @@ model Paciente {
   compresfile    String?
   laudofile      String? //analise
   relescolar     String? // analise
-  gestacao         Json?
-  nascimento       Json?
-  autonomia        Json?
-  comportamento    Json?
-  desenvolimento   Json?
+  gestacao       Json?
+  nascimento     Json?
+  autonomia      Json?
+  comportamento  Json?
+  desenvolimento Json?
   pedagogico     Json?
   geral          Json? // analise
   mae            Json? // analise
@@ -84,8 +83,8 @@ model Paciente {
   escola         Json? // analise
   saudeinfo      Json? // analise
   raca           Raca?
-  unidade        Unidade        @relation(fields: [unidadeId], references: [id])
-  colaboradores  Colaborador[]  @relation("PacienteColaboradores")
+  unidade        Unidade       @relation(fields: [unidadeId], references: [id])
+  colaboradores  Colaborador[] @relation("PacienteColaboradores")
 }
 
 model Unidade {
@@ -108,7 +107,5 @@ enum Raca {
 enum Genero {
   masculino
   feminino
-  prefiro_nao_informar 
+  prefiro_nao_informar
 }
-
-
