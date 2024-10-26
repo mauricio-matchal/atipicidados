@@ -8,6 +8,7 @@ import Link from "next/link";
 import Checkbox from "@/components/Checkbox";
 import { useRouter } from "next/navigation";
 import Loading from "@/components/Loading";
+import { set } from "react-hook-form";
 
 export default function Home() {
   const [userType, setUserType] = useState("");
@@ -15,6 +16,8 @@ export default function Home() {
   const [id, setID] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
+  const [errorMessage, setErrorMessage] = useState("");
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -85,8 +88,9 @@ export default function Home() {
       localStorage.setItem("homeLink", homeLink)
 
       router.push(`/home/${userType.toLowerCase()}?email=${encodeURIComponent(loginData.email)}&id=${encodeURIComponent(gerente.id)}`);
-    } catch (error) {
+    } catch (error: any) {
       console.log("Erro em seu login", error);
+      setErrorMessage(error);
     } finally {
       setIsLoading(false);
     }
@@ -94,6 +98,16 @@ export default function Home() {
 
   return (
     <main className={`flex min-h-screen ${isLoading && ""}`}>
+      {errorMessage && (
+        <>
+          <div className="fixed z-40 place-self-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-800 p-5 text-white">
+            <button className="text-white" onClick={() => {setErrorMessage("")}}>Voltar</button>
+            Erro ao fazer login. Tente novamente.
+          </div>
+          <div className="fixed inset-0 bg-black/30 z-30" />
+        </>
+      )}
+
       {isLoading && (
         <>
           <div className="fixed z-40 place-self-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">

@@ -6,7 +6,11 @@ import Step3 from './Step3';
 import Step4 from './Step4';
 import { FormData } from './types';
 
-const Form: React.FC = () => {
+interface FormProps {
+  id: string;
+}
+
+const Form: React.FC<FormProps> = ({ id }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     geral: null,
@@ -19,6 +23,23 @@ const Form: React.FC = () => {
 
   const nextStep = () => setCurrentStep(currentStep + 1);
   const prevStep = () => setCurrentStep(currentStep - 1);
+
+  useEffect(() => {
+    fetchData(id);
+  })
+
+  const fetchData = async (id: any) => {
+    try {
+      const response = await fetch(`http://localhost:3002/pacientes/id/${id}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch paciente data");
+      }
+      const data = await response.json();
+      setFormData(data);
+    } catch (error) {
+      console.error("Error fetching paciente data:", error);
+    }
+  }
 
   const updateGeral = (data: any) => {
     setFormData((prevData) => ({
@@ -62,10 +83,10 @@ const Form: React.FC = () => {
     console.log(formData);
   }
 
-  const handleUserCreation = async () => {
+  const handleUserEdition = async () => {
     try {
-      const teste = await fetch("http://localhost:3002/pacientes/", {
-        method: "POST",
+      const teste = await fetch(`http://localhost:3002/pacientes/id/${id}`, {
+        method: "PUT",
         body: JSON.stringify(formData),
         headers: { 'Content-Type': 'application/json' }
       })
@@ -102,11 +123,11 @@ const Form: React.FC = () => {
     case 4:
       return <>
         {/* <button onClick={reveal}>reveal</button> */}
-        <button onClick={handleUserCreation}>rodar a rota</button>
+        <button onClick={handleUserEdition}>rodar a rota</button>
         <Step4
           prevStep={prevStep}
           updateInfoSaude={(data) => updateInfoSaude(data)}
-          handleFormDataSubmit={handleUserCreation}
+          handleFormDataSubmit={handleUserEdition}
         />;
       </>
     default:

@@ -8,6 +8,7 @@ import { useSearchParams } from "next/navigation";
 import NavBarGerente from "@/components/NavBarGerente";
 import NavBarColaborador from "@/components/NavBarColaborador";
 import NavBarPaciente from "@/components/NavBarPaciente";
+import Form from "@/components/Form Autenticacao/Form";
 
 export default function Home() {
     // const searchParams = useSearchParams();
@@ -56,9 +57,9 @@ export default function Home() {
 
     // Se a pessoa que clicou no card for um gerente, ou seja "acs" = "g" recebe navbar de gerente, caso contrario colaborador
     const getAcesso = () => {
-        if(acesso === "g") return <NavBarGerente />
-        if(acesso === "c") return <NavBarColaborador />
-        if(acesso === "p") return <NavBarPaciente />
+        if (acesso === "g") return <NavBarGerente />
+        if (acesso === "c") return <NavBarColaborador />
+        if (acesso === "p") return <NavBarPaciente />
     }
 
     return (
@@ -69,9 +70,18 @@ export default function Home() {
                     <div className="box w-3/5 flex flex-col gap-7">
                         <div className="w-full flex flex-row justify-between">
                             <h2>Cadastro de {pacienteInfo ? pacienteInfo.nome : "Nome"}</h2>
+                            {/* {(acesso === "g" || acesso === "c") ? (
+                                pacienteInfo && !pacienteInfo.analise ? (
+                                    <button type="button" className="py-2 px-3 bg-blue-800 text-white rounded-lg font-medium -mr-2">Verificar</button>
+                                ) : (
+                                    <button type="button" className="bg-black/10 text-black/50 py-2 px-3 rounded-lg font-medium -mr-2" disabled>Verificado</button>
+                                )
+                            ) : null} */}
                             {pacienteInfo && !pacienteInfo.analise ? (
-                                <button type="button" className="py-2 px-3 bg-blue-800 text-white rounded-lg font-medium -mr-2">Verificar</button>
-                            ) : <button type="button" className="bg-black/10 text-black/50 py-2 px-3 rounded-lg font-medium -mr-2" disabled>Verificado</button>}
+                                <button type="button" className="py-2 px-3 bg-blue-800 text-white rounded-lg font-medium -mr-2" onClick={() => {<Form id={memberID}/>}}>Verificar</button>
+                            ) : (
+                                <button type="button" className="bg-black/10 text-black/50 py-2 px-3 rounded-lg font-medium -mr-2" disabled>Verificado</button>
+                            )}
                         </div>
 
                         <div className="flex flex-col gap-8">
