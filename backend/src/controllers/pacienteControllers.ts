@@ -461,6 +461,7 @@ export const updatePacienteEscola = [
 ];
 
 export const updatePacienteSaude = [
+export const updatePacienteSaude = [
   async (req: Request, res: Response) => {
     try {
       const { id } = req.params;

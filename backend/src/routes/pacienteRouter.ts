@@ -35,4 +35,10 @@ pacienteRouter.put('/putpedagogico', updatePacientePedagogico);
 
 pacienteRouter.put('/putanalise', updateAnalise);
 
-// validate(PacienteCreateInputSchema),
+// , validate(PacienteCreateInputSchema)
+
+
+
+
+
+pacienteRouter.put('/putAnalise', updateAnalise);
