@@ -12,6 +12,7 @@ interface FormProps {
 
 const Form: React.FC<FormProps> = ({ id }) => {
   const [currentStep, setCurrentStep] = useState(1);
+  // const pacienteData
   const [formData, setFormData] = useState({
     geral: null,
     escola: null,
@@ -26,6 +27,7 @@ const Form: React.FC<FormProps> = ({ id }) => {
 
   useEffect(() => {
     fetchData(id);
+    // get id by through clicking a pacient card
   })
 
   const fetchData = async (id: any) => {
@@ -36,6 +38,7 @@ const Form: React.FC<FormProps> = ({ id }) => {
       }
       const data = await response.json();
       setFormData(data);
+      // setPacienteData(data);
     } catch (error) {
       console.error("Error fetching paciente data:", error);
     }
@@ -83,19 +86,55 @@ const Form: React.FC<FormProps> = ({ id }) => {
     console.log(formData);
   }
 
-  const handleUserEdition = async () => {
+  const putData = async (data: string, id: string, type: string) => {
     try {
-      const teste = await fetch(`http://localhost:3002/pacientes/id/${id}`, {
+      const response = await fetch(`http://localhost:3002/pacientes/put${type}`, {
         method: "PUT",
-        body: JSON.stringify(formData),
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: id,
+          geral: JSON.stringify(data),
+        }),
       })
-      const response = await teste.json();
-      console.log(response);
-    } catch {
 
+      if (!response.ok) {
+        throw new Error("Failed to update data");
+      }
+
+      const updatedPaciente = await response.json();
+      console.log("Data updated successfully:", updatedPaciente);
+      return updatedPaciente;
+    } catch (error) {
+      console.error("Error updating data:", error);
     }
   }
+
+  const handleUserEdition = async () => {
+    try {
+      if (formData.geral) {
+        await putData(formData.geral, id, "geral");
+      }
+      if (formData.escola) {
+        await putData(formData.escola, id, "escola");
+      }
+      if (formData.mae) {
+        await putData(formData.mae, id, "mae");
+      }
+      if (formData.pai) {
+        await putData(formData.pai, id, "pai");
+      }
+      if (formData.maisinfo) {
+        await putData(formData.maisinfo, id, "maisinfo");
+      }
+      if (formData.saudeinfo) {
+        await putData(formData.saudeinfo, id, "saudeinfo");
+      }
+
+      console.log("All updates completed successfully");
+    } catch (error) {
+      console.error("Error during the update process:", error);
+    }
+  };
 
   switch (currentStep) {
     case 1:

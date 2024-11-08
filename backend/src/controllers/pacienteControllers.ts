@@ -19,8 +19,8 @@ const upload = multer({ storage: storage });
 
 // Exportar a função de criação de paciente
 export const createPaciente = [
-  
-  upload.fields([ 
+
+  upload.fields([
     { name: 'rgdocfile', maxCount: 1 },
     { name: 'fotofile', maxCount: 1 },
     { name: 'compresfile', maxCount: 1 },
@@ -41,7 +41,7 @@ export const createPaciente = [
 
       const paciente = await prisma.paciente.create({
         data: {
-          password:hashSync(password, 10),
+          password: hashSync(password, 10),
           nome,
           cpf,
           rg,
@@ -80,35 +80,35 @@ export const createPaciente = [
 ];
 
 
-export const pacienteLogin = async (request: Request, response:Response) => {
-  const {email, password} = request.body;
+export const pacienteLogin = async (request: Request, response: Response) => {
+  const { email, password } = request.body;
 
-  try{
+  try {
     const userPaciente = await prisma.paciente.findUnique({
-      where: { email}
-  });
-  if (!userPaciente ){
-    return response.status(204).json({error:true, message:`O paciente cujo o email é ${email} não existe ou ainda não foi cadastrado`});
-  }
-  const isPasswordValid = await compare(password, userPaciente.password);
-        if (!isPasswordValid) {
-            return response.status(401).json({
-                error: true,
-                message: 'Erro: Senha incorreta'
-            });
-        }
-      return response.status(200).json({
-          error: false,
-          message: 'Login realizado',
-          gerente: {
-              id: userPaciente.id,
-          }
+      where: { email }
+    });
+    if (!userPaciente) {
+      return response.status(204).json({ error: true, message: `O paciente cujo o email é ${email} não existe ou ainda não foi cadastrado` });
+    }
+    const isPasswordValid = await compare(password, userPaciente.password);
+    if (!isPasswordValid) {
+      return response.status(401).json({
+        error: true,
+        message: 'Erro: Senha incorreta'
       });
+    }
+    return response.status(200).json({
+      error: false,
+      message: 'Login realizado',
+      gerente: {
+        id: userPaciente.id,
+      }
+    });
 
 
   }
-  catch(error:any){
-    return response.status(500).json({error:true, message: 'Erro no servidor'})
+  catch (error: any) {
+    return response.status(500).json({ error: true, message: 'Erro no servidor' })
 
   }
 
@@ -140,8 +140,10 @@ export const getPaciente = async (request: Request, response: Response) => {
       return response.status(404).json({ error: 'Paciente não encontrado.' });
     }
 
-    response.status(200).json({error:false, 
-      message:`O paciente ${paciente?.nome} de cpf: ${paciente.cpf? paciente.cpf : '(Não possui CPF cadastrado)'} foi encontrado`});
+    response.status(200).json({
+      error: false,
+      message: `O paciente ${paciente?.nome} de cpf: ${paciente.cpf ? paciente.cpf : '(Não possui CPF cadastrado)'} foi encontrado`
+    });
   } catch (error) {
     console.error(error);
     response.status(500).json({ error: 'Erro ao buscar paciente.' });
@@ -152,35 +154,37 @@ export const getuserPacienteId = async (request: Request, response: Response) =>
   const { id } = request.params;
 
   try {
-      const userPaciente = await prisma.paciente.findUnique({
-          where: { id: Number(id) }
-      });
+    const userPaciente = await prisma.paciente.findUnique({
+      where: { id: Number(id) }
+    });
 
-      if (!userPaciente) {
-          return response.status(404).json({ error: "paciente não encontrado." });
-      }
+    if (!userPaciente) {
+      return response.status(404).json({ error: "paciente não encontrado." });
+    }
 
-      return response.status(200).json(userPaciente);
+    return response.status(200).json(userPaciente);
   } catch (error: any) {
-      return response.status(500).json({ error: error.message });
+    return response.status(500).json({ error: error.message });
   }
 }
 
-export const getPacientes = async (_:Request, response:Response) => {
+export const getPacientes = async (_: Request, response: Response) => {
 
-  try{
-      const pacientes = await prisma.paciente.findMany();
-      if (pacientes.length === 0) {
-          return response.status(204).json({error:true, message: 'Nenhum paciente foi encontrado'})
-      }
-      return response.status(200).json({error:false, 
-          message: 'Segue a lista de todos pacientes',
-           pacientes})
+  try {
+    const pacientes = await prisma.paciente.findMany();
+    if (pacientes.length === 0) {
+      return response.status(204).json({ error: true, message: 'Nenhum paciente foi encontrado' })
+    }
+    return response.status(200).json({
+      error: false,
+      message: 'Segue a lista de todos pacientes',
+      pacientes
+    })
 
 
   }
-  catch(error:any){
-      return response.status(500).json({error:true, message:'Erro interno no servidor'})
+  catch (error: any) {
+    return response.status(500).json({ error: true, message: 'Erro interno no servidor' })
   }
 }
 
@@ -196,7 +200,7 @@ export const updatePacienteGestacao = [
       } = req.body;
 
       const paciente = await prisma.paciente.update({
-        where:{id: Number(id)},
+        where: { id: Number(id) },
         data: {
           gestacao: gestacao ? JSON.parse(gestacao) : null,
         }
@@ -221,7 +225,7 @@ export const updatePacienteNascimento = [
       } = req.body;
 
       const paciente = await prisma.paciente.update({
-        where:{id: Number(id)},
+        where: { id: Number(id) },
         data: {
           nascimento: nascimento ? JSON.parse(nascimento) : null,
         }
@@ -246,7 +250,7 @@ export const updatePacienteAutonomia = [
       } = req.body;
 
       const paciente = await prisma.paciente.update({
-        where:{id: Number(id)},
+        where: { id: Number(id) },
         data: {
           autonomia: autonomia ? JSON.parse(autonomia) : null
         }
@@ -271,7 +275,7 @@ export const updatePacienteComportamento = [
       } = req.body;
 
       const paciente = await prisma.paciente.update({
-        where:{id: Number(id)},
+        where: { id: Number(id) },
         data: {
           comportamento: comportamento ? JSON.parse(comportamento) : null
         }
@@ -296,7 +300,7 @@ export const updatePacienteDesenvolvimento = [
       } = req.body;
 
       const paciente = await prisma.paciente.update({
-        where:{id: Number(id)},
+        where: { id: Number(id) },
         data: {
           desenvolimento: desenvolimento ? JSON.parse(desenvolimento) : null,
         }
@@ -321,7 +325,7 @@ export const updatePacientePedagogico = [
       } = req.body;
 
       const paciente = await prisma.paciente.update({
-        where:{id: Number(id)},
+        where: { id: Number(id) },
         data: {
           pedagogico: pedagogico ? JSON.parse(pedagogico) : null,
         }
@@ -345,7 +349,7 @@ export const updatePacienteGeral = [
       } = req.body;
 
       const paciente = await prisma.paciente.update({
-        where:{id: Number(id)},
+        where: { id: Number(id) },
         data: {
           geral: geral ? JSON.parse(geral) : null,
         }
@@ -369,7 +373,7 @@ export const updatePacienteMae = [
       } = req.body;
 
       const paciente = await prisma.paciente.update({
-        where:{id: Number(id)},
+        where: { id: Number(id) },
         data: {
           mae: mae ? JSON.parse(mae) : null,
         }
@@ -393,7 +397,7 @@ export const updatePacientePai = [
       } = req.body;
 
       const paciente = await prisma.paciente.update({
-        where:{id: Number(id)},
+        where: { id: Number(id) },
         data: {
           pai: pai ? JSON.parse(pai) : null,
         }
@@ -417,7 +421,7 @@ export const updatePacienteMaisinfo = [
       } = req.body;
 
       const paciente = await prisma.paciente.update({
-        where:{id: Number(id)},
+        where: { id: Number(id) },
         data: {
           maisinfo: maisinfo ? JSON.parse(maisinfo) : null,
         }
@@ -441,7 +445,7 @@ export const updatePacienteEscola = [
       } = req.body;
 
       const paciente = await prisma.paciente.update({
-        where:{id: Number(id)},
+        where: { id: Number(id) },
         data: {
           escola: escola ? JSON.parse(escola) : null,
 
@@ -456,7 +460,7 @@ export const updatePacienteEscola = [
   }
 ];
 
-export const updatePaciente = [
+export const updatePacienteSaude = [
   async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
@@ -467,7 +471,7 @@ export const updatePaciente = [
       } = req.body;
 
       const paciente = await prisma.paciente.update({
-        where:{id: Number(id)},
+        where: { id: Number(id) },
         data: {
           saudeinfo: saudeinfo ? JSON.parse(saudeinfo) : null,
         }
@@ -484,8 +488,8 @@ export const updatePaciente = [
 
 
 export const updatePacienteRg = [
-  
-  upload.fields([ 
+
+  upload.fields([
     { name: 'rgdocfile', maxCount: 1 },
 
   ]),
@@ -495,10 +499,10 @@ export const updatePacienteRg = [
 
 
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      console.log(req.files); 
+      console.log(req.files);
 
       const paciente = await prisma.paciente.update({
-        where:{id: Number(id)},
+        where: { id: Number(id) },
         data: {
           rgdocfile: files?.['rgdocfile'] ? files['rgdocfile'][0].path : null,
 
@@ -514,8 +518,8 @@ export const updatePacienteRg = [
 ];
 
 export const updatePacienteFoto = [
-  
-  upload.fields([ 
+
+  upload.fields([
 
     { name: 'fotofile', maxCount: 1 },
 
@@ -529,7 +533,7 @@ export const updatePacienteFoto = [
       console.log(req.files); // Log dos arquivos recebidos
 
       const paciente = await prisma.paciente.update({
-        where:{id: Number(id)},
+        where: { id: Number(id) },
         data: {
           fotofile: files?.['fotofile'] ? files['fotofile'][0].path : null,
         }
@@ -545,8 +549,8 @@ export const updatePacienteFoto = [
 
 
 export const updatePacienteCompres = [
-  
-  upload.fields([ 
+
+  upload.fields([
     { name: 'compresfile', maxCount: 1 },
 
   ]),
@@ -559,7 +563,7 @@ export const updatePacienteCompres = [
       console.log(req.files); // Log dos arquivos recebidos
 
       const paciente = await prisma.paciente.update({
-        where:{id: Number(id)},
+        where: { id: Number(id) },
         data: {
           compresfile: files?.['compresfile'] ? files['compresfile'][0].path : null,
         }
@@ -574,8 +578,8 @@ export const updatePacienteCompres = [
 ];
 
 export const updatePacienteLaudo = [
-  
-  upload.fields([ 
+
+  upload.fields([
 
     { name: 'laudofile', maxCount: 1 },
 
@@ -589,7 +593,7 @@ export const updatePacienteLaudo = [
       console.log(req.files); // Log dos arquivos recebidos
 
       const paciente = await prisma.paciente.update({
-        where:{id: Number(id)},
+        where: { id: Number(id) },
         data: {
           laudofile: files?.['laudofile'] ? files['laudofile'][0].path : null,
         }
@@ -604,8 +608,8 @@ export const updatePacienteLaudo = [
 ];
 
 export const updatePacienteRelescolar = [
-  
-  upload.fields([ 
+
+  upload.fields([
     { name: 'relescolar', maxCount: 1 }
   ]),
   async (req: Request, res: Response) => {
@@ -617,7 +621,7 @@ export const updatePacienteRelescolar = [
       console.log(req.files); // Log dos arquivos recebidos
 
       const paciente = await prisma.paciente.update({
-        where:{id: Number(id)},
+        where: { id: Number(id) },
         data: {
           relescolar: files?.['relescolar'] ? files['relescolar'][0].path : null,
         }
@@ -630,3 +634,19 @@ export const updatePacienteRelescolar = [
     }
   }
 ];
+
+export const updateAnalise = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const paciente = await prisma.paciente.update({
+      where: { id: Number(id) },
+      data: {
+        analise: false,
+      },
+    });
+    res.status(200).json(paciente);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao atualizar o paciente' });
+  }
+};
