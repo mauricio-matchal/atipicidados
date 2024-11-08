@@ -13,7 +13,7 @@ colaboradorRouter.post('/login', colaboradorLogin)
 colaboradorRouter.post('/senha', sendPassword)
 colaboradorRouter.get('/cpf/:cpf', getColaborador)
 colaboradorRouter.get('/id/:id', getuserColaboradorId)
-colaboradorRouter.get('/getall', getColaboradores);
+colaboradorRouter.get('/all', getColaboradores);
 colaboradorRouter.post('/id/:id/changePassword', ChangePasswordByModel)
 
 

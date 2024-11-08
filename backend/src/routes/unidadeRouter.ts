@@ -7,4 +7,4 @@ unidadeRouter.use(cors());
 unidadeRouter.post('/', createUserUnidade);
 unidadeRouter.put('/connectgerente', addGerenteToUnidade);
 unidadeRouter.get('/getUnidadeById/:id', getUnidadeById);
-unidadeRouter.get('/getall', getUnidades);
+unidadeRouter.get('/all', getUnidades);

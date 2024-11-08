@@ -4,7 +4,6 @@ import jwt from 'jsonwebtoken';
 import { compare, hashSync } from 'bcryptjs';
 import { JWT_SECRET } from '../secrets';
 import multer from 'multer';
-import multer from 'multer';
 
 const prisma = new PrismaClient();
 

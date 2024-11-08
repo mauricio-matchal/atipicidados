@@ -10,7 +10,7 @@ pacienteRouter.post('/', createPaciente);
 pacienteRouter.get('/cpf/:cpf', getPaciente);
 pacienteRouter.post('/login', pacienteLogin);
 pacienteRouter.get('/id/:id', getuserPacienteId);
-pacienteRouter.get('/getall', getPacientes);
+pacienteRouter.get('/all', getPacientes);
 
 pacienteRouter.put('/putgeral', updatePacienteGeral);
 pacienteRouter.put('/putmae', updatePacienteMae);
