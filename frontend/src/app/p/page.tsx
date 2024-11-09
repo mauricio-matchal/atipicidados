@@ -9,11 +9,15 @@ import NavBarGerente from "@/components/NavBarGerente";
 import NavBarColaborador from "@/components/NavBarColaborador";
 import NavBarPaciente from "@/components/NavBarPaciente";
 import Form from "@/components/Form Autenticacao/Form";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
     // const searchParams = useSearchParams();
     // const id = searchParams.get("id");
     // const acesso = searchParams.get("acs");
+
+    const router = useRouter();
 
     const [userrEmail, setUserrEmail] = useState("");
     const [userID, setUserID] = useState("");
@@ -62,6 +66,13 @@ export default function Home() {
         if (acesso === "p") return <NavBarPaciente />
     }
 
+    const jumpToPage = () => {
+        localStorage.removeItem("memberId");
+        localStorage.setItem("memberId", memberID);
+        
+        router.push("/autenticacao")
+    }
+
     return (
         <main className="flex flex-col min-h-screen">
             {getAcesso()}
@@ -78,7 +89,7 @@ export default function Home() {
                                 )
                             ) : null} */}
                             {pacienteInfo && !pacienteInfo.analise ? (
-                                <button type="button" className="py-2 px-3 bg-blue-800 text-white rounded-lg font-medium -mr-2" onClick={() => {<Form id={memberID}/>}}>Verificar</button>
+                                <button type="button" className="py-2 px-3 bg-blue-800 text-white rounded-lg font-medium -mr-2" onClick={() => { jumpToPage() }}>Verificar</button>
                             ) : (
                                 <button type="button" className="bg-black/10 text-black/50 py-2 px-3 rounded-lg font-medium -mr-2" disabled>Verificado</button>
                             )}
