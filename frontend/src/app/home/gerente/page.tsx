@@ -32,7 +32,13 @@ export default function Home() {
 
   const fetchGerenteData = async (id: string) => {
     try {
-      const response = await fetch(`https://atipicidades-1.onrender.com/gerentes/id/${id}`);
+      const response = await fetch(`http://localhost:3002/gerentes/id/${id}`,{
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
       if (!response.ok) {
         throw new Error("Failed to fetch gerente data");
       }
@@ -45,7 +51,13 @@ export default function Home() {
 
   const fetchPacientes = async () => {
     try {
-      const response = await fetch("https://atipicidades-1.onrender.com/pacientes/getall");
+      const response = await fetch("http://localhost:3002/pacientes/getall",{
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
       if (!response.ok) {
         throw new Error("Failed to fetch pacientes data");
       }
@@ -59,7 +71,12 @@ export default function Home() {
 
   const fetchGerentes = async () => {
     try {
-      const response = await fetch("https://atipicidades-1.onrender.com/gerentes/getall");
+      const response = await fetch("http://localhost:3002/gerentes/getall",{
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }      });
       if (!response.ok) {
         throw new Error("Failed to fetch gerentes data");
       }
@@ -70,10 +87,14 @@ export default function Home() {
       console.error("Error fetching gerentes data:", error);
     }
   };
+  console.log('Cookies:', document.cookie); // Verifica os cookies armazenados no navegador
+
 
   const fetchColaboradores = async () => {
     try {
-      const response = await fetch("https://atipicidades-1.onrender.com/colaboradores/getall");
+      const response = await fetch("http://localhost:3002/colaboradores/getall",
+        {credentials:'include'}
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch colaboradores data");
       }
@@ -167,7 +188,6 @@ export default function Home() {
               </label>
             </div>
           </div>
-
         </div>
 
         <div className="mt-[28px] grid grid-cols-4 gap-2 w-full max-w-full">

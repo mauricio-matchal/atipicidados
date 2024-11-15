@@ -4,16 +4,16 @@ import { createUserColaborador, getUserColaborador, colaboradorLogin, getColabor
 import { sendPassword } from '../email/sendPasswordByEmailColaborador';
 import { ColaboradorCreateInputSchema } from '../../prisma/validateSchema';
 import { validate } from '../middleware/validate';
+import { ensureAuthenticated } from '../middleware/ensureAuthenticate.ts/autheticate';
 
 export const colaboradorRouter = Router();
-colaboradorRouter.use(cors());
 colaboradorRouter.post('/', createUserColaborador);
 colaboradorRouter.get('/buscar', getUserColaborador);
 colaboradorRouter.post('/login', colaboradorLogin )
 colaboradorRouter.post('/senha',sendPassword )
 colaboradorRouter.get('/cpf/:cpf', getColaborador)
 colaboradorRouter.get('/id/:id', getuserColaboradorId)
-colaboradorRouter.get('/getall', getColaboradores);
+colaboradorRouter.get('/getall', ensureAuthenticated, getColaboradores);
 colaboradorRouter.post('/id/:id/changePassword', ChangePasswordForModel)
 
 

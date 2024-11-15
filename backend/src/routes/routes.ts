@@ -8,7 +8,6 @@ import { ensureAuthenticated } from '../middleware/ensureAuthenticate.ts/autheti
 
 
 export const userRouter = Router();
-userRouter.use(cors());
 userRouter.use('/gerentes',gerentesRouter)
 userRouter.use('/unidades', unidadeRouter)
 userRouter.use('/pacientes', pacienteRouter)
@@ -20,3 +19,6 @@ userRouter.use('/colaboradores', colaboradorRouter)
 userRouter.get('/', ensureAuthenticated, (req: Request, res: Response) => {
     res.send('Hello World');
 });
+userRouter.get('/server-time', (req, res) => {
+    res.json({ serverTime: new Date().toISOString() });
+  });

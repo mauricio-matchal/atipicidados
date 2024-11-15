@@ -7,7 +7,6 @@ import { sendPassword } from '../email/sendPasswordByEmailPaciente';
 import { ensureAuthenticated } from '../middleware/ensureAuthenticate.ts/autheticate';
 
 export const pacienteRouter = Router();
-pacienteRouter.use(cors());
 pacienteRouter.post('/', createPaciente);
 pacienteRouter.get('/cpf/:cpf', getPaciente);
 pacienteRouter.post('/login', pacienteLogin);

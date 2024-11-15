@@ -8,6 +8,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Checkbox from "@/components/Checkbox";
 import { useRouter } from "next/navigation";
+import { cookies } from "next/headers";
 
 export default function Home() {
   const [userType, setUserType] = useState("");
@@ -46,7 +47,7 @@ export default function Home() {
     let url = ""
     switch (userType) {
       case ("Gerente"):
-        url = "https://atipicidades-1.onrender.com/gerentes/login"; 
+        url = "http://localhost:3002/gerentes/login"; 
         localStorage.setItem(userType, 'gerente');
         break;
       case ("Colaborador"):
@@ -61,10 +62,14 @@ export default function Home() {
     }
     try {
       const response = await fetch(url, {
+        credentials:'include',
         method: "POST",
         body: JSON.stringify({ email: loginData.email, password: loginData.password }),
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
+
       });
+      console.log('Cookies:', document.cookie); 
+
 
       if (!response.ok) {
         throw new Error('Login failed');
@@ -76,6 +81,9 @@ export default function Home() {
       setID(gerente.id);
       localStorage.setItem("userEmail", loginData.email);
       localStorage.setItem("userID", gerente.id);
+      localStorage.setItem("userID", gerente.token);
+
+
       const homeLink = `/home/${userType.toLowerCase()}?email=${encodeURIComponent(loginData.email)}&id=${encodeURIComponent(gerente.id)}`
       localStorage.setItem("homeLink", homeLink)
       

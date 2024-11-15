@@ -7,7 +7,6 @@ const prisma = new PrismaClient();
 
 class RefreshTokenUserUseCase {
     async execute(refresh_token: string) {
-        // Verifica se o refresh token existe
         const refreshToken = await prisma.refreshToken.findFirst({
             where: {
                 id : refresh_token
@@ -18,13 +17,11 @@ class RefreshTokenUserUseCase {
             throw new Error('Invalid refresh token');
         }
 
-        // Verifica se o token expirou
         const isExpired = dayjs().unix() > refreshToken.expireIn;
         if (isExpired) {
             throw new Error('Refresh token expired');
         }
 
-        // Gera um novo token JWT
         const token = jwt.sign(
             { userId: refreshToken.gerenteId },
             JWT_SECRET,

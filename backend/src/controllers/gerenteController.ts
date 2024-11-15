@@ -98,14 +98,14 @@ export const gerenteLogin = async (request: Request, response: Response) => {
             httpOnly: true,
             secure: false, 
             sameSite: 'lax',
-            path: '/' // Define o caminho
+            path: '/'
  
         });
         
         
         
-        const generateRefreshToken = new GenerateRefreshToken();
-        const refresh_token = await generateRefreshToken.execute(userGerente.id)
+      // const generateRefreshToken = new GenerateRefreshToken();
+        // const refresh_token = await generateRefreshToken.execute(userGerente.id)
 
         return response.status(200).json({
             error: false,
@@ -113,7 +113,7 @@ export const gerenteLogin = async (request: Request, response: Response) => {
             token,
             gerente: {
                 id: userGerente.id,
-                refresh_token
+              //  refresh_token
             }
         });
     } catch (error: any) {
@@ -195,7 +195,7 @@ export const ChangePasswordForModel = async (request: Request, response: Respons
             });
         }
 
-        await prisma.colaborador.update({
+        await prisma.gerente.update({
             where: { id: Number(id) }, 
             data: {
                 password: hashSync(newPassword,10) 

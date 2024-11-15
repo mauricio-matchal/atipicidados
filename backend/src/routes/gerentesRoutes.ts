@@ -9,18 +9,16 @@ import { ensureAuthenticated } from '../middleware/ensureAuthenticate.ts/autheti
 import { refreshTokenController } from '../provider/RefreshTokenUserController';
 
 export const gerentesRouter = Router();
-gerentesRouter.use(cors());
-const e = ensureAuthenticated;
 // Validação usando Zod antes de criar um gerente
 gerentesRouter.post('/', validate(GerenteCreateInputSchema), createUserGerente);
-gerentesRouter.post('/buscar', e,getUserGerente);
-gerentesRouter.post('/senha', e,(sendPassword));
-gerentesRouter.post('/login',gerenteLogin);
-gerentesRouter.get('/cpf/:cpf',e, getGerente);
-gerentesRouter.get('/id/:id', ensureAuthenticated,getUserGerenteId);
-gerentesRouter.get('/getall', ensureAuthenticated,getGerentes);
-gerentesRouter.post('/id/:id/changePassword', ensureAuthenticated,ChangePasswordForModel)
-gerentesRouter.post('/token', refreshTokenController )
+gerentesRouter.post('/buscar', ensureAuthenticated, getUserGerente);
+gerentesRouter.post('/senha', ensureAuthenticated, sendPassword);
+gerentesRouter.post('/login', gerenteLogin);
+gerentesRouter.get('/cpf/:cpf', ensureAuthenticated, getGerente);
+gerentesRouter.get('/id/:id', ensureAuthenticated, getUserGerenteId);
+gerentesRouter.get('/getall', ensureAuthenticated, getGerentes);
+gerentesRouter.post('/id/:id/changePassword', ensureAuthenticated, ChangePasswordForModel)
+//gerentesRouter.post('/token', refreshTokenController )
 
 
 export default gerentesRouter;
