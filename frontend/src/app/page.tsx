@@ -1,8 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import logoDesktop from "../../public/images/logos.svg";
-import logoMobile from '../../public/images/logo.png';
+import logos from "../../public/images/logos.svg"
 import { SlashedEyeIcon, OpenEyeIcon } from "../../public/icons/Icons";
 import { useState } from "react";
 import Link from "next/link";
@@ -47,14 +46,13 @@ export default function Home() {
     let url = ""
     switch (userType) {
       case ("Gerente"):
-        url = "http://localhost:3002/gerentes/login"; 
-        localStorage.setItem(userType, 'gerente');
+        url = "http://localhost:3002/gerentes/login"
         break;
       case ("Colaborador"):
-        url = "https://atipicidades-1.onrender.com/colaboradores/login"
+        url = "http://localhost:3002/colaboradores/login"
         break;
       case ("Paciente"):
-        url = "https://atipicidades-1.onrender.com/pacientes/login"
+        url = "http://localhost:3002/pacientes/login"
         break;
       default:
         console.error("Unknown user type");

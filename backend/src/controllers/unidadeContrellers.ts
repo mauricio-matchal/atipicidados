@@ -66,3 +66,21 @@ export const addGerenteToUnidade = async(request: Request, response: Response) =
             return response.status(400).json({ error: error.message });
         }
     };
+
+    export const getUnidades = async (_:Request, response:Response) => {
+
+        try{
+            const unidades = await prisma.unidade.findMany();
+            if (unidades.length === 0) {
+                return response.status(204).json({error:true, message: 'Nenhuma unidade foi encontrada'})
+            }
+            return response.status(200).json({error:false, 
+                message: 'Segue a lista de todas unidades',
+                 unidades})
+      
+      
+        }
+        catch(error:any){
+            return response.status(500).json({error:true, message:'Erro interno no servidor'})
+        }
+      }
