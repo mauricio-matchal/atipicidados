@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StepProps } from './types';
 import SelectInput from '../SelectInput';
 import TextInput from '../TextInput';
@@ -28,7 +28,7 @@ type Step12State = {
 };
 
 
-const Step1: React.FC<{ 
+const Step1: React.FC<{
   nextStep: () => void;
   updateFoto: (data: any) => void;
   updateRelatorio: (data: any) => void;
@@ -79,6 +79,12 @@ const Step1: React.FC<{
     handleInputChange2("possuiRelatorio", selectedOption);
   };
 
+  useEffect(() => {
+    console.log("fotoFile", fotoFile)
+    console.log("rgFile", rgFile)
+    console.log("relatorioFile", relatorioFile)
+    console.log("residenciaFile", residenciaFile)
+  })
   // ARQUIVOS //
 
   const [fotoFile, setFotoFile] = useState<File | null>(null);
@@ -87,22 +93,25 @@ const Step1: React.FC<{
   const [residenciaFile, setResidenciaFile] = useState<File | null>(null);
 
   const handleFotoFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
+    if (e.target.files && e.target.name === "fotoFile") {
       setFotoFile(e.target.files[0]);
     }
   };
+
   const handleRelatorioFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
+    if (e.target.files && e.target.name === "relatorioFile") {
       setRelatorioFile(e.target.files[0]);
     }
   };
+
   const handleRGFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
+    if (e.target.files && e.target.name === "rgFile") {
       setRGFile(e.target.files[0]);
     }
   };
+
   const handleResidenciaFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
+    if (e.target.files && e.target.name === "residenciaFile") {
       setResidenciaFile(e.target.files[0]);
     }
   };
@@ -129,19 +138,19 @@ const Step1: React.FC<{
           <button onClick={() => { console.log(Step11); console.log(Step12) }}>Mostrar Respostas</button>
           <button onClick={() => { console.log(fotoFile) }}>Mostrar Foto</button>
           <div className='flex w-full gap-[12px]'>
-            <FileInput placeholder='Foto 3x4' className='min-w-[260px]' onChange={handleFotoFileChange} name='fotoFile' />
-            <TextInput placeholder='Nome completo' value={Step11.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
+            <FileInput placeholder='Foto 3x4' onChange={handleFotoFileChange} name='fotoFile' id='fotoFile' />
+            <TextInput placeholder='Nome completo' className='min-w-[500px] max-w-[500px]' value={Step11.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
           </div>
 
           <div className='flex w-full gap-[12px]'>
-            <FileInput placeholder='Foto do RG' onChange={handleRGFileChange} name='rgFile' />
-            <FileInput placeholder='Comprovante de residência' onChange={handleResidenciaFileChange} name='residenciaFile' />
+            <FileInput placeholder='Foto do RG' onChange={handleRGFileChange} name='rgFile' id='rgFile' />
+            <FileInput placeholder='Comprovante de residência' onChange={handleResidenciaFileChange} name='residenciaFile' id='residenciaFile' />
           </div>
 
           <div className='flex w-full gap-[12px]'>
             <DateInput value={Step11.data} onChange={(e) => handleInputChange1("data", e.target.value)} />
-            <TextInput placeholder='RG' className='min-w-[220px]' value={Step11.rg} onChange={(e) => handleInputChange1("rg", e.target.value)} />
-            <TextInput placeholder='CPF' className='min-w-[220px]' value={Step11.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
+            <TextInput placeholder='RG' type='rg' className='min-w-[220px]' value={Step11.rg} onChange={(e) => handleInputChange1("rg", e.target.value)} />
+            <TextInput placeholder='CPF' type='cpf' className='min-w-[220px]' value={Step11.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
           </div>
 
           <div className='flex w-full gap-[12px]'>
@@ -184,11 +193,11 @@ const Step1: React.FC<{
             />
             <FileInput
               placeholder="Relatório Escolar"
-              className={`transition-opacity duration-300 w-full ${hasRelatorio ? 'opacity-100' : 'opacity-40'} ${hasRelatorio ? '' : 'cursor-not-allowed'}`}
+              className={`transition-opacity duration-300 ${hasRelatorio ? 'relative inline-block text-left w-full' : 'opacity-40 cursor-not-allowed pointer-events-none inline-block w-full'}`}
               disabled={!hasRelatorio}
-              style={{ pointerEvents: hasRelatorio ? 'auto' : 'none' }}
               name='relatorioFile'
               onChange={handleRelatorioFileChange}
+              id='relatorioFile'
             />
           </div>
         </div>

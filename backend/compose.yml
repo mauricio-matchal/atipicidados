@@ -29,6 +29,8 @@ services:
       - db
     networks:
       - app-network
+    volumes:
+      - ./uploads:/backend/uploads
 
   pgadmin:
     container_name: pgadmin

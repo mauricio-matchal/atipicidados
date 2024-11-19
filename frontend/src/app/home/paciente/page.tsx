@@ -79,7 +79,7 @@ export default function Home() {
 
                                     <div>
                                         <p className="titulo">Endereço:</p>
-                                        <p>{pacienteInfo ? pacienteInfo.geral.endereco : "Endereço"}</p>
+                                        <p>{!pacienteInfo ? "" : !pacienteInfo.geral ? "Endereço" : pacienteInfo.geral.endereco}</p>
                                     </div>
                                 </div>
                             </div>

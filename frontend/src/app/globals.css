@@ -52,6 +52,10 @@
 }
 
 @layer utilities {
+  .inputFile {
+    @apply hidden;
+  }
+
   .login {
     background-color: var(--background);
     @apply w-[380px] h-[47px] rounded-[10px] py-[14px] px-[18px] bg-blue-950/[0.1];

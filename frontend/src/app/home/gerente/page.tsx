@@ -1,5 +1,4 @@
 "use client";
-"use client";
 import PlusIcon from "@/assets/icons/plus";
 import SearchIcon from "@/assets/icons/search";
 import { Card } from "@/components/Card";
@@ -258,7 +257,3 @@ export default function Home() {
     </main>
   );
 }
-function useState(arg0: string): [any, any] {
-  throw new Error("Function not implemented.");
-}
-
