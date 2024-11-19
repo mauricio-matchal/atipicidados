@@ -97,7 +97,7 @@ const Step1: React.FC<{
     }
   };
   const handleRGFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
+    if (e.target.files && e.target.files.length > 0) {
       setRGFile(e.target.files[0]);
     }
   };
