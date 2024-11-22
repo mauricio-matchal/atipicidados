@@ -10,6 +10,8 @@ const Form: React.FC = () => {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
+    email: null,
+    password: null,
     geral: null,
     escola: null,
     mae: null,
@@ -32,13 +34,48 @@ const Form: React.FC = () => {
       [type]: data,
     }))
   }
+  const updateLogin = (data: any) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      'email': data.email,
+      'password': data.senha,
+    }));
+  };
+
+  const handleLogin = async () => {
+    try {
+      const response = await fetch("http://localhost:3002/pacientes/login", {
+        method: "POST",
+        body: JSON.stringify({ email: formData.email, password: formData.password }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      if (!response.ok) {
+        throw new Error('Login failed');
+      }
+
+      const data = await response.json();
+      console.log(data);
+      const paciente = data.gerente
+      if (formData.email) localStorage.setItem("userEmail", formData.email);
+      localStorage.setItem("userID", paciente.id);
+      
+      if(formData.email) {
+        const homeLink = `/home/paciente?email=${encodeURIComponent(formData.email)}&id=${encodeURIComponent(paciente.id)}`
+        localStorage.setItem("homeLink", homeLink)
+        router.push(homeLink);
+      } 
+    } catch (error: any) {
+      console.log("Erro em seu login", error);
+    }
+  }
 
   const handleUserCreation = async () => {
     const data = new FormData();
 
-    data.append('cpf', "27384512832");
-    data.append('password', "bSENHAALEATORIA");
-    data.append('email', 'bemailaleatorio@gmail.com');
+    data.append('cpf', "27384512836"); //TIRAR DO BACK OBRIGATORIEDADE DO CPF 
+    data.append('password', JSON.stringify(formData.password));
+    data.append('email', JSON.stringify(formData.email));
     data.append('geral', JSON.stringify(formData.geral));
     data.append('mae', JSON.stringify(formData.mae));
     data.append('pai', JSON.stringify(formData.pai));
@@ -78,7 +115,7 @@ const Form: React.FC = () => {
       const result = await response.json();
       console.log(result);
 
-      router.push("/")
+      handleLogin();
     } catch (error) {
       console.error("Erro ao criar usuário:", error);
     }
@@ -90,6 +127,7 @@ const Form: React.FC = () => {
         <button onClick={() => { console.log(formData) }}>Mostrar formData</button>
         <Step1
           nextStep={nextStep}
+          updateLogin={(data) => updateLogin(data)}
           updateGeral={(data) => updateDataAt(data, "geral")}
           updateEscola={(data) => updateDataAt(data, "escola")}
           updateFoto={(data) => updateDataAt(data, "fotofile")}

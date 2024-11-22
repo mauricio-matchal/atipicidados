@@ -8,7 +8,7 @@ import Link from "next/link";
 import Checkbox from "@/components/Checkbox";
 import { useRouter } from "next/navigation";
 import Loading from "@/components/Loading";
-import { set } from "react-hook-form";
+import Banner from "../../public/pexels-fabiano-cardoso-1671860-5654263.png";
 
 export default function Home() {
   const [userType, setUserType] = useState("");
@@ -117,11 +117,15 @@ export default function Home() {
         </>
       )}
 
-      <div className="flex w-[40%] justify-center items-center">
-        <p>colocar imagem aqui</p>
+      <div className="flex w-[60%] justify-center items-center">
+        <Image
+          src={Banner}
+          alt="logos atipicidades"
+          className="h-full object-cover w-full"
+        />
       </div>
 
-      <div className="flex bg-blue-100 w-[60%] flex-col justify-center items-center gap-10">
+      <div className="flex bg-blue-100 w-[40%] flex-col justify-center items-center gap-10">
         <Image
           src={logos}
           alt="logos atipicidades"
@@ -163,7 +167,7 @@ export default function Home() {
               className="login"
               type="text"
               name="email"
-              placeholder="E-mail ou CPF"
+              placeholder="Insira seu e-mail"
               value={loginData.email}
               onChange={(e) => handleInputChange("email", e.target.value)}
               required />
@@ -173,7 +177,7 @@ export default function Home() {
                 type={passwordVisible ? 'text' : 'password'}
                 className="login"
                 name="senha"
-                placeholder="Senha"
+                placeholder="Insira sua senha"
                 value={loginData.password}
                 onChange={(e) => handleInputChange("password", e.target.value)}
                 required
