@@ -149,6 +149,11 @@ const Step1: React.FC<{
   //////////
 
   const handleNext = () => {
+    if(!Step11.cpf || !login.email || !login.senha) {
+      setError("Preencha todos os campos obrigatórios"); 
+      return;
+    } 
+    
     if (login.email !== login.confirmarEmail || login.senha !== login.confirmarSenha) {
       setError("Os campos de e-mail e senha precisam ser iguais.");
       return;
