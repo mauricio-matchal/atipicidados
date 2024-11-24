@@ -6,10 +6,32 @@ import Step3 from './Step3';
 import Step4 from './Step4';
 import { useRouter } from "next/navigation";
 
+type Geral = {
+  nome?: string;
+  rg?: string;
+  cpf?: string;
+};
+
+type FormData = {
+  email: string | null;
+  password: string | null;
+  geral: Geral | null;
+  escola: any | null;
+  mae: any | null;
+  pai: any | null;
+  maisinfo: any | null;
+  saudeinfo: any | null;
+  fotofile: File | null;
+  relescolar: File | null;
+  laudofile: File | null;
+  rgdocfile: File | null;
+  compresfile: File | null;
+};
+
 const Form: React.FC = () => {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     email: null,
     password: null,
     geral: null,
@@ -59,12 +81,12 @@ const Form: React.FC = () => {
       const paciente = data.gerente
       if (formData.email) localStorage.setItem("userEmail", formData.email);
       localStorage.setItem("userID", paciente.id);
-      
-      if(formData.email) {
+
+      if (formData.email) {
         const homeLink = `/home/paciente?email=${encodeURIComponent(formData.email)}&id=${encodeURIComponent(paciente.id)}`
         localStorage.setItem("homeLink", homeLink)
         router.push(homeLink);
-      } 
+      }
     } catch (error: any) {
       console.log("Erro em seu login", error);
     }
@@ -73,9 +95,11 @@ const Form: React.FC = () => {
   const handleUserCreation = async () => {
     const data = new FormData();
 
-    data.append('cpf', "27384512836"); //TIRAR DO BACK OBRIGATORIEDADE DO CPF 
-    data.append('password', JSON.stringify(formData.password));
-    data.append('email', JSON.stringify(formData.email));
+    if (formData.geral?.nome) data.append('nome', formData.geral.nome);
+    if (formData.geral?.rg) data.append('rg', formData.geral.rg);
+    if (formData.geral?.cpf) data.append('cpf', formData.geral.cpf);
+    if (formData.password) data.append('password', formData.password);
+    if (formData.email) data.append('email', formData.email);
     data.append('geral', JSON.stringify(formData.geral));
     data.append('mae', JSON.stringify(formData.mae));
     data.append('pai', JSON.stringify(formData.pai));

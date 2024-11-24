@@ -255,7 +255,7 @@ const Step4: React.FC<{
           4 de 4
         </div>
 
-        <button className='botao' type='submit' onClick={handleSubmit}>Enviar</button>
+        <button className='botao' type='submit' onClick={handleSubmit}>Concluir</button>
       </div>
     </div>
   );

@@ -110,10 +110,10 @@ const Step1: React.FC<{
   };
 
   useEffect(() => {
-    console.log("fotoFile", fotoFile)
-    console.log("rgFile", rgFile)
-    console.log("relatorioFile", relatorioFile)
-    console.log("residenciaFile", residenciaFile)
+    // console.log("fotoFile", fotoFile)
+    // console.log("rgFile", rgFile)
+    // console.log("relatorioFile", relatorioFile)
+    // console.log("residenciaFile", residenciaFile)
   })
   // ARQUIVOS //
 
@@ -149,11 +149,11 @@ const Step1: React.FC<{
   //////////
 
   const handleNext = () => {
-    if(!Step11.cpf || !login.email || !login.senha) {
-      setError("Preencha todos os campos obrigatórios"); 
+    if (!Step11.cpf || !login.email || !login.senha) {
+      setError("Preencha todos os campos obrigatórios");
       return;
-    } 
-    
+    }
+
     if (login.email !== login.confirmarEmail || login.senha !== login.confirmarSenha) {
       setError("Os campos de e-mail e senha precisam ser iguais.");
       return;
@@ -182,8 +182,8 @@ const Step1: React.FC<{
     <div className='flex flex-col gap-[162px] w-screen'>
       <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
         <div className='flex flex-col gap-[12px]'>
-
-          <h4 className='pl-2 place-self-start mt-10'>Crie um login e senha para o paciente</h4>
+          {error && <div className="text-[#FFF] font-medium text-center mt-4 bg-[#e13c31] py-3 rounded-xl">{error}</div>}
+          <h4 className='pl-2 place-self-start mt-8'>Crie seu login e senha</h4>
           <div className='flex w-full gap-3'>
             <TextInput className='w-[400px]' placeholder='E-mail' value={login.email} onChange={(e) => handleLoginChange("email", e.target.value)} />
             <TextInput className='w-[400px]' placeholder='Confirmar e-mail' value={login.confirmarEmail} onChange={(e) => handleLoginChange("confirmarEmail", e.target.value)} />
@@ -192,13 +192,12 @@ const Step1: React.FC<{
             <TextInput className='w-[400px]' placeholder='Senha' value={login.senha} onChange={(e) => handleLoginChange("senha", e.target.value)} />
             <TextInput className='w-[400px]' placeholder='Confirmar senha' value={login.confirmarSenha} onChange={(e) => handleLoginChange("confirmarSenha", e.target.value)} />
           </div>
-          {error && <div className="text-[#FF0F00] font-medium">{error}</div>}
 
-          <div className='mb-10'></div>
+          <div className='mb-4'></div>
 
           <h4 className='pl-2'>Geral</h4>
-          <button onClick={() => { console.log(Step11); console.log(Step12) }}>Mostrar Respostas</button>
-          <button onClick={() => { console.log(fotoFile) }}>Mostrar Foto</button>
+          {/* <button onClick={() => { console.log(Step11); console.log(Step12) }}>Mostrar Respostas</button> */}
+          {/* <button onClick={() => { console.log(fotoFile) }}>Mostrar Foto</button> */}
           <div className='flex w-full gap-[12px]'>
             <FileInput placeholder='Foto 3x4' onChange={handleFotoFileChange} name='fotoFile' id='fotoFile' />
             <TextInput placeholder='Nome completo' className='min-w-[500px] max-w-[500px]' value={Step11.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
@@ -215,10 +214,11 @@ const Step1: React.FC<{
             <TextInput placeholder='CPF' type='cpf' className='min-w-[220px]' value={Step11.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
           </div>
 
+
           <div className='flex w-full gap-[12px]'>
             <SelectInput options={["Masculino", "Feminino", "Intersexo", "Outro sexo", "Prefiro não dizer o sexo"]} placeholder={"Sexo"} onChange={(value) => handleInputChange1("sexo", value)} />
             <SelectInput options={["Amarelo", "Branco", "Indígena", "Pardo", "Preto"]} placeholder={"Raça/cor"} onChange={(value) => handleInputChange1("cor", value)} />
-            <TextInput placeholder='CEP' className='min-w-[220px]' value={Step11.cep} onChange={(e) => handleInputChange1("cep", e.target.value)} />
+            <TextInput placeholder='CEP' type="cep" className='min-w-[220px]' value={Step11.cep} onChange={(e) => handleInputChange1("cep", e.target.value)} />
           </div>
 
           <div className='flex w-full gap-[12px]'>
