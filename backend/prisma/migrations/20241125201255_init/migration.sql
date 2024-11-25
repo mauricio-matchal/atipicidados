@@ -6,7 +6,7 @@ CREATE TYPE "Genero" AS ENUM ('MASCULINO', 'FEMININO', 'PREFIRO_NAO_INFORMAR');
 
 -- CreateTable
 CREATE TABLE "Gerente" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "nome" TEXT NOT NULL,
     "cpf" TEXT NOT NULL,
@@ -14,17 +14,19 @@ CREATE TABLE "Gerente" (
     "email" TEXT NOT NULL,
     "telefone" TEXT NOT NULL,
     "raca" "Raca" NOT NULL,
-    "unidadeId" INTEGER NOT NULL,
+    "unidadeId" INTEGER NOT NULL DEFAULT 1,
     "rgdocfile" TEXT,
     "fotofile" TEXT,
     "compresfile" TEXT,
+    "twoFASecret" TEXT,
+    "twoFAEnable" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "Gerente_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Colaborador" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "nome" TEXT NOT NULL,
     "cpf" TEXT NOT NULL,
     "rg" TEXT NOT NULL,
@@ -36,7 +38,7 @@ CREATE TABLE "Colaborador" (
     "genero" "Genero" NOT NULL,
     "email" TEXT NOT NULL,
     "raca" "Raca" NOT NULL,
-    "unidadeId" INTEGER NOT NULL,
+    "unidadeId" INTEGER NOT NULL DEFAULT 1,
     "rgdocfile" TEXT,
     "fotofile" TEXT,
     "compresfile" TEXT,
@@ -46,7 +48,7 @@ CREATE TABLE "Colaborador" (
 
 -- CreateTable
 CREATE TABLE "Paciente" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "analise" BOOLEAN NOT NULL DEFAULT true,
     "nome" TEXT,
     "cpf" TEXT NOT NULL,
@@ -90,9 +92,18 @@ CREATE TABLE "Unidade" (
 );
 
 -- CreateTable
+CREATE TABLE "refresh_token" (
+    "id" TEXT NOT NULL,
+    "expireIn" INTEGER NOT NULL,
+    "gerenteId" TEXT NOT NULL,
+
+    CONSTRAINT "refresh_token_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "_PacienteColaboradores" (
-    "A" INTEGER NOT NULL,
-    "B" INTEGER NOT NULL
+    "A" TEXT NOT NULL,
+    "B" TEXT NOT NULL
 );
 
 -- CreateIndex
@@ -136,6 +147,9 @@ ALTER TABLE "Colaborador" ADD CONSTRAINT "Colaborador_unidadeId_fkey" FOREIGN KE
 
 -- AddForeignKey
 ALTER TABLE "Paciente" ADD CONSTRAINT "Paciente_unidadeId_fkey" FOREIGN KEY ("unidadeId") REFERENCES "Unidade"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "refresh_token" ADD CONSTRAINT "refresh_token_gerenteId_fkey" FOREIGN KEY ("gerenteId") REFERENCES "Gerente"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_PacienteColaboradores" ADD CONSTRAINT "_PacienteColaboradores_A_fkey" FOREIGN KEY ("A") REFERENCES "Colaborador"("id") ON DELETE CASCADE ON UPDATE CASCADE;

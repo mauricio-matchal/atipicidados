@@ -1,12 +1,14 @@
 import express from 'express';
 import { userRouter } from './routes/routes'; 
-import cors from 'cors'
+import cors from 'cors';
+import bodyParser from 'body-parser';
 
 
 import cookieParser from 'cookie-parser';
 
 
 const port = Number(process.env.EXPRESS_PORT) || 3002;
+
 
 const app = express();
 app.use(express.json());
@@ -15,6 +17,7 @@ app.use(cors({
     credentials: true 
 }));
 app.use(cookieParser());
+
 
 app.use(userRouter);
 

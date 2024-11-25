@@ -16,9 +16,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-
 export const createPaciente = [
-  
   upload.fields([ 
     { name: 'rgdocfile', maxCount: 1 },
     { name: 'fotofile', maxCount: 1 },
@@ -36,11 +34,11 @@ export const createPaciente = [
 
       // Lidar com arquivos enviados
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      console.log(req.files); // Log dos arquivos recebidos
+      console.log(req.files); 
 
       const paciente = await prisma.paciente.create({
         data: {
-          password:hashSync(password, 10),
+          password: hashSync(password, 10),
           nome,
           cpf,
           rg,
@@ -78,43 +76,41 @@ export const createPaciente = [
   }
 ];
 
+export const pacienteLogin = async (request: Request, response: Response) => {
+  const { email, password } = request.body;
 
-export const pacienteLogin = async (request: Request, response:Response) => {
-  const {email, password} = request.body;
-
-  try{
+  try {
     const userPaciente = await prisma.paciente.findUnique({
-      where: { email}
-  });
-  if (!userPaciente ){
-    return response.status(204).json({error:true, message:`O paciente cujo o email eh ${email} não existe ou ainda não foi cadastrado`});
-  }
-  const isPasswordValid = await compare(password, userPaciente.password);
-        if (!isPasswordValid) {
-            return response.status(401).json({
-                error: true,
-                message: 'Erro: Senha incorreta'
-            });
-        }
-      return response.status(200).json({
-          error: false,
-          message: 'Login realizado',
-          gerente: {
-              id: userPaciente.id,
-          }
+      where: { email }
+    });
+
+    if (!userPaciente) {
+      return response.status(204).json({
+        error: true,
+        message: `O paciente cujo o email é ${email} não existe ou ainda não foi cadastrado`
       });
+    }
 
+    const isPasswordValid = await compare(password, userPaciente.password);
+    if (!isPasswordValid) {
+      return response.status(401).json({
+        error: true,
+        message: 'Erro: Senha incorreta'
+      });
+    }
 
+    return response.status(200).json({
+      error: false,
+      message: 'Login realizado',
+      paciente: {
+        id: userPaciente.id
+      }
+    });
+
+  } catch (error: any) {
+    return response.status(500).json({ error: true, message: 'Erro no servidor' });
   }
-  catch(error:any){
-    return response.status(500).json({error:true, message: 'Error no servidor'})
-
-  }
-
-
-}
-
-
+};
 
 export const getPaciente = async (request: Request, response: Response) => {
   try {
@@ -139,8 +135,10 @@ export const getPaciente = async (request: Request, response: Response) => {
       return response.status(404).json({ error: 'Paciente não encontrado.' });
     }
 
-    response.status(200).json({error:false, 
-      message:`O paciente ${paciente?.nome} de cpf: ${paciente.cpf? paciente.cpf : '(Não possui CPF cadastrado)'} foi encontrado`});
+    response.status(200).json({
+      error: false, 
+      message: `O paciente ${paciente?.nome} de cpf: ${paciente.cpf ? paciente.cpf : '(Não possui CPF cadastrado)'} foi encontrado`
+    });
   } catch (error) {
     console.error(error);
     response.status(500).json({ error: 'Erro ao buscar paciente.' });
@@ -151,80 +149,77 @@ export const getuserPacienteId = async (request: Request, response: Response) =>
   const { id } = request.params;
 
   try {
-      const userPaciente = await prisma.paciente.findUnique({
-          where: { id: Number(id) }
-      });
+    const userPaciente = await prisma.paciente.findUnique({
+      where: { id } 
+    });
 
-      if (!userPaciente) {
-          return response.status(404).json({ error: "paciente não encontrado." });
-      }
+    if (!userPaciente) {
+      return response.status(404).json({ error: "Paciente não encontrado." });
+    }
 
-      return response.status(200).json(userPaciente);
+    return response.status(200).json(userPaciente);
   } catch (error: any) {
-      return response.status(500).json({ error: error.message });
+    return response.status(500).json({ error: error.message });
   }
-}
+};
 
-export const getPacientes = async (_:Request, response:Response) => {
-
-  try{
-      const pacientes = await prisma.paciente.findMany();
-      if (pacientes.length === 0) {
-          return response.status(204).json({error:true, message: 'Nenhum paciente foi encontrado'})
-      }
-      return response.status(200).json({error:false, 
-          message: 'Segue a lista de todos pacientes',
-           pacientes})
-
-
+export const getPacientes = async (_: Request, response: Response) => {
+  try {
+    const pacientes = await prisma.paciente.findMany();
+    if (pacientes.length === 0) {
+      return response.status(204).json({ error: true, message: 'Nenhum paciente foi encontrado' });
+    }
+    return response.status(200).json({
+      error: false, 
+      message: 'Segue a lista de todos pacientes',
+      pacientes
+    });
+  } catch (error: any) {
+    return response.status(500).json({ error: true, message: 'Erro interno no servidor' });
   }
-  catch(error:any){
-      return response.status(500).json({error:true, message:'Erro interno no servidor'})
-  }
-}
-
+};
 
 export const ChangePasswordForModel = async (request: Request, response: Response) => {
   const { id } = request.params;
   const { oldPassword, newPassword } = request.body;
 
   try {
-      const paciente = await prisma.paciente.findUnique({
-          where: { id: Number(id) }
-      });
+    const paciente = await prisma.paciente.findUnique({
+      where: { id } 
+    });
 
-      if (!paciente) {
-          return response.status(404).json({
-              error: true,
-              message: 'Erro: Colaborador não encontrado'
-          });
+    if (!paciente) {
+      return response.status(404).json({
+        error: true,
+        message: 'Erro: Paciente não encontrado'
+      });
+    }
+
+    const isPasswordValid = await compare(oldPassword, paciente.password);
+    if (!isPasswordValid) {
+      return response.status(401).json({
+        error: true,
+        message: 'Erro: Senha incorreta'
+      });
+    }
+
+    await prisma.paciente.update({
+      where: { id },
+      data: {
+        password: hashSync(newPassword, 10)
       }
+    });
 
-      const isPasswordValid = await compare(oldPassword, paciente.password);
-      if (!isPasswordValid) {
-          return response.status(401).json({
-              error: true,
-              message: 'Erro: Senha incorreta'
-          });
-      }
+    return response.status(200).json({
+      success: true,
+      message: 'Senha alterada com sucesso'
+    });
 
-      await prisma.colaborador.update({
-          where: { id: Number(id) }, 
-          data: {
-              password: hashSync(newPassword,10) 
-          }
-      });
-
-      return response.status(200).json({
-          success: true,
-          message: 'Senha alterada com sucesso'
-      });
-      
   } catch (error) {
-      console.error(error);
-      return response.status(500).json({
-          error: true,
-          message: 'Erro ao alterar a senha'
-      });
+    console.error(error);
+    return response.status(500).json({
+      error: true,
+      message: 'Erro ao alterar a senha'
+    });
   }
 };

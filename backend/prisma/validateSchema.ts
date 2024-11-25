@@ -17,8 +17,7 @@ export const GerenteCreateInputSchema = z.object({
   raca: RacaSchema,
   rgdocfile: z.string().optional().nullable(),
   fotofile: z.string().optional().nullable(),
-  compresfile: z.string().optional().nullable(),
-  unidadeId: z.number(),
+  compresfile: z.string().optional().nullable()
 }).strict();
 
 export default GerenteCreateInputSchema

@@ -1,5 +1,3 @@
-
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,95 +6,94 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-generator zod {
-  provider = " npx zod-prisma-types"
-    output   = "./generated/zod"
 
+generator zod {
+  provider = "npx zod-prisma-types"
+  output   = "./generated/zod"
 }
 
-model Gerente  {
-  id         Int       @id @default(autoincrement())
-  password   String
-  ///@zod.string
-  
-  nome       String
-  cpf        String       @unique
-  rg         String      @unique
-  email      String    @unique
-  telefone   String    @unique
-  raca       Raca
-  unidadeId  Int
-  unidade    Unidade   @relation(fields: [unidadeId], references: [id])
+model Gerente {
+  id             String   @id @default(uuid()) 
+  password       String
+  nome           String
+  cpf            String  @unique
+  rg             String  @unique
+  email          String  @unique
+  telefone       String  @unique
+  raca           Raca
+  unidadeId      Int @default(1)
+  unidade        Unidade @relation(fields: [unidadeId], references: [id])
   rgdocfile      String?
   fotofile       String?
   compresfile    String?
-  refresh_token    RefreshToken[]
+  refresh_token  RefreshToken[]
+  twoFASecret    String?
+  twoFAEnable    Boolean @default(false)
 }
 
 model Colaborador {
-  id          Int        @id @default(autoincrement())
+  id          String      @id @default(uuid()) 
   nome        String   
-  cpf         String        @unique
-  rg          String        @unique
+  cpf         String      @unique
+  rg          String      @unique
   nascimento  DateTime
-  telefone    String     @unique
+  telefone    String      @unique
   titulo      String
   formacao    String
   password    String
   genero      Genero
-  email       String     @unique
+  email       String      @unique
   raca        Raca
-  unidadeId   Int
-  unidade     Unidade        @relation(fields: [unidadeId], references: [id])
-  pacientes   Paciente[]     @relation("PacienteColaboradores")
-  rgdocfile      String?
-  fotofile       String?
-  compresfile    String?
+  unidadeId   Int      @default(1)
+  unidade     Unidade     @relation(fields: [unidadeId], references: [id])
+  pacientes   Paciente[]  @relation("PacienteColaboradores")
+  rgdocfile   String?
+  fotofile    String?
+  compresfile String?
 }
 
-
 model Paciente {
-  id             Int           @id @default(autoincrement())
-  analise        Boolean       @default(true)
-  nome           String?  
-  cpf            String 
-  rg             String?
-  nascimentodata     String?
-  nomemae        String?
-  nomepai        String?
-  unidadeId      Int          @default(1)
-  email          String       @unique
-  password       String
-  telefone       String?
-  rgdocfile      String?
-  fotofile       String? //analise
-  compresfile    String?
-  laudofile      String? //analise
-  relescolar     String? // analise
-  gestacao         Json?
-  nascimento       Json?
-  autonomia        Json?
-  comportamento    Json?
-  desenvolimento   Json?
-  pedagogico     Json?
-  geral          Json? // analise
-  mae            Json? // analise
-  pai            Json? // analise
-  maisinfo       Json? // analise
-  escola         Json? // analise
-  saudeinfo      Json? // analise
-  raca           Raca?
-  unidade        Unidade        @relation(fields: [unidadeId], references: [id])
-  colaboradores  Colaborador[]  @relation("PacienteColaboradores")
+  id              String   @id @default(uuid())
+  analise         Boolean  @default(true)
+  nome            String?
+  cpf             String
+  rg              String?
+  nascimentodata  String?
+  nomemae         String?
+  nomepai         String?
+  unidadeId       Int  @default(1) 
+  email           String  @unique
+  password        String
+  telefone        String?
+  rgdocfile       String?
+  fotofile        String?
+  compresfile     String?
+  laudofile       String?
+  relescolar      String?
+  gestacao        Json?
+  nascimento      Json?
+  autonomia       Json?
+  comportamento   Json?
+  desenvolimento  Json?
+  pedagogico      Json?
+  geral           Json?
+  mae             Json?
+  pai             Json?
+  maisinfo        Json?
+  escola          Json?
+  saudeinfo       Json?
+  raca            Raca?
+  unidade         Unidade @relation(fields: [unidadeId], references: [id])
+  colaboradores   Colaborador[]  @relation("PacienteColaboradores")
 }
 
 model Unidade {
-  id            Int           @id @default(autoincrement())
-  nome          String
-  endereco      String
-  pacientes     Paciente[]
-  colaboradores Colaborador[]
-  gerentes      Gerente[]
+  id             Int       @id @default(autoincrement()) 
+  nome           String
+  endereco       String
+  pacientes      Paciente[]
+  colaboradores  Colaborador[]
+  gerentes       Gerente[]
 }
 
 enum Raca {
@@ -113,14 +110,11 @@ enum Genero {
   PREFIRO_NAO_INFORMAR
 }
 
-
-
 model RefreshToken {
-  id         String  @id @default(uuid())
+  id         String   @id @default(uuid()) 
   expireIn   Int
-  gerente    Gerente @relation(fields: [gerenteId], references: [id])
-  gerenteId  Int
+  gerente    Gerente  @relation(fields: [gerenteId], references: [id])
+  gerenteId  String   
 
   @@map("refresh_token")
 }
-

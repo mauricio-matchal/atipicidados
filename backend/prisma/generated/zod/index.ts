@@ -56,7 +56,7 @@ export type InputJsonValueType = z.infer<typeof InputJsonValueSchema>;
 
 export const TransactionIsolationLevelSchema = z.enum(['ReadUncommitted','ReadCommitted','RepeatableRead','Serializable']);
 
-export const GerenteScalarFieldEnumSchema = z.enum(['id','password','nome','cpf','rg','email','telefone','raca','unidadeId','rgdocfile','fotofile','compresfile']);
+export const GerenteScalarFieldEnumSchema = z.enum(['id','password','nome','cpf','rg','email','telefone','raca','unidadeId','rgdocfile','fotofile','compresfile','twoFASecret','twoFAEnable']);
 
 export const ColaboradorScalarFieldEnumSchema = z.enum(['id','nome','cpf','rg','nascimento','telefone','titulo','formacao','password','genero','email','raca','unidadeId','rgdocfile','fotofile','compresfile']);
 
@@ -94,7 +94,7 @@ export type GeneroType = `${z.infer<typeof GeneroSchema>}`
 
 export const GerenteSchema = z.object({
   raca: RacaSchema,
-  id: z.number().int(),
+  id: z.string(),
   password: z.string(),
   nome: z.string(),
   cpf: z.string(),
@@ -105,6 +105,8 @@ export const GerenteSchema = z.object({
   rgdocfile: z.string().nullable(),
   fotofile: z.string().nullable(),
   compresfile: z.string().nullable(),
+  twoFASecret: z.string().nullable(),
+  twoFAEnable: z.boolean(),
 })
 
 export type Gerente = z.infer<typeof GerenteSchema>
@@ -116,7 +118,7 @@ export type Gerente = z.infer<typeof GerenteSchema>
 export const ColaboradorSchema = z.object({
   genero: GeneroSchema,
   raca: RacaSchema,
-  id: z.number().int(),
+  id: z.string(),
   nome: z.string(),
   cpf: z.string(),
   rg: z.string(),
@@ -140,7 +142,7 @@ export type Colaborador = z.infer<typeof ColaboradorSchema>
 
 export const PacienteSchema = z.object({
   raca: RacaSchema.nullable(),
-  id: z.number().int(),
+  id: z.string(),
   analise: z.boolean(),
   nome: z.string().nullable(),
   cpf: z.string(),
@@ -192,7 +194,7 @@ export type Unidade = z.infer<typeof UnidadeSchema>
 export const RefreshTokenSchema = z.object({
   id: z.string(),
   expireIn: z.number().int(),
-  gerenteId: z.number().int(),
+  gerenteId: z.string(),
 })
 
 export type RefreshToken = z.infer<typeof RefreshTokenSchema>
@@ -236,6 +238,8 @@ export const GerenteSelectSchema: z.ZodType<Prisma.GerenteSelect> = z.object({
   rgdocfile: z.boolean().optional(),
   fotofile: z.boolean().optional(),
   compresfile: z.boolean().optional(),
+  twoFASecret: z.boolean().optional(),
+  twoFAEnable: z.boolean().optional(),
   unidade: z.union([z.boolean(),z.lazy(() => UnidadeArgsSchema)]).optional(),
   refresh_token: z.union([z.boolean(),z.lazy(() => RefreshTokenFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => GerenteCountOutputTypeArgsSchema)]).optional(),
@@ -406,7 +410,7 @@ export const GerenteWhereInputSchema: z.ZodType<Prisma.GerenteWhereInput> = z.ob
   AND: z.union([ z.lazy(() => GerenteWhereInputSchema),z.lazy(() => GerenteWhereInputSchema).array() ]).optional(),
   OR: z.lazy(() => GerenteWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => GerenteWhereInputSchema),z.lazy(() => GerenteWhereInputSchema).array() ]).optional(),
-  id: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
+  id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   password: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   nome: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   cpf: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
@@ -418,6 +422,8 @@ export const GerenteWhereInputSchema: z.ZodType<Prisma.GerenteWhereInput> = z.ob
   rgdocfile: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   fotofile: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   compresfile: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  twoFASecret: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  twoFAEnable: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
   unidade: z.union([ z.lazy(() => UnidadeRelationFilterSchema),z.lazy(() => UnidadeWhereInputSchema) ]).optional(),
   refresh_token: z.lazy(() => RefreshTokenListRelationFilterSchema).optional()
 }).strict();
@@ -435,90 +441,92 @@ export const GerenteOrderByWithRelationInputSchema: z.ZodType<Prisma.GerenteOrde
   rgdocfile: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   fotofile: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   compresfile: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  twoFASecret: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  twoFAEnable: z.lazy(() => SortOrderSchema).optional(),
   unidade: z.lazy(() => UnidadeOrderByWithRelationInputSchema).optional(),
   refresh_token: z.lazy(() => RefreshTokenOrderByRelationAggregateInputSchema).optional()
 }).strict();
 
 export const GerenteWhereUniqueInputSchema: z.ZodType<Prisma.GerenteWhereUniqueInput> = z.union([
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     cpf: z.string(),
     rg: z.string(),
     email: z.string(),
     telefone: z.string()
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     cpf: z.string(),
     rg: z.string(),
     email: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     cpf: z.string(),
     rg: z.string(),
     telefone: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     cpf: z.string(),
     rg: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     cpf: z.string(),
     email: z.string(),
     telefone: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     cpf: z.string(),
     email: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     cpf: z.string(),
     telefone: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     cpf: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     rg: z.string(),
     email: z.string(),
     telefone: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     rg: z.string(),
     email: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     rg: z.string(),
     telefone: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     rg: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     email: z.string(),
     telefone: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     email: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     telefone: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
   }),
   z.object({
     cpf: z.string(),
@@ -584,7 +592,7 @@ export const GerenteWhereUniqueInputSchema: z.ZodType<Prisma.GerenteWhereUniqueI
   }),
 ])
 .and(z.object({
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   cpf: z.string().optional(),
   rg: z.string().optional(),
   email: z.string().optional(),
@@ -599,6 +607,8 @@ export const GerenteWhereUniqueInputSchema: z.ZodType<Prisma.GerenteWhereUniqueI
   rgdocfile: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   fotofile: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   compresfile: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  twoFASecret: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  twoFAEnable: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
   unidade: z.union([ z.lazy(() => UnidadeRelationFilterSchema),z.lazy(() => UnidadeWhereInputSchema) ]).optional(),
   refresh_token: z.lazy(() => RefreshTokenListRelationFilterSchema).optional()
 }).strict());
@@ -616,6 +626,8 @@ export const GerenteOrderByWithAggregationInputSchema: z.ZodType<Prisma.GerenteO
   rgdocfile: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   fotofile: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   compresfile: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  twoFASecret: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  twoFAEnable: z.lazy(() => SortOrderSchema).optional(),
   _count: z.lazy(() => GerenteCountOrderByAggregateInputSchema).optional(),
   _avg: z.lazy(() => GerenteAvgOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => GerenteMaxOrderByAggregateInputSchema).optional(),
@@ -627,7 +639,7 @@ export const GerenteScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Geren
   AND: z.union([ z.lazy(() => GerenteScalarWhereWithAggregatesInputSchema),z.lazy(() => GerenteScalarWhereWithAggregatesInputSchema).array() ]).optional(),
   OR: z.lazy(() => GerenteScalarWhereWithAggregatesInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => GerenteScalarWhereWithAggregatesInputSchema),z.lazy(() => GerenteScalarWhereWithAggregatesInputSchema).array() ]).optional(),
-  id: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
+  id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   password: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   nome: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   cpf: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
@@ -639,13 +651,15 @@ export const GerenteScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Geren
   rgdocfile: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   fotofile: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   compresfile: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  twoFASecret: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  twoFAEnable: z.union([ z.lazy(() => BoolWithAggregatesFilterSchema),z.boolean() ]).optional(),
 }).strict();
 
 export const ColaboradorWhereInputSchema: z.ZodType<Prisma.ColaboradorWhereInput> = z.object({
   AND: z.union([ z.lazy(() => ColaboradorWhereInputSchema),z.lazy(() => ColaboradorWhereInputSchema).array() ]).optional(),
   OR: z.lazy(() => ColaboradorWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => ColaboradorWhereInputSchema),z.lazy(() => ColaboradorWhereInputSchema).array() ]).optional(),
-  id: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
+  id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   nome: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   cpf: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   rg: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
@@ -688,84 +702,84 @@ export const ColaboradorOrderByWithRelationInputSchema: z.ZodType<Prisma.Colabor
 
 export const ColaboradorWhereUniqueInputSchema: z.ZodType<Prisma.ColaboradorWhereUniqueInput> = z.union([
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     cpf: z.string(),
     rg: z.string(),
     telefone: z.string(),
     email: z.string()
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     cpf: z.string(),
     rg: z.string(),
     telefone: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     cpf: z.string(),
     rg: z.string(),
     email: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     cpf: z.string(),
     rg: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     cpf: z.string(),
     telefone: z.string(),
     email: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     cpf: z.string(),
     telefone: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     cpf: z.string(),
     email: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     cpf: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     rg: z.string(),
     telefone: z.string(),
     email: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     rg: z.string(),
     telefone: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     rg: z.string(),
     email: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     rg: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     telefone: z.string(),
     email: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     telefone: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     email: z.string(),
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
   }),
   z.object({
     cpf: z.string(),
@@ -831,7 +845,7 @@ export const ColaboradorWhereUniqueInputSchema: z.ZodType<Prisma.ColaboradorWher
   }),
 ])
 .and(z.object({
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   cpf: z.string().optional(),
   rg: z.string().optional(),
   telefone: z.string().optional(),
@@ -882,7 +896,7 @@ export const ColaboradorScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.C
   AND: z.union([ z.lazy(() => ColaboradorScalarWhereWithAggregatesInputSchema),z.lazy(() => ColaboradorScalarWhereWithAggregatesInputSchema).array() ]).optional(),
   OR: z.lazy(() => ColaboradorScalarWhereWithAggregatesInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => ColaboradorScalarWhereWithAggregatesInputSchema),z.lazy(() => ColaboradorScalarWhereWithAggregatesInputSchema).array() ]).optional(),
-  id: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
+  id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   nome: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   cpf: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   rg: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
@@ -904,7 +918,7 @@ export const PacienteWhereInputSchema: z.ZodType<Prisma.PacienteWhereInput> = z.
   AND: z.union([ z.lazy(() => PacienteWhereInputSchema),z.lazy(() => PacienteWhereInputSchema).array() ]).optional(),
   OR: z.lazy(() => PacienteWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => PacienteWhereInputSchema),z.lazy(() => PacienteWhereInputSchema).array() ]).optional(),
-  id: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
+  id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   analise: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
   nome: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   cpf: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
@@ -975,18 +989,18 @@ export const PacienteOrderByWithRelationInputSchema: z.ZodType<Prisma.PacienteOr
 
 export const PacienteWhereUniqueInputSchema: z.ZodType<Prisma.PacienteWhereUniqueInput> = z.union([
   z.object({
-    id: z.number().int(),
+    id: z.string(),
     email: z.string()
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string(),
   }),
   z.object({
     email: z.string(),
   }),
 ])
 .and(z.object({
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   email: z.string().optional(),
   AND: z.union([ z.lazy(() => PacienteWhereInputSchema),z.lazy(() => PacienteWhereInputSchema).array() ]).optional(),
   OR: z.lazy(() => PacienteWhereInputSchema).array().optional(),
@@ -1065,7 +1079,7 @@ export const PacienteScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Paci
   AND: z.union([ z.lazy(() => PacienteScalarWhereWithAggregatesInputSchema),z.lazy(() => PacienteScalarWhereWithAggregatesInputSchema).array() ]).optional(),
   OR: z.lazy(() => PacienteScalarWhereWithAggregatesInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => PacienteScalarWhereWithAggregatesInputSchema),z.lazy(() => PacienteScalarWhereWithAggregatesInputSchema).array() ]).optional(),
-  id: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
+  id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   analise: z.union([ z.lazy(() => BoolWithAggregatesFilterSchema),z.boolean() ]).optional(),
   nome: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   cpf: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
@@ -1159,7 +1173,7 @@ export const RefreshTokenWhereInputSchema: z.ZodType<Prisma.RefreshTokenWhereInp
   NOT: z.union([ z.lazy(() => RefreshTokenWhereInputSchema),z.lazy(() => RefreshTokenWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   expireIn: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
-  gerenteId: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
+  gerenteId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   gerente: z.union([ z.lazy(() => GerenteRelationFilterSchema),z.lazy(() => GerenteWhereInputSchema) ]).optional(),
 }).strict();
 
@@ -1179,7 +1193,7 @@ export const RefreshTokenWhereUniqueInputSchema: z.ZodType<Prisma.RefreshTokenWh
   OR: z.lazy(() => RefreshTokenWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => RefreshTokenWhereInputSchema),z.lazy(() => RefreshTokenWhereInputSchema).array() ]).optional(),
   expireIn: z.union([ z.lazy(() => IntFilterSchema),z.number().int() ]).optional(),
-  gerenteId: z.union([ z.lazy(() => IntFilterSchema),z.number().int() ]).optional(),
+  gerenteId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   gerente: z.union([ z.lazy(() => GerenteRelationFilterSchema),z.lazy(() => GerenteWhereInputSchema) ]).optional(),
 }).strict());
 
@@ -1200,10 +1214,11 @@ export const RefreshTokenScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.
   NOT: z.union([ z.lazy(() => RefreshTokenScalarWhereWithAggregatesInputSchema),z.lazy(() => RefreshTokenScalarWhereWithAggregatesInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   expireIn: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
-  gerenteId: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
+  gerenteId: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
 }).strict();
 
 export const GerenteCreateInputSchema: z.ZodType<Prisma.GerenteCreateInput> = z.object({
+  id: z.string().optional(),
   password: z.string(),
   nome: z.string(),
   cpf: z.string(),
@@ -1214,12 +1229,14 @@ export const GerenteCreateInputSchema: z.ZodType<Prisma.GerenteCreateInput> = z.
   rgdocfile: z.string().optional().nullable(),
   fotofile: z.string().optional().nullable(),
   compresfile: z.string().optional().nullable(),
-  unidade: z.lazy(() => UnidadeCreateNestedOneWithoutGerentesInputSchema),
+  twoFASecret: z.string().optional().nullable(),
+  twoFAEnable: z.boolean().optional(),
+  unidade: z.lazy(() => UnidadeCreateNestedOneWithoutGerentesInputSchema).optional(),
   refresh_token: z.lazy(() => RefreshTokenCreateNestedManyWithoutGerenteInputSchema).optional()
 }).strict();
 
 export const GerenteUncheckedCreateInputSchema: z.ZodType<Prisma.GerenteUncheckedCreateInput> = z.object({
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   password: z.string(),
   nome: z.string(),
   cpf: z.string(),
@@ -1227,14 +1244,17 @@ export const GerenteUncheckedCreateInputSchema: z.ZodType<Prisma.GerenteUnchecke
   email: z.string(),
   telefone: z.string(),
   raca: z.lazy(() => RacaSchema),
-  unidadeId: z.number().int(),
+  unidadeId: z.number().int().optional(),
   rgdocfile: z.string().optional().nullable(),
   fotofile: z.string().optional().nullable(),
   compresfile: z.string().optional().nullable(),
+  twoFASecret: z.string().optional().nullable(),
+  twoFAEnable: z.boolean().optional(),
   refresh_token: z.lazy(() => RefreshTokenUncheckedCreateNestedManyWithoutGerenteInputSchema).optional()
 }).strict();
 
 export const GerenteUpdateInputSchema: z.ZodType<Prisma.GerenteUpdateInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -1245,12 +1265,14 @@ export const GerenteUpdateInputSchema: z.ZodType<Prisma.GerenteUpdateInput> = z.
   rgdocfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   fotofile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   compresfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  twoFASecret: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  twoFAEnable: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   unidade: z.lazy(() => UnidadeUpdateOneRequiredWithoutGerentesNestedInputSchema).optional(),
   refresh_token: z.lazy(() => RefreshTokenUpdateManyWithoutGerenteNestedInputSchema).optional()
 }).strict();
 
 export const GerenteUncheckedUpdateInputSchema: z.ZodType<Prisma.GerenteUncheckedUpdateInput> = z.object({
-  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -1262,11 +1284,13 @@ export const GerenteUncheckedUpdateInputSchema: z.ZodType<Prisma.GerenteUnchecke
   rgdocfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   fotofile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   compresfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  twoFASecret: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  twoFAEnable: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   refresh_token: z.lazy(() => RefreshTokenUncheckedUpdateManyWithoutGerenteNestedInputSchema).optional()
 }).strict();
 
 export const GerenteCreateManyInputSchema: z.ZodType<Prisma.GerenteCreateManyInput> = z.object({
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   password: z.string(),
   nome: z.string(),
   cpf: z.string(),
@@ -1274,13 +1298,16 @@ export const GerenteCreateManyInputSchema: z.ZodType<Prisma.GerenteCreateManyInp
   email: z.string(),
   telefone: z.string(),
   raca: z.lazy(() => RacaSchema),
-  unidadeId: z.number().int(),
+  unidadeId: z.number().int().optional(),
   rgdocfile: z.string().optional().nullable(),
   fotofile: z.string().optional().nullable(),
-  compresfile: z.string().optional().nullable()
+  compresfile: z.string().optional().nullable(),
+  twoFASecret: z.string().optional().nullable(),
+  twoFAEnable: z.boolean().optional()
 }).strict();
 
 export const GerenteUpdateManyMutationInputSchema: z.ZodType<Prisma.GerenteUpdateManyMutationInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -1291,10 +1318,12 @@ export const GerenteUpdateManyMutationInputSchema: z.ZodType<Prisma.GerenteUpdat
   rgdocfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   fotofile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   compresfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  twoFASecret: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  twoFAEnable: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 export const GerenteUncheckedUpdateManyInputSchema: z.ZodType<Prisma.GerenteUncheckedUpdateManyInput> = z.object({
-  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -1306,9 +1335,12 @@ export const GerenteUncheckedUpdateManyInputSchema: z.ZodType<Prisma.GerenteUnch
   rgdocfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   fotofile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   compresfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  twoFASecret: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  twoFAEnable: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 export const ColaboradorCreateInputSchema: z.ZodType<Prisma.ColaboradorCreateInput> = z.object({
+  id: z.string().optional(),
   nome: z.string(),
   cpf: z.string(),
   rg: z.string(),
@@ -1323,12 +1355,12 @@ export const ColaboradorCreateInputSchema: z.ZodType<Prisma.ColaboradorCreateInp
   rgdocfile: z.string().optional().nullable(),
   fotofile: z.string().optional().nullable(),
   compresfile: z.string().optional().nullable(),
-  unidade: z.lazy(() => UnidadeCreateNestedOneWithoutColaboradoresInputSchema),
+  unidade: z.lazy(() => UnidadeCreateNestedOneWithoutColaboradoresInputSchema).optional(),
   pacientes: z.lazy(() => PacienteCreateNestedManyWithoutColaboradoresInputSchema).optional()
 }).strict();
 
 export const ColaboradorUncheckedCreateInputSchema: z.ZodType<Prisma.ColaboradorUncheckedCreateInput> = z.object({
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   nome: z.string(),
   cpf: z.string(),
   rg: z.string(),
@@ -1340,7 +1372,7 @@ export const ColaboradorUncheckedCreateInputSchema: z.ZodType<Prisma.Colaborador
   genero: z.lazy(() => GeneroSchema),
   email: z.string(),
   raca: z.lazy(() => RacaSchema),
-  unidadeId: z.number().int(),
+  unidadeId: z.number().int().optional(),
   rgdocfile: z.string().optional().nullable(),
   fotofile: z.string().optional().nullable(),
   compresfile: z.string().optional().nullable(),
@@ -1348,6 +1380,7 @@ export const ColaboradorUncheckedCreateInputSchema: z.ZodType<Prisma.Colaborador
 }).strict();
 
 export const ColaboradorUpdateInputSchema: z.ZodType<Prisma.ColaboradorUpdateInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   rg: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -1367,7 +1400,7 @@ export const ColaboradorUpdateInputSchema: z.ZodType<Prisma.ColaboradorUpdateInp
 }).strict();
 
 export const ColaboradorUncheckedUpdateInputSchema: z.ZodType<Prisma.ColaboradorUncheckedUpdateInput> = z.object({
-  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   rg: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -1387,7 +1420,7 @@ export const ColaboradorUncheckedUpdateInputSchema: z.ZodType<Prisma.Colaborador
 }).strict();
 
 export const ColaboradorCreateManyInputSchema: z.ZodType<Prisma.ColaboradorCreateManyInput> = z.object({
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   nome: z.string(),
   cpf: z.string(),
   rg: z.string(),
@@ -1399,13 +1432,14 @@ export const ColaboradorCreateManyInputSchema: z.ZodType<Prisma.ColaboradorCreat
   genero: z.lazy(() => GeneroSchema),
   email: z.string(),
   raca: z.lazy(() => RacaSchema),
-  unidadeId: z.number().int(),
+  unidadeId: z.number().int().optional(),
   rgdocfile: z.string().optional().nullable(),
   fotofile: z.string().optional().nullable(),
   compresfile: z.string().optional().nullable()
 }).strict();
 
 export const ColaboradorUpdateManyMutationInputSchema: z.ZodType<Prisma.ColaboradorUpdateManyMutationInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   rg: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -1423,7 +1457,7 @@ export const ColaboradorUpdateManyMutationInputSchema: z.ZodType<Prisma.Colabora
 }).strict();
 
 export const ColaboradorUncheckedUpdateManyInputSchema: z.ZodType<Prisma.ColaboradorUncheckedUpdateManyInput> = z.object({
-  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   rg: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -1442,6 +1476,7 @@ export const ColaboradorUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Colabor
 }).strict();
 
 export const PacienteCreateInputSchema: z.ZodType<Prisma.PacienteCreateInput> = z.object({
+  id: z.string().optional(),
   analise: z.boolean().optional(),
   nome: z.string().optional().nullable(),
   cpf: z.string(),
@@ -1475,7 +1510,7 @@ export const PacienteCreateInputSchema: z.ZodType<Prisma.PacienteCreateInput> = 
 }).strict();
 
 export const PacienteUncheckedCreateInputSchema: z.ZodType<Prisma.PacienteUncheckedCreateInput> = z.object({
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   analise: z.boolean().optional(),
   nome: z.string().optional().nullable(),
   cpf: z.string(),
@@ -1509,6 +1544,7 @@ export const PacienteUncheckedCreateInputSchema: z.ZodType<Prisma.PacienteUnchec
 }).strict();
 
 export const PacienteUpdateInputSchema: z.ZodType<Prisma.PacienteUpdateInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   analise: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -1542,7 +1578,7 @@ export const PacienteUpdateInputSchema: z.ZodType<Prisma.PacienteUpdateInput> = 
 }).strict();
 
 export const PacienteUncheckedUpdateInputSchema: z.ZodType<Prisma.PacienteUncheckedUpdateInput> = z.object({
-  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   analise: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -1576,7 +1612,7 @@ export const PacienteUncheckedUpdateInputSchema: z.ZodType<Prisma.PacienteUnchec
 }).strict();
 
 export const PacienteCreateManyInputSchema: z.ZodType<Prisma.PacienteCreateManyInput> = z.object({
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   analise: z.boolean().optional(),
   nome: z.string().optional().nullable(),
   cpf: z.string(),
@@ -1609,6 +1645,7 @@ export const PacienteCreateManyInputSchema: z.ZodType<Prisma.PacienteCreateManyI
 }).strict();
 
 export const PacienteUpdateManyMutationInputSchema: z.ZodType<Prisma.PacienteUpdateManyMutationInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   analise: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -1640,7 +1677,7 @@ export const PacienteUpdateManyMutationInputSchema: z.ZodType<Prisma.PacienteUpd
 }).strict();
 
 export const PacienteUncheckedUpdateManyInputSchema: z.ZodType<Prisma.PacienteUncheckedUpdateManyInput> = z.object({
-  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   analise: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -1732,7 +1769,7 @@ export const RefreshTokenCreateInputSchema: z.ZodType<Prisma.RefreshTokenCreateI
 export const RefreshTokenUncheckedCreateInputSchema: z.ZodType<Prisma.RefreshTokenUncheckedCreateInput> = z.object({
   id: z.string().optional(),
   expireIn: z.number().int(),
-  gerenteId: z.number().int()
+  gerenteId: z.string()
 }).strict();
 
 export const RefreshTokenUpdateInputSchema: z.ZodType<Prisma.RefreshTokenUpdateInput> = z.object({
@@ -1744,13 +1781,13 @@ export const RefreshTokenUpdateInputSchema: z.ZodType<Prisma.RefreshTokenUpdateI
 export const RefreshTokenUncheckedUpdateInputSchema: z.ZodType<Prisma.RefreshTokenUncheckedUpdateInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   expireIn: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-  gerenteId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  gerenteId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 export const RefreshTokenCreateManyInputSchema: z.ZodType<Prisma.RefreshTokenCreateManyInput> = z.object({
   id: z.string().optional(),
   expireIn: z.number().int(),
-  gerenteId: z.number().int()
+  gerenteId: z.string()
 }).strict();
 
 export const RefreshTokenUpdateManyMutationInputSchema: z.ZodType<Prisma.RefreshTokenUpdateManyMutationInput> = z.object({
@@ -1761,18 +1798,7 @@ export const RefreshTokenUpdateManyMutationInputSchema: z.ZodType<Prisma.Refresh
 export const RefreshTokenUncheckedUpdateManyInputSchema: z.ZodType<Prisma.RefreshTokenUncheckedUpdateManyInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   expireIn: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-  gerenteId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-}).strict();
-
-export const IntFilterSchema: z.ZodType<Prisma.IntFilter> = z.object({
-  equals: z.number().optional(),
-  in: z.number().array().optional(),
-  notIn: z.number().array().optional(),
-  lt: z.number().optional(),
-  lte: z.number().optional(),
-  gt: z.number().optional(),
-  gte: z.number().optional(),
-  not: z.union([ z.number(),z.lazy(() => NestedIntFilterSchema) ]).optional(),
+  gerenteId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 export const StringFilterSchema: z.ZodType<Prisma.StringFilter> = z.object({
@@ -1797,6 +1823,17 @@ export const EnumRacaFilterSchema: z.ZodType<Prisma.EnumRacaFilter> = z.object({
   not: z.union([ z.lazy(() => RacaSchema),z.lazy(() => NestedEnumRacaFilterSchema) ]).optional(),
 }).strict();
 
+export const IntFilterSchema: z.ZodType<Prisma.IntFilter> = z.object({
+  equals: z.number().optional(),
+  in: z.number().array().optional(),
+  notIn: z.number().array().optional(),
+  lt: z.number().optional(),
+  lte: z.number().optional(),
+  gt: z.number().optional(),
+  gte: z.number().optional(),
+  not: z.union([ z.number(),z.lazy(() => NestedIntFilterSchema) ]).optional(),
+}).strict();
+
 export const StringNullableFilterSchema: z.ZodType<Prisma.StringNullableFilter> = z.object({
   equals: z.string().optional().nullable(),
   in: z.string().array().optional().nullable(),
@@ -1810,6 +1847,11 @@ export const StringNullableFilterSchema: z.ZodType<Prisma.StringNullableFilter> 
   endsWith: z.string().optional(),
   mode: z.lazy(() => QueryModeSchema).optional(),
   not: z.union([ z.string(),z.lazy(() => NestedStringNullableFilterSchema) ]).optional().nullable(),
+}).strict();
+
+export const BoolFilterSchema: z.ZodType<Prisma.BoolFilter> = z.object({
+  equals: z.boolean().optional(),
+  not: z.union([ z.boolean(),z.lazy(() => NestedBoolFilterSchema) ]).optional(),
 }).strict();
 
 export const UnidadeRelationFilterSchema: z.ZodType<Prisma.UnidadeRelationFilter> = z.object({
@@ -1844,11 +1886,12 @@ export const GerenteCountOrderByAggregateInputSchema: z.ZodType<Prisma.GerenteCo
   unidadeId: z.lazy(() => SortOrderSchema).optional(),
   rgdocfile: z.lazy(() => SortOrderSchema).optional(),
   fotofile: z.lazy(() => SortOrderSchema).optional(),
-  compresfile: z.lazy(() => SortOrderSchema).optional()
+  compresfile: z.lazy(() => SortOrderSchema).optional(),
+  twoFASecret: z.lazy(() => SortOrderSchema).optional(),
+  twoFAEnable: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const GerenteAvgOrderByAggregateInputSchema: z.ZodType<Prisma.GerenteAvgOrderByAggregateInput> = z.object({
-  id: z.lazy(() => SortOrderSchema).optional(),
   unidadeId: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
@@ -1864,7 +1907,9 @@ export const GerenteMaxOrderByAggregateInputSchema: z.ZodType<Prisma.GerenteMaxO
   unidadeId: z.lazy(() => SortOrderSchema).optional(),
   rgdocfile: z.lazy(() => SortOrderSchema).optional(),
   fotofile: z.lazy(() => SortOrderSchema).optional(),
-  compresfile: z.lazy(() => SortOrderSchema).optional()
+  compresfile: z.lazy(() => SortOrderSchema).optional(),
+  twoFASecret: z.lazy(() => SortOrderSchema).optional(),
+  twoFAEnable: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const GerenteMinOrderByAggregateInputSchema: z.ZodType<Prisma.GerenteMinOrderByAggregateInput> = z.object({
@@ -1879,28 +1924,13 @@ export const GerenteMinOrderByAggregateInputSchema: z.ZodType<Prisma.GerenteMinO
   unidadeId: z.lazy(() => SortOrderSchema).optional(),
   rgdocfile: z.lazy(() => SortOrderSchema).optional(),
   fotofile: z.lazy(() => SortOrderSchema).optional(),
-  compresfile: z.lazy(() => SortOrderSchema).optional()
+  compresfile: z.lazy(() => SortOrderSchema).optional(),
+  twoFASecret: z.lazy(() => SortOrderSchema).optional(),
+  twoFAEnable: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const GerenteSumOrderByAggregateInputSchema: z.ZodType<Prisma.GerenteSumOrderByAggregateInput> = z.object({
-  id: z.lazy(() => SortOrderSchema).optional(),
   unidadeId: z.lazy(() => SortOrderSchema).optional()
-}).strict();
-
-export const IntWithAggregatesFilterSchema: z.ZodType<Prisma.IntWithAggregatesFilter> = z.object({
-  equals: z.number().optional(),
-  in: z.number().array().optional(),
-  notIn: z.number().array().optional(),
-  lt: z.number().optional(),
-  lte: z.number().optional(),
-  gt: z.number().optional(),
-  gte: z.number().optional(),
-  not: z.union([ z.number(),z.lazy(() => NestedIntWithAggregatesFilterSchema) ]).optional(),
-  _count: z.lazy(() => NestedIntFilterSchema).optional(),
-  _avg: z.lazy(() => NestedFloatFilterSchema).optional(),
-  _sum: z.lazy(() => NestedIntFilterSchema).optional(),
-  _min: z.lazy(() => NestedIntFilterSchema).optional(),
-  _max: z.lazy(() => NestedIntFilterSchema).optional()
 }).strict();
 
 export const StringWithAggregatesFilterSchema: z.ZodType<Prisma.StringWithAggregatesFilter> = z.object({
@@ -1931,6 +1961,22 @@ export const EnumRacaWithAggregatesFilterSchema: z.ZodType<Prisma.EnumRacaWithAg
   _max: z.lazy(() => NestedEnumRacaFilterSchema).optional()
 }).strict();
 
+export const IntWithAggregatesFilterSchema: z.ZodType<Prisma.IntWithAggregatesFilter> = z.object({
+  equals: z.number().optional(),
+  in: z.number().array().optional(),
+  notIn: z.number().array().optional(),
+  lt: z.number().optional(),
+  lte: z.number().optional(),
+  gt: z.number().optional(),
+  gte: z.number().optional(),
+  not: z.union([ z.number(),z.lazy(() => NestedIntWithAggregatesFilterSchema) ]).optional(),
+  _count: z.lazy(() => NestedIntFilterSchema).optional(),
+  _avg: z.lazy(() => NestedFloatFilterSchema).optional(),
+  _sum: z.lazy(() => NestedIntFilterSchema).optional(),
+  _min: z.lazy(() => NestedIntFilterSchema).optional(),
+  _max: z.lazy(() => NestedIntFilterSchema).optional()
+}).strict();
+
 export const StringNullableWithAggregatesFilterSchema: z.ZodType<Prisma.StringNullableWithAggregatesFilter> = z.object({
   equals: z.string().optional().nullable(),
   in: z.string().array().optional().nullable(),
@@ -1947,6 +1993,14 @@ export const StringNullableWithAggregatesFilterSchema: z.ZodType<Prisma.StringNu
   _count: z.lazy(() => NestedIntNullableFilterSchema).optional(),
   _min: z.lazy(() => NestedStringNullableFilterSchema).optional(),
   _max: z.lazy(() => NestedStringNullableFilterSchema).optional()
+}).strict();
+
+export const BoolWithAggregatesFilterSchema: z.ZodType<Prisma.BoolWithAggregatesFilter> = z.object({
+  equals: z.boolean().optional(),
+  not: z.union([ z.boolean(),z.lazy(() => NestedBoolWithAggregatesFilterSchema) ]).optional(),
+  _count: z.lazy(() => NestedIntFilterSchema).optional(),
+  _min: z.lazy(() => NestedBoolFilterSchema).optional(),
+  _max: z.lazy(() => NestedBoolFilterSchema).optional()
 }).strict();
 
 export const DateTimeFilterSchema: z.ZodType<Prisma.DateTimeFilter> = z.object({
@@ -1997,7 +2051,6 @@ export const ColaboradorCountOrderByAggregateInputSchema: z.ZodType<Prisma.Colab
 }).strict();
 
 export const ColaboradorAvgOrderByAggregateInputSchema: z.ZodType<Prisma.ColaboradorAvgOrderByAggregateInput> = z.object({
-  id: z.lazy(() => SortOrderSchema).optional(),
   unidadeId: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
@@ -2040,7 +2093,6 @@ export const ColaboradorMinOrderByAggregateInputSchema: z.ZodType<Prisma.Colabor
 }).strict();
 
 export const ColaboradorSumOrderByAggregateInputSchema: z.ZodType<Prisma.ColaboradorSumOrderByAggregateInput> = z.object({
-  id: z.lazy(() => SortOrderSchema).optional(),
   unidadeId: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
@@ -2066,11 +2118,6 @@ export const EnumGeneroWithAggregatesFilterSchema: z.ZodType<Prisma.EnumGeneroWi
   _count: z.lazy(() => NestedIntFilterSchema).optional(),
   _min: z.lazy(() => NestedEnumGeneroFilterSchema).optional(),
   _max: z.lazy(() => NestedEnumGeneroFilterSchema).optional()
-}).strict();
-
-export const BoolFilterSchema: z.ZodType<Prisma.BoolFilter> = z.object({
-  equals: z.boolean().optional(),
-  not: z.union([ z.boolean(),z.lazy(() => NestedBoolFilterSchema) ]).optional(),
 }).strict();
 
 export const JsonNullableFilterSchema: z.ZodType<Prisma.JsonNullableFilter> = z.object({
@@ -2140,7 +2187,6 @@ export const PacienteCountOrderByAggregateInputSchema: z.ZodType<Prisma.Paciente
 }).strict();
 
 export const PacienteAvgOrderByAggregateInputSchema: z.ZodType<Prisma.PacienteAvgOrderByAggregateInput> = z.object({
-  id: z.lazy(() => SortOrderSchema).optional(),
   unidadeId: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
@@ -2187,16 +2233,7 @@ export const PacienteMinOrderByAggregateInputSchema: z.ZodType<Prisma.PacienteMi
 }).strict();
 
 export const PacienteSumOrderByAggregateInputSchema: z.ZodType<Prisma.PacienteSumOrderByAggregateInput> = z.object({
-  id: z.lazy(() => SortOrderSchema).optional(),
   unidadeId: z.lazy(() => SortOrderSchema).optional()
-}).strict();
-
-export const BoolWithAggregatesFilterSchema: z.ZodType<Prisma.BoolWithAggregatesFilter> = z.object({
-  equals: z.boolean().optional(),
-  not: z.union([ z.boolean(),z.lazy(() => NestedBoolWithAggregatesFilterSchema) ]).optional(),
-  _count: z.lazy(() => NestedIntFilterSchema).optional(),
-  _min: z.lazy(() => NestedBoolFilterSchema).optional(),
-  _max: z.lazy(() => NestedBoolFilterSchema).optional()
 }).strict();
 
 export const JsonNullableWithAggregatesFilterSchema: z.ZodType<Prisma.JsonNullableWithAggregatesFilter> = z.object({
@@ -2276,8 +2313,7 @@ export const RefreshTokenCountOrderByAggregateInputSchema: z.ZodType<Prisma.Refr
 }).strict();
 
 export const RefreshTokenAvgOrderByAggregateInputSchema: z.ZodType<Prisma.RefreshTokenAvgOrderByAggregateInput> = z.object({
-  expireIn: z.lazy(() => SortOrderSchema).optional(),
-  gerenteId: z.lazy(() => SortOrderSchema).optional()
+  expireIn: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const RefreshTokenMaxOrderByAggregateInputSchema: z.ZodType<Prisma.RefreshTokenMaxOrderByAggregateInput> = z.object({
@@ -2293,8 +2329,7 @@ export const RefreshTokenMinOrderByAggregateInputSchema: z.ZodType<Prisma.Refres
 }).strict();
 
 export const RefreshTokenSumOrderByAggregateInputSchema: z.ZodType<Prisma.RefreshTokenSumOrderByAggregateInput> = z.object({
-  expireIn: z.lazy(() => SortOrderSchema).optional(),
-  gerenteId: z.lazy(() => SortOrderSchema).optional()
+  expireIn: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const UnidadeCreateNestedOneWithoutGerentesInputSchema: z.ZodType<Prisma.UnidadeCreateNestedOneWithoutGerentesInput> = z.object({
@@ -2327,6 +2362,10 @@ export const EnumRacaFieldUpdateOperationsInputSchema: z.ZodType<Prisma.EnumRaca
 
 export const NullableStringFieldUpdateOperationsInputSchema: z.ZodType<Prisma.NullableStringFieldUpdateOperationsInput> = z.object({
   set: z.string().optional().nullable()
+}).strict();
+
+export const BoolFieldUpdateOperationsInputSchema: z.ZodType<Prisma.BoolFieldUpdateOperationsInput> = z.object({
+  set: z.boolean().optional()
 }).strict();
 
 export const UnidadeUpdateOneRequiredWithoutGerentesNestedInputSchema: z.ZodType<Prisma.UnidadeUpdateOneRequiredWithoutGerentesNestedInput> = z.object({
@@ -2449,10 +2488,6 @@ export const ColaboradorUncheckedCreateNestedManyWithoutPacientesInputSchema: z.
   create: z.union([ z.lazy(() => ColaboradorCreateWithoutPacientesInputSchema),z.lazy(() => ColaboradorCreateWithoutPacientesInputSchema).array(),z.lazy(() => ColaboradorUncheckedCreateWithoutPacientesInputSchema),z.lazy(() => ColaboradorUncheckedCreateWithoutPacientesInputSchema).array() ]).optional(),
   connectOrCreate: z.union([ z.lazy(() => ColaboradorCreateOrConnectWithoutPacientesInputSchema),z.lazy(() => ColaboradorCreateOrConnectWithoutPacientesInputSchema).array() ]).optional(),
   connect: z.union([ z.lazy(() => ColaboradorWhereUniqueInputSchema),z.lazy(() => ColaboradorWhereUniqueInputSchema).array() ]).optional(),
-}).strict();
-
-export const BoolFieldUpdateOperationsInputSchema: z.ZodType<Prisma.BoolFieldUpdateOperationsInput> = z.object({
-  set: z.boolean().optional()
 }).strict();
 
 export const NullableEnumRacaFieldUpdateOperationsInputSchema: z.ZodType<Prisma.NullableEnumRacaFieldUpdateOperationsInput> = z.object({
@@ -2633,17 +2668,6 @@ export const GerenteUpdateOneRequiredWithoutRefresh_tokenNestedInputSchema: z.Zo
   update: z.union([ z.lazy(() => GerenteUpdateToOneWithWhereWithoutRefresh_tokenInputSchema),z.lazy(() => GerenteUpdateWithoutRefresh_tokenInputSchema),z.lazy(() => GerenteUncheckedUpdateWithoutRefresh_tokenInputSchema) ]).optional(),
 }).strict();
 
-export const NestedIntFilterSchema: z.ZodType<Prisma.NestedIntFilter> = z.object({
-  equals: z.number().optional(),
-  in: z.number().array().optional(),
-  notIn: z.number().array().optional(),
-  lt: z.number().optional(),
-  lte: z.number().optional(),
-  gt: z.number().optional(),
-  gte: z.number().optional(),
-  not: z.union([ z.number(),z.lazy(() => NestedIntFilterSchema) ]).optional(),
-}).strict();
-
 export const NestedStringFilterSchema: z.ZodType<Prisma.NestedStringFilter> = z.object({
   equals: z.string().optional(),
   in: z.string().array().optional(),
@@ -2665,6 +2689,17 @@ export const NestedEnumRacaFilterSchema: z.ZodType<Prisma.NestedEnumRacaFilter> 
   not: z.union([ z.lazy(() => RacaSchema),z.lazy(() => NestedEnumRacaFilterSchema) ]).optional(),
 }).strict();
 
+export const NestedIntFilterSchema: z.ZodType<Prisma.NestedIntFilter> = z.object({
+  equals: z.number().optional(),
+  in: z.number().array().optional(),
+  notIn: z.number().array().optional(),
+  lt: z.number().optional(),
+  lte: z.number().optional(),
+  gt: z.number().optional(),
+  gte: z.number().optional(),
+  not: z.union([ z.number(),z.lazy(() => NestedIntFilterSchema) ]).optional(),
+}).strict();
+
 export const NestedStringNullableFilterSchema: z.ZodType<Prisma.NestedStringNullableFilter> = z.object({
   equals: z.string().optional().nullable(),
   in: z.string().array().optional().nullable(),
@@ -2679,31 +2714,9 @@ export const NestedStringNullableFilterSchema: z.ZodType<Prisma.NestedStringNull
   not: z.union([ z.string(),z.lazy(() => NestedStringNullableFilterSchema) ]).optional().nullable(),
 }).strict();
 
-export const NestedIntWithAggregatesFilterSchema: z.ZodType<Prisma.NestedIntWithAggregatesFilter> = z.object({
-  equals: z.number().optional(),
-  in: z.number().array().optional(),
-  notIn: z.number().array().optional(),
-  lt: z.number().optional(),
-  lte: z.number().optional(),
-  gt: z.number().optional(),
-  gte: z.number().optional(),
-  not: z.union([ z.number(),z.lazy(() => NestedIntWithAggregatesFilterSchema) ]).optional(),
-  _count: z.lazy(() => NestedIntFilterSchema).optional(),
-  _avg: z.lazy(() => NestedFloatFilterSchema).optional(),
-  _sum: z.lazy(() => NestedIntFilterSchema).optional(),
-  _min: z.lazy(() => NestedIntFilterSchema).optional(),
-  _max: z.lazy(() => NestedIntFilterSchema).optional()
-}).strict();
-
-export const NestedFloatFilterSchema: z.ZodType<Prisma.NestedFloatFilter> = z.object({
-  equals: z.number().optional(),
-  in: z.number().array().optional(),
-  notIn: z.number().array().optional(),
-  lt: z.number().optional(),
-  lte: z.number().optional(),
-  gt: z.number().optional(),
-  gte: z.number().optional(),
-  not: z.union([ z.number(),z.lazy(() => NestedFloatFilterSchema) ]).optional(),
+export const NestedBoolFilterSchema: z.ZodType<Prisma.NestedBoolFilter> = z.object({
+  equals: z.boolean().optional(),
+  not: z.union([ z.boolean(),z.lazy(() => NestedBoolFilterSchema) ]).optional(),
 }).strict();
 
 export const NestedStringWithAggregatesFilterSchema: z.ZodType<Prisma.NestedStringWithAggregatesFilter> = z.object({
@@ -2733,6 +2746,33 @@ export const NestedEnumRacaWithAggregatesFilterSchema: z.ZodType<Prisma.NestedEn
   _max: z.lazy(() => NestedEnumRacaFilterSchema).optional()
 }).strict();
 
+export const NestedIntWithAggregatesFilterSchema: z.ZodType<Prisma.NestedIntWithAggregatesFilter> = z.object({
+  equals: z.number().optional(),
+  in: z.number().array().optional(),
+  notIn: z.number().array().optional(),
+  lt: z.number().optional(),
+  lte: z.number().optional(),
+  gt: z.number().optional(),
+  gte: z.number().optional(),
+  not: z.union([ z.number(),z.lazy(() => NestedIntWithAggregatesFilterSchema) ]).optional(),
+  _count: z.lazy(() => NestedIntFilterSchema).optional(),
+  _avg: z.lazy(() => NestedFloatFilterSchema).optional(),
+  _sum: z.lazy(() => NestedIntFilterSchema).optional(),
+  _min: z.lazy(() => NestedIntFilterSchema).optional(),
+  _max: z.lazy(() => NestedIntFilterSchema).optional()
+}).strict();
+
+export const NestedFloatFilterSchema: z.ZodType<Prisma.NestedFloatFilter> = z.object({
+  equals: z.number().optional(),
+  in: z.number().array().optional(),
+  notIn: z.number().array().optional(),
+  lt: z.number().optional(),
+  lte: z.number().optional(),
+  gt: z.number().optional(),
+  gte: z.number().optional(),
+  not: z.union([ z.number(),z.lazy(() => NestedFloatFilterSchema) ]).optional(),
+}).strict();
+
 export const NestedStringNullableWithAggregatesFilterSchema: z.ZodType<Prisma.NestedStringNullableWithAggregatesFilter> = z.object({
   equals: z.string().optional().nullable(),
   in: z.string().array().optional().nullable(),
@@ -2759,6 +2799,14 @@ export const NestedIntNullableFilterSchema: z.ZodType<Prisma.NestedIntNullableFi
   gt: z.number().optional(),
   gte: z.number().optional(),
   not: z.union([ z.number(),z.lazy(() => NestedIntNullableFilterSchema) ]).optional().nullable(),
+}).strict();
+
+export const NestedBoolWithAggregatesFilterSchema: z.ZodType<Prisma.NestedBoolWithAggregatesFilter> = z.object({
+  equals: z.boolean().optional(),
+  not: z.union([ z.boolean(),z.lazy(() => NestedBoolWithAggregatesFilterSchema) ]).optional(),
+  _count: z.lazy(() => NestedIntFilterSchema).optional(),
+  _min: z.lazy(() => NestedBoolFilterSchema).optional(),
+  _max: z.lazy(() => NestedBoolFilterSchema).optional()
 }).strict();
 
 export const NestedDateTimeFilterSchema: z.ZodType<Prisma.NestedDateTimeFilter> = z.object({
@@ -2803,24 +2851,11 @@ export const NestedEnumGeneroWithAggregatesFilterSchema: z.ZodType<Prisma.Nested
   _max: z.lazy(() => NestedEnumGeneroFilterSchema).optional()
 }).strict();
 
-export const NestedBoolFilterSchema: z.ZodType<Prisma.NestedBoolFilter> = z.object({
-  equals: z.boolean().optional(),
-  not: z.union([ z.boolean(),z.lazy(() => NestedBoolFilterSchema) ]).optional(),
-}).strict();
-
 export const NestedEnumRacaNullableFilterSchema: z.ZodType<Prisma.NestedEnumRacaNullableFilter> = z.object({
   equals: z.lazy(() => RacaSchema).optional().nullable(),
   in: z.lazy(() => RacaSchema).array().optional().nullable(),
   notIn: z.lazy(() => RacaSchema).array().optional().nullable(),
   not: z.union([ z.lazy(() => RacaSchema),z.lazy(() => NestedEnumRacaNullableFilterSchema) ]).optional().nullable(),
-}).strict();
-
-export const NestedBoolWithAggregatesFilterSchema: z.ZodType<Prisma.NestedBoolWithAggregatesFilter> = z.object({
-  equals: z.boolean().optional(),
-  not: z.union([ z.boolean(),z.lazy(() => NestedBoolWithAggregatesFilterSchema) ]).optional(),
-  _count: z.lazy(() => NestedIntFilterSchema).optional(),
-  _min: z.lazy(() => NestedBoolFilterSchema).optional(),
-  _max: z.lazy(() => NestedBoolFilterSchema).optional()
 }).strict();
 
 export const NestedJsonNullableFilterSchema: z.ZodType<Prisma.NestedJsonNullableFilter> = z.object({
@@ -2937,7 +2972,7 @@ export const RefreshTokenScalarWhereInputSchema: z.ZodType<Prisma.RefreshTokenSc
   NOT: z.union([ z.lazy(() => RefreshTokenScalarWhereInputSchema),z.lazy(() => RefreshTokenScalarWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   expireIn: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
-  gerenteId: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
+  gerenteId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
 }).strict();
 
 export const UnidadeCreateWithoutColaboradoresInputSchema: z.ZodType<Prisma.UnidadeCreateWithoutColaboradoresInput> = z.object({
@@ -2961,6 +2996,7 @@ export const UnidadeCreateOrConnectWithoutColaboradoresInputSchema: z.ZodType<Pr
 }).strict();
 
 export const PacienteCreateWithoutColaboradoresInputSchema: z.ZodType<Prisma.PacienteCreateWithoutColaboradoresInput> = z.object({
+  id: z.string().optional(),
   analise: z.boolean().optional(),
   nome: z.string().optional().nullable(),
   cpf: z.string(),
@@ -2993,7 +3029,7 @@ export const PacienteCreateWithoutColaboradoresInputSchema: z.ZodType<Prisma.Pac
 }).strict();
 
 export const PacienteUncheckedCreateWithoutColaboradoresInputSchema: z.ZodType<Prisma.PacienteUncheckedCreateWithoutColaboradoresInput> = z.object({
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   analise: z.boolean().optional(),
   nome: z.string().optional().nullable(),
   cpf: z.string(),
@@ -3076,7 +3112,7 @@ export const PacienteScalarWhereInputSchema: z.ZodType<Prisma.PacienteScalarWher
   AND: z.union([ z.lazy(() => PacienteScalarWhereInputSchema),z.lazy(() => PacienteScalarWhereInputSchema).array() ]).optional(),
   OR: z.lazy(() => PacienteScalarWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => PacienteScalarWhereInputSchema),z.lazy(() => PacienteScalarWhereInputSchema).array() ]).optional(),
-  id: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
+  id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   analise: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
   nome: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   cpf: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
@@ -3129,6 +3165,7 @@ export const UnidadeCreateOrConnectWithoutPacientesInputSchema: z.ZodType<Prisma
 }).strict();
 
 export const ColaboradorCreateWithoutPacientesInputSchema: z.ZodType<Prisma.ColaboradorCreateWithoutPacientesInput> = z.object({
+  id: z.string().optional(),
   nome: z.string(),
   cpf: z.string(),
   rg: z.string(),
@@ -3143,11 +3180,11 @@ export const ColaboradorCreateWithoutPacientesInputSchema: z.ZodType<Prisma.Cola
   rgdocfile: z.string().optional().nullable(),
   fotofile: z.string().optional().nullable(),
   compresfile: z.string().optional().nullable(),
-  unidade: z.lazy(() => UnidadeCreateNestedOneWithoutColaboradoresInputSchema)
+  unidade: z.lazy(() => UnidadeCreateNestedOneWithoutColaboradoresInputSchema).optional()
 }).strict();
 
 export const ColaboradorUncheckedCreateWithoutPacientesInputSchema: z.ZodType<Prisma.ColaboradorUncheckedCreateWithoutPacientesInput> = z.object({
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   nome: z.string(),
   cpf: z.string(),
   rg: z.string(),
@@ -3159,7 +3196,7 @@ export const ColaboradorUncheckedCreateWithoutPacientesInputSchema: z.ZodType<Pr
   genero: z.lazy(() => GeneroSchema),
   email: z.string(),
   raca: z.lazy(() => RacaSchema),
-  unidadeId: z.number().int(),
+  unidadeId: z.number().int().optional(),
   rgdocfile: z.string().optional().nullable(),
   fotofile: z.string().optional().nullable(),
   compresfile: z.string().optional().nullable()
@@ -3216,7 +3253,7 @@ export const ColaboradorScalarWhereInputSchema: z.ZodType<Prisma.ColaboradorScal
   AND: z.union([ z.lazy(() => ColaboradorScalarWhereInputSchema),z.lazy(() => ColaboradorScalarWhereInputSchema).array() ]).optional(),
   OR: z.lazy(() => ColaboradorScalarWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => ColaboradorScalarWhereInputSchema),z.lazy(() => ColaboradorScalarWhereInputSchema).array() ]).optional(),
-  id: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
+  id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   nome: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   cpf: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   rg: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
@@ -3235,6 +3272,7 @@ export const ColaboradorScalarWhereInputSchema: z.ZodType<Prisma.ColaboradorScal
 }).strict();
 
 export const PacienteCreateWithoutUnidadeInputSchema: z.ZodType<Prisma.PacienteCreateWithoutUnidadeInput> = z.object({
+  id: z.string().optional(),
   analise: z.boolean().optional(),
   nome: z.string().optional().nullable(),
   cpf: z.string(),
@@ -3267,7 +3305,7 @@ export const PacienteCreateWithoutUnidadeInputSchema: z.ZodType<Prisma.PacienteC
 }).strict();
 
 export const PacienteUncheckedCreateWithoutUnidadeInputSchema: z.ZodType<Prisma.PacienteUncheckedCreateWithoutUnidadeInput> = z.object({
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   analise: z.boolean().optional(),
   nome: z.string().optional().nullable(),
   cpf: z.string(),
@@ -3310,6 +3348,7 @@ export const PacienteCreateManyUnidadeInputEnvelopeSchema: z.ZodType<Prisma.Paci
 }).strict();
 
 export const ColaboradorCreateWithoutUnidadeInputSchema: z.ZodType<Prisma.ColaboradorCreateWithoutUnidadeInput> = z.object({
+  id: z.string().optional(),
   nome: z.string(),
   cpf: z.string(),
   rg: z.string(),
@@ -3328,7 +3367,7 @@ export const ColaboradorCreateWithoutUnidadeInputSchema: z.ZodType<Prisma.Colabo
 }).strict();
 
 export const ColaboradorUncheckedCreateWithoutUnidadeInputSchema: z.ZodType<Prisma.ColaboradorUncheckedCreateWithoutUnidadeInput> = z.object({
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   nome: z.string(),
   cpf: z.string(),
   rg: z.string(),
@@ -3357,6 +3396,7 @@ export const ColaboradorCreateManyUnidadeInputEnvelopeSchema: z.ZodType<Prisma.C
 }).strict();
 
 export const GerenteCreateWithoutUnidadeInputSchema: z.ZodType<Prisma.GerenteCreateWithoutUnidadeInput> = z.object({
+  id: z.string().optional(),
   password: z.string(),
   nome: z.string(),
   cpf: z.string(),
@@ -3367,11 +3407,13 @@ export const GerenteCreateWithoutUnidadeInputSchema: z.ZodType<Prisma.GerenteCre
   rgdocfile: z.string().optional().nullable(),
   fotofile: z.string().optional().nullable(),
   compresfile: z.string().optional().nullable(),
+  twoFASecret: z.string().optional().nullable(),
+  twoFAEnable: z.boolean().optional(),
   refresh_token: z.lazy(() => RefreshTokenCreateNestedManyWithoutGerenteInputSchema).optional()
 }).strict();
 
 export const GerenteUncheckedCreateWithoutUnidadeInputSchema: z.ZodType<Prisma.GerenteUncheckedCreateWithoutUnidadeInput> = z.object({
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   password: z.string(),
   nome: z.string(),
   cpf: z.string(),
@@ -3382,6 +3424,8 @@ export const GerenteUncheckedCreateWithoutUnidadeInputSchema: z.ZodType<Prisma.G
   rgdocfile: z.string().optional().nullable(),
   fotofile: z.string().optional().nullable(),
   compresfile: z.string().optional().nullable(),
+  twoFASecret: z.string().optional().nullable(),
+  twoFAEnable: z.boolean().optional(),
   refresh_token: z.lazy(() => RefreshTokenUncheckedCreateNestedManyWithoutGerenteInputSchema).optional()
 }).strict();
 
@@ -3447,7 +3491,7 @@ export const GerenteScalarWhereInputSchema: z.ZodType<Prisma.GerenteScalarWhereI
   AND: z.union([ z.lazy(() => GerenteScalarWhereInputSchema),z.lazy(() => GerenteScalarWhereInputSchema).array() ]).optional(),
   OR: z.lazy(() => GerenteScalarWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => GerenteScalarWhereInputSchema),z.lazy(() => GerenteScalarWhereInputSchema).array() ]).optional(),
-  id: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
+  id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   password: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   nome: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   cpf: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
@@ -3459,9 +3503,12 @@ export const GerenteScalarWhereInputSchema: z.ZodType<Prisma.GerenteScalarWhereI
   rgdocfile: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   fotofile: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   compresfile: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  twoFASecret: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  twoFAEnable: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
 }).strict();
 
 export const GerenteCreateWithoutRefresh_tokenInputSchema: z.ZodType<Prisma.GerenteCreateWithoutRefresh_tokenInput> = z.object({
+  id: z.string().optional(),
   password: z.string(),
   nome: z.string(),
   cpf: z.string(),
@@ -3472,11 +3519,13 @@ export const GerenteCreateWithoutRefresh_tokenInputSchema: z.ZodType<Prisma.Gere
   rgdocfile: z.string().optional().nullable(),
   fotofile: z.string().optional().nullable(),
   compresfile: z.string().optional().nullable(),
-  unidade: z.lazy(() => UnidadeCreateNestedOneWithoutGerentesInputSchema)
+  twoFASecret: z.string().optional().nullable(),
+  twoFAEnable: z.boolean().optional(),
+  unidade: z.lazy(() => UnidadeCreateNestedOneWithoutGerentesInputSchema).optional()
 }).strict();
 
 export const GerenteUncheckedCreateWithoutRefresh_tokenInputSchema: z.ZodType<Prisma.GerenteUncheckedCreateWithoutRefresh_tokenInput> = z.object({
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   password: z.string(),
   nome: z.string(),
   cpf: z.string(),
@@ -3484,10 +3533,12 @@ export const GerenteUncheckedCreateWithoutRefresh_tokenInputSchema: z.ZodType<Pr
   email: z.string(),
   telefone: z.string(),
   raca: z.lazy(() => RacaSchema),
-  unidadeId: z.number().int(),
+  unidadeId: z.number().int().optional(),
   rgdocfile: z.string().optional().nullable(),
   fotofile: z.string().optional().nullable(),
-  compresfile: z.string().optional().nullable()
+  compresfile: z.string().optional().nullable(),
+  twoFASecret: z.string().optional().nullable(),
+  twoFAEnable: z.boolean().optional()
 }).strict();
 
 export const GerenteCreateOrConnectWithoutRefresh_tokenInputSchema: z.ZodType<Prisma.GerenteCreateOrConnectWithoutRefresh_tokenInput> = z.object({
@@ -3507,6 +3558,7 @@ export const GerenteUpdateToOneWithWhereWithoutRefresh_tokenInputSchema: z.ZodTy
 }).strict();
 
 export const GerenteUpdateWithoutRefresh_tokenInputSchema: z.ZodType<Prisma.GerenteUpdateWithoutRefresh_tokenInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3517,11 +3569,13 @@ export const GerenteUpdateWithoutRefresh_tokenInputSchema: z.ZodType<Prisma.Gere
   rgdocfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   fotofile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   compresfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  twoFASecret: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  twoFAEnable: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   unidade: z.lazy(() => UnidadeUpdateOneRequiredWithoutGerentesNestedInputSchema).optional()
 }).strict();
 
 export const GerenteUncheckedUpdateWithoutRefresh_tokenInputSchema: z.ZodType<Prisma.GerenteUncheckedUpdateWithoutRefresh_tokenInput> = z.object({
-  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3533,6 +3587,8 @@ export const GerenteUncheckedUpdateWithoutRefresh_tokenInputSchema: z.ZodType<Pr
   rgdocfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   fotofile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   compresfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  twoFASecret: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  twoFAEnable: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 export const RefreshTokenCreateManyGerenteInputSchema: z.ZodType<Prisma.RefreshTokenCreateManyGerenteInput> = z.object({
@@ -3556,6 +3612,7 @@ export const RefreshTokenUncheckedUpdateManyWithoutGerenteInputSchema: z.ZodType
 }).strict();
 
 export const PacienteUpdateWithoutColaboradoresInputSchema: z.ZodType<Prisma.PacienteUpdateWithoutColaboradoresInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   analise: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3588,7 +3645,7 @@ export const PacienteUpdateWithoutColaboradoresInputSchema: z.ZodType<Prisma.Pac
 }).strict();
 
 export const PacienteUncheckedUpdateWithoutColaboradoresInputSchema: z.ZodType<Prisma.PacienteUncheckedUpdateWithoutColaboradoresInput> = z.object({
-  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   analise: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3621,7 +3678,7 @@ export const PacienteUncheckedUpdateWithoutColaboradoresInputSchema: z.ZodType<P
 }).strict();
 
 export const PacienteUncheckedUpdateManyWithoutColaboradoresInputSchema: z.ZodType<Prisma.PacienteUncheckedUpdateManyWithoutColaboradoresInput> = z.object({
-  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   analise: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3654,6 +3711,7 @@ export const PacienteUncheckedUpdateManyWithoutColaboradoresInputSchema: z.ZodTy
 }).strict();
 
 export const ColaboradorUpdateWithoutPacientesInputSchema: z.ZodType<Prisma.ColaboradorUpdateWithoutPacientesInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   rg: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3672,7 +3730,7 @@ export const ColaboradorUpdateWithoutPacientesInputSchema: z.ZodType<Prisma.Cola
 }).strict();
 
 export const ColaboradorUncheckedUpdateWithoutPacientesInputSchema: z.ZodType<Prisma.ColaboradorUncheckedUpdateWithoutPacientesInput> = z.object({
-  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   rg: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3691,7 +3749,7 @@ export const ColaboradorUncheckedUpdateWithoutPacientesInputSchema: z.ZodType<Pr
 }).strict();
 
 export const ColaboradorUncheckedUpdateManyWithoutPacientesInputSchema: z.ZodType<Prisma.ColaboradorUncheckedUpdateManyWithoutPacientesInput> = z.object({
-  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   rg: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3710,7 +3768,7 @@ export const ColaboradorUncheckedUpdateManyWithoutPacientesInputSchema: z.ZodTyp
 }).strict();
 
 export const PacienteCreateManyUnidadeInputSchema: z.ZodType<Prisma.PacienteCreateManyUnidadeInput> = z.object({
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   analise: z.boolean().optional(),
   nome: z.string().optional().nullable(),
   cpf: z.string(),
@@ -3742,7 +3800,7 @@ export const PacienteCreateManyUnidadeInputSchema: z.ZodType<Prisma.PacienteCrea
 }).strict();
 
 export const ColaboradorCreateManyUnidadeInputSchema: z.ZodType<Prisma.ColaboradorCreateManyUnidadeInput> = z.object({
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   nome: z.string(),
   cpf: z.string(),
   rg: z.string(),
@@ -3760,7 +3818,7 @@ export const ColaboradorCreateManyUnidadeInputSchema: z.ZodType<Prisma.Colaborad
 }).strict();
 
 export const GerenteCreateManyUnidadeInputSchema: z.ZodType<Prisma.GerenteCreateManyUnidadeInput> = z.object({
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   password: z.string(),
   nome: z.string(),
   cpf: z.string(),
@@ -3770,10 +3828,13 @@ export const GerenteCreateManyUnidadeInputSchema: z.ZodType<Prisma.GerenteCreate
   raca: z.lazy(() => RacaSchema),
   rgdocfile: z.string().optional().nullable(),
   fotofile: z.string().optional().nullable(),
-  compresfile: z.string().optional().nullable()
+  compresfile: z.string().optional().nullable(),
+  twoFASecret: z.string().optional().nullable(),
+  twoFAEnable: z.boolean().optional()
 }).strict();
 
 export const PacienteUpdateWithoutUnidadeInputSchema: z.ZodType<Prisma.PacienteUpdateWithoutUnidadeInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   analise: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3806,7 +3867,7 @@ export const PacienteUpdateWithoutUnidadeInputSchema: z.ZodType<Prisma.PacienteU
 }).strict();
 
 export const PacienteUncheckedUpdateWithoutUnidadeInputSchema: z.ZodType<Prisma.PacienteUncheckedUpdateWithoutUnidadeInput> = z.object({
-  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   analise: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3839,7 +3900,7 @@ export const PacienteUncheckedUpdateWithoutUnidadeInputSchema: z.ZodType<Prisma.
 }).strict();
 
 export const PacienteUncheckedUpdateManyWithoutUnidadeInputSchema: z.ZodType<Prisma.PacienteUncheckedUpdateManyWithoutUnidadeInput> = z.object({
-  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   analise: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3871,6 +3932,7 @@ export const PacienteUncheckedUpdateManyWithoutUnidadeInputSchema: z.ZodType<Pri
 }).strict();
 
 export const ColaboradorUpdateWithoutUnidadeInputSchema: z.ZodType<Prisma.ColaboradorUpdateWithoutUnidadeInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   rg: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3889,7 +3951,7 @@ export const ColaboradorUpdateWithoutUnidadeInputSchema: z.ZodType<Prisma.Colabo
 }).strict();
 
 export const ColaboradorUncheckedUpdateWithoutUnidadeInputSchema: z.ZodType<Prisma.ColaboradorUncheckedUpdateWithoutUnidadeInput> = z.object({
-  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   rg: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3908,7 +3970,7 @@ export const ColaboradorUncheckedUpdateWithoutUnidadeInputSchema: z.ZodType<Pris
 }).strict();
 
 export const ColaboradorUncheckedUpdateManyWithoutUnidadeInputSchema: z.ZodType<Prisma.ColaboradorUncheckedUpdateManyWithoutUnidadeInput> = z.object({
-  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   rg: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3926,6 +3988,7 @@ export const ColaboradorUncheckedUpdateManyWithoutUnidadeInputSchema: z.ZodType<
 }).strict();
 
 export const GerenteUpdateWithoutUnidadeInputSchema: z.ZodType<Prisma.GerenteUpdateWithoutUnidadeInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3936,11 +3999,13 @@ export const GerenteUpdateWithoutUnidadeInputSchema: z.ZodType<Prisma.GerenteUpd
   rgdocfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   fotofile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   compresfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  twoFASecret: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  twoFAEnable: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   refresh_token: z.lazy(() => RefreshTokenUpdateManyWithoutGerenteNestedInputSchema).optional()
 }).strict();
 
 export const GerenteUncheckedUpdateWithoutUnidadeInputSchema: z.ZodType<Prisma.GerenteUncheckedUpdateWithoutUnidadeInput> = z.object({
-  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3951,11 +4016,13 @@ export const GerenteUncheckedUpdateWithoutUnidadeInputSchema: z.ZodType<Prisma.G
   rgdocfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   fotofile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   compresfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  twoFASecret: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  twoFAEnable: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   refresh_token: z.lazy(() => RefreshTokenUncheckedUpdateManyWithoutGerenteNestedInputSchema).optional()
 }).strict();
 
 export const GerenteUncheckedUpdateManyWithoutUnidadeInputSchema: z.ZodType<Prisma.GerenteUncheckedUpdateManyWithoutUnidadeInput> = z.object({
-  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   nome: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cpf: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3966,6 +4033,8 @@ export const GerenteUncheckedUpdateManyWithoutUnidadeInputSchema: z.ZodType<Pris
   rgdocfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   fotofile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   compresfile: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  twoFASecret: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  twoFAEnable: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 /////////////////////////////////////////

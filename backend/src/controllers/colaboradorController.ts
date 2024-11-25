@@ -1,16 +1,14 @@
 import { PrismaClient } from '@prisma/client';
-import { Request, response, Response } from 'express';
+import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import  { compare, hashSync } from 'bcryptjs';
+import { compare, hashSync } from 'bcryptjs';
 import { JWT_SECRET } from '../secrets';
-import { request } from 'http';
-import { error } from 'console';
 
 const prisma = new PrismaClient();
 
 // Quando criar colaborador, sempre usar o id 0 pra unidades. 
 export const createUserColaborador = async (request: Request, response: Response) => {
-    const { nome, email, cpf, rg, telefone, raca, unidadeId, password, nascimento, titulo, formacao, genero} = request.body;
+    const { nome, email, cpf, rg, telefone, raca, unidadeId, password, nascimento, titulo, formacao, genero } = request.body;
     
     try {
         const userColaborador = await prisma.colaborador.create({
@@ -19,7 +17,7 @@ export const createUserColaborador = async (request: Request, response: Response
                 email,
                 telefone,
                 cpf,
-                unidadeId,
+                unidadeId, 
                 raca,
                 rg,
                 password: hashSync(password, 10),
@@ -27,14 +25,13 @@ export const createUserColaborador = async (request: Request, response: Response
                 titulo,
                 formacao,
                 genero
-
             }
         });
         return response.json(userColaborador);
     } catch (error: any) {
         return response.status(400).json({ error: error.message });
     }
-}
+};
 
 export const getUserColaborador = async (request: Request, response: Response) => {
     const { email } = request.body;
@@ -56,14 +53,14 @@ export const getUserColaborador = async (request: Request, response: Response) =
     } catch (error: any) {
         return response.status(500).json({ error: error.message });
     }
-}
+};
 
 export const getuserColaboradorId = async (request: Request, response: Response) => {
     const { id } = request.params;
 
     try {
         const userColaborador = await prisma.colaborador.findUnique({
-            where: { id: Number(id) }
+            where: { id }  
         });
 
         if (!userColaborador) {
@@ -74,7 +71,7 @@ export const getuserColaboradorId = async (request: Request, response: Response)
     } catch (error: any) {
         return response.status(500).json({ error: error.message });
     }
-}
+};
 
 export const colaboradorLogin = async (request: Request, response: Response) => {
     const { email, password } = request.body;
@@ -114,8 +111,7 @@ export const colaboradorLogin = async (request: Request, response: Response) => 
             message: 'Erro interno do servidor'
         });
     }
-}
-
+};
 
 export const getColaborador = async (request: Request, response: Response) => {
     const { cpf } = request.params; 
@@ -142,37 +138,35 @@ export const getColaborador = async (request: Request, response: Response) => {
     } catch (error: any) {
         return response.status(500).json({
             message: "Erro no servidor",
-            error:error.message
+            error: error.message
         });
     }
 };
 
 export const getColaboradores = async (_:Request, response:Response) => {
 
-    try{
+    try {
         const colaboradores = await prisma.colaborador.findMany();
         if (colaboradores.length === 0) {
-            return response.status(204).json({error:true, message: 'Nenhum colaborador foi encontrado'})
+            return response.status(204).json({ error: true, message: 'Nenhum colaborador foi encontrado' });
         }
-        return response.status(200).json({error:false, 
+        return response.status(200).json({
+            error: false, 
             message: 'Segue a lista de todos colaboradores',
-            colaboradores})
-
-
+            colaboradores
+        });
+    } catch (error: any) {
+        return response.status(500).json({ error: true, message: 'Erro interno no servidor' });
     }
-    catch(error:any){
-        return response.status(500).json({error:true, message:'Erro interno no servidor'})
-    }
-}
-
+};
 
 export const ChangePasswordForModel = async (request: Request, response: Response) => {
-    const { id } = request.params;
+    const { id } = request.params; 
     const { oldPassword, newPassword } = request.body;
 
     try {
         const colaborador = await prisma.colaborador.findUnique({
-            where: { id: Number(id) }
+            where: { id }  
         });
 
         if (!colaborador) {
@@ -191,9 +185,9 @@ export const ChangePasswordForModel = async (request: Request, response: Respons
         }
 
         await prisma.colaborador.update({
-            where: { id: Number(id) }, 
+            where: { id },  // 'id' agora é UUID
             data: {
-                password: hashSync(newPassword,10) 
+                password: hashSync(newPassword, 10)
             }
         });
 
@@ -201,7 +195,6 @@ export const ChangePasswordForModel = async (request: Request, response: Respons
             success: true,
             message: 'Senha alterada com sucesso'
         });
-        
     } catch (error) {
         console.error(error);
         return response.status(500).json({

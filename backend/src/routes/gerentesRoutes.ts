@@ -1,7 +1,7 @@
 
 import { Router } from 'express';
 import cors from 'cors';
-import { ChangePasswordForModel, createUserGerente, gerenteLogin, getGerente, getGerentes, getUserGerente, getUserGerenteId } from '../controllers/gerenteController';
+import { ChangePasswordForModel,createUserGerente, gerenteLogin, getGerente, getGerentes, getUserGerente, getUserGerenteId, verifyTwoFACode } from '../controllers/gerenteController';
 import { validate } from '../middleware/validate';
 import GerenteCreateInputSchema from './../../prisma/validateSchema';
 import { sendPassword } from '../email/sendPasswordByEmailGerente';
@@ -15,10 +15,10 @@ gerentesRouter.post('/buscar', ensureAuthenticated, getUserGerente);
 gerentesRouter.post('/senha', ensureAuthenticated, sendPassword);
 gerentesRouter.post('/login', gerenteLogin);
 gerentesRouter.get('/cpf/:cpf', ensureAuthenticated, getGerente);
-gerentesRouter.get('/id/:id', ensureAuthenticated, getUserGerenteId);
+gerentesRouter.get('/id/:id', getUserGerenteId);
 gerentesRouter.get('/getall', ensureAuthenticated, getGerentes);
 gerentesRouter.post('/id/:id/changePassword', ensureAuthenticated, ChangePasswordForModel)
-//gerentesRouter.post('/token', refreshTokenController )
-
+gerentesRouter.post('/token', refreshTokenController)
+gerentesRouter.post('/verificarTFA/:id', verifyTwoFACode)
 
 export default gerentesRouter;

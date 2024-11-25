@@ -5,6 +5,7 @@ import { PacienteCreateInputSchema } from '../../prisma/validateSchema';
 import { validate} from '../middleware/validate';
 import { sendPassword } from '../email/sendPasswordByEmailPaciente';
 import { ensureAuthenticated } from '../middleware/ensureAuthenticate.ts/autheticate';
+import { sendMail } from '../email/formularioDone';
 
 export const pacienteRouter = Router();
 pacienteRouter.post('/', createPaciente);
@@ -14,6 +15,7 @@ pacienteRouter.get('/id/:id', getuserPacienteId);
 pacienteRouter.get('/getall',ensureAuthenticated, getPacientes);
 pacienteRouter.post('senha', sendPassword);
 pacienteRouter.post('/id/:id/changePassword', ChangePasswordForModel)
+pacienteRouter.post('/formsDone', sendMail)
 
 
 // validate(PacienteCreateInputSchema),

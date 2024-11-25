@@ -3,8 +3,8 @@ import dayjs from 'dayjs'
 import { Prisma, PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 class GenerateRefreshToken {
-    async execute(gerenteId:number){
-        const expireIn = dayjs().add(15, 'seconds').unix()
+    async execute(gerenteId:string){
+        const expireIn = dayjs().add(30, 'seconds').unix()
         const generateRefreshToken = await prisma.refreshToken.create({
             data:{
                 gerenteId,
