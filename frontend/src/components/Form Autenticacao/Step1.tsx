@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { StepProps } from './types';
 import SelectInput from '../SelectInput';
 import TextInput from '../TextInput';
@@ -51,35 +51,39 @@ const Step1: React.FC<{
 }> = ({ nextStep, updateLogin, updateGeral, updateEscola, updateFoto, updateRelatorio, updateRG, updateResidencia, receivedFormData }) => {
 
   const [Step11, setStep11] = useState<Step11State>({
-    nome: "",
-    data: "",
-    rg: "",
-    cpf: "",
-    sexo: "",
-    cor: "",
-    cep: "",
-    endereco: "",
-    cidade: "",
+    nome: receivedFormData.geral?.nome || '',
+    data: receivedFormData.geral?.data || '',
+    rg: receivedFormData.geral?.rg || '',
+    cpf: receivedFormData.geral?.cpf || '',
+    sexo: receivedFormData.geral?.sexo || '',
+    cor: receivedFormData.geral?.cor || '',
+    cep: receivedFormData.geral?.cep || '',
+    endereco: receivedFormData.geral?.endereco || '',
+    cidade: receivedFormData.geral?.cidade || '',
   });
   const [Step12, setStep12] = useState<Step12State>({
-    nome: "",
-    serie: "",
-    endereco: "",
-    cidade: "",
-    possuiAdi: "",
-    tipo: "",
-    tempoNaEscola: "",
-    possuiRelatorio: "",
+    nome: receivedFormData.escola?.nome || '',
+    serie: receivedFormData.escola?.serie || '',
+    endereco: receivedFormData.escola?.endereco || '',
+    cidade: receivedFormData.escola?.cidade || '',
+    possuiAdi: receivedFormData.escola?.possuiAdi || '',
+    tipo: receivedFormData.escola?.tipo || '',
+    tempoNaEscola: receivedFormData.escola?.tempoNaEscola || '',
+    possuiRelatorio: receivedFormData.escola?.possuiRelatorio || '',
   })
 
   const [login, setLogin] = useState({
-    email: "",
-    confirmarEmail: "",
-    senha: "",
-    confirmarSenha: "",
+    email: receivedFormData.email || '',
+    confirmarEmail: receivedFormData.email || '',
+    senha: receivedFormData.password || '',
+    confirmarSenha: receivedFormData.password || '',
   });
 
+  const errorRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isCpfMissing, setIsCpfMissing] = useState(false);
+  const [isEmailMissing, setIsEmailMissing] = useState(false);
+  const [isSenhaMissing, setIsSenhaMissing] = useState(false);
 
   const handleLoginChange: any = (key: string, value: string) => {
     setLogin((prevState) => {
@@ -113,11 +117,40 @@ const Step1: React.FC<{
   };
 
   useEffect(() => {
-    // console.log("fotoFile", fotoFile)
-    // console.log("rgFile", rgFile)
-    // console.log("relatorioFile", relatorioFile)
-    // console.log("residenciaFile", residenciaFile)
-  })
+    setLogin({
+      email: receivedFormData.email || '',
+      confirmarEmail: receivedFormData.email || '',
+      senha: receivedFormData.password || '',
+      confirmarSenha: receivedFormData.password || '',
+    });
+    setStep11({
+      nome: receivedFormData.geral?.nome,
+      data: receivedFormData.geral?.data,
+      rg: receivedFormData.geral?.rg,
+      cpf: receivedFormData.geral?.cpf,
+      sexo: receivedFormData.geral?.sexo,
+      cor: receivedFormData.geral?.cor,
+      cep: receivedFormData.geral?.cep,
+      endereco: receivedFormData.geral?.endereco,
+      cidade: receivedFormData.geral?.cidade,
+    });
+    setStep12({
+      nome: receivedFormData.escola?.nome,
+      serie: receivedFormData.escola?.serie,
+      endereco: receivedFormData.escola?.endereco,
+      cidade: receivedFormData.escola?.cidade,
+      possuiAdi: receivedFormData.escola?.possuiAdi,
+      tipo: receivedFormData.escola?.tipo,
+      tempoNaEscola: receivedFormData.escola?.tempoNaEscola,
+      possuiRelatorio: receivedFormData.escola?.possuiRelatorio,
+    });
+  }, [receivedFormData]);
+
+  useEffect(() => {
+    if (error && errorRef.current) {
+      errorRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [error]);
   // ARQUIVOS //
 
   const [fotoFile, setFotoFile] = useState<File | null>(null);
@@ -152,23 +185,39 @@ const Step1: React.FC<{
   //////////
 
   const handleNext = () => {
-    if (!Step11.cpf || !login.email || !login.senha) {
+    setError(null);
+    setIsCpfMissing(false);
+    setIsEmailMissing(false);
+    setIsSenhaMissing(false);
+
+    if (!Step11.cpf || !login.email) {
+      setIsCpfMissing(!Step11.cpf);
+      setIsEmailMissing(!login.email);
+      // setIsSenhaMissing(!login.senha);
       setError("Preencha todos os campos obrigatórios");
       return;
     }
 
-    if (login.email !== login.confirmarEmail || login.senha !== login.confirmarSenha) {
-      setError("Os campos de e-mail e senha precisam ser iguais.");
+    if (login.email !== login.confirmarEmail) {
+      setError("Os campos de e-mail precisam ser iguais.");
+      setIsEmailMissing(true);
+      return;
+    }
+    if (login.senha !== login.confirmarSenha) {
+      setError("Os campos de senha precisam ser iguais.");
+      setIsSenhaMissing(true);
       return;
     }
     if (!validateEmail(login.email)) {
       setError("O e-mail inserido não é válido.");
+      setIsEmailMissing(true);
       return;
     }
-    if (!validatePassword(login.senha)) {
-      setError("A senha precisa ter no mínimo 8 caracteres.");
-      return;
-    }
+    // if (!validatePassword(login.senha)) {
+    //   setError("A senha precisa ter no mínimo 8 caracteres.");
+    //   setIsSenhaMissing(true);
+    //   return;
+    // }
 
     updateGeral(Step11);
     updateEscola(Step12);
@@ -185,17 +234,18 @@ const Step1: React.FC<{
     <div className='flex flex-col gap-[162px] w-screen'>
       <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
         <div className='flex flex-col gap-[12px]'>
-          {error && <div className="text-[#FFF] font-medium text-center mt-4 bg-[#e13c31] py-3 rounded-xl">{error}</div>}
-          <button onClick={() => {console.log(receivedFormData)}}>Mostrar formData</button>
+          {error && <div ref={errorRef} className="text-[#FFF] font-medium text-center mt-4 bg-[#e13c31] py-3 rounded-xl">{error}</div>}
+          <button onClick={() => { console.log(receivedFormData) }}>Mostrar formData</button>
+          <button onClick={() => { console.log(login) }}>Mostrar login</button>
           <h4 className='pl-2 place-self-start mt-8'>Crie seu login e senha</h4>
           <div className='flex w-full gap-3'>
-            <TextInput className='w-[400px]' placeholder='E-mail' value={receivedFormData?.email} onChange={(e) => handleLoginChange("email", e.target.value)} />
-            <TextInput className='w-[400px]' placeholder='Confirmar e-mail' value={login.confirmarEmail} onChange={(e) => handleLoginChange("confirmarEmail", e.target.value)} />
+            <TextInput error={isEmailMissing} className='w-[400px]' placeholder='E-mail' value={receivedFormData?.email} onChange={(e) => handleLoginChange("email", e.target.value)} />
+            <TextInput error={isEmailMissing} className='w-[400px]' placeholder='Confirmar e-mail' value={receivedFormData?.email} onChange={(e) => handleLoginChange("confirmarEmail", e.target.value)} />
           </div>
-          <div className='flex w-full gap-3'>
-            <TextInput className='w-[400px]' placeholder='Senha' value={login.senha} onChange={(e) => handleLoginChange("senha", e.target.value)} />
-            <TextInput className='w-[400px]' placeholder='Confirmar senha' value={login.confirmarSenha} onChange={(e) => handleLoginChange("confirmarSenha", e.target.value)} />
-          </div>
+          {/* <div className='flex w-full gap-3'>
+            <TextInput error={isSenhaMissing} className='w-[400px]' placeholder='Senha' value={login.senha} onChange={(e) => handleLoginChange("senha", e.target.value)} />
+            <TextInput error={isSenhaMissing} className='w-[400px]' placeholder='Confirmar senha' value={login.confirmarSenha} onChange={(e) => handleLoginChange("confirmarSenha", e.target.value)} />
+          </div> */}
 
           <div className='mb-4'></div>
 
@@ -215,7 +265,7 @@ const Step1: React.FC<{
           <div className='flex w-full gap-[12px]'>
             <DateInput value={receivedFormData.geral?.data} onChange={(e) => handleInputChange1("data", e.target.value)} />
             <TextInput placeholder='RG' type='rg' className='min-w-[220px]' value={receivedFormData.geral?.rg} onChange={(e) => handleInputChange1("rg", e.target.value)} />
-            <TextInput placeholder='CPF' type='cpf' className='min-w-[220px]' value={receivedFormData.geral?.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
+            <TextInput error={isCpfMissing} placeholder='CPF' type='cpf' className='min-w-[220px]' value={receivedFormData.geral?.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
           </div>
 
 

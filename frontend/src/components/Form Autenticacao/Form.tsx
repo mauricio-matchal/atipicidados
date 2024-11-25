@@ -152,6 +152,9 @@ const Form: React.FC<FormProps> = ({ id }) => {
       return <Step2
         nextStep={nextStep}
         prevStep={prevStep}
+
+        receivedFormData={formData}
+
         updateMae={(data) => updateDataAt(data, "mae")}
         updatePai={(data) => updateDataAt(data, "pai")}
       />;
@@ -159,6 +162,9 @@ const Form: React.FC<FormProps> = ({ id }) => {
       return <Step3
         nextStep={nextStep}
         prevStep={prevStep}
+
+        receivedFormData={formData}
+
         updateMaisInfo={(data) => updateDataAt(data, "maisinfo")}
       />;
     case 4:
@@ -166,6 +172,9 @@ const Form: React.FC<FormProps> = ({ id }) => {
         <button onClick={() => { console.log(formData) }}>Mostrar formData</button>
         <Step4
           prevStep={prevStep}
+
+          receivedFormData={formData}
+  
           updateInfoSaude={(data) => updateDataAt(data, "infosaude")}
           handleFormDataSubmit={handleUserEdition}
           updateLaudoFile={(data) => updateDataAt(data, "laudofile")}

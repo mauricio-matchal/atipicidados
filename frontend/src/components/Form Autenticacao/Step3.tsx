@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StepProps } from './types';
 import SelectInput from '../SelectInput';
 import TextInput from '../TextInput';
@@ -20,24 +20,46 @@ type Step3State = {
   moradores: [];
 };
 
-const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisInfo: (data: Step3State) => void }> = ({ nextStep, prevStep, updateMaisInfo }) => {
+const Step3: React.FC<{
+  nextStep: () => void;
+  prevStep: () => void;
+  updateMaisInfo: (data: Step3State) => void
+
+  receivedFormData: any | null;
+}> = ({ nextStep, prevStep, updateMaisInfo, receivedFormData }) => {
   const [selectedCheckboxOptions, setSelectedCheckboxOptions] = useState<string[]>([]);
   const [hasNIS, setHasNIS] = useState(false);
   const [hasAtendimento, setHasAtendimento] = useState(false);
 
   const [Step3, setStep3] = useState<Step3State>({
-    possuinis: "",
-    numeronis: "",
-    bpc: "",
-    bolsafamilia: "",
-    ciptea: "",
-    passelivre: [],
-    possuiterapia: "",
-    qualterapia: "",
-    enderecoterapia: "",
-    renda: "",
-    moradores: [],
+    possuinis: receivedFormData.maisinfo?.possuinis || '',
+    numeronis: receivedFormData.maisinfo?.numeronis || '',
+    bpc: receivedFormData.maisinfo?.bpc || '',
+    bolsafamilia: receivedFormData.maisinfo?.bolsafamilia || '',
+    ciptea: receivedFormData.maisinfo?.ciptea || '',
+    passelivre: receivedFormData.maisinfo?.passelivre || '',
+    possuiterapia: receivedFormData.maisinfo?.possuiterapia || '',
+    qualterapia: receivedFormData.maisinfo?.qualterapia || '',
+    enderecoterapia: receivedFormData.maisinfo?.enderecoterapia || '',
+    renda: receivedFormData.maisinfo?.renda || '',
+    moradores: receivedFormData.maisinfo?.moradores || '',
   });
+
+  useEffect(() => {
+    setStep3({
+      possuinis: receivedFormData.maisinfo?.possuinis,
+      numeronis: receivedFormData.maisinfo?.numeronis,
+      bpc: receivedFormData.maisinfo?.bpc,
+      bolsafamilia: receivedFormData.maisinfo?.bolsafamilia,
+      ciptea: receivedFormData.maisinfo?.ciptea,
+      passelivre: receivedFormData.maisinfo?.passelivre,
+      possuiterapia: receivedFormData.maisinfo?.possuiterapia,
+      qualterapia: receivedFormData.maisinfo?.qualterapia,
+      enderecoterapia: receivedFormData.maisinfo?.enderecoterapia,
+      renda: receivedFormData.maisinfo?.renda,
+      moradores: receivedFormData.maisinfo?.moradores,
+    })
+  }, [receivedFormData])
 
   const handleInputChange = (key: string, value: string) => {
     setStep3((prevState) => ({
@@ -106,6 +128,7 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
 
           <div className='flex w-full gap-[12px]'>
             <SelectInput
+              value={receivedFormData.maisinfo?.possuinis}
               options={["Sim, possui NIS", "Não possui NIS"]}
               placeholder={"Possui NIS?"}
               onChange={handleNISChange}
@@ -115,22 +138,25 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
               className={`transition-opacity duration-300 ${hasNIS ? 'opacity-100' : 'opacity-40'} ${hasNIS ? '' : 'cursor-not-allowed'}`}
               disabled={!hasNIS}
               style={{ pointerEvents: hasNIS ? 'auto' : 'none' }}
-              value={Step3.numeronis} onChange={(e) => handleInputChange("numeronis", e.target.value)}
+              value={receivedFormData.maisinfo?.numeronis} onChange={(e) => handleInputChange("numeronis", e.target.value)}
             />
           </div>
 
           <div className='flex w-full gap-[12px]'>
             <SelectInput
+              value={receivedFormData.maisinfo?.bpc}
               options={["Sim, recebe BPC", "Não recebe BPC"]}
               placeholder={"Recebe BPC?"}
               onChange={(value) => handleInputChange("bpc", value)}
             />
             <SelectInput
+              value={receivedFormData.maisinfo?.bolsafamilia}
               options={["Sim, recebe Bolsa Família", "Não recebe Bolsa Família"]}
               placeholder={"Recebe Bolsa Família?"}
               onChange={(value) => handleInputChange("bolsafamilia", value)}
             />
             <SelectInput
+              value={receivedFormData.maisinfo?.ciptea}
               options={["Sim, tem carteira CIPTEA", "Não tem carteira CIPTEA"]}
               placeholder={"Tem carteira CIPTEA?"}
               onChange={(value) => handleInputChange("ciptea", value)}
@@ -145,6 +171,7 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
 
           <div className='flex w-full gap-[12px]'>
             <SelectInput
+              value={receivedFormData.maisinfo?.possuiterapia}
               options={["Sim, possui atendimento terapêutico", "Não possui atendimento terapêutico"]}
               placeholder={"Possui atendimento terapêutico?"}
               onChange={handleAtendimentoChange}
@@ -154,7 +181,7 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
               className={`transition-opacity duration-300 w-full ${hasAtendimento ? 'opacity-100' : 'opacity-40'} ${hasAtendimento ? '' : 'cursor-not-allowed'}`}
               disabled={!hasAtendimento}
               style={{ pointerEvents: hasAtendimento ? 'auto' : 'none' }}
-              value={Step3.qualterapia} onChange={(e) => handleInputChange("qualterapia", e.target.value)}
+              value={receivedFormData.maisinfo?.qualterapia} onChange={(e) => handleInputChange("qualterapia", e.target.value)}
             />
           </div>
 
@@ -164,9 +191,9 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
               className={`transition-opacity duration-300 w-full ${hasAtendimento ? 'opacity-100' : 'opacity-40'} ${hasAtendimento ? '' : 'cursor-not-allowed'}`}
               disabled={!hasAtendimento}
               style={{ pointerEvents: hasAtendimento ? 'auto' : 'none' }}
-              value={Step3.enderecoterapia} onChange={(e) => handleInputChange("enderecoterapia", e.target.value)}
+              value={receivedFormData.maisinfo?.enderecoterapia} onChange={(e) => handleInputChange("enderecoterapia", e.target.value)}
             />
-            <TextInput placeholder="Renda familiar" value={Step3.renda} onChange={(e) => handleInputChange("renda", e.target.value)} />
+            <TextInput placeholder="Renda familiar" value={receivedFormData.maisinfo?.renda} onChange={(e) => handleInputChange("renda", e.target.value)} />
           </div>
 
           <CheckInput
