@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { StepProps } from './types';
 import SelectInput from '../SelectInput';
 import TextInput from '../TextInput';
@@ -76,7 +76,11 @@ const Step1: React.FC<{
     confirmarSenha: "",
   });
 
+  const errorRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isCpfMissing, setIsCpfMissing] = useState(false);
+  const [isEmailMissing, setIsEmailMissing] = useState(false);
+  const [isSenhaMissing, setIsSenhaMissing] = useState(false);
 
   const handleLoginChange: any = (key: string, value: string) => {
     setLogin((prevState) => {
@@ -110,11 +114,11 @@ const Step1: React.FC<{
   };
 
   useEffect(() => {
-    // console.log("fotoFile", fotoFile)
-    // console.log("rgFile", rgFile)
-    // console.log("relatorioFile", relatorioFile)
-    // console.log("residenciaFile", residenciaFile)
-  })
+    if (error && errorRef.current) {
+      errorRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [error]);
+
   // ARQUIVOS //
 
   const [fotoFile, setFotoFile] = useState<File | null>(null);
@@ -149,21 +153,37 @@ const Step1: React.FC<{
   //////////
 
   const handleNext = () => {
+    setError(null);
+    setIsCpfMissing(false);
+    setIsEmailMissing(false);
+    setIsSenhaMissing(false);
+
     if (!Step11.cpf || !login.email || !login.senha) {
+      setIsCpfMissing(!Step11.cpf);
+      setIsEmailMissing(!login.email);
+      setIsSenhaMissing(!login.senha);
       setError("Preencha todos os campos obrigatórios");
       return;
     }
 
-    if (login.email !== login.confirmarEmail || login.senha !== login.confirmarSenha) {
-      setError("Os campos de e-mail e senha precisam ser iguais.");
+    if (login.email !== login.confirmarEmail) {
+      setError("Os campos de e-mail precisam ser iguais.");
+      setIsEmailMissing(true);
+      return;
+    }
+    if (login.senha !== login.confirmarSenha) {
+      setError("Os campos de senha precisam ser iguais.");
+      setIsSenhaMissing(true);
       return;
     }
     if (!validateEmail(login.email)) {
       setError("O e-mail inserido não é válido.");
+      setIsEmailMissing(true);
       return;
     }
     if (!validatePassword(login.senha)) {
       setError("A senha precisa ter no mínimo 8 caracteres.");
+      setIsSenhaMissing(true);
       return;
     }
 
@@ -182,15 +202,15 @@ const Step1: React.FC<{
     <div className='flex flex-col gap-[162px] w-screen'>
       <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
         <div className='flex flex-col gap-[12px]'>
-          {error && <div className="text-[#FFF] font-medium text-center mt-4 bg-[#e13c31] py-3 rounded-xl">{error}</div>}
+          {error && <div ref={errorRef} className="text-[#FFF] font-medium text-center mt-4 bg-[#e13c31] py-3 rounded-xl">{error}</div>}
           <h4 className='pl-2 place-self-start mt-8'>Crie seu login e senha</h4>
           <div className='flex w-full gap-3'>
-            <TextInput className='w-[400px]' placeholder='E-mail' value={login.email} onChange={(e) => handleLoginChange("email", e.target.value)} />
-            <TextInput className='w-[400px]' placeholder='Confirmar e-mail' value={login.confirmarEmail} onChange={(e) => handleLoginChange("confirmarEmail", e.target.value)} />
+            <TextInput error={isEmailMissing} className='w-[400px]' placeholder='E-mail' value={login.email} onChange={(e) => handleLoginChange("email", e.target.value)} />
+            <TextInput error={isEmailMissing} className='w-[400px]' placeholder='Confirmar e-mail' value={login.confirmarEmail} onChange={(e) => handleLoginChange("confirmarEmail", e.target.value)} />
           </div>
           <div className='flex w-full gap-3'>
-            <TextInput className='w-[400px]' placeholder='Senha' value={login.senha} onChange={(e) => handleLoginChange("senha", e.target.value)} />
-            <TextInput className='w-[400px]' placeholder='Confirmar senha' value={login.confirmarSenha} onChange={(e) => handleLoginChange("confirmarSenha", e.target.value)} />
+            <TextInput error={isSenhaMissing} className='w-[400px]' placeholder='Senha' value={login.senha} onChange={(e) => handleLoginChange("senha", e.target.value)} />
+            <TextInput error={isSenhaMissing} className='w-[400px]' placeholder='Confirmar senha' value={login.confirmarSenha} onChange={(e) => handleLoginChange("confirmarSenha", e.target.value)} />
           </div>
 
           <div className='mb-4'></div>
@@ -211,7 +231,7 @@ const Step1: React.FC<{
           <div className='flex w-full gap-[12px]'>
             <DateInput value={Step11.data} onChange={(e) => handleInputChange1("data", e.target.value)} />
             <TextInput placeholder='RG' type='rg' className='min-w-[220px]' value={Step11.rg} onChange={(e) => handleInputChange1("rg", e.target.value)} />
-            <TextInput placeholder='CPF' type='cpf' className='min-w-[220px]' value={Step11.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
+            <TextInput error={isCpfMissing} placeholder='CPF' type='cpf' className='min-w-[220px]' value={Step11.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
           </div>
 
 

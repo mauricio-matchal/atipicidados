@@ -2,17 +2,18 @@ import { JSX, ClassAttributes, InputHTMLAttributes } from "react";
 import InputMask from "react-input-mask";
 
 interface TextInputProps {
+  error?: boolean;
   value: any;
   placeholder: string;
   type?: string;
 }
 
-export default function TextInput({ placeholder, type, ...props }: JSX.IntrinsicAttributes & ClassAttributes<HTMLInputElement> & InputHTMLAttributes<HTMLInputElement>) {
+export default function TextInput({ placeholder, type, ...props }: JSX.IntrinsicAttributes & ClassAttributes<HTMLInputElement> & InputHTMLAttributes<HTMLInputElement> & TextInputProps) {
 
   const cpfMask = "999.999.999-99";
   const rgMask = "99.999.999-99";
   const cepMask = "99.999-999";
-  
+
   if (type === "cep") {
     return (
       <div className="w-full" {...props}>
@@ -20,7 +21,7 @@ export default function TextInput({ placeholder, type, ...props }: JSX.Intrinsic
           mask={cepMask}
           type="text"
           value={props.value}
-          className=" inline-block w-full py-[9px] leading-[19px] px-3 text-sm bg-transparent border-2 border-[#7481F6] border-opacity-70 rounded-xl focus:outline-none focus:border-blue-800"
+          className={`inline-block w-full py-[9px] leading-[19px] px-3 text-sm bg-transparent border-2 ${props.error ? "border-[#e13c31]" : "border-[#7481F6] border-opacity-70"} rounded-xl focus:outline-none focus:border-blue-800`}
           placeholder={placeholder}
         />
       </div>
@@ -33,7 +34,7 @@ export default function TextInput({ placeholder, type, ...props }: JSX.Intrinsic
           mask={cpfMask}
           type="text"
           value={props.value}
-          className=" inline-block w-full py-[9px] leading-[19px] px-3 text-sm bg-transparent border-2 border-[#7481F6] border-opacity-70 rounded-xl focus:outline-none focus:border-blue-800"
+          className={`inline-block w-full py-[9px] leading-[19px] px-3 text-sm bg-transparent border-2 ${props.error ? "border-[#e13c31]" : "border-[#7481F6] border-opacity-70"} rounded-xl focus:outline-none focus:border-blue-800`}
           placeholder={placeholder}
         />
       </div>
@@ -46,7 +47,7 @@ export default function TextInput({ placeholder, type, ...props }: JSX.Intrinsic
           mask={rgMask}
           type="text"
           value={props.value}
-          className=" inline-block w-full py-[9px] leading-[19px] px-3 text-sm bg-transparent border-2 border-[#7481F6] border-opacity-70 rounded-xl focus:outline-none focus:border-blue-800"
+          className={`inline-block w-full py-[9px] leading-[19px] px-3 text-sm bg-transparent border-2 ${props.error ? "border-[#e13c31]" : "border-[#7481F6] border-opacity-70"} rounded-xl focus:outline-none focus:border-blue-800`}
           placeholder={placeholder}
         />
       </div>
@@ -57,7 +58,7 @@ export default function TextInput({ placeholder, type, ...props }: JSX.Intrinsic
       <input
         type="text"
         value={props.value}
-        className=" inline-block w-full py-[9px] leading-[19px] px-3 text-sm bg-transparent border-2 border-[#7481F6] border-opacity-70 rounded-xl focus:outline-none focus:border-blue-800"
+        className={`inline-block w-full py-[9px] leading-[19px] px-3 text-sm bg-transparent border-2 ${props.error ? "border-[#e13c31]" : "border-[#7481F6] border-opacity-70"} rounded-xl focus:outline-none focus:border-blue-800`}
         placeholder={placeholder}
       />
     </div>
