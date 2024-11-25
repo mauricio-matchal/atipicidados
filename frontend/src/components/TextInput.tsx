@@ -2,6 +2,7 @@ import { JSX, ClassAttributes, InputHTMLAttributes } from "react";
 import InputMask from "react-input-mask";
 
 interface TextInputProps {
+  value: any;
   placeholder: string;
   type?: string;
 }
@@ -18,6 +19,7 @@ export default function TextInput({ placeholder, type, ...props }: JSX.Intrinsic
         <InputMask
           mask={cepMask}
           type="text"
+          value={props.value}
           className=" inline-block w-full py-[9px] leading-[19px] px-3 text-sm bg-transparent border-2 border-[#7481F6] border-opacity-70 rounded-xl focus:outline-none focus:border-blue-800"
           placeholder={placeholder}
         />
@@ -30,6 +32,7 @@ export default function TextInput({ placeholder, type, ...props }: JSX.Intrinsic
         <InputMask
           mask={cpfMask}
           type="text"
+          value={props.value}
           className=" inline-block w-full py-[9px] leading-[19px] px-3 text-sm bg-transparent border-2 border-[#7481F6] border-opacity-70 rounded-xl focus:outline-none focus:border-blue-800"
           placeholder={placeholder}
         />
@@ -42,6 +45,7 @@ export default function TextInput({ placeholder, type, ...props }: JSX.Intrinsic
         <InputMask
           mask={rgMask}
           type="text"
+          value={props.value}
           className=" inline-block w-full py-[9px] leading-[19px] px-3 text-sm bg-transparent border-2 border-[#7481F6] border-opacity-70 rounded-xl focus:outline-none focus:border-blue-800"
           placeholder={placeholder}
         />
@@ -52,6 +56,7 @@ export default function TextInput({ placeholder, type, ...props }: JSX.Intrinsic
     <div className="w-full" {...props}>
       <input
         type="text"
+        value={props.value}
         className=" inline-block w-full py-[9px] leading-[19px] px-3 text-sm bg-transparent border-2 border-[#7481F6] border-opacity-70 rounded-xl focus:outline-none focus:border-blue-800"
         placeholder={placeholder}
       />

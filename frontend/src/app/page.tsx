@@ -100,9 +100,9 @@ export default function Home() {
     <main className={`flex min-h-screen ${isLoading && ""}`}>
       {errorMessage && (
         <>
-          <div className="fixed z-40 place-self-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-800 p-5 text-white">
-            <button className="text-white" onClick={() => {setErrorMessage("")}}>Voltar</button>
-            Erro ao fazer login. Tente novamente.
+          <div className="fixed z-40 place-self-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-800 p-5 text-white flex-row">
+            <button className="text-white" onClick={() => { setErrorMessage("") }}>Voltar</button>
+            <p>Erro ao fazer login. Tente novamente.</p> 
           </div>
           <div className="fixed inset-0 bg-black/30 z-30" />
         </>

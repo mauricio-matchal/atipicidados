@@ -3,6 +3,7 @@ import { JSX, ClassAttributes, InputHTMLAttributes } from "react";
 import { FileIcon } from '../../public/icons/Icons';
 
 interface FileInputProps extends JSX.IntrinsicAttributes, ClassAttributes<HTMLDivElement>, InputHTMLAttributes<HTMLDivElement> {
+  value: any;
   placeholder: string;
   id: string;
   name: string;
@@ -34,6 +35,7 @@ export default function FileInput(props: JSX.IntrinsicAttributes & ClassAttribut
       </label>
       <input
         type="file"
+        // value={props.value}
         className="absolute w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0"
         id={props.id}
         name={props.name}

@@ -4,22 +4,44 @@ import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
 import Step4 from './Step4';
-import { FormData } from './types';
 
 interface FormProps {
   id: string;
 }
 
+type FormData = {
+  email: string | null;
+  password: string | null;
+  geral: any | null;
+  escola: any | null;
+  mae: any | null;
+  pai: any | null;
+  maisinfo: any | null;
+  saudeinfo: any | null;
+  fotofile: File | null;
+  relescolar: File | null;
+  laudofile: File | null;
+  rgdocfile: File | null;
+  compresfile: File | null;
+};
+
 const Form: React.FC<FormProps> = ({ id }) => {
   const [currentStep, setCurrentStep] = useState(1);
   // const pacienteData
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
+    email: null,
+    password: null,
     geral: null,
     escola: null,
     mae: null,
     pai: null,
     maisinfo: null,
-    saudeinfo: null
+    saudeinfo: null,
+    fotofile: null,
+    relescolar: null,
+    laudofile: null,
+    rgdocfile: null,
+    compresfile: null,
   });
 
   const nextStep = () => setCurrentStep(currentStep + 1);
@@ -28,7 +50,7 @@ const Form: React.FC<FormProps> = ({ id }) => {
   useEffect(() => {
     fetchData(id);
     // get id by through clicking a pacient card
-  })
+  }, [id])
 
   const fetchData = async (id: any) => {
     try {
@@ -44,49 +66,21 @@ const Form: React.FC<FormProps> = ({ id }) => {
     }
   }
 
-  const updateGeral = (data: any) => {
+  const updateDataAt = (data: any, type: string) => {
     setFormData((prevData) => ({
       ...prevData,
-      [`geral`]: data,
-    }));
-  };
-  const updateEscola = (data: any) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [`escola`]: data,
-    }));
-  };
-  const updateMae = (data: any) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [`mae`]: data,
-    }));
-  };
-  const updatePai = (data: any) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [`pai`]: data,
-    }));
-  };
-  const updateMaisInfo = (data: any) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [`maisinfo`]: data,
-    }));
-  };
-  const updateInfoSaude = (data: any) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [`saudeinfo`]: data,
-    }));
-  };
-
-
-  const reveal = () => {
-    console.log(formData);
+      [type]: data,
+    }))
   }
+  const updateLogin = (data: any) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      'email': data.email,
+      'password': data.senha,
+    }));
+  };
 
-  const putData = async (data: string, id: string, type: string) => {
+  const putData = async (data: any, id: string, type: string) => {
     try {
       const response = await fetch(`http://localhost:3002/pacientes/put${type}`, {
         method: "PUT",
@@ -139,34 +133,42 @@ const Form: React.FC<FormProps> = ({ id }) => {
   switch (currentStep) {
     case 1:
       return <>
-        {/* <button onClick={reveal}>reveal</button> */}
+        {/* <button onClick={() => { console.log(formData) }}>Mostrar formData</button> */}
         <Step1
           nextStep={nextStep}
-          updateGeral={(data) => updateGeral(data)}
-          updateEscola={(data) => updateEscola(data)}
+
+          receivedFormData={formData}
+
+          updateLogin={(data) => updateLogin(data)}
+          updateGeral={(data) => updateDataAt(data, "geral")}
+          updateEscola={(data) => updateDataAt(data, "escola")}
+          updateFoto={(data) => updateDataAt(data, "fotofile")}
+          updateRelatorio={(data) => updateDataAt(data, "relescolar")}
+          updateRG={(data) => updateDataAt(data, "rgdocfile")}
+          updateResidencia={(data) => updateDataAt(data, "compresfile")}
         />;
       </>
     case 2:
       return <Step2
         nextStep={nextStep}
         prevStep={prevStep}
-        updateMae={(data) => updateMae(data)}
-        updatePai={(data) => updatePai(data)}
+        updateMae={(data) => updateDataAt(data, "mae")}
+        updatePai={(data) => updateDataAt(data, "pai")}
       />;
     case 3:
       return <Step3
         nextStep={nextStep}
         prevStep={prevStep}
-        updateMaisInfo={(data) => updateMaisInfo(data)}
+        updateMaisInfo={(data) => updateDataAt(data, "maisinfo")}
       />;
     case 4:
       return <>
-        {/* <button onClick={reveal}>reveal</button> */}
-        <button onClick={handleUserEdition}>rodar a rota</button>
+        <button onClick={() => { console.log(formData) }}>Mostrar formData</button>
         <Step4
           prevStep={prevStep}
-          updateInfoSaude={(data) => updateInfoSaude(data)}
+          updateInfoSaude={(data) => updateDataAt(data, "infosaude")}
           handleFormDataSubmit={handleUserEdition}
+          updateLaudoFile={(data) => updateDataAt(data, "laudofile")}
         />;
       </>
     default:

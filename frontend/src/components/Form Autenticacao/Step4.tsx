@@ -27,7 +27,12 @@ type Step4State = {
 };
 
 
-const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State) => void; handleFormDataSubmit: () => void }> = ({ prevStep, updateInfoSaude, handleFormDataSubmit }) => {
+const Step4: React.FC<{
+  prevStep: () => void;
+  updateLaudoFile: (data: any) => void; 
+  updateInfoSaude: (data: Step4State) => void; 
+  handleFormDataSubmit: () => void 
+}> = ({ prevStep, updateInfoSaude, handleFormDataSubmit, updateLaudoFile }) => {
   const [selectedCheckboxOptions, setSelectedCheckboxOptions] = useState<string[]>([]);
 
   const [Step4, setStep4] = useState<Step4State>({
@@ -67,6 +72,14 @@ const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State
       [key]: value,
     }));
   };
+
+  const [laudoFile, setLaudoFile] = useState<File | null>(null);
+
+  const handleLaudoFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setLaudoFile(e.target.files[0]);
+    }
+  }
 
   const handleDoencaChange = (options: string[]) => {
     setSelectedCheckboxOptions(options);
@@ -108,12 +121,9 @@ const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State
     setIsModalVisible(false);
   };
 
-  const reveal = () => {
-    console.log(Step4);
-  }
-
   const handleSubmit = () => {
     updateInfoSaude(Step4);
+    updateLaudoFile(laudoFile);
     handleFormDataSubmit();
   };
 
@@ -123,7 +133,7 @@ const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State
 
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Informações de saúde</h4>
-          <button onClick={reveal}>reveal</button>
+          {/* <button onClick={reveal}>reveal</button> */}
           <div className='flex w-full gap-[12px]'>
             <SelectInput
               options={["Sim, tem diagnóstico", "Não tem diagnóstico"]}
@@ -211,6 +221,8 @@ const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State
               className={`transition-opacity duration-300 w-full ${hasAsma ? 'opacity-100' : 'opacity-40'} ${hasAsma ? '' : 'cursor-not-allowed'}`}
               disabled={!hasAsma}
               style={{ pointerEvents: hasAsma ? 'auto' : 'none' }}
+              name='laudofile'
+              onChange={handleLaudoFileChange}
             />
           </div>
 

@@ -30,7 +30,7 @@ export default function Home() {
     // Filter by search term
     if (searchBy.length > 0) {
       filtered = filtered.filter((member) =>
-        member.nome.toLowerCase().includes(searchBy.toLowerCase())
+        member.nome?.toLowerCase().includes(searchBy.toLowerCase())
       );
     }
 
@@ -77,7 +77,7 @@ export default function Home() {
 
   const fetchPacientes = async () => {
     try {
-      const response = await fetch("http://localhost:3002/pacientes/getall");
+      const response = await fetch("http://localhost:3002/pacientes/all");
       if (!response.ok) {
         throw new Error("Failed to fetch pacientes data");
       }
@@ -90,7 +90,7 @@ export default function Home() {
   };
   const fetchGerentes = async () => {
     try {
-      const response = await fetch("http://localhost:3002/gerentes/getall");
+      const response = await fetch("http://localhost:3002/gerentes/all");
       if (!response.ok) {
         throw new Error("Failed to fetch gerentes data");
       }
@@ -102,7 +102,7 @@ export default function Home() {
   };
   const fetchColaboradores = async () => {
     try {
-      const response = await fetch("http://localhost:3002/colaboradores/getall");
+      const response = await fetch("http://localhost:3002/colaboradores/all");
       if (!response.ok) {
         throw new Error("Failed to fetch colaboradores data");
       }

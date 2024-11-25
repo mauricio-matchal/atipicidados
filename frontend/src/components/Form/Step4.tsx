@@ -122,6 +122,7 @@ const Step4: React.FC<{
 
   const handleSubmit = () => {
     updateInfoSaude(Step4);
+    updateLaudoFile(laudoFile);
     handleFormDataSubmit();
   };
 

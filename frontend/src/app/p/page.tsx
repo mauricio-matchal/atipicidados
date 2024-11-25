@@ -88,7 +88,7 @@ export default function Home() {
                                     <button type="button" className="bg-black/10 text-black/50 py-2 px-3 rounded-lg font-medium -mr-2" disabled>Verificado</button>
                                 )
                             ) : null} */}
-                            {pacienteInfo && !pacienteInfo.analise ? (
+                            {pacienteInfo && pacienteInfo.analise ? (
                                 <button type="button" className="py-2 px-3 bg-blue-800 text-white rounded-lg font-medium -mr-2" onClick={() => { jumpToPage() }}>Verificar</button>
                             ) : (
                                 <button type="button" className="bg-black/10 text-black/50 py-2 px-3 rounded-lg font-medium -mr-2" disabled>Verificado</button>

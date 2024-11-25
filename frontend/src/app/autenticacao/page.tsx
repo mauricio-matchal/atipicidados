@@ -1,3 +1,4 @@
+"use client";
 import Form from "@/components/Form Autenticacao/Form";
 import NavBar from "@/components/NavBar";
 import { useEffect, useState } from "react";
@@ -7,7 +8,7 @@ export default function Home() {
 
   useEffect(() => {
     const memberId = localStorage.getItem("memberId");
-    if(memberId) {
+    if (memberId) {
       setMemberId(memberId);
       localStorage.removeItem("memberId");
     }
