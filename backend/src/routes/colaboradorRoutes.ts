@@ -1,8 +1,7 @@
 import { Router } from 'express';
 import cors from 'cors';
 import { createUserColaborador, getUserColaborador, colaboradorLogin, getColaborador, getuserColaboradorId, getColaboradores } from '../controllers/colaboradorController';
-import { sendPassword } from '../email/sendpassowordbyemail';
-import { ColaboradorCreateInputSchema } from '../../prisma/generated/zod/validateSchema';
+import { sendPassword } from '../email/sendPasswordByEmailColaborador';
 import { validate } from '../middleware/validate';
 import { ensureAuthenticated } from '../middleware/ensureAuthenticate.ts/autheticate';
 

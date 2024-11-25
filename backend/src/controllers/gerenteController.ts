@@ -14,6 +14,7 @@ export const createUserGerente = async (request: Request, response: Response) =>
     try {
         const userGerente = await prisma.gerente.create({
             data: {
+  
                 nome,
                 email,
                 telefone,
