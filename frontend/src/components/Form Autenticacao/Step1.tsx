@@ -235,12 +235,11 @@ const Step1: React.FC<{
       <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
         <div className='flex flex-col gap-[12px]'>
           {error && <div ref={errorRef} className="text-[#FFF] font-medium text-center mt-4 bg-[#e13c31] py-3 rounded-xl">{error}</div>}
-          <button onClick={() => { console.log(receivedFormData) }}>Mostrar formData</button>
           <button onClick={() => { console.log(login) }}>Mostrar login</button>
           <h4 className='pl-2 place-self-start mt-8'>Crie seu login e senha</h4>
           <div className='flex w-full gap-3'>
-            <TextInput error={isEmailMissing} className='w-[400px]' placeholder='E-mail' value={receivedFormData?.email} onChange={(e) => handleLoginChange("email", e.target.value)} />
-            <TextInput error={isEmailMissing} className='w-[400px]' placeholder='Confirmar e-mail' value={receivedFormData?.email} onChange={(e) => handleLoginChange("confirmarEmail", e.target.value)} />
+            <TextInput error={isEmailMissing} className='w-[400px]' placeholder='E-mail' value={login.email} onChange={(e) => handleLoginChange("email", e.target.value)} />
+            <TextInput error={isEmailMissing} className='w-[400px]' placeholder='Confirmar e-mail' value={login.email} onChange={(e) => handleLoginChange("confirmarEmail", e.target.value)} />
           </div>
           {/* <div className='flex w-full gap-3'>
             <TextInput error={isSenhaMissing} className='w-[400px]' placeholder='Senha' value={login.senha} onChange={(e) => handleLoginChange("senha", e.target.value)} />
@@ -254,7 +253,7 @@ const Step1: React.FC<{
           {/* <button onClick={() => { console.log(fotoFile) }}>Mostrar Foto</button> */}
           <div className='flex w-full gap-[12px]'>
             <FileInput placeholder='Foto 3x4' onChange={handleFotoFileChange} name='fotoFile' id='fotoFile' value={receivedFormData?.fotofile} />
-            <TextInput placeholder='Nome completo' className='min-w-[500px] max-w-[500px]' value={receivedFormData.geral?.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
+            <TextInput placeholder='Nome completo' className='min-w-[500px] max-w-[500px]' value={Step11.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
           </div>
 
           <div className='flex w-full gap-[12px]'>
@@ -263,21 +262,21 @@ const Step1: React.FC<{
           </div>
 
           <div className='flex w-full gap-[12px]'>
-            <DateInput value={receivedFormData.geral?.data} onChange={(e) => handleInputChange1("data", e.target.value)} />
-            <TextInput placeholder='RG' type='rg' className='min-w-[220px]' value={receivedFormData.geral?.rg} onChange={(e) => handleInputChange1("rg", e.target.value)} />
-            <TextInput error={isCpfMissing} placeholder='CPF' type='cpf' className='min-w-[220px]' value={receivedFormData.geral?.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
+            <DateInput value={Step11.data} onChange={(e) => handleInputChange1("data", e.target.value)} />
+            <TextInput placeholder='RG' type='rg' className='min-w-[220px]' value={Step11.rg} onChange={(e) => handleInputChange1("rg", e.target.value)} />
+            <TextInput error={isCpfMissing} placeholder='CPF' type='cpf' className='min-w-[220px]' value={Step11.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
           </div>
 
 
           <div className='flex w-full gap-[12px]'>
-            <SelectInput value={receivedFormData.geral?.sexo} options={["Masculino", "Feminino", "Intersexo", "Outro sexo", "Prefiro não dizer o sexo"]} placeholder={"Sexo"} onChange={(value) => handleInputChange1("sexo", value)} />
-            <SelectInput value={receivedFormData.geral?.cor} options={["Amarelo", "Branco", "Indígena", "Pardo", "Preto"]} placeholder={"Raça/cor"} onChange={(value) => handleInputChange1("cor", value)} />
-            <TextInput placeholder='CEP' type="cep" className='min-w-[220px]' value={receivedFormData.geral?.cep} onChange={(e) => handleInputChange1("cep", e.target.value)} />
+            <SelectInput value={Step11.sexo} options={["Masculino", "Feminino", "Intersexo", "Outro sexo", "Prefiro não dizer o sexo"]} placeholder={"Sexo"} onChange={(value) => handleInputChange1("sexo", value)} />
+            <SelectInput value={Step11.cor} options={["Amarelo", "Branco", "Indígena", "Pardo", "Preto"]} placeholder={"Raça/cor"} onChange={(value) => handleInputChange1("cor", value)} />
+            <TextInput placeholder='CEP' type="cep" className='min-w-[220px]' value={Step11.cep} onChange={(e) => handleInputChange1("cep", e.target.value)} />
           </div>
 
           <div className='flex w-full gap-[12px]'>
-            <TextInput placeholder="Endereço" value={receivedFormData.geral?.endereco} onChange={(e) => handleInputChange1("endereco", e.target.value)} />
-            <SelectInput value={receivedFormData.geral?.cidade} options={["Salvador", "Lauro de Freitas", "Camaçari", "Catu"]} placeholder={"Cidade"} onChange={(value) => handleInputChange1("cidade", value)} />
+            <TextInput placeholder="Endereço" value={Step11.endereco} onChange={(e) => handleInputChange1("endereco", e.target.value)} />
+            <SelectInput value={Step11.cidade} options={["Salvador", "Lauro de Freitas", "Camaçari", "Catu"]} placeholder={"Cidade"} onChange={(value) => handleInputChange1("cidade", value)} />
           </div>
         </div>
 
@@ -285,32 +284,32 @@ const Step1: React.FC<{
           <h4 className='pl-2'>Escola</h4>
 
           <div className='flex w-full gap-[12px]'>
-            <TextInput placeholder="Nome da escola" value={receivedFormData.escola?.nome} onChange={(e) => handleInputChange2("nome", e.target.value)} />
-            <SelectInput value={receivedFormData.escola?.serie} placeholder="Série" options={["1ª série", "2ª série", "3ª série", "4ª série", "5ª série", '6ª série', '8ª série']} className='min-w-[260px]' onChange={(value) => handleInputChange2("serie", value)} />
+            <TextInput placeholder="Nome da escola" value={Step12.nome} onChange={(e) => handleInputChange2("nome", e.target.value)} />
+            <SelectInput value={Step12.serie} placeholder="Série" options={["1ª série", "2ª série", "3ª série", "4ª série", "5ª série", '6ª série', '8ª série']} className='min-w-[260px]' onChange={(value) => handleInputChange2("serie", value)} />
           </div>
 
-          <TextInput placeholder="Endereço da escola" value={receivedFormData.escola?.endereco} onChange={(e) => handleInputChange2("endereco", e.target.value)} />
+          <TextInput placeholder="Endereço da escola" value={Step12.endereco} onChange={(e) => handleInputChange2("endereco", e.target.value)} />
 
           <div className='flex w-full gap-[12px]'>
-            <SelectInput value={receivedFormData.escola?.cidade} placeholder={"Cidade da escola"} options={["Salvador", "Lauro de Freitas", "Camaçari", "Catu"]} onChange={(value) => handleInputChange2("cidade", value)} />
-            <SelectInput value={receivedFormData.escola?.possuiAdi} options={["Sim, possui ADI", "Não possui ADI"]} placeholder={"Possui ADI?"} onChange={(value) => handleInputChange2("possuiAdi", value)} />
+            <SelectInput value={Step12.cidade} placeholder={"Cidade da escola"} options={["Salvador", "Lauro de Freitas", "Camaçari", "Catu"]} onChange={(value) => handleInputChange2("cidade", value)} />
+            <SelectInput value={Step12.possuiAdi} options={["Sim, possui ADI", "Não possui ADI"]} placeholder={"Possui ADI?"} onChange={(value) => handleInputChange2("possuiAdi", value)} />
           </div>
 
           <div className='flex w-full gap-[12px]'>
-            <SelectInput value={receivedFormData.escola?.tipo} placeholder={"Tipo da escola"} options={["Pública", "Particular"]} className='min-w-[260px]' onChange={(value) => handleInputChange2("tipo", value)} />
-            <SelectInput value={receivedFormData.escola?.tempoNaEscola} placeholder={"Há quanto tempo estuda na escola?"} options={["Menos de 1 ano", "1 ano", "2 anos", "3 anos", "4 anos", "5 anos", "6 anos", "7 anos", "8 anos", "9 anos", "10 anos", "Mais de 10 anos"]} onChange={(value) => handleInputChange2("tempoNaEscola", value)} />
+            <SelectInput value={Step12.tipo} placeholder={"Tipo da escola"} options={["Pública", "Particular"]} className='min-w-[260px]' onChange={(value) => handleInputChange2("tipo", value)} />
+            <SelectInput value={Step12.tempoNaEscola} placeholder={"Há quanto tempo estuda na escola?"} options={["Menos de 1 ano", "1 ano", "2 anos", "3 anos", "4 anos", "5 anos", "6 anos", "7 anos", "8 anos", "9 anos", "10 anos", "Mais de 10 anos"]} onChange={(value) => handleInputChange2("tempoNaEscola", value)} />
           </div>
 
           <div className='flex w-full gap-[12px]'>
             <SelectInput
-              value={receivedFormData.escola?.possuiRelatorio}
+              value={Step12.possuiRelatorio}
               placeholder={"Possui relatório escolar?"}
               options={["Sim, possui relatório escolar", "Não possui relatório escolar"]}
               onChange={handleRelatorioChange}
             />
             <FileInput
               placeholder="Relatório Escolar"
-              className={`transition-opacity duration-300 ${hasRelatorio ? 'relative inline-block text-left w-full' : 'opacity-40 cursor-not-allowed pointer-events-none inline-block w-full'}`}
+              className={`transition-opacity duration-300 ${Step12.possuiRelatorio ? 'relative inline-block text-left w-full' : 'opacity-40 cursor-not-allowed pointer-events-none inline-block w-full'}`}
               disabled={!hasRelatorio}
               name='relatorioFile'
               onChange={handleRelatorioFileChange}

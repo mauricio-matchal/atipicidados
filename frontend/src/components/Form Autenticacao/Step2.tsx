@@ -114,17 +114,17 @@ const Step2: React.FC<{
           <h4 className='pl-2'>Mãe</h4>
           <button onClick={reveal}>reveal</button>
 
-          <TextInput placeholder="Nome completo da mãe" value={receivedFormData.mae?.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
+          <TextInput placeholder="Nome completo da mãe" value={Step21.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
 
           <div className='flex w-full gap-[12px]'>
-            <DateInput value={receivedFormData.mae?.data} onChange={(e) => handleInputChange1("data", e.target.value)} />
-            <TextInput placeholder='RG da mãe' className='min-w-[220px]' value={receivedFormData.mae?.rg} onChange={(e) => handleInputChange1("rg", e.target.value)} />
-            <TextInput placeholder='CPF da mãe' className='min-w-[220px]' value={receivedFormData.mae?.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
+            <DateInput value={Step21.data} onChange={(e) => handleInputChange1("data", e.target.value)} />
+            <TextInput placeholder='RG da mãe' className='min-w-[220px]' value={Step21.rg} onChange={(e) => handleInputChange1("rg", e.target.value)} />
+            <TextInput placeholder='CPF da mãe' className='min-w-[220px]' value={Step21.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
           </div>
 
           <div className='flex w-full gap-[12px]'>
             <SelectInput
-              value={receivedFormData.mae?.escolaridade}
+              value={Step21.escolaridade}
               placeholder={"Escolaridade"}
               options={[
                 "Ensino fundamental incompleto",
@@ -136,25 +136,25 @@ const Step2: React.FC<{
               ]}
               onChange={(value) => handleInputChange1("escolaridade", value)}
             />
-            <NumberInput placeholder="Telefone de contato" value={receivedFormData.mae?.telefone} onChange={(e) => handleInputChange1("telefone", e.target.value)} />
-            <TextInput placeholder="E-mail" value={receivedFormData.mae?.email} onChange={(e) => handleInputChange1("email", e.target.value)} />
+            <NumberInput placeholder="Telefone de contato" value={Step21.telefone} onChange={(e) => handleInputChange1("telefone", e.target.value)} />
+            <TextInput placeholder="E-mail" value={Step21.email} onChange={(e) => handleInputChange1("email", e.target.value)} />
           </div>
         </div>
 
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Pai</h4>
 
-          <TextInput placeholder="Nome completo do pai" value={receivedFormData.pai?.nome} onChange={(e) => handleInputChange2("nome", e.target.value)} />
+          <TextInput placeholder="Nome completo do pai" value={Step22.nome} onChange={(e) => handleInputChange2("nome", e.target.value)} />
 
           <div className='flex w-full gap-[12px]'>
-            <DateInput value={receivedFormData.pai?.data} onChange={(e) => handleInputChange2("data", e.target.value)} />
-            <TextInput placeholder='RG do pai' className='min-w-[220px]' value={receivedFormData.pai?.rg} onChange={(e) => handleInputChange2("rg", e.target.value)} />
-            <TextInput placeholder='CPF do pai' className='min-w-[220px]' value={receivedFormData.pai?.cpf} onChange={(e) => handleInputChange2("cpf", e.target.value)} />
+            <DateInput value={Step22.data} onChange={(e) => handleInputChange2("data", e.target.value)} />
+            <TextInput placeholder='RG do pai' className='min-w-[220px]' value={Step22.rg} onChange={(e) => handleInputChange2("rg", e.target.value)} />
+            <TextInput placeholder='CPF do pai' className='min-w-[220px]' value={Step22.cpf} onChange={(e) => handleInputChange2("cpf", e.target.value)} />
           </div>
 
           <div className='flex w-full gap-[12px]'>
             <SelectInput
-              value={receivedFormData.pai?.escolaridade}
+              value={Step22.escolaridade}
               placeholder={"Escolaridade"}
               options={[
                 "Ensino fundamental incompleto",
@@ -166,14 +166,14 @@ const Step2: React.FC<{
               ]}
               onChange={(value) => handleInputChange2("escolaridade", value)}
             />
-            <NumberInput placeholder="Telefone de contato" value={receivedFormData.pai?.telefone} onChange={(e) => handleInputChange2("telefone", e.target.value)} />
-            <TextInput placeholder="E-mail" value={receivedFormData.pai?.email} onChange={(e) => handleInputChange2("email", e.target.value)} />
+            <NumberInput placeholder="Telefone de contato" value={Step22.telefone} onChange={(e) => handleInputChange2("telefone", e.target.value)} />
+            <TextInput placeholder="E-mail" value={Step22.email} onChange={(e) => handleInputChange2("email", e.target.value)} />
           </div>
         </div>
 
         <div className='flex flex-col gap-[12px]'>
           <SelectInput
-            value={receivedFormData.pai?.presente}
+            value={Step22.presente}
             placeholder={"Responsável que compareceu ao acolhimento"}
             options={["Mãe", "Pai", "Outro"]}
             onChange={handleResponsavelChange}

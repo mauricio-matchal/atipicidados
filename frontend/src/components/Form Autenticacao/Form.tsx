@@ -133,7 +133,7 @@ const Form: React.FC<FormProps> = ({ id }) => {
   switch (currentStep) {
     case 1:
       return <>
-        {/* <button onClick={() => { console.log(formData) }}>Mostrar formData</button> */}
+        <button onClick={() => { console.log(formData) }}>Mostrar formData</button>
         <Step1
           nextStep={nextStep}
 
@@ -175,9 +175,9 @@ const Form: React.FC<FormProps> = ({ id }) => {
 
           receivedFormData={formData}
   
-          updateInfoSaude={(data) => updateDataAt(data, "infosaude")}
-          handleFormDataSubmit={handleUserEdition}
+          updateInfoSaude={(data) => updateDataAt(data, "saudeinfo")}
           updateLaudoFile={(data) => updateDataAt(data, "laudofile")}
+          handleFormDataSubmit={handleUserEdition}
         />;
       </>
     default:

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StepProps } from './types';
 import SelectInput from '../SelectInput';
 import DateInput from '../DateInput';
@@ -28,9 +28,9 @@ type Step4State = {
 
 const Step4: React.FC<{
   prevStep: () => void;
-  updateLaudoFile: (data: any) => void; 
-  updateInfoSaude: (data: Step4State) => void; 
-  handleFormDataSubmit: () => void 
+  updateLaudoFile: (data: any) => void;
+  updateInfoSaude: (data: any) => void;
+  handleFormDataSubmit: () => void
 }> = ({ prevStep, updateInfoSaude, handleFormDataSubmit, updateLaudoFile }) => {
   const [selectedCheckboxOptions, setSelectedCheckboxOptions] = useState<string[]>([]);
 
@@ -75,7 +75,7 @@ const Step4: React.FC<{
   const [laudoFile, setLaudoFile] = useState<File | null>(null);
 
   const handleLaudoFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
+    if (e.target.files && e.target.name === "laudoFile") {
       setLaudoFile(e.target.files[0]);
     }
   }
@@ -120,9 +120,12 @@ const Step4: React.FC<{
     setIsModalVisible(false);
   };
 
-  const handleSubmit = () => {
+  useEffect(() => {
     updateInfoSaude(Step4);
     updateLaudoFile(laudoFile);
+  }, [Step4, laudoFile]);
+
+  const handleSubmit = () => {
     handleFormDataSubmit();
   };
 
@@ -132,7 +135,7 @@ const Step4: React.FC<{
 
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Informações de saúde</h4>
-          <button onClick={() => {console.log(Step4)}}>Mostrar Respostas</button>
+          <button onClick={() => { console.log(Step4) }}>Mostrar Respostas</button>
           <div className='flex w-full gap-[12px]'>
             <SelectInput
               options={["Sim, tem diagnóstico", "Não tem diagnóstico"]}
@@ -142,8 +145,6 @@ const Step4: React.FC<{
             />
             <DateInput
               className={`transition-opacity duration-300 w-full ${hasDiagnostico ? 'opacity-100' : 'opacity-40'} ${hasDiagnostico ? '' : 'cursor-not-allowed'}`}
-              disabled={!hasDiagnostico}
-              style={{ pointerEvents: hasDiagnostico ? 'auto' : 'none' }}
               value={Step4.datadiagnostico} onChange={(e) => { handleInputChange("datadiagnostico", e.target.value) }}
             />
           </div>
@@ -217,11 +218,11 @@ const Step4: React.FC<{
               onChange={handleAsmaChange} />
             <FileInput
               placeholder="Relatório do diagnóstico"
-              className={`transition-opacity duration-300 w-full ${hasAsma ? 'opacity-100' : 'opacity-40'} ${hasAsma ? '' : 'cursor-not-allowed'}`}
-              disabled={!hasAsma}
-              style={{ pointerEvents: hasAsma ? 'auto' : 'none' }}
-              name='laudofile'
+              className={`transition-opacity duration-300 ${hasDiagnostico ? 'relative inline-block text-left w-full' : 'opacity-40 cursor-not-allowed pointer-events-none inline-block w-full'}`}
+              disabled={!hasDiagnostico}
+              name='laudoFile'
               onChange={handleLaudoFileChange}
+              id='laudoFile'
             />
           </div>
 

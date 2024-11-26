@@ -5,6 +5,7 @@ import Step2 from './Step2';
 import Step3 from './Step3';
 import Step4 from './Step4';
 import { useRouter } from "next/navigation";
+import Loading from '../Loading';
 
 type Geral = {
   nome?: string;
@@ -89,10 +90,13 @@ const Form: React.FC = () => {
       }
     } catch (error: any) {
       console.log("Erro em seu login", error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
   const handleUserCreation = async () => {
+    setIsLoading(true);
     const data = new FormData();
 
     if (formData.geral?.nome) data.append('nome', formData.geral.nome);
@@ -105,6 +109,7 @@ const Form: React.FC = () => {
     data.append('pai', JSON.stringify(formData.pai));
     data.append('maisinfo', JSON.stringify(formData.maisinfo));
     data.append('escola', JSON.stringify(formData.escola));
+    data.append('saudeinfo', JSON.stringify(formData.saudeinfo));
 
     if (formData.fotofile) {
       data.append('fotofile', formData.fotofile);
@@ -145,6 +150,8 @@ const Form: React.FC = () => {
     }
   }
 
+  const[isLoading, setIsLoading] = useState(false);
+
   switch (currentStep) {
     case 1:
       return <>
@@ -175,12 +182,20 @@ const Form: React.FC = () => {
       />;
     case 4:
       return <>
+        {isLoading && (
+          <>
+            <div className="fixed z-40 place-self-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+              <Loading />
+            </div>
+            <div className="fixed inset-0 bg-black/30 z-30" />
+          </>
+        )}
         <button onClick={() => { console.log(formData) }}>Mostrar formData</button>
         <Step4
           prevStep={prevStep}
-          updateInfoSaude={(data) => updateDataAt(data, "infosaude")}
-          handleFormDataSubmit={handleUserCreation}
+          updateInfoSaude={(data) => updateDataAt(data, "saudeinfo")}
           updateLaudoFile={(data) => updateDataAt(data, "laudofile")}
+          handleFormDataSubmit={handleUserCreation}
         />;
       </>
     default:

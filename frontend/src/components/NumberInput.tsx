@@ -1,6 +1,7 @@
 import { JSX, ClassAttributes, InputHTMLAttributes } from "react";
 
 interface NumberInputProps {
+  value?: string;
   placeholder: string;
 }
 
@@ -22,6 +23,7 @@ export default function NumberInput({
         className="inline-block w-full py-[9px] leading-[19px] px-3 text-sm bg-transparent border-2 border-[#7481F6] border-opacity-70 rounded-xl focus:outline-none focus:border-blue-800"
         placeholder={placeholder}
         onKeyPress={handleInput}
+        value={props.value}
       />
     </div>
   );

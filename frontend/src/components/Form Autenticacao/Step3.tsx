@@ -128,35 +128,35 @@ const Step3: React.FC<{
 
           <div className='flex w-full gap-[12px]'>
             <SelectInput
-              value={receivedFormData.maisinfo?.possuinis}
+              value={Step3.possuinis}
               options={["Sim, possui NIS", "Não possui NIS"]}
               placeholder={"Possui NIS?"}
               onChange={handleNISChange}
             />
             <TextInput
               placeholder="Número NIS"
-              className={`transition-opacity duration-300 ${hasNIS ? 'opacity-100' : 'opacity-40'} ${hasNIS ? '' : 'cursor-not-allowed'}`}
+              className={`transition-opacity duration-300 ${Step3.possuinis ? 'opacity-100' : 'opacity-40'} ${Step3.possuinis ? '' : 'cursor-not-allowed'}`}
               disabled={!hasNIS}
               style={{ pointerEvents: hasNIS ? 'auto' : 'none' }}
-              value={receivedFormData.maisinfo?.numeronis} onChange={(e) => handleInputChange("numeronis", e.target.value)}
+              value={Step3.numeronis} onChange={(e) => handleInputChange("numeronis", e.target.value)}
             />
           </div>
 
           <div className='flex w-full gap-[12px]'>
             <SelectInput
-              value={receivedFormData.maisinfo?.bpc}
+              value={Step3.bpc}
               options={["Sim, recebe BPC", "Não recebe BPC"]}
               placeholder={"Recebe BPC?"}
               onChange={(value) => handleInputChange("bpc", value)}
             />
             <SelectInput
-              value={receivedFormData.maisinfo?.bolsafamilia}
+              value={Step3.bolsafamilia}
               options={["Sim, recebe Bolsa Família", "Não recebe Bolsa Família"]}
               placeholder={"Recebe Bolsa Família?"}
               onChange={(value) => handleInputChange("bolsafamilia", value)}
             />
             <SelectInput
-              value={receivedFormData.maisinfo?.ciptea}
+              value={Step3.ciptea}
               options={["Sim, tem carteira CIPTEA", "Não tem carteira CIPTEA"]}
               placeholder={"Tem carteira CIPTEA?"}
               onChange={(value) => handleInputChange("ciptea", value)}
@@ -171,29 +171,29 @@ const Step3: React.FC<{
 
           <div className='flex w-full gap-[12px]'>
             <SelectInput
-              value={receivedFormData.maisinfo?.possuiterapia}
+              value={Step3.possuiterapia}
               options={["Sim, possui atendimento terapêutico", "Não possui atendimento terapêutico"]}
               placeholder={"Possui atendimento terapêutico?"}
               onChange={handleAtendimentoChange}
             />
             <TextInput
               placeholder={"Qual atendimento?"}
-              className={`transition-opacity duration-300 w-full ${hasAtendimento ? 'opacity-100' : 'opacity-40'} ${hasAtendimento ? '' : 'cursor-not-allowed'}`}
+              className={`transition-opacity duration-300 w-full ${Step3.possuiterapia ? 'opacity-100' : 'opacity-40'} ${Step3.possuiterapia ? '' : 'cursor-not-allowed'}`}
               disabled={!hasAtendimento}
               style={{ pointerEvents: hasAtendimento ? 'auto' : 'none' }}
-              value={receivedFormData.maisinfo?.qualterapia} onChange={(e) => handleInputChange("qualterapia", e.target.value)}
+              value={Step3.qualterapia} onChange={(e) => handleInputChange("qualterapia", e.target.value)}
             />
           </div>
 
           <div className='flex w-full gap-[12px]'>
             <TextInput
               placeholder="Endereço do atendimento terapêutico"
-              className={`transition-opacity duration-300 w-full ${hasAtendimento ? 'opacity-100' : 'opacity-40'} ${hasAtendimento ? '' : 'cursor-not-allowed'}`}
+              className={`transition-opacity duration-300 w-full ${Step3.possuiterapia ? 'opacity-100' : 'opacity-40'} ${Step3.possuiterapia ? '' : 'cursor-not-allowed'}`}
               disabled={!hasAtendimento}
               style={{ pointerEvents: hasAtendimento ? 'auto' : 'none' }}
-              value={receivedFormData.maisinfo?.enderecoterapia} onChange={(e) => handleInputChange("enderecoterapia", e.target.value)}
+              value={Step3.enderecoterapia} onChange={(e) => handleInputChange("enderecoterapia", e.target.value)}
             />
-            <TextInput placeholder="Renda familiar" value={receivedFormData.maisinfo?.renda} onChange={(e) => handleInputChange("renda", e.target.value)} />
+            <TextInput placeholder="Renda familiar" value={Step3.renda} onChange={(e) => handleInputChange("renda", e.target.value)} />
           </div>
 
           <CheckInput
