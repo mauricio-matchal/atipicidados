@@ -27,7 +27,6 @@ services:
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres?schema=public
       - TZ=America/Sao_Paulo 
-
     depends_on:
       - db
     volumes:
@@ -46,6 +45,20 @@ services:
       - "8080:80"
     depends_on:
       - db
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+
+  frontend:
+    container_name: frontend
+    image: frontend
+    build:
+      context: ../frontend
+      dockerfile: frontend.dockerfile 
+    ports:
+      - "3000:3000"  
+    depends_on:
+      - backend  
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro

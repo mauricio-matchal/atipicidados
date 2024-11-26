@@ -29,6 +29,10 @@ model Gerente {
   refresh_token  RefreshToken[]
   twoFASecret    String?
   twoFAEnable    Boolean @default(false)
+  nascimento     DateTime
+  genero         Genero
+
+
 }
 
 model Colaborador {
@@ -50,6 +54,8 @@ model Colaborador {
   rgdocfile   String?
   fotofile    String?
   compresfile String?
+
+  RefreshToken RefreshToken[]
 }
 
 model Paciente {
@@ -85,6 +91,8 @@ model Paciente {
   raca            Raca?
   unidade         Unidade @relation(fields: [unidadeId], references: [id])
   colaboradores   Colaborador[]  @relation("PacienteColaboradores")
+
+  RefreshToken RefreshToken[]
 }
 
 model Unidade {
@@ -113,8 +121,12 @@ enum Genero {
 model RefreshToken {
   id         String   @id @default(uuid()) 
   expireIn   Int
-  gerente    Gerente  @relation(fields: [gerenteId], references: [id])
-  gerenteId  String   
+  gerente    Gerente?  @relation(fields: [gerenteId], references: [id])
+  colaborador Colaborador? @relation(fields: [colaboradorId], references: [id])
+  paciente Paciente? @relation(fields: [pacienteId], references: [id])
+  pacienteId String?
+  colaboradorId String?
+  gerenteId  String? 
 
   @@map("refresh_token")
 }

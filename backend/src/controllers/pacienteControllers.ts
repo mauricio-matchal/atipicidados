@@ -3,6 +3,10 @@ import { compare, hashSync } from 'bcryptjs';
 import { Request, Response } from 'express';
 import multer from 'multer';
 import path from 'path';
+import { GenerateRefreshToken } from '../provider/gerenateRefreshToken';
+import { JWT_SECRET } from '../secrets';
+import jwt from 'jsonwebtoken';
+
 
 const prisma = new PrismaClient();
 
@@ -98,6 +102,27 @@ export const pacienteLogin = async (request: Request, response: Response) => {
         message: 'Erro: Senha incorreta'
       });
     }
+    const token = jwt.sign({
+      userId: userPaciente.id
+  }, JWT_SECRET,{
+      expiresIn:'10s'
+  });
+ 
+  response.cookie('token', token, {
+      httpOnly: true,
+      secure: false, 
+      sameSite: 'lax',
+      path: '/',
+  });
+
+  const generateRefreshToken = new GenerateRefreshToken();
+  const refresh_token = await generateRefreshToken.execute(userPaciente.id,'paciente');
+
+  response.cookie('refresh_token', refresh_token.id, {
+      httpOnly: true,
+      secure:false,
+      sameSite: 'lax',
+  });
 
     return response.status(200).json({
       error: false,
@@ -108,7 +133,7 @@ export const pacienteLogin = async (request: Request, response: Response) => {
     });
 
   } catch (error: any) {
-    return response.status(500).json({ error: true, message: 'Erro no servidor' });
+    return response.status(500).json({ error:error.message});
   }
 };
 
@@ -139,9 +164,8 @@ export const getPaciente = async (request: Request, response: Response) => {
       error: false, 
       message: `O paciente ${paciente?.nome} de cpf: ${paciente.cpf ? paciente.cpf : '(Não possui CPF cadastrado)'} foi encontrado`
     });
-  } catch (error) {
-    console.error(error);
-    response.status(500).json({ error: 'Erro ao buscar paciente.' });
+  } catch (error:any) {
+    response.status(500).json({ error: error.message});
   }
 };
 
@@ -150,7 +174,7 @@ export const getuserPacienteId = async (request: Request, response: Response) =>
 
   try {
     const userPaciente = await prisma.paciente.findUnique({
-      where: { id } 
+      where: { id }
     });
 
     if (!userPaciente) {
@@ -175,7 +199,7 @@ export const getPacientes = async (_: Request, response: Response) => {
       pacientes
     });
   } catch (error: any) {
-    return response.status(500).json({ error: true, message: 'Erro interno no servidor' });
+    return response.status(500).json({ error: error.message });
   }
 };
 
@@ -215,11 +239,474 @@ export const ChangePasswordForModel = async (request: Request, response: Respons
       message: 'Senha alterada com sucesso'
     });
 
-  } catch (error) {
-    console.error(error);
+  } catch (error:any) {
     return response.status(500).json({
-      error: true,
-      message: 'Erro ao alterar a senha'
+      error: error.message
     });
   }
 };
+
+
+
+export const updatePacienteGestacao = [
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+
+      const {
+
+        gestacao
+      } = req.body;
+
+      const paciente = await prisma.paciente.update({
+        where: { id:(id) },
+        data: {
+          gestacao: gestacao ? JSON.parse(gestacao) : null,
+        }
+      });
+
+      res.json(paciente);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao criar paciente' });
+    }
+  }
+];
+
+
+export const updatePacienteNascimento = [
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+
+      const {
+        nascimento
+      } = req.body;
+
+      const paciente = await prisma.paciente.update({
+        where: { id: (id) },
+        data: {
+          nascimento: nascimento ? JSON.parse(nascimento) : null,
+        }
+      });
+
+      res.json(paciente);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao criar paciente' });
+    }
+  }
+];
+
+export const updatePacienteAutonomia = [
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+
+      const {
+
+        autonomia
+      } = req.body;
+
+      const paciente = await prisma.paciente.update({
+        where: { id: (id) },
+        data: {
+          autonomia: autonomia ? JSON.parse(autonomia) : null
+        }
+      });
+
+      res.json(paciente);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao criar paciente' });
+    }
+  }
+];
+
+export const updatePacienteComportamento = [
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+
+      const {
+
+        comportamento
+      } = req.body;
+
+      const paciente = await prisma.paciente.update({
+        where: { id: (id) },
+        data: {
+          comportamento: comportamento ? JSON.parse(comportamento) : null
+        }
+      });
+
+      res.json(paciente);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao criar paciente' });
+    }
+  }
+];
+
+export const updatePacienteDesenvolvimento = [
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+
+      const {
+
+        desenvolimento
+      } = req.body;
+
+      const paciente = await prisma.paciente.update({
+        where: { id: (id) },
+        data: {
+          desenvolimento: desenvolimento ? JSON.parse(desenvolimento) : null,
+        }
+      });
+
+      res.json(paciente);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao criar paciente' });
+    }
+  }
+];
+
+export const updatePacientePedagogico = [
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+
+      const {
+
+        pedagogico
+      } = req.body;
+
+      const paciente = await prisma.paciente.update({
+        where: { id: (id) },
+        data: {
+          pedagogico: pedagogico ? JSON.parse(pedagogico) : null,
+        }
+      });
+
+      res.json(paciente);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao criar paciente' });
+    }
+  }
+];
+
+export const updatePacienteGeral = [
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+
+      const {
+        geral
+      } = req.body;
+
+      const paciente = await prisma.paciente.update({
+        where: { id: (id) },
+        data: {
+          geral: geral ? JSON.parse(geral) : null,
+        }
+      });
+
+      res.json(paciente);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao criar paciente' });
+    }
+  }
+];
+
+export const updatePacienteMae = [
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+
+      const {
+        mae
+      } = req.body;
+
+      const paciente = await prisma.paciente.update({
+        where: { id: (id) },
+        data: {
+          mae: mae ? JSON.parse(mae) : null,
+        }
+      });
+
+      res.json(paciente);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao criar paciente' });
+    }
+  }
+];
+
+export const updatePacientePai = [
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+
+      const {
+        pai
+      } = req.body;
+
+      const paciente = await prisma.paciente.update({
+        where: { id: (id) },
+        data: {
+          pai: pai ? JSON.parse(pai) : null,
+        }
+      });
+
+      res.json(paciente);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao criar paciente' });
+    }
+  }
+];
+
+export const updatePacienteMaisinfo = [
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+
+      const {
+        maisinfo
+      } = req.body;
+
+      const paciente = await prisma.paciente.update({
+        where: { id: (id) },
+        data: {
+          maisinfo: maisinfo ? JSON.parse(maisinfo) : null,
+        }
+      });
+
+      res.json(paciente);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao criar paciente' });
+    }
+  }
+];
+
+export const updatePacienteEscola = [
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+
+      const {
+        escola
+      } = req.body;
+
+      const paciente = await prisma.paciente.update({
+        where: { id: (id) },
+        data: {
+          escola: escola ? JSON.parse(escola) : null,
+
+        }
+      });
+
+      res.json(paciente);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao criar paciente' });
+    }
+  }
+];
+
+export const updatePacienteSaude = [
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+
+      const {
+
+        saudeinfo
+      } = req.body;
+
+      const paciente = await prisma.paciente.update({
+        where: { id: (id) },
+        data: {
+          saudeinfo: saudeinfo ? JSON.parse(saudeinfo) : null,
+        }
+      });
+
+      res.json(paciente);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao criar paciente' });
+    }
+  }
+];
+
+
+
+export const updatePacienteRg = [
+
+  upload.fields([
+    { name: 'rgdocfile', maxCount: 1 },
+
+  ]),
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+
+
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+      console.log(req.files);
+
+      const paciente = await prisma.paciente.update({
+        where: { id: (id) },
+        data: {
+          rgdocfile: files?.['rgdocfile'] ? files['rgdocfile'][0].path : null,
+
+        }
+      });
+
+      res.json(paciente);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao criar paciente' });
+    }
+  }
+];
+
+export const updatePacienteFoto = [
+
+  upload.fields([
+
+    { name: 'fotofile', maxCount: 1 },
+
+  ]),
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+
+      // Lidar com arquivos enviados
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+      console.log(req.files); // Log dos arquivos recebidos
+
+      const paciente = await prisma.paciente.update({
+        where: { id: (id) },
+        data: {
+          fotofile: files?.['fotofile'] ? files['fotofile'][0].path : null,
+        }
+      });
+
+      res.json(paciente);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao criar paciente' });
+    }
+  }
+];
+
+
+export const updatePacienteCompres = [
+
+  upload.fields([
+    { name: 'compresfile', maxCount: 1 },
+
+  ]),
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+
+      // Lidar com arquivos enviados
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+      console.log(req.files); // Log dos arquivos recebidos
+
+      const paciente = await prisma.paciente.update({
+        where: { id: (id) },
+        data: {
+          compresfile: files?.['compresfile'] ? files['compresfile'][0].path : null,
+        }
+      });
+
+      res.json(paciente);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao criar paciente' });
+    }
+  }
+];
+
+export const updatePacienteLaudo = [
+
+  upload.fields([
+
+    { name: 'laudofile', maxCount: 1 },
+
+  ]),
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+
+      // Lidar com arquivos enviados
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+      console.log(req.files); // Log dos arquivos recebidos
+
+      const paciente = await prisma.paciente.update({
+        where: { id: (id) },
+        data: {
+          laudofile: files?.['laudofile'] ? files['laudofile'][0].path : null,
+        }
+      });
+
+      res.json(paciente);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao criar paciente' });
+    }
+  }
+];
+
+export const updatePacienteRelescolar = [
+
+  upload.fields([
+    { name: 'relescolar', maxCount: 1 }
+  ]),
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+
+      // Lidar com arquivos enviados
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+      console.log(req.files); // Log dos arquivos recebidos
+
+      const paciente = await prisma.paciente.update({
+        where: { id: (id) },
+        data: {
+          relescolar: files?.['relescolar'] ? files['relescolar'][0].path : null,
+        }
+      });
+
+      res.json(paciente);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao criar paciente' });
+    }
+  }
+];
+
+export const updateAnalise = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const paciente = await prisma.paciente.update({
+      where: { id: (id) },
+      data: {
+        analise: false,
+      },
+    });
+    res.status(200).json(paciente);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao atualizar o paciente' });
+  }
+};
+

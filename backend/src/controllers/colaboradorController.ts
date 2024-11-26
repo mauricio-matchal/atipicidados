@@ -3,12 +3,13 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { compare, hashSync } from 'bcryptjs';
 import { JWT_SECRET } from '../secrets';
+import { GenerateRefreshToken } from '../provider/gerenateRefreshToken';
 
 const prisma = new PrismaClient();
 
 // Quando criar colaborador, sempre usar o id 0 pra unidades. 
 export const createUserColaborador = async (request: Request, response: Response) => {
-    const { nome, email, cpf, rg, telefone, raca, unidadeId, password, nascimento, titulo, formacao, genero } = request.body;
+    const { nome, email, cpf, rg, telefone, raca, password, nascimento, titulo, formacao, genero } = request.body;
     
     try {
         const userColaborador = await prisma.colaborador.create({
@@ -17,7 +18,6 @@ export const createUserColaborador = async (request: Request, response: Response
                 email,
                 telefone,
                 cpf,
-                unidadeId, 
                 raca,
                 rg,
                 password: hashSync(password, 10),
@@ -60,7 +60,8 @@ export const getuserColaboradorId = async (request: Request, response: Response)
 
     try {
         const userColaborador = await prisma.colaborador.findUnique({
-            where: { id }  
+            where: { id },
+          
         });
 
         if (!userColaborador) {
@@ -95,7 +96,25 @@ export const colaboradorLogin = async (request: Request, response: Response) => 
 
         const token = jwt.sign({
             userId: userColaborador.id
-        }, JWT_SECRET);
+        }, JWT_SECRET,{
+            expiresIn:'10s'
+        });
+       
+        response.cookie('token', token, {
+            httpOnly: true,
+            secure: false, 
+            sameSite: 'lax',
+            path: '/',
+        });
+
+        const generateRefreshToken = new GenerateRefreshToken();
+        const refresh_token = await generateRefreshToken.execute(userColaborador.id,'colaborador');
+
+        response.cookie('refresh_token', refresh_token.id, {
+            httpOnly: true,
+            secure:false,
+            sameSite: 'lax',
+        });
 
         return response.status(200).json({
             error: false,
@@ -108,7 +127,7 @@ export const colaboradorLogin = async (request: Request, response: Response) => 
     } catch (error: any) {
         return response.status(500).json({
             error: true,
-            message: 'Erro interno do servidor'
+            message: error.message
         });
     }
 };
@@ -119,8 +138,8 @@ export const getColaborador = async (request: Request, response: Response) => {
     try {
         const userColaborador = await prisma.colaborador.findFirst({
             where: {
-                cpf: cpf 
-            }
+                cpf: cpf
+            },
         });
 
         if (userColaborador) {
@@ -137,7 +156,6 @@ export const getColaborador = async (request: Request, response: Response) => {
 
     } catch (error: any) {
         return response.status(500).json({
-            message: "Erro no servidor",
             error: error.message
         });
     }
@@ -156,7 +174,7 @@ export const getColaboradores = async (_:Request, response:Response) => {
             colaboradores
         });
     } catch (error: any) {
-        return response.status(500).json({ error: true, message: 'Erro interno no servidor' });
+        return response.status(500).json({error:error.message});
     }
 };
 
@@ -185,7 +203,7 @@ export const ChangePasswordForModel = async (request: Request, response: Respons
         }
 
         await prisma.colaborador.update({
-            where: { id },  // 'id' agora é UUID
+            where: { id }, 
             data: {
                 password: hashSync(newPassword, 10)
             }
@@ -195,11 +213,10 @@ export const ChangePasswordForModel = async (request: Request, response: Respons
             success: true,
             message: 'Senha alterada com sucesso'
         });
-    } catch (error) {
-        console.error(error);
+    } catch (error:any) {
         return response.status(500).json({
-            error: true,
-            message: 'Erro ao alterar a senha'
+            error: error.message
         });
     }
 };
+

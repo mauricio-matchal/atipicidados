@@ -33,3 +33,4 @@ export async function refreshTokenController(request: Request, response: Respons
         return response.status(401).json({ error: true, message: error.message });
     }
 }
+

@@ -5,40 +5,67 @@ import { compare, hashSync } from 'bcryptjs';
 import { JWT_SECRET } from '../secrets';
 import { GenerateRefreshToken } from '../provider/gerenateRefreshToken';
 import speakeasy from 'speakeasy';
+import multer from 'multer';
 
 const prisma = new PrismaClient();
 
-// Quando criar gerente, sempre usar o id 0 para unidades. 
-export const createUserGerente = async (request: Request, response: Response) => {
-    const { nome, email, cpf, rg, telefone, raca, password } = request.body;
-
-    try {
-        const twoFASecret = speakeasy.generateSecret();
-        
-
-        const userGerente = await prisma.gerente.create({
-            data: {
-                nome,
-                email,
-                telefone,
-                cpf,
-                raca,
-                rg,
-                password: hashSync(password, 10),
-                twoFAEnable: false,
-                twoFASecret:twoFASecret.base32
-            },
-        });
-
-        return response.json({
-            gerente: userGerente,
-            qrCodeUrl: twoFASecret.base32,
-        });
-    } catch (error: any) {
-        return response.status(400).json({ error: error.message });
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/');
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`);
     }
-};
+});
+const upload = multer({ storage: storage });
+export const createUserGerente =
 
+    [
+        upload.fields([
+            { name: 'rgdocfile', maxCount: 1 },
+            { name: 'fotofile', maxCount: 1 },
+            { name: 'compresfile', maxCount: 1 },
+        ]),
+
+        async (req: Request, response: Response) => {
+            const { nome, email, cpf, rg, telefone, raca, unidadeId, password, nascimento, genero, unidade } = req.body;
+            const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+            const twoFASecret = speakeasy.generateSecret();
+
+
+            try {
+                const userGerente = await prisma.gerente.create({
+                    data: {
+                        nome,
+                        email,
+                        telefone,
+                        cpf,
+                        unidadeId,
+                        raca,
+                        rg,
+                        genero,
+                        nascimento,
+                        unidade,
+                        twoFAEnable:false,
+                        twoFASecret : twoFASecret.base32,
+                        password: hashSync(password, 10),
+                        rgdocfile: files?.['rgdocfile'] ? files['rgdocfile'][0].path : null,
+                        fotofile: files?.['fotofile'] ? files['fotofile'][0].path : null,
+                        compresfile: files?.['compresfile'] ? files['compresfile'][0].path : null
+                    }
+                });
+                return response.json({
+                    gerente: userGerente,
+                    qrCodeUrl: twoFASecret.base32,
+                });
+            } catch (error: any) {
+                return response.status(400).json({ error: error.message });
+            }
+        }
+    ]
+
+
+// Quando criar gerente, sempre usar o id 0 para unidades. 
 export const getUserGerente = async (request: Request, response: Response) => {
     const { email } = request.body;
 
@@ -77,7 +104,8 @@ export const getUserGerenteId = async (request: Request, response: Response) => 
             const qrCodeUrl = speakeasy.otpauthURL({
                 secret: userGerente.twoFASecret,
                 label: `${userGerente.email}`,
-                issuer:"Meu App"
+                issuer:"Meu App",
+                encoding:'base32'
             });
 
             return response.status(200).json({
@@ -124,7 +152,7 @@ export const gerenteLogin = async (request: Request, response: Response) => {
         });
 
         const generateRefreshToken = new GenerateRefreshToken();
-        const refresh_token = await generateRefreshToken.execute(userGerente.id);
+        const refresh_token = await generateRefreshToken.execute(userGerente.id,'gerente');
 
         response.cookie('refresh_token', refresh_token.id, {
             httpOnly: true,
@@ -141,8 +169,7 @@ export const gerenteLogin = async (request: Request, response: Response) => {
         });
     } catch (error: any) {
         return response.status(500).json({
-            error: true,
-            message: 'Erro interno do servidor',
+            error: error.message
         });
     }
 };
@@ -185,7 +212,7 @@ export const getGerentes = async (_: Request, response: Response) => {
             gerentes,
         });
     } catch (error: any) {
-        return response.status(500).json({ error: true, message: 'Erro interno no servidor' });
+        return response.status(500).json({ error:error.message });
     }
 };
 
@@ -224,11 +251,9 @@ export const ChangePasswordForModel = async (request: Request, response: Respons
             success: true,
             message: 'Senha alterada com sucesso',
         });
-    } catch (error) {
-        console.error(error);
+    } catch (error:any) {
         return response.status(500).json({
-            error: true,
-            message: 'Ocorreu um erro',
+            error: error.message
         });
     }
 };

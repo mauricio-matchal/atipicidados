@@ -20,6 +20,8 @@ CREATE TABLE "Gerente" (
     "compresfile" TEXT,
     "twoFASecret" TEXT,
     "twoFAEnable" BOOLEAN NOT NULL DEFAULT false,
+    "nascimento" TIMESTAMP(3) NOT NULL,
+    "genero" "Genero" NOT NULL,
 
     CONSTRAINT "Gerente_pkey" PRIMARY KEY ("id")
 );
@@ -95,7 +97,9 @@ CREATE TABLE "Unidade" (
 CREATE TABLE "refresh_token" (
     "id" TEXT NOT NULL,
     "expireIn" INTEGER NOT NULL,
-    "gerenteId" TEXT NOT NULL,
+    "pacienteId" TEXT,
+    "colaboradorId" TEXT,
+    "gerenteId" TEXT,
 
     CONSTRAINT "refresh_token_pkey" PRIMARY KEY ("id")
 );
@@ -149,7 +153,13 @@ ALTER TABLE "Colaborador" ADD CONSTRAINT "Colaborador_unidadeId_fkey" FOREIGN KE
 ALTER TABLE "Paciente" ADD CONSTRAINT "Paciente_unidadeId_fkey" FOREIGN KEY ("unidadeId") REFERENCES "Unidade"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "refresh_token" ADD CONSTRAINT "refresh_token_gerenteId_fkey" FOREIGN KEY ("gerenteId") REFERENCES "Gerente"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "refresh_token" ADD CONSTRAINT "refresh_token_gerenteId_fkey" FOREIGN KEY ("gerenteId") REFERENCES "Gerente"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "refresh_token" ADD CONSTRAINT "refresh_token_colaboradorId_fkey" FOREIGN KEY ("colaboradorId") REFERENCES "Colaborador"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "refresh_token" ADD CONSTRAINT "refresh_token_pacienteId_fkey" FOREIGN KEY ("pacienteId") REFERENCES "Paciente"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_PacienteColaboradores" ADD CONSTRAINT "_PacienteColaboradores_A_fkey" FOREIGN KEY ("A") REFERENCES "Colaborador"("id") ON DELETE CASCADE ON UPDATE CASCADE;
