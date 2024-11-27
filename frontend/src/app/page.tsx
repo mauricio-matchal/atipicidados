@@ -1,19 +1,23 @@
 "use client";
 
 import Image from "next/image";
-import logos from "../../public/images/logos.svg"
+import logos from "../../public/images/logos.svg";
 import { SlashedEyeIcon, OpenEyeIcon } from "../../public/icons/Icons";
 import { useState } from "react";
 import Link from "next/link";
 import Checkbox from "@/components/Checkbox";
 import { useRouter } from "next/navigation";
-import { cookies } from "next/headers";
+import Loading from "@/components/Loading";
+import Banner from "../../public/pexels-fabiano-cardoso-1671860-5654263.png";
 
 export default function Home() {
   const [userType, setUserType] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [id, setID] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
+  const [errorMessage, setErrorMessage] = useState("");
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -43,31 +47,38 @@ export default function Home() {
   }
 
   const handleLogin = async (userType: any) => {
+    setIsLoading(true);
     let url = ""
     switch (userType) {
       case ("Gerente"):
-        url = "http://localhost:3002/gerentes/login"
+        url = "http://localhost:3002/gerentes/login";
+        localStorage.setItem(userType, 'gerente');
         break;
       case ("Colaborador"):
         url = "http://localhost:3002/colaboradores/login"
+        localStorage.setItem(userType, 'colaborador');
         break;
       case ("Paciente"):
         url = "http://localhost:3002/pacientes/login"
+        localStorage.setItem(userType, 'paciente');
         break;
       default:
         console.error("Unknown user type");
+        setIsLoading(false);
         return;
     }
     try {
       const response = await fetch(url, {
-        credentials:'include',
-        method: "POST",
-        body: JSON.stringify({ email: loginData.email, password: loginData.password }),
-        headers: { 'Content-Type': 'application/json' },
-
+        method: "POST", 
+        body: JSON.stringify({
+          email: loginData.email,
+          password: loginData.password
+        }),
+        headers: {
+          'Content-Type': 'application/json', 
+        },
+        credentials: 'include' 
       });
-      console.log('Cookies:', document.cookie); 
-
 
       if (!response.ok) {
         throw new Error('Login failed');
@@ -79,41 +90,56 @@ export default function Home() {
       setID(gerente.id);
       localStorage.setItem("userEmail", loginData.email);
       localStorage.setItem("userID", gerente.id);
-      localStorage.setItem("userID", gerente.token);
-
-
       const homeLink = `/home/${userType.toLowerCase()}?email=${encodeURIComponent(loginData.email)}&id=${encodeURIComponent(gerente.id)}`
       localStorage.setItem("homeLink", homeLink)
-      
+
       router.push(`/home/${userType.toLowerCase()}?email=${encodeURIComponent(loginData.email)}&id=${encodeURIComponent(gerente.id)}`);
-    } catch (error) {
+    } catch (error: any) {
       console.log("Erro em seu login", error);
+      setErrorMessage(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <main className="flex min-h-screen">
-      <div className="hidden lg:flex w-[40%] justify-center items-center">
-        <p>colocar imagem aqui</p>
+    <main className={`flex min-h-screen ${isLoading && ""}`}>
+      {errorMessage && (
+        <>
+          <div className="fixed z-40 place-self-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-800 p-5 text-white flex-row">
+            <button className="text-white" onClick={() => { setErrorMessage("") }}>Voltar</button>
+            <p>Erro ao fazer login. Tente novamente.</p> 
+          </div>
+          <div className="fixed inset-0 bg-black/30 z-30" />
+        </>
+      )}
+
+      {isLoading && (
+        <>
+          <div className="fixed z-40 place-self-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <Loading />
+          </div>
+          <div className="fixed inset-0 bg-black/30 z-30" />
+        </>
+      )}
+
+      <div className="flex w-[60%] justify-center items-center">
+        <Image
+          src={Banner}
+          alt="logos atipicidades"
+          className="h-full object-cover w-full"
+        />
       </div>
 
-      <div className="flex bg-blue-100 w-full lg:w-[60%] flex-col justify-center items-center gap-10">
-        <div className="flex flex-col w-full justify-center items-center">
-          <Image
-            src={logoDesktop}
-            alt="logosDesktop atipicidades"
-            className="hidden md:flex"
-          />
-          <Image
-            src={logoMobile}
-            alt="logosDesktop atipicidades"
-            className="flex md:hidden"
-          />
-        </div>
+      <div className="flex bg-blue-100 w-[40%] flex-col justify-center items-center gap-10">
+        <Image
+          src={logos}
+          alt="logos atipicidades"
+        />
 
-        <form className="flex flex-col justify-center items-center gap-9 px-[7]">
+        <form className="flex flex-col justify-center items-center gap-9">
           <h1>Acesse sua conta</h1>
-          <div className="flex flex-row gap-1 md:gap-4">
+          <div className="flex flex-row gap-4">
             <label className="flex items-center">
               <Checkbox
                 value="Gerente"
@@ -147,7 +173,7 @@ export default function Home() {
               className="login"
               type="text"
               name="email"
-              placeholder="E-mail ou CPF"
+              placeholder="Insira seu e-mail"
               value={loginData.email}
               onChange={(e) => handleInputChange("email", e.target.value)}
               required />
@@ -157,7 +183,7 @@ export default function Home() {
                 type={passwordVisible ? 'text' : 'password'}
                 className="login"
                 name="senha"
-                placeholder="Senha"
+                placeholder="Insira sua senha"
                 value={loginData.password}
                 onChange={(e) => handleInputChange("password", e.target.value)}
                 required
@@ -171,7 +197,7 @@ export default function Home() {
               </button>
             </div>
 
-            <div className="flex px-[10px] text-[12px] md:text-[14px] justify-end w-full">
+            <div className="flex px-[10px] text-[14px] justify-end w-full">
               <Link href='/recuperarsenha'>
                 <p className="font-semibold text-blue-800 cursor-pointer">Esqueceu a senha?</p>
               </Link>

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { CSSTransition } from 'react-transition-group';
 
 interface CheckInputProps {
+  value?: string[];
   options: string[];
   title: string;
   onChange: (selectedOptions: string[]) => void;
@@ -42,10 +43,17 @@ export default function CheckInput({ options, title, onChange, ...props }: Check
   };
 
   useEffect(() => {
+    if (props.value) {
+      setSelectedOptions(props.value);
+      setLocalOptions(props.value);
+    };
+  })
+
+  useEffect(() => {
     if (onChange && selectedOptions) {
       onChange(selectedOptions);
     }
-  }, [onChange, selectedOptions]);
+  }, [selectedOptions]);
 
   useEffect(() => {
     if (isOpen) {

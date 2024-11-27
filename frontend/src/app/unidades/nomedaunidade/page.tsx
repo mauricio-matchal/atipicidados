@@ -53,19 +53,18 @@ export default function Home() {
 
   return (
     <main className="flex flex-col min-h-screen">
-      <NavBar />
-
+      {getAcesso()}
       <div className="px-[137px] pt-[30px]">
         <div className="flex flex-col w-[340px] justify-between">
-            <h2 className="mb-2">Nome da Unidade</h2>
-            <button className="flex justify-start">
-                <h4 className="mb-[32px]">Mais informações</h4>
-            </button>
-            <div className="relative w-full">
-              <input 
-              type="text" 
-              className='input w-full h-[35px] mb-1'
-              placeholder="Buscar membro..." />
+          <h2 className="mb-2">{unidade ? unidade.nome : "Nome não encontrado"}</h2>
+          <button className="flex justify-start">
+            <h4 className="mb-[32px] text-blue-800">Mais informações</h4>
+          </button>
+          <div className="relative w-full">
+            <input
+              type="text"
+              className='input w-full h-[35px] mb-2 pb-1'
+              placeholder={`Buscar membros em ${unidade ? unidade.nome : "unidade"}`} />
 
             <button
               type="button"
@@ -75,7 +74,8 @@ export default function Home() {
             </button>
           </div>
 
-            <div className="flex justify-around">
+          <div className="flex justify-around">
+            <div className="flex gap-[18px]">
               <label className="flex items-center">
                 <input
                   type="checkbox"

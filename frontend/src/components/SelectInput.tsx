@@ -2,6 +2,7 @@ import { JSX, ClassAttributes, useState, useRef, useEffect } from "react";
 import { CSSTransition } from 'react-transition-group';
 
 interface SelectInputProps extends JSX.IntrinsicAttributes, ClassAttributes<HTMLDivElement> {
+  value?: string;
   placeholder: string;
   options: string[];
   onChange?: (selectedOption: string) => void;
@@ -52,7 +53,7 @@ export default function SelectInput({ options, placeholder, onChange, className,
           className="py-[11px] leading-[19px] text-sm px-3 bg-[#7481F6] bg-opacity-40 rounded-xl focus:outline-none focus:bg-[#ABB1DC] flex items-center justify-between w-full"
           onClick={toggleOpen}
         >
-          {selectedOption || `${placeholder}...`}
+          {props.value || selectedOption || `${placeholder}...`}
           <svg
             className={`transition-transform duration-200 ${isOpen ? 'transform rotate-180' : ''}`}
             width="14"

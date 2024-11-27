@@ -57,13 +57,13 @@ const Step1: React.FC<{
 
   return (
     <div className='flex flex-col gap-[162px] w-screen'>
-      <div className='flex flex-col gap-[42px] px-5 md:w-[600px] lg:w-[840px] place-self-center'>
+      <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
         <div className='flex flex-col gap-[12px]'>
           <h2 className='font-bold'>Nova Unidade</h2>
 
           <div className='flex flex-col gap-[12px]'>
 
-            <div className='flex flex-col md:flex-row w-full gap-[12px]'>
+            <div className='flex w-full gap-[12px]'>
               <TextInput placeholder='Nome da unidade' value={Step11.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
               <TextInput placeholder='Endereço' value={Step11.endereco} onChange={(e) => handleInputChange1("endereco", e.target.value)} />
             </div>

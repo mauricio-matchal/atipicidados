@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StepProps } from './types';
 import SelectInput from '../SelectInput';
 import TextInput from '../TextInput';
@@ -20,24 +20,46 @@ type Step3State = {
   moradores: [];
 };
 
-const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisInfo: (data: Step3State) => void }> = ({ nextStep, prevStep, updateMaisInfo }) => {
+const Step3: React.FC<{
+  nextStep: () => void;
+  prevStep: () => void;
+  updateMaisInfo: (data: Step3State) => void
+
+  receivedFormData: any | null;
+}> = ({ nextStep, prevStep, updateMaisInfo, receivedFormData }) => {
   const [selectedCheckboxOptions, setSelectedCheckboxOptions] = useState<string[]>([]);
   const [hasNIS, setHasNIS] = useState(false);
   const [hasAtendimento, setHasAtendimento] = useState(false);
 
   const [Step3, setStep3] = useState<Step3State>({
-    possuinis: "",
-    numeronis: "",
-    bpc: "",
-    bolsafamilia: "",
-    ciptea: "",
-    passelivre: [],
-    possuiterapia: "",
-    qualterapia: "",
-    enderecoterapia: "",
-    renda: "",
-    moradores: [],
+    possuinis: receivedFormData.maisinfo?.possuinis || '',
+    numeronis: receivedFormData.maisinfo?.numeronis || '',
+    bpc: receivedFormData.maisinfo?.bpc || '',
+    bolsafamilia: receivedFormData.maisinfo?.bolsafamilia || '',
+    ciptea: receivedFormData.maisinfo?.ciptea || '',
+    passelivre: receivedFormData.maisinfo?.passelivre || '',
+    possuiterapia: receivedFormData.maisinfo?.possuiterapia || '',
+    qualterapia: receivedFormData.maisinfo?.qualterapia || '',
+    enderecoterapia: receivedFormData.maisinfo?.enderecoterapia || '',
+    renda: receivedFormData.maisinfo?.renda || '',
+    moradores: receivedFormData.maisinfo?.moradores || '',
   });
+
+  useEffect(() => {
+    setStep3({
+      possuinis: receivedFormData.maisinfo?.possuinis,
+      numeronis: receivedFormData.maisinfo?.numeronis,
+      bpc: receivedFormData.maisinfo?.bpc,
+      bolsafamilia: receivedFormData.maisinfo?.bolsafamilia,
+      ciptea: receivedFormData.maisinfo?.ciptea,
+      passelivre: receivedFormData.maisinfo?.passelivre,
+      possuiterapia: receivedFormData.maisinfo?.possuiterapia,
+      qualterapia: receivedFormData.maisinfo?.qualterapia,
+      enderecoterapia: receivedFormData.maisinfo?.enderecoterapia,
+      renda: receivedFormData.maisinfo?.renda,
+      moradores: receivedFormData.maisinfo?.moradores,
+    })
+  }, [receivedFormData])
 
   const handleInputChange = (key: string, value: string) => {
     setStep3((prevState) => ({
@@ -98,43 +120,43 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
 
   return (
     <div className='flex flex-col gap-[162px] w-screen'>
-      <div className='flex flex-col gap-[42px] px-5 lg:w-[840px] place-self-center'>
+      <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Mais informações</h4>
           <button onClick={reveal}>reveal</button>
           <button onClick={handleTest}>teste</button>
 
-          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
+          <div className='flex w-full gap-[12px]'>
             <SelectInput
-              className='md:1/2'
+              value={Step3.possuinis}
               options={["Sim, possui NIS", "Não possui NIS"]}
               placeholder={"Possui NIS?"}
               onChange={handleNISChange}
             />
             <TextInput
               placeholder="Número NIS"
-              className={`transition-opacity md:1/2 duration-300 ${hasNIS ? 'opacity-100' : 'opacity-40'} ${hasNIS ? '' : 'cursor-not-allowed'}`}
+              className={`transition-opacity duration-300 ${Step3.possuinis ? 'opacity-100' : 'opacity-40'} ${Step3.possuinis ? '' : 'cursor-not-allowed'}`}
               disabled={!hasNIS}
               style={{ pointerEvents: hasNIS ? 'auto' : 'none' }}
               value={Step3.numeronis} onChange={(e) => handleInputChange("numeronis", e.target.value)}
             />
           </div>
 
-          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
+          <div className='flex w-full gap-[12px]'>
             <SelectInput
-              className='md:w-1/3'
+              value={Step3.bpc}
               options={["Sim, recebe BPC", "Não recebe BPC"]}
               placeholder={"Recebe BPC?"}
               onChange={(value) => handleInputChange("bpc", value)}
             />
             <SelectInput
-              className='md:w-1/3'
+              value={Step3.bolsafamilia}
               options={["Sim, recebe Bolsa Família", "Não recebe Bolsa Família"]}
               placeholder={"Recebe Bolsa Família?"}
               onChange={(value) => handleInputChange("bolsafamilia", value)}
             />
             <SelectInput
-              className='md:w-1/3'
+              value={Step3.ciptea}
               options={["Sim, tem carteira CIPTEA", "Não tem carteira CIPTEA"]}
               placeholder={"Tem carteira CIPTEA?"}
               onChange={(value) => handleInputChange("ciptea", value)}
@@ -147,31 +169,31 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
             onChange={handlePasseLivreChange}
           />
 
-          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
+          <div className='flex w-full gap-[12px]'>
             <SelectInput
-              className='md:w-1/2'
+              value={Step3.possuiterapia}
               options={["Sim, possui atendimento terapêutico", "Não possui atendimento terapêutico"]}
               placeholder={"Possui atendimento terapêutico?"}
               onChange={handleAtendimentoChange}
             />
             <TextInput
               placeholder={"Qual atendimento?"}
-              className={`transition-opacity md:w-1/2 duration-300 w-full ${hasAtendimento ? 'opacity-100' : 'opacity-40'} ${hasAtendimento ? '' : 'cursor-not-allowed'}`}
+              className={`transition-opacity duration-300 w-full ${Step3.possuiterapia ? 'opacity-100' : 'opacity-40'} ${Step3.possuiterapia ? '' : 'cursor-not-allowed'}`}
               disabled={!hasAtendimento}
               style={{ pointerEvents: hasAtendimento ? 'auto' : 'none' }}
               value={Step3.qualterapia} onChange={(e) => handleInputChange("qualterapia", e.target.value)}
             />
           </div>
 
-          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
+          <div className='flex w-full gap-[12px]'>
             <TextInput
               placeholder="Endereço do atendimento terapêutico"
-              className={`transition-opacity md:w-1/2 duration-300 w-full ${hasAtendimento ? 'opacity-100' : 'opacity-40'} ${hasAtendimento ? '' : 'cursor-not-allowed'}`}
+              className={`transition-opacity duration-300 w-full ${Step3.possuiterapia ? 'opacity-100' : 'opacity-40'} ${Step3.possuiterapia ? '' : 'cursor-not-allowed'}`}
               disabled={!hasAtendimento}
               style={{ pointerEvents: hasAtendimento ? 'auto' : 'none' }}
               value={Step3.enderecoterapia} onChange={(e) => handleInputChange("enderecoterapia", e.target.value)}
             />
-            <TextInput className='md:w-1/2' placeholder="Renda familiar" value={Step3.renda} onChange={(e) => handleInputChange("renda", e.target.value)} />
+            <TextInput placeholder="Renda familiar" value={Step3.renda} onChange={(e) => handleInputChange("renda", e.target.value)} />
           </div>
 
           <CheckInput
@@ -186,20 +208,19 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
 
               <TextInput placeholder="Nome completo" />
 
-              <div className='flex flex-col md:flex-row w-full gap-[12px]'>
+              <div className='flex w-full gap-[12px]'>
                 <DateInput />
-                <TextInput placeholder='RG' className='md:w-1/3' />
-                <TextInput placeholder='CPF' className='md:w-1/3' />
+                <TextInput placeholder='RG' className='min-w-[220px]' />
+                <TextInput placeholder='CPF' className='min-w-[220px]' />
               </div>
 
-              <div className='flex flex-col md:flex-row w-full gap-[12px]'>
+              <div className='flex w-full gap-[12px]'>
                 <SelectInput
-                  className='md:w-1/3'
                   placeholder={"Escolaridade"}
                   options={["Ensino fundamental incompleto", "Ensino fundamental completo", "Ensino médio completo", "Técnico/profissionalizante", "Cursando ensino superior", "Ensino superior completo"]}
                 />
-                <NumberInput className='md:w-1/3' placeholder="Telefone de contato" />
-                <TextInput className='md:w-1/3' placeholder="E-mail" />
+                <NumberInput placeholder="Telefone de contato" />
+                <TextInput placeholder="E-mail" />
               </div>
             </div>
           ))}

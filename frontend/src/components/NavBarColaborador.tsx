@@ -12,7 +12,7 @@ type Colaborador = {
     cpf: string;
 }
 
-type NavBarProps  = {
+interface NavBarProps {
     userEmail?: string | null;
     userName?: string | null;
 }
@@ -34,11 +34,11 @@ export default function NavBar({ userEmail, userName }: NavBarProps) {
             fetchColaboradorData(id);
         };
         if (homeLink) setHomeLink(homeLink);
-    }, [])
+    })
 
     const fetchColaboradorData = async (id: any) => {
         try {
-            const response = await fetch(`https://atipicidades-1.onrender.com/colaboradores/id/${id}`);
+            const response = await fetch(`http://localhost:3002/colaboradores/id/${id}`);
             if (!response.ok) {
                 throw new Error("Failed to fetch gerente data");
             }
@@ -65,7 +65,7 @@ export default function NavBar({ userEmail, userName }: NavBarProps) {
                     </li>
                 </ul>
             </nav>
-            <div className="flex justify-between fundo w-full h-[76px] py-2 px-[97px] ">
+            <div className="flex justify-between fundo w-full h-[76px] py-2 px-[97px]">
                 <Link href={homeLink}>
                     <Image
                         src={logo}

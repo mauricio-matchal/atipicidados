@@ -27,13 +27,13 @@ export default function Home() {
     let url = ""
     switch (userType) {
       case ("Gerente"):
-        url = "https://atipicidades-1.orender.com/gerentes/senha"
+        url = "http://localhost:3002/gerentes/senha"
         break;
       case ("Colaborador"):
-        url = "https://atipicidades-1.orender.com/colaboradores/senha"
+        url = "http://localhost:3002/colaboradores/senha"
         break;
       case ("Paciente"):
-        url = "https://atipicidades-1.orender.com/pacientes/senha"
+        url = "http://localhost:3002/pacientes/senha"
         break;
       default:
         console.error("Unknown user type");
@@ -69,19 +69,19 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen">
-      <div className="hidden lg:flex w-[40%] justify-center items-center">
+      <div className="flex w-[40%] justify-center items-center">
         <p>colocar imagem aqui</p>
       </div>
 
-      <div className="flex bg-blue-100 w-full lg:w-[60%] flex-col justify-center items-center gap-9 pb-20">
+      <div className="flex bg-blue-100 w-[60%] flex-col justify-center items-center gap-9 pb-20">
         <h1 className="font-extrabold">Esqueci minha senha</h1>
 
-        <div className="flex flex-col w-[280px] md:w-[520px] h-[200px] gap-5 items-center">
-          <h3>Tem certeza que deseja redefinir sua senha?</h3>
+        <div className="flex flex-col w-[520px] h-[200px] gap-5 items-center">
+          <h3 className="text-xl">Tem certeza que deseja redefinir sua senha?</h3>
           <p className="text-sm pl-1">Enviaremos uma nova senha aleatória para seu e-mail. A senha nova enviada deve ser usada em seu próximo acesso. Cuidado, após a mudança da senha essa ação não poderá ser desfeita.</p>
           <TextInput
             placeholder="Insira o e-mail vinculado à sua conta"
-            className="mt-3 w-[280px] md:w-[380px]"
+            className="mt-3 w-[380px]"
             value={email.email}
             onChange={(e) => changeEmail(e.target.value)}
           />

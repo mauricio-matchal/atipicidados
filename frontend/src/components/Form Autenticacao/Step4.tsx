@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StepProps } from './types';
 import SelectInput from '../SelectInput';
 import DateInput from '../DateInput';
@@ -27,25 +27,51 @@ type Step4State = {
 };
 
 
-const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State) => void; handleFormDataSubmit: () => void }> = ({ prevStep, updateInfoSaude, handleFormDataSubmit }) => {
+const Step4: React.FC<{
+  prevStep: () => void;
+  updateLaudoFile: (data: any) => void;
+  updateInfoSaude: (data: Step4State) => void;
+  handleFormDataSubmit: () => void;
+
+  receivedFormData: any | null;
+}> = ({ prevStep, updateInfoSaude, handleFormDataSubmit, updateLaudoFile, receivedFormData }) => {
   const [selectedCheckboxOptions, setSelectedCheckboxOptions] = useState<string[]>([]);
 
   const [Step4, setStep4] = useState<Step4State>({
-    diagnostico: "",
-    datadiagnostico: "",
-    medicacao: "",
-    qualmedicacao: "",
-    medico: "",
-    medicocontato: "",
-    objetivo: "",
-    comorbidade: "",
-    qualcomorbidade: "",
-    providencias: "",
-    doenca: [],
-    alergia: [],
-    asma: "",
-    relevante: "",
+    diagnostico: receivedFormData.saudeinfo?.diagnostico || '',
+    datadiagnostico: receivedFormData.saudeinfo?.datadiagnostico || '',
+    medicacao: receivedFormData.saudeinfo?.medicacao || '',
+    qualmedicacao: receivedFormData.saudeinfo?.qualmedicacao || '',
+    medico: receivedFormData.saudeinfo?.medico || '',
+    medicocontato: receivedFormData.saudeinfo?.medicocontato || '',
+    objetivo: receivedFormData.saudeinfo?.objetivo || '',
+    comorbidade: receivedFormData.saudeinfo?.comorbidade || '',
+    qualcomorbidade: receivedFormData.saudeinfo?.qualcomorbidade || '',
+    providencias: receivedFormData.saudeinfo?.providencias || '',
+    doenca: receivedFormData.saudeinfo?.doenca || '',
+    alergia: receivedFormData.saudeinfo?.alergia || '',
+    asma: receivedFormData.saudeinfo?.asma || '',
+    relevante: receivedFormData.saudeinfo?.relevante || '',
   });
+
+  useEffect(() => {
+    setStep4({
+      diagnostico: receivedFormData.saudeinfo?.diagnostico,
+      datadiagnostico: receivedFormData.saudeinfo?.datadiagnostico,
+      medicacao: receivedFormData.saudeinfo?.medicacao,
+      qualmedicacao: receivedFormData.saudeinfo?.qualmedicacao,
+      medico: receivedFormData.saudeinfo?.medico,
+      medicocontato: receivedFormData.saudeinfo?.medicocontato,
+      objetivo: receivedFormData.saudeinfo?.objetivo,
+      comorbidade: receivedFormData.saudeinfo?.comorbidade,
+      qualcomorbidade: receivedFormData.saudeinfo?.qualcomorbidade,
+      providencias: receivedFormData.saudeinfo?.providencias,
+      doenca: receivedFormData.saudeinfo?.doenca,
+      alergia: receivedFormData.saudeinfo?.alergia,
+      asma: receivedFormData.saudeinfo?.asma,
+      relevante: receivedFormData.saudeinfo?.relevante,
+    })
+  }, [receivedFormData])
 
   const [hasMedicacao, setHasMedicacao] = useState(false);
   const [hasDiagnostico, setHasDiagnostico] = useState(false);
@@ -67,6 +93,14 @@ const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State
       [key]: value,
     }));
   };
+
+  const [laudoFile, setLaudoFile] = useState<File | null>(null);
+
+  const handleLaudoFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setLaudoFile(e.target.files[0]);
+    }
+  }
 
   const handleDoencaChange = (options: string[]) => {
     setSelectedCheckboxOptions(options);
@@ -108,89 +142,92 @@ const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State
     setIsModalVisible(false);
   };
 
-  const reveal = () => {
-    console.log(Step4);
-  }
+  useEffect(() => {
+    updateInfoSaude(Step4);
+    updateLaudoFile(laudoFile);
+  }, [Step4, laudoFile]);
 
   const handleSubmit = () => {
-    updateInfoSaude(Step4);
     handleFormDataSubmit();
   };
 
   return (
     <div className='flex flex-col gap-[162px] w-screen'>
-      <div className='flex flex-col gap-[42px] px-5 lg:w-[840px] place-self-center'>
+      <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
 
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Informações de saúde</h4>
-          <button onClick={reveal}>reveal</button>
-          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
+          {/* <button onClick={reveal}>reveal</button> */}
+          <div className='flex w-full gap-[12px]'>
             <SelectInput
+              value={Step4.diagnostico}
               options={["Sim, tem diagnóstico", "Não tem diagnóstico"]}
               placeholder={"Tem diagnóstico?"}
-              className='md:w-1/2'
+              className='min-w-[300px]'
               onChange={handleDiagnosticoChange}
             />
             <DateInput
-              className={`transition-opacity md:w-1/2 duration-300 w-full ${hasDiagnostico ? 'opacity-100' : 'opacity-40'} ${hasDiagnostico ? '' : 'cursor-not-allowed'}`}
-              disabled={!hasDiagnostico}
-              style={{ pointerEvents: hasDiagnostico ? 'auto' : 'none' }}
+              className={`transition-opacity duration-300 w-full ${Step4.diagnostico ? '' : 'opacity-40 cursor-not-allowed pointer-events-none'}`}
+              disabled={!Step4.diagnostico}
+              style={{ pointerEvents: Step4.diagnostico ? 'auto' : 'none' }}
               value={Step4.datadiagnostico} onChange={(e) => { handleInputChange("datadiagnostico", e.target.value) }}
             />
           </div>
 
-          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
+          <div className='flex w-full gap-[12px]'>
             <SelectInput
+              value={Step4.medicacao}
               options={["Sim, toma alguma medicação", "Não toma alguma medicação"]}
               placeholder={"Toma alguma medicação?"}
-              className='md:w-1/2'
+              className='min-w-[300px]'
               onChange={handleMedicacaoChange}
             />
             <TextInput
               placeholder='Qual(is) medicação(ões)?'
-              className={`transition-opacity md:w-1/2 duration-300 w-full ${hasMedicacao ? 'opacity-100' : 'opacity-40'} ${hasMedicacao ? '' : 'cursor-not-allowed'}`}
-              disabled={!hasMedicacao}
-              style={{ pointerEvents: hasMedicacao ? 'auto' : 'none' }}
+              className={`transition-opacity duration-300 w-full ${Step4.medicacao ? 'opacity-100' : 'opacity-40'} ${Step4.medicacao ? '' : 'cursor-not-allowed'}`}
+              disabled={!Step4.medicacao}
+              style={{ pointerEvents: Step4.medicacao ? 'auto' : 'none' }}
               value={Step4.qualmedicacao} onChange={(e) => { handleInputChange("qualmedicacao", e.target.value) }}
             />
           </div>
 
-          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
+          <div className='flex w-full gap-[12px]'>
             <TextInput
               placeholder="Médico responsável"
-              className={`transition-opacity md:w-1/2 duration-300 w-full ${hasMedicacao ? 'opacity-100' : 'opacity-40'} ${hasMedicacao ? '' : 'cursor-not-allowed'}`}
-              disabled={!hasMedicacao}
-              style={{ pointerEvents: hasMedicacao ? 'auto' : 'none' }}
+              className={`transition-opacity duration-300 w-full ${Step4.medicacao ? 'opacity-100' : 'opacity-40'} ${Step4.medicacao ? '' : 'cursor-not-allowed'}`}
+              disabled={!Step4.medicacao}
+              style={{ pointerEvents: Step4.medicacao ? 'auto' : 'none' }}
               value={Step4.medico} onChange={(e) => { handleInputChange("medico", e.target.value) }}
             />
             <NumberInput
               placeholder="Contato do médico responsável"
-              className={`transition-opacity md:w-1/2 duration-300 min-w-[300px] ${hasMedicacao ? 'opacity-100' : 'opacity-40'} ${hasMedicacao ? '' : 'cursor-not-allowed'}`}
-              disabled={!hasMedicacao}
-              style={{ pointerEvents: hasMedicacao ? 'auto' : 'none' }}
+              className={`transition-opacity duration-300 min-w-[300px] ${Step4.medicacao ? 'opacity-100' : 'opacity-40'} ${Step4.medicacao ? '' : 'cursor-not-allowed'}`}
+              disabled={!Step4.medicacao}
+              style={{ pointerEvents: Step4.medicacao ? 'auto' : 'none' }}
               value={Step4.medicocontato} onChange={(e) => { handleInputChange("medicocontato", e.target.value) }}
             />
           </div>
 
           <TextInput
             placeholder='Objetivo da medicação'
-            className={`transition-opacity duration-300 w-full ${hasMedicacao ? 'opacity-100' : 'opacity-40'} ${hasMedicacao ? '' : 'cursor-not-allowed'}`}
-            disabled={!hasMedicacao}
-            style={{ pointerEvents: hasMedicacao ? 'auto' : 'none' }}
+            className={`transition-opacity duration-300 w-full ${Step4.medicacao ? 'opacity-100' : 'opacity-40'} ${Step4.medicacao ? '' : 'cursor-not-allowed'}`}
+            disabled={!Step4.medicacao}
+            style={{ pointerEvents: Step4.medicacao ? 'auto' : 'none' }}
             value={Step4.objetivo} onChange={(e) => { handleInputChange("objetivo", e.target.value) }}
           />
 
-          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
+          <div className='flex w-full gap-[12px]'>
             <SelectInput
+              value={Step4.comorbidade}
               options={["Sim, possui alguma comorbidade", "Não possui alguma comorbidade"]}
               placeholder={"Possui alguma comorbidade?"}
-              className='md:w-1/2'
+              className='min-w-[300px]'
               onChange={handleComorbidadeChange} />
             <TextInput
               placeholder='Qual(is) comorbidade(s)?'
-              className={`transition-opacity md:w-1/2 duration-300 w-full ${hasComorbidade ? 'opacity-100' : 'opacity-40'} ${hasComorbidade ? '' : 'cursor-not-allowed'}`}
-              disabled={!hasComorbidade}
-              style={{ pointerEvents: hasComorbidade ? 'auto' : 'none' }}
+              className={`transition-opacity duration-300 w-full ${Step4.comorbidade ? 'opacity-100' : 'opacity-40'} ${Step4.comorbidade ? '' : 'cursor-not-allowed'}`}
+              disabled={!Step4.comorbidade}
+              style={{ pointerEvents: Step4.comorbidade ? 'auto' : 'none' }}
               value={Step4.qualcomorbidade} onChange={(e) => { handleInputChange("qualcomorbidade", e.target.value) }}
             />
           </div>
@@ -200,17 +237,20 @@ const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State
           <CheckInput title='Possui alguma doença?' options={["Diabetes", "Pressão alta", "Nenhuma"]} onChange={handleDoencaChange} />
           <CheckInput title='Possui alguma alergia?' options={["Rinite", "Sinusite", "Nenhuma"]} onChange={handleAlergiaChange} />
 
-          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
+          <div className='flex w-full gap-[12px]'>
             <SelectInput
+              value={Step4.asma}
               options={["Sim, tem asma", "Não tem asma"]}
               placeholder={"Tem asma?"}
-              className='md:w-1/2'
+              className='min-w-[300px]'
               onChange={handleAsmaChange} />
             <FileInput
               placeholder="Relatório do diagnóstico"
-              className={`transition-opacity md:w-1/2 duration-300 w-full ${hasAsma ? 'opacity-100' : 'opacity-40'} ${hasAsma ? '' : 'cursor-not-allowed'}`}
-              disabled={!hasAsma}
-              style={{ pointerEvents: hasAsma ? 'auto' : 'none' }}
+              className={`transition-opacity duration-300 ${Step4.diagnostico ? 'relative inline-block text-left w-full' : 'opacity-40 cursor-not-allowed pointer-events-none inline-block w-full'}`}
+              disabled={!Step4.diagnostico}
+              name='laudoFile'
+              onChange={handleLaudoFileChange}
+              id='laudoFile'
             />
           </div>
 
@@ -245,7 +285,7 @@ const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State
           4 de 4
         </div>
 
-        <button className='botao' type='submit' onClick={handleSubmit}>
+        <button className='flex h-[47px] items-center justify-center rounded-[12px] py-[12px] pl-[10px] pr-[16px] drop-shadow-button border-2 bg-[#13ab43] text-white border-none' type='submit' onClick={handleSubmit}>
           <CheckIcon style={{ color: 'var(--texto-botao)' }} />
           Autenticar usuário e salvar alterações
         </button>

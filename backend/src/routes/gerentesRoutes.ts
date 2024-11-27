@@ -10,7 +10,7 @@ import { refreshTokenController } from '../provider/RefreshTokenUserController';
 
 export const gerentesRouter = Router();
 // Validação usando Zod antes de criar um gerente
-gerentesRouter.post('/', validate(GerenteCreateInputSchema), createUserGerente);
+gerentesRouter.post('/',  createUserGerente);
 gerentesRouter.post('/buscar', ensureAuthenticated, getUserGerente);
 gerentesRouter.post('/senha', ensureAuthenticated, sendPassword);
 gerentesRouter.post('/login', gerenteLogin);

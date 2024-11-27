@@ -38,11 +38,11 @@ export default function NavBar({ userEmail, userName }: NavBarProps) {
         };
         if (nome) setNome(nome);
         if (homeLink) setHomeLink(homeLink);
-    }, [])
+    })
 
     const fetchGerenteData = async (id: any) => {
         try {
-            const response = await fetch(`https://atipicidades-1.onrender.com/gerentes/id/${id}`);
+            const response = await fetch(`http://localhost:3002/gerentes/id/${id}`);
             if (!response.ok) {
                 throw new Error("Failed to fetch gerente data");
             }
