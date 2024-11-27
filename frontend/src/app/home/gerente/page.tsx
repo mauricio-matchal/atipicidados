@@ -18,7 +18,28 @@ export default function Home() {
   const [gerentes, setGerentes] = useState<any[]>([]);
   const [colaboradores, setColaboradores] = useState<any[]>([]);
 
+  const [filteredMembers, setFilteredMembers] = useState<any[]>([]);
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  // selectedFilters = [Colaborador, Atendido, Gerente]
+  const [searchBy, setSearchBy] = useState("");
+
   useEffect(() => {
+    let filtered = allMembers;
+
+    // Filter by search term
+    if (searchBy.length > 0) {
+      filtered = filtered.filter((member) =>
+        member.nome?.toLowerCase().includes(searchBy.toLowerCase())
+      );
+    }
+
+    // Filter by selected filters
+    if (selectedFilters.length > 0) {
+      filtered = filtered.filter((member) => selectedFilters.includes(member.type));
+    }
+
+    setFilteredMembers(filtered);
+
     const email = localStorage.getItem("userEmail");
     const id = localStorage.getItem("userID");
     if (email) {
@@ -29,6 +50,16 @@ export default function Home() {
       setUserID(decodedID);
       fetchGerenteData(decodedID);
     }
+    if (!pacientes.length) {
+      fetchPacientes();
+    }
+    if (!gerentes.length) {
+      fetchGerentes();
+    }
+    if (!colaboradores.length) {
+      fetchColaboradores();
+    }
+  }, [email, id, searchBy, selectedFilters, pacientes, gerentes, colaboradores]);
     fetchPacientes();
     fetchGerentes();
     fetchColaboradores();
@@ -55,7 +86,7 @@ export default function Home() {
 
   const fetchPacientes = async () => {
     try {
-      const response = await fetch("http://localhost:3002/pacientes/getall",{
+      const response = await fetch("http://localhost:3002/pacientes/all",{
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -67,7 +98,7 @@ export default function Home() {
       }
       const data = await response.json();
       setPacientes(data.pacientes);
-      console.log(data.pacientes);
+      // console.log(data.pacientes);
     } catch (error) {
       console.error("Error fetching pacientes data:", error);
     }
@@ -75,7 +106,7 @@ export default function Home() {
 
   const fetchGerentes = async () => {
     try {
-      const response = await fetch("http://localhost:3002/gerentes/getall",{
+      const response = await fetch("http://localhost:3002/gerentes/all",{
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -102,7 +133,7 @@ export default function Home() {
         throw new Error("Failed to fetch colaboradores data");
       }
       const data = await response.json();
-      setColaboradores(data.colaboradores);
+      fetchColaboradores(data.colaboradores);
     } catch (error) {
       console.error("Error fetching colaboradores data:", error);
     }
@@ -114,10 +145,6 @@ export default function Home() {
     ...colaboradores.map((colaborador) => ({ ...colaborador, type: "Colaborador" }))
   ];
 
-
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-  // selectedFilters = [Colaborador, Atendido, Gerente]
-
   const handleFilterChange = (filter: string) => {
     setSelectedFilters((prevFilters) =>
       prevFilters.includes(filter)
@@ -126,11 +153,10 @@ export default function Home() {
     );
   };
 
-  const filteredMembers = allMembers.filter((member) =>
-    selectedFilters.length === 0 || selectedFilters.includes(member.type)
-  );
-
-  const [searchBy, setSearchBy] = useState("");
+  const handleSearchBar = (e: any) => {
+    const value = e.target.value
+    setSearchBy(value);
+  }
 
   // Seleciona a url certa caso o card seja de um paciente, gerente ou colaborador para enviar para a pagina certa
   const urlToMemberPage = (member: any) => {
@@ -197,9 +223,8 @@ export default function Home() {
                 className='input w-full h-[35px] mb-2 pb-1'
                 placeholder="Buscar membro..."
                 value={searchBy}
-                onChange={(e) => {setSearchBy(e.target.value)}} 
+                onChange={(e) => { handleSearchBar(e) }}
               />
-
               <button
                 type="button"
                 className="absolute inset-y-0 right-0 px-[10px] py-2 pb-4 bg-gray-300 rounded-r-md"
@@ -260,7 +285,7 @@ export default function Home() {
 
         <div className="mt-[28px] grid grid-cols-4 gap-2 w-full max-w-full">
           {filteredMembers.map((member) => (
-            <button onClick={() => { urlToMemberPage(member) }} key={member.id} className="text-left">
+            <button onClick={() => { urlToMemberPage(member) }} className="text-left">
               <Card key={member.id} title={member.nome} cpf={member.cpf} acesso={member.type} />
             </button>
           ))}
