@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StepProps } from './types';
 import SelectInput from '../SelectInput';
 import TextInput from '../TextInput';
@@ -94,7 +94,7 @@ const Step3: React.FC<{
   }
 
   const handlePasseLivreChange = (options: string[]) => {
-    setSelectedCheckboxOptions(options.filter(option => option !== 'Pai' && option !== 'Mãe'));
+    // setSelectedCheckboxOptions(options.filter(option => option !== 'Pai' && option !== 'Mãe'));
     handleInputChangeList("passelivre", options);
   };
 
@@ -167,6 +167,7 @@ const Step3: React.FC<{
             options={["Municipal", "Intermunicipal", "Interestadual", "Nenhum"]}
             title={"Tem Passe Livre?"}
             onChange={handlePasseLivreChange}
+            value={Step3.passelivre}
           />
 
           <div className='flex w-full gap-[12px]'>
@@ -200,6 +201,7 @@ const Step3: React.FC<{
             options={["Pai", "Mãe", "Avô", "Avó", "Tio", "Tia"]}
             title={"Quem mora na casa com a criança?"}
             onChange={handleMoradorChange}
+            value={Step3.moradores}
           />
 
           {selectedCheckboxOptions.map((responsavel, index) => (

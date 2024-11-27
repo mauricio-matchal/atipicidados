@@ -9,6 +9,7 @@ interface CheckInputProps {
 }
 
 export default function CheckInput({ options, title, onChange, ...props }: CheckInputProps) {
+  const [broughtOptions, setBroughtOptions] = useState<string[]>([]);
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
@@ -27,6 +28,22 @@ export default function CheckInput({ options, title, onChange, ...props }: Check
     );
   };
 
+  // const handleCheckboxChange = (item: string) => {
+  //   setSelectedOptions((prevSelectedOptions) => {
+  //     // If `broughtOptions` is not empty and the item is not yet in `selectedOptions`
+  //     if (broughtOptions.length > 0) {
+  //       const combinedOptions = new Set([...prevSelectedOptions, ...broughtOptions]); // Add `broughtOptions` to `selectedOptions`
+  //       combinedOptions.add(item); // Include the newly checked item
+  //       setBroughtOptions([]); // Clear `broughtOptions` to avoid adding it again
+  //       return Array.from(combinedOptions); // Return updated options without duplicates
+  //     }
+  //     // Normal toggle logic for the item
+  //     return prevSelectedOptions.includes(item)
+  //       ? prevSelectedOptions.filter((option) => option !== item) // Remove item if already selected
+  //       : [...prevSelectedOptions, item]; // Add item if not selected
+  //   });
+  // };  
+
   const handleClickOutside = (event: MouseEvent) => {
     if (ref.current && !ref.current.contains(event.target as Node)) {
       setIsOpen(false);
@@ -44,10 +61,9 @@ export default function CheckInput({ options, title, onChange, ...props }: Check
 
   useEffect(() => {
     if (props.value) {
-      setSelectedOptions(props.value);
-      setLocalOptions(props.value);
+      setBroughtOptions(props.value);
     };
-  })
+  }, [props.value])
 
   useEffect(() => {
     if (onChange && selectedOptions) {
@@ -79,6 +95,7 @@ export default function CheckInput({ options, title, onChange, ...props }: Check
                   type="checkbox"
                   name={item}
                   id={item}
+
                   className="
                     relative w-4 h-4 appearance-none bg-white/[0.4] border-[1px] focus:outline-none border-white/[0.2] rounded-[4px]
                     checked:bg-blue-800 checked:border-none
@@ -87,11 +104,13 @@ export default function CheckInput({ options, title, onChange, ...props }: Check
                     checked:after:bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNCA4TDcuMjUgMTEuNzVMMTEuNzUgMy43NSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4K')]
                 "
                   onChange={() => handleCheckboxChange(item)}
+                  checked={props.value ? broughtOptions.includes(item) : undefined}
                 />
                 <label htmlFor={item} className="tracking-tight">{item}</label>
               </div>
             ))}
           </div>
+          <button onClick={() => { console.log(selectedOptions) }}>Mostrar localOptions</button>
           <button className="font-semibold tracking-tight text-blue-800" onClick={toggleOpen}>
             Outros...
           </button>

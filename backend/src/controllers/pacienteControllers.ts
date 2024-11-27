@@ -192,7 +192,7 @@ export const getPacientes = async (_: Request, response: Response) => {
 export const updatePacienteGestacao = [
   async (req: Request, res: Response) => {
     try {
-      const { id } = req.params;
+      const { id } = req.body;
 
       const {
 
@@ -218,7 +218,7 @@ export const updatePacienteGestacao = [
 export const updatePacienteNascimento = [
   async (req: Request, res: Response) => {
     try {
-      const { id } = req.params;
+      const { id } = req.body;
 
       const {
         nascimento
@@ -242,7 +242,7 @@ export const updatePacienteNascimento = [
 export const updatePacienteAutonomia = [
   async (req: Request, res: Response) => {
     try {
-      const { id } = req.params;
+      const { id } = req.body;
 
       const {
 
@@ -267,7 +267,7 @@ export const updatePacienteAutonomia = [
 export const updatePacienteComportamento = [
   async (req: Request, res: Response) => {
     try {
-      const { id } = req.params;
+      const { id } = req.body;
 
       const {
 
@@ -292,7 +292,7 @@ export const updatePacienteComportamento = [
 export const updatePacienteDesenvolvimento = [
   async (req: Request, res: Response) => {
     try {
-      const { id } = req.params;
+      const { id } = req.body;
 
       const {
 
@@ -317,7 +317,7 @@ export const updatePacienteDesenvolvimento = [
 export const updatePacientePedagogico = [
   async (req: Request, res: Response) => {
     try {
-      const { id } = req.params;
+      const { id } = req.body;
 
       const {
 
@@ -342,7 +342,7 @@ export const updatePacientePedagogico = [
 export const updatePacienteGeral = [
   async (req: Request, res: Response) => {
     try {
-      const { id } = req.params;
+      const { id } = req.body;
 
       const {
         geral
@@ -366,7 +366,7 @@ export const updatePacienteGeral = [
 export const updatePacienteMae = [
   async (req: Request, res: Response) => {
     try {
-      const { id } = req.params;
+      const { id } = req.body;
 
       const {
         mae
@@ -390,7 +390,7 @@ export const updatePacienteMae = [
 export const updatePacientePai = [
   async (req: Request, res: Response) => {
     try {
-      const { id } = req.params;
+      const { id } = req.body;
 
       const {
         pai
@@ -414,7 +414,7 @@ export const updatePacientePai = [
 export const updatePacienteMaisinfo = [
   async (req: Request, res: Response) => {
     try {
-      const { id } = req.params;
+      const { id } = req.body;
 
       const {
         maisinfo
@@ -438,7 +438,7 @@ export const updatePacienteMaisinfo = [
 export const updatePacienteEscola = [
   async (req: Request, res: Response) => {
     try {
-      const { id } = req.params;
+      const { id } = req.body;
 
       const {
         escola
@@ -463,7 +463,7 @@ export const updatePacienteEscola = [
 export const updatePacienteSaude = [
   async (req: Request, res: Response) => {
     try {
-      const { id } = req.params;
+      const { id } = req.body;
 
       const {
 
@@ -495,7 +495,7 @@ export const updatePacienteRg = [
   ]),
   async (req: Request, res: Response) => {
     try {
-      const { id } = req.params;
+      const { id } = req.body;
 
 
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
@@ -526,7 +526,7 @@ export const updatePacienteFoto = [
   ]),
   async (req: Request, res: Response) => {
     try {
-      const { id } = req.params;
+      const { id } = req.body;
 
       // Lidar com arquivos enviados
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
@@ -556,7 +556,7 @@ export const updatePacienteCompres = [
   ]),
   async (req: Request, res: Response) => {
     try {
-      const { id } = req.params;
+      const { id } = req.body;
 
       // Lidar com arquivos enviados
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
@@ -586,7 +586,7 @@ export const updatePacienteLaudo = [
   ]),
   async (req: Request, res: Response) => {
     try {
-      const { id } = req.params;
+      const { id } = req.body;
 
       // Lidar com arquivos enviados
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
@@ -614,7 +614,7 @@ export const updatePacienteRelescolar = [
   ]),
   async (req: Request, res: Response) => {
     try {
-      const { id } = req.params;
+      const { id } = req.body;
 
       // Lidar com arquivos enviados
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
@@ -637,7 +637,7 @@ export const updatePacienteRelescolar = [
 
 export const updateAnalise = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { id } = req.body;
 
     const paciente = await prisma.paciente.update({
       where: { id: Number(id) },

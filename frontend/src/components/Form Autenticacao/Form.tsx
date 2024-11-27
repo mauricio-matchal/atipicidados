@@ -82,13 +82,18 @@ const Form: React.FC<FormProps> = ({ id }) => {
 
   const putData = async (data: any, id: string, type: string) => {
     try {
+      // se o tipo for analise o body eh apenas o id, pois ele so troca de true pra false 
+      // ja se for alguma seção precisamos dos dados da seção 
+      const body: Record<string, any> = { id };
+
+      if (type !== "analise") {
+        body[type] = JSON.stringify(data);
+      }
+
       const response = await fetch(`http://localhost:3002/pacientes/put${type}`, {
         method: "PUT",
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          id: id,
-          geral: JSON.stringify(data),
-        }),
+        body: JSON.stringify(body),
       })
 
       if (!response.ok) {
@@ -174,7 +179,7 @@ const Form: React.FC<FormProps> = ({ id }) => {
           prevStep={prevStep}
 
           receivedFormData={formData}
-  
+
           updateInfoSaude={(data) => updateDataAt(data, "saudeinfo")}
           updateLaudoFile={(data) => updateDataAt(data, "laudofile")}
           handleFormDataSubmit={handleUserEdition}
