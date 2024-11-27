@@ -119,7 +119,10 @@ const Step4: React.FC<{
   const closeModal = () => {
     setIsModalVisible(false);
   };
-
+  
+  // Antigamente esses updates ficavam dentro de handlesubmit
+  // mas quando o usuario apertava o botao a funcao rodava apenas o handleFormDataSubmit()
+  // e nao atualizava as informacoes de saudeinfo
   useEffect(() => {
     updateInfoSaude(Step4);
     updateLaudoFile(laudoFile);

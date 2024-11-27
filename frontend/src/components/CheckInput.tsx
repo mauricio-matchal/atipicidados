@@ -5,10 +5,10 @@ interface CheckInputProps {
   value?: string[];
   options: string[];
   title: string;
-  onChange: (selectedOptions: string[]) => void;
+  onChange: (list: string[]) => void;
 }
 
-export default function CheckInput({ options, title, onChange, ...props }: CheckInputProps) {
+export default function CheckInput({ value, options, title, onChange, ...props }: CheckInputProps) {
   const [broughtOptions, setBroughtOptions] = useState<string[]>([]);
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -60,16 +60,16 @@ export default function CheckInput({ options, title, onChange, ...props }: Check
   };
 
   useEffect(() => {
-    if (props.value) {
-      setBroughtOptions(props.value);
+    if (value) {
+      if (broughtOptions.length === 0) setBroughtOptions(value);
     };
-  }, [props.value])
+  }, [value])
 
   useEffect(() => {
-    if (onChange && selectedOptions) {
-      onChange(selectedOptions);
+    if (onChange && selectedOptions.concat(broughtOptions)) {
+      onChange(selectedOptions.concat(broughtOptions));
     }
-  }, [selectedOptions]);
+  }, [selectedOptions.concat(broughtOptions)]);
 
   useEffect(() => {
     if (isOpen) {
@@ -104,7 +104,7 @@ export default function CheckInput({ options, title, onChange, ...props }: Check
                     checked:after:bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNCA4TDcuMjUgMTEuNzVMMTEuNzUgMy43NSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4K')]
                 "
                   onChange={() => handleCheckboxChange(item)}
-                  checked={props.value ? broughtOptions.includes(item) : undefined}
+                  checked={value ? broughtOptions.concat(selectedOptions).includes(item) : undefined}
                 />
                 <label htmlFor={item} className="tracking-tight">{item}</label>
               </div>
