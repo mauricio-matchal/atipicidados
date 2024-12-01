@@ -19,10 +19,10 @@ pacienteRouter.put('/putescola', updatePacienteEscola);
 pacienteRouter.put('/putsaude', updatePacienteSaude);
 pacienteRouter.put('/putmaisinfo', updatePacienteMaisinfo);
 
-pacienteRouter.put('/putrg', updatePacienteRg);
-pacienteRouter.put('/putfoto', updatePacienteFoto);
-pacienteRouter.put('/putcompres', updatePacienteCompres);
-pacienteRouter.put('/putlaudo', updatePacienteLaudo);
+pacienteRouter.put('/putrgdocfile', updatePacienteRg);
+pacienteRouter.put('/putfotofile', updatePacienteFoto);
+pacienteRouter.put('/putcompresfile', updatePacienteCompres);
+pacienteRouter.put('/putlaudofile', updatePacienteLaudo);
 pacienteRouter.put('/putrelescolar', updatePacienteRelescolar);
 
 pacienteRouter.put('/putgestao', updatePacienteGestacao);

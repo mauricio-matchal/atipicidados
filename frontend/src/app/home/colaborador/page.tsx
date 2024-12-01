@@ -133,19 +133,17 @@ export default function Home() {
   // Seleciona a url certa caso o card seja de um paciente, gerente ou colaborador para enviar para a pagina certa
   const urlToMemberPage = (member: any) => {
     //p de paciente g de gerente e c de colaborador, dps recebe o id, e qual eh o acesso ("acs") da pessoa que esta 
-    localStorage.removeItem("memberId");
     localStorage.removeItem("acs");
+    localStorage.setItem("acs", "g");
 
-    localStorage.setItem("memberId", member.id);
-    localStorage.setItem("acs", "c");
     if (member.type === "Paciente") {
-      router.push(`/p`);
+      router.push(`/p/${member.id}`);
     };
     if (member.type === "Gerente") {
-      router.push(`/g`);
+      router.push(`/g/${member.id}`);
     };
     if (member.type === "Colaborador") {
-      router.push(`/c`);
+      router.push(`/c/${member.id}`);
     }
   }
 
@@ -167,10 +165,10 @@ export default function Home() {
               <input
                 type="text"
                 className='input w-full h-[35px] mb-2 pb-1'
-                placeholder="Buscar membro..." 
+                placeholder="Buscar membro..."
                 value={searchBy}
                 onChange={handleSearchBar}
-                />
+              />
 
               <button
                 type="button"

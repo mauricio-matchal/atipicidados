@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import logos from "../../public/images/logos.svg";
-import { SlashedEyeIcon, OpenEyeIcon } from "../../public/icons/Icons";
+import { SlashedEyeIcon, OpenEyeIcon, CloseButton } from "../../public/icons/Icons";
 import { useState } from "react";
 import Link from "next/link";
 import Checkbox from "@/components/Checkbox";
@@ -101,7 +101,7 @@ export default function Home() {
       {errorMessage && (
         <>
           <div className="fixed z-40 place-self-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-800 p-5 text-white flex-row">
-            <button className="text-white" onClick={() => { setErrorMessage("") }}>Voltar</button>
+            <button className="text-white" onClick={() => { setErrorMessage("") }}><CloseButton/></button>
             <p>Erro ao fazer login. Tente novamente.</p> 
           </div>
           <div className="fixed inset-0 bg-black/30 z-30" />
@@ -209,6 +209,7 @@ export default function Home() {
             </button>
             <Link href='/precadastro'>
               <button
+                type="button"
                 className="botaoreverse w-full">
                 Fazer o pré-cadastro
               </button>
