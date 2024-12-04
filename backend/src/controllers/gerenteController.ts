@@ -88,6 +88,7 @@ export const getUserGerente = async (request: Request, response: Response) => {
     }
 };
 
+//encontrar por id
 export const getUserGerenteId = async (request: Request, response: Response) => {
     const { id } = request.params;
 
@@ -120,6 +121,7 @@ export const getUserGerenteId = async (request: Request, response: Response) => 
     }
 };
 
+//login
 export const gerenteLogin = async (request: Request, response: Response) => {
     const { email, password } = request.body;
 

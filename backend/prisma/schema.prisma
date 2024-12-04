@@ -105,17 +105,17 @@ model Unidade {
 }
 
 enum Raca {
-  BRANCA
-  NEGRA
-  AMARELA
-  INDIGENA
-  OUTRA
+  branca
+  negra
+  amarela
+  indigena
+  outra
 }
 
 enum Genero {
-  MASCULINO
-  FEMININO
-  PREFIRO_NAO_INFORMAR
+  masculino
+  feminino
+  prefiro_nao_informar
 }
 
 model RefreshToken {

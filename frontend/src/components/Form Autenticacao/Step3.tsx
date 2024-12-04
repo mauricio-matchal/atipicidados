@@ -94,7 +94,7 @@ const Step3: React.FC<{
   }
 
   const handlePasseLivreChange = (options: string[]) => {
-    setSelectedCheckboxOptions(options.filter(option => option !== 'Pai' && option !== 'Mãe'));
+    // setSelectedCheckboxOptions(options.filter(option => option !== 'Pai' && option !== 'Mãe'));
     handleInputChangeList("passelivre", options);
   };
 
@@ -167,6 +167,7 @@ const Step3: React.FC<{
             options={["Municipal", "Intermunicipal", "Interestadual", "Nenhum"]}
             title={"Tem Passe Livre?"}
             onChange={handlePasseLivreChange}
+            value={Step3.passelivre}
           />
 
           <div className='flex w-full gap-[12px]'>
@@ -200,18 +201,19 @@ const Step3: React.FC<{
             options={["Pai", "Mãe", "Avô", "Avó", "Tio", "Tia"]}
             title={"Quem mora na casa com a criança?"}
             onChange={handleMoradorChange}
+            value={Step3.moradores}
           />
 
           {selectedCheckboxOptions.map((responsavel, index) => (
             <div key={index} className='flex flex-col gap-[12px] mt-4'>
               <h4 className='pl-2'>Informações {responsavel}</h4>
 
-              <TextInput placeholder="Nome completo" />
+              <TextInput placeholder="Nome completo" value={undefined} />
 
               <div className='flex w-full gap-[12px]'>
                 <DateInput />
-                <TextInput placeholder='RG' className='min-w-[220px]' />
-                <TextInput placeholder='CPF' className='min-w-[220px]' />
+                <TextInput placeholder='RG' className='min-w-[220px]' value={undefined} />
+                <TextInput placeholder='CPF' className='min-w-[220px]' value={undefined} />
               </div>
 
               <div className='flex w-full gap-[12px]'>
@@ -220,7 +222,7 @@ const Step3: React.FC<{
                   options={["Ensino fundamental incompleto", "Ensino fundamental completo", "Ensino médio completo", "Técnico/profissionalizante", "Cursando ensino superior", "Ensino superior completo"]}
                 />
                 <NumberInput placeholder="Telefone de contato" />
-                <TextInput placeholder="E-mail" />
+                <TextInput placeholder="E-mail" value={undefined} />
               </div>
             </div>
           ))}

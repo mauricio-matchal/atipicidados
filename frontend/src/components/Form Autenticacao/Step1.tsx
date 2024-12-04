@@ -74,7 +74,7 @@ const Step1: React.FC<{
 
   const [login, setLogin] = useState({
     email: receivedFormData.email || '',
-    confirmarEmail: receivedFormData.email || '',
+    confirmarEmail: '',
     senha: receivedFormData.password || '',
     confirmarSenha: receivedFormData.password || '',
   });
@@ -161,7 +161,7 @@ const Step1: React.FC<{
     setResidenciaFile(receivedFormData.compresfile);
     setLogin({
       email: receivedFormData.email || '',
-      confirmarEmail: receivedFormData.email || '',
+      confirmarEmail: login.confirmarEmail,
       senha: receivedFormData.password || '',
       confirmarSenha: receivedFormData.password || '',
     });
@@ -243,7 +243,7 @@ const Step1: React.FC<{
           <h4 className='pl-2 place-self-start mt-8'>Crie seu login e senha</h4>
           <div className='flex w-full gap-3'>
             <TextInput error={isEmailMissing} className='w-[400px]' placeholder='E-mail' value={login.email} onChange={(e) => handleLoginChange("email", e.target.value)} />
-            <TextInput error={isEmailMissing} className='w-[400px]' placeholder='Confirmar e-mail' value={login.email} onChange={(e) => handleLoginChange("confirmarEmail", e.target.value)} />
+            <TextInput error={isEmailMissing} className='w-[400px]' placeholder='Confirmar e-mail' value={login.confirmarEmail} onChange={(e) => handleLoginChange("confirmarEmail", e.target.value)} />
           </div>
           {/* <div className='flex w-full gap-3'>
             <TextInput error={isSenhaMissing} className='w-[400px]' placeholder='Senha' value={login.senha} onChange={(e) => handleLoginChange("senha", e.target.value)} />

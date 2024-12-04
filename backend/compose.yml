@@ -4,7 +4,6 @@ services:
   db:
     container_name: db
     image: postgres:12
-    restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -65,3 +64,7 @@ services:
 
 volumes:
   pgdata:
+
+networks:
+  app-network:
+    driver: bridge

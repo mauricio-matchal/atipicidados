@@ -8,6 +8,7 @@ import { GenerateRefreshToken } from '../provider/gerenateRefreshToken';
 const prisma = new PrismaClient();
 
 // Quando criar colaborador, sempre usar o id 0 pra unidades. 
+//criar 
 export const createUserColaborador = async (request: Request, response: Response) => {
     const { nome, email, cpf, rg, telefone, raca, password, nascimento, titulo, formacao, genero } = request.body;
     
@@ -33,6 +34,8 @@ export const createUserColaborador = async (request: Request, response: Response
     }
 };
 
+
+//encontrar por email
 export const getUserColaborador = async (request: Request, response: Response) => {
     const { email } = request.body;
 
@@ -55,6 +58,7 @@ export const getUserColaborador = async (request: Request, response: Response) =
     }
 };
 
+//encontrar por id
 export const getuserColaboradorId = async (request: Request, response: Response) => {
     const { id } = request.params;
 
@@ -74,6 +78,7 @@ export const getuserColaboradorId = async (request: Request, response: Response)
     }
 };
 
+//login
 export const colaboradorLogin = async (request: Request, response: Response) => {
     const { email, password } = request.body;
 
@@ -120,7 +125,7 @@ export const colaboradorLogin = async (request: Request, response: Response) => 
             error: false,
             message: 'Login realizado',
             token,
-            gerente: {
+            colaborador: {
                 id: userColaborador.id,
             }
         });
@@ -133,7 +138,7 @@ export const colaboradorLogin = async (request: Request, response: Response) => 
 };
 
 export const getColaborador = async (request: Request, response: Response) => {
-    const { cpf } = request.params; 
+    const { cpf } = request.params;
 
     try {
         const userColaborador = await prisma.colaborador.findFirst({
@@ -161,7 +166,7 @@ export const getColaborador = async (request: Request, response: Response) => {
     }
 };
 
-export const getColaboradores = async (_:Request, response:Response) => {
+export const getColaboradores = async (_: Request, response: Response) => {
 
     try {
         const colaboradores = await prisma.colaborador.findMany();

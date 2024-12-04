@@ -76,11 +76,11 @@ export const NullsOrderSchema = z.enum(['first','last']);
 
 export const JsonNullValueFilterSchema = z.enum(['DbNull','JsonNull','AnyNull',]).transform((value) => value === 'JsonNull' ? Prisma.JsonNull : value === 'DbNull' ? Prisma.JsonNull : value === 'AnyNull' ? Prisma.AnyNull : value);
 
-export const RacaSchema = z.enum(['BRANCA','NEGRA','AMARELA','INDIGENA','OUTRA']);
+export const RacaSchema = z.enum(['branca','negra','amarela','indigena','outra']);
 
 export type RacaType = `${z.infer<typeof RacaSchema>}`
 
-export const GeneroSchema = z.enum(['MASCULINO','FEMININO','PREFIRO_NAO_INFORMAR']);
+export const GeneroSchema = z.enum(['masculino','feminino','prefiro_nao_informar']);
 
 export type GeneroType = `${z.infer<typeof GeneroSchema>}`
 
