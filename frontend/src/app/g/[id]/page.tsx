@@ -9,7 +9,9 @@ import NavBarGerente from "@/components/NavBarGerente";
 import NavBarColaborador from "@/components/NavBarColaborador";
 import NavBarPaciente from "@/components/NavBarPaciente";
 
-export default function Home() {
+
+
+export default function Home(Gerente:any) {
   // const searchParams = useSearchParams();
   // const id = searchParams.get("id");
   // const acesso = searchParams.get("acs");
@@ -40,7 +42,7 @@ export default function Home() {
       localStorage.removeItem("acs");
     };
     if (pacienteInfo && pacienteInfo.unidadeId) fetchUnidadeData();
-  })
+  },[])
 
   const fetchPacienteData = async (id: any) => {
     try {
@@ -49,7 +51,9 @@ export default function Home() {
         throw new Error("Failed to fetch gerente data");
       }
       const data = await response.json();
-      setPacienteInfo(data);
+      setPacienteInfo(data.gerente);
+      console.log(data)
+
     } catch (error) {
       console.error("Error fetching gerente data:", error);
     }
@@ -57,7 +61,7 @@ export default function Home() {
 
   const fetchUnidadeData = async () => {
     try {
-      const response = await fetch(`http://localhost:3002/unidades/getUnidadeById/${pacienteInfo.unidadeId}`);
+      const response = await fetch(`http://localhost:3002/unidades/getUnidadeById/${pacienteInfo?.cpf}`);
       if (!response.ok) {
         throw new Error("Failed to fetch unidades data");
       }
@@ -81,7 +85,7 @@ export default function Home() {
       <div className="flex flex-col gap-[20px] px-[108px] pt-[33px] pb-[50px] text-[14px]">
         <div className="flex gap-[20px]">
           <div className="box w-full flex flex-col gap-7">
-            <h2>Cadastro de {pacienteInfo ? pacienteInfo.nome : "Nome"}</h2>
+            <h2>Cadastro de {pacienteInfo ? pacienteInfo.nome: "Nome"}</h2>
 
             <div className="flex flex-col gap-8 pb-2">
               <div className="flex items-center gap-[20px]">
@@ -125,7 +129,7 @@ export default function Home() {
                 <div className="flex flex-col gap-6">
                   <div>
                     <p className="titulo">Unidade vinculada:</p>
-                    <p>{unidade ? unidade.nome : "Unidade não encontrada"}</p>
+                    <p>{ pacienteInfo.unidadeId }</p>
                   </div>
 
                   <div>

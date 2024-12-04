@@ -145,18 +145,18 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateMae: (
             <div className='flex flex-col gap-[12px]'>
               <h4 className='pl-2'>Informações do responsável</h4>
 
-              <TextInput placeholder="Nome completo do responsável" />
+              <TextInput placeholder="Nome completo do responsável" value={undefined} />
 
               <div className='flex w-full gap-[12px]'>
                 <DateInput />
-                <TextInput placeholder='RG do responsável' className='min-w-[220px]' />
-                <TextInput placeholder='CPF do responsável' className='min-w-[220px]' />
+                <TextInput placeholder='RG do responsável' className='min-w-[220px]' value={undefined} />
+                <TextInput placeholder='CPF do responsável' className='min-w-[220px]' value={undefined} />
               </div>
 
               <div className='flex w-full gap-[12px]'>
                 <SelectInput placeholder={"Escolaridade"} options={["Ensino fundamental incompleto", "Ensino fundamental completo", "Ensino médio completo", "Técnico/profissionalizante", "Cursando ensino superior", "Ensino superior completo"]} />
                 <NumberInput placeholder="Telefone de contato" />
-                <TextInput placeholder="E-mail" />
+                <TextInput placeholder="E-mail" value={undefined} />
               </div>
 
             </div>

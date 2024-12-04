@@ -4,6 +4,7 @@ import NavBar from "@/components/NavBar";
 import { useRouter } from 'next/navigation';
 import { useState } from "react";
 import { SlashedEyeIcon, OpenEyeIcon } from "../../../public/icons/Icons";
+import { cookies } from "next/headers";
 
 export default function Home() {
   const router = useRouter();
@@ -57,7 +58,8 @@ export default function Home() {
   function leaveAtipicidades() {
     localStorage.clear();
     router.push('/');
-  }
+    document.cookie = "token=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+    document.cookie = "refresh_token=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";  }
 
   return (
     <>
