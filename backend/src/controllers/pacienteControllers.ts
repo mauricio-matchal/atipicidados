@@ -587,9 +587,8 @@ export const updatePacienteFoto = [
     try {
       const { id } = req.params;
 
-      // Lidar com arquivos enviados
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      console.log(req.files); // Log dos arquivos recebidos
+      console.log(req.files); 
 
       const paciente = await prisma.paciente.update({
         where: { id: (id) },
@@ -647,9 +646,8 @@ export const updatePacienteLaudo = [
     try {
       const { id } = req.params;
 
-      // Lidar com arquivos enviados
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      console.log(req.files); // Log dos arquivos recebidos
+      console.log(req.files); 
 
       const paciente = await prisma.paciente.update({
         where: { id: (id) },
@@ -675,9 +673,8 @@ export const updatePacienteRelescolar = [
     try {
       const { id } = req.params;
 
-      // Lidar com arquivos enviados
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      console.log(req.files); // Log dos arquivos recebidos
+      console.log(req.files); 
 
       const paciente = await prisma.paciente.update({
         where: { id: (id) },

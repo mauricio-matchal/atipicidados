@@ -146,7 +146,7 @@ export const gerenteLogin = async (request: Request, response: Response) => {
 
         response.cookie('token', token, {
             httpOnly: true,
-            secure: false, 
+            secure: true, 
             sameSite: 'lax',
             path: '/',
         });
@@ -156,7 +156,7 @@ export const gerenteLogin = async (request: Request, response: Response) => {
 
         response.cookie('refresh_token', refresh_token.id, {
             httpOnly: true,
-            secure: false,
+            secure: true,
             sameSite: 'lax',
         });
 

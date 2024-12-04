@@ -4,7 +4,7 @@ import SearchIcon from "@/assets/icons/search";
 import { Card } from "@/components/Card";
 import NavBarGerente from "@/components/NavBarGerente";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -23,9 +23,33 @@ export default function Home() {
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   // selectedFilters = [Colaborador, Atendido, Gerente]
   const [searchBy, setSearchBy] = useState("");
+  const { ids } = useParams();
+
+  console.log(ids, 'oiiiiiiiiiiiiiiiiiiiiii'); // Exibe o id no console
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await fetch(`http://localhost:3002/gerentes/token/${id}`, {
+          method: "POST", 
+          credentials: "include",
+        });
+  
+        if (!response.ok) {
+          router.push("/");
+          return;
+        }
+      } catch (error: any) {
+        console.error("Error:", error.message);
+      }
+    };
+  
+    checkAuth();
+  }, [router]);
 
   useEffect(() => {
     let filtered = allMembers;
+
 
     // Filter by search term
     if (searchBy.length > 0) {
@@ -60,6 +84,7 @@ export default function Home() {
     if (!colaboradores.length) {
       fetchColaboradores();
     }
+    
   }, [email, id, searchBy, selectedFilters, pacientes, gerentes, colaboradores]);
 
   const fetchGerenteData = async (id: any) => {
@@ -77,7 +102,7 @@ export default function Home() {
 
   const fetchPacientes = async () => {
     try {
-      const response = await fetch("http://localhost:3002/pacientes/getall");
+      const response = await fetch("http://localhost:3002/pacientes/all");
       if (!response.ok) {
         throw new Error("Failed to fetch pacientes data");
       }
@@ -90,15 +115,12 @@ export default function Home() {
   };
   const fetchGerentes = async () => {
     try {
-      const response = await fetch("http://localhost:3002/gerentes/getall",
-        {credentials:'include'}
-      );
+      const response = await fetch(`http://localhost:3002/gerentes/getall/${id}`,{credentials:'include'});
+       
       if (!response.ok) {
         throw new Error("Failed to fetch gerentes data");
-        
       }
       const data = await response.json();
-      console.log(data)
       setGerentes(data.gerentes);
     } catch (error) {
       console.error("Error fetching gerentes data:", error);
@@ -106,7 +128,7 @@ export default function Home() {
   };
   const fetchColaboradores = async () => {
     try {
-      const response = await fetch("http://localhost:3002/colaboradores/all");
+      const response = await fetch("http://localhost:3002/colaboradores/getall");
       if (!response.ok) {
         throw new Error("Failed to fetch colaboradores data");
       }

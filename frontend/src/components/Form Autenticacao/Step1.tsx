@@ -117,6 +117,48 @@ const Step1: React.FC<{
   };
 
   useEffect(() => {
+    if (error && errorRef.current) {
+      errorRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [error]);
+  // ARQUIVOS //
+
+  const [fotoFile, setFotoFile] = useState<any>(receivedFormData?.fotofile);
+  const [relatorioFile, setRelatorioFile] = useState<any>(receivedFormData?.relescolar);
+  const [rgFile, setRGFile] = useState<any>(receivedFormData?.rgdocfile);
+  const [residenciaFile, setResidenciaFile] = useState<any>(receivedFormData?.compresfile);
+
+  const handleFotoFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.name === "fotoFile") {
+      setFotoFile(e.target.files[0]);
+    }
+  };
+
+  const handleRelatorioFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.name === "relatorioFile") {
+      setRelatorioFile(e.target.files[0]);
+    }
+  };
+
+  const handleRGFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.name === "rgFile") {
+      setRGFile(e.target.files[0]);
+    }
+  };
+
+  const handleResidenciaFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.name === "residenciaFile") {
+      setResidenciaFile(e.target.files[0]);
+    }
+  };
+
+  //////////
+
+  useEffect(() => {
+    setFotoFile(receivedFormData.fotofile);
+    setRelatorioFile(receivedFormData.relescolar);
+    setRGFile(receivedFormData.rgdocfile);
+    setResidenciaFile(receivedFormData.compresfile);
     setLogin({
       email: receivedFormData.email || '',
       confirmarEmail: receivedFormData.email || '',
@@ -145,44 +187,6 @@ const Step1: React.FC<{
       possuiRelatorio: receivedFormData.escola?.possuiRelatorio,
     });
   }, [receivedFormData]);
-
-  useEffect(() => {
-    if (error && errorRef.current) {
-      errorRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  }, [error]);
-  // ARQUIVOS //
-
-  const [fotoFile, setFotoFile] = useState<File | null>(null);
-  const [relatorioFile, setRelatorioFile] = useState<File | null>(null);
-  const [rgFile, setRGFile] = useState<File | null>(null);
-  const [residenciaFile, setResidenciaFile] = useState<File | null>(null);
-
-  const handleFotoFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.name === "fotoFile") {
-      setFotoFile(e.target.files[0]);
-    }
-  };
-
-  const handleRelatorioFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.name === "relatorioFile") {
-      setRelatorioFile(e.target.files[0]);
-    }
-  };
-
-  const handleRGFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.name === "rgFile") {
-      setRGFile(e.target.files[0]);
-    }
-  };
-
-  const handleResidenciaFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.name === "residenciaFile") {
-      setResidenciaFile(e.target.files[0]);
-    }
-  };
-
-  //////////
 
   const handleNext = () => {
     setError(null);
@@ -252,13 +256,13 @@ const Step1: React.FC<{
           {/* <button onClick={() => { console.log(Step11); console.log(Step12) }}>Mostrar Respostas</button> */}
           {/* <button onClick={() => { console.log(fotoFile) }}>Mostrar Foto</button> */}
           <div className='flex w-full gap-[12px]'>
-            <FileInput placeholder='Foto 3x4' onChange={handleFotoFileChange} name='fotoFile' id='fotoFile' value={receivedFormData?.fotofile} />
+            <FileInput placeholder='Foto 3x4' onChange={handleFotoFileChange} name='fotoFile' id='fotoFile' value={fotoFile} />
             <TextInput placeholder='Nome completo' className='min-w-[500px] max-w-[500px]' value={Step11.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
           </div>
 
           <div className='flex w-full gap-[12px]'>
-            <FileInput placeholder='Foto do RG' onChange={handleRGFileChange} name='rgFile' id='rgFile' value={receivedFormData?.rgdocfile} />
-            <FileInput placeholder='Comprovante de residência' onChange={handleResidenciaFileChange} name='residenciaFile' id='residenciaFile' value={receivedFormData?.compresfile} />
+            <FileInput placeholder='Foto do RG' onChange={handleRGFileChange} name='rgFile' id='rgFile' value={rgFile} />
+            <FileInput placeholder='Comprovante de residência' onChange={handleResidenciaFileChange} name='residenciaFile' id='residenciaFile' value={residenciaFile} />
           </div>
 
           <div className='flex w-full gap-[12px]'>
@@ -313,7 +317,7 @@ const Step1: React.FC<{
               disabled={!hasRelatorio}
               name='relatorioFile'
               onChange={handleRelatorioFileChange}
-              value={receivedFormData?.relescolar}
+              value={relatorioFile}
               id='relatorioFile'
             />
           </div>

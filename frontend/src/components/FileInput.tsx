@@ -3,7 +3,7 @@ import { JSX, ClassAttributes, InputHTMLAttributes } from "react";
 import { FileIcon } from '../../public/icons/Icons';
 
 interface FileInputProps extends JSX.IntrinsicAttributes, ClassAttributes<HTMLDivElement>, InputHTMLAttributes<HTMLDivElement> {
-  value: any;
+  value: string;
   placeholder: string;
   id: string;
   name: string;
@@ -20,6 +20,10 @@ export default function FileInput(props: JSX.IntrinsicAttributes & ClassAttribut
     }
   };
 
+  const displayValue = props.value
+    ? props.value.replace(/^uploads\//, "") 
+    : fileName || props.placeholder;
+
   return (
     <div className="relative inline-block text-left w-full" {...props}>
       <label
@@ -27,7 +31,7 @@ export default function FileInput(props: JSX.IntrinsicAttributes & ClassAttribut
         className='py-[11px] h-[41px] leading-[19px] px-3 bg-[#F01414]/[0.3] bg-opacity-40 rounded-xl focus:outline-none focus:border-[#7481F6] bg-indigo-400 flex items-center justify-end w-full relative'
       >
         <span className='text-sm left-3 w-[85%] absolute truncate pointer-events-none'>
-          {fileName ? fileName : props.placeholder}
+          {displayValue}
         </span>
         <div className=''>
           <FileIcon />

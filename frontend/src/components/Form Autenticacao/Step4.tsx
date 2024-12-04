@@ -54,25 +54,6 @@ const Step4: React.FC<{
     relevante: receivedFormData.saudeinfo?.relevante || '',
   });
 
-  useEffect(() => {
-    setStep4({
-      diagnostico: receivedFormData.saudeinfo?.diagnostico,
-      datadiagnostico: receivedFormData.saudeinfo?.datadiagnostico,
-      medicacao: receivedFormData.saudeinfo?.medicacao,
-      qualmedicacao: receivedFormData.saudeinfo?.qualmedicacao,
-      medico: receivedFormData.saudeinfo?.medico,
-      medicocontato: receivedFormData.saudeinfo?.medicocontato,
-      objetivo: receivedFormData.saudeinfo?.objetivo,
-      comorbidade: receivedFormData.saudeinfo?.comorbidade,
-      qualcomorbidade: receivedFormData.saudeinfo?.qualcomorbidade,
-      providencias: receivedFormData.saudeinfo?.providencias,
-      doenca: receivedFormData.saudeinfo?.doenca,
-      alergia: receivedFormData.saudeinfo?.alergia,
-      asma: receivedFormData.saudeinfo?.asma,
-      relevante: receivedFormData.saudeinfo?.relevante,
-    })
-  }, [receivedFormData])
-
   const [hasMedicacao, setHasMedicacao] = useState(false);
   const [hasDiagnostico, setHasDiagnostico] = useState(false);
   const [hasComorbidade, setHasComorbidade] = useState(false);
@@ -94,7 +75,7 @@ const Step4: React.FC<{
     }));
   };
 
-  const [laudoFile, setLaudoFile] = useState<File | null>(null);
+  const [laudoFile, setLaudoFile] = useState<any>(receivedFormData?.laudofile);
 
   const handleLaudoFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -141,6 +122,26 @@ const Step4: React.FC<{
   const closeModal = () => {
     setIsModalVisible(false);
   };
+
+  useEffect(() => {
+    setLaudoFile(receivedFormData.laudoFile);
+    setStep4({
+      diagnostico: receivedFormData.saudeinfo?.diagnostico,
+      datadiagnostico: receivedFormData.saudeinfo?.datadiagnostico,
+      medicacao: receivedFormData.saudeinfo?.medicacao,
+      qualmedicacao: receivedFormData.saudeinfo?.qualmedicacao,
+      medico: receivedFormData.saudeinfo?.medico,
+      medicocontato: receivedFormData.saudeinfo?.medicocontato,
+      objetivo: receivedFormData.saudeinfo?.objetivo,
+      comorbidade: receivedFormData.saudeinfo?.comorbidade,
+      qualcomorbidade: receivedFormData.saudeinfo?.qualcomorbidade,
+      providencias: receivedFormData.saudeinfo?.providencias,
+      doenca: receivedFormData.saudeinfo?.doenca,
+      alergia: receivedFormData.saudeinfo?.alergia,
+      asma: receivedFormData.saudeinfo?.asma,
+      relevante: receivedFormData.saudeinfo?.relevante,
+    })
+  }, [receivedFormData])
 
   useEffect(() => {
     updateInfoSaude(Step4);
@@ -251,6 +252,7 @@ const Step4: React.FC<{
               name='laudoFile'
               onChange={handleLaudoFileChange}
               id='laudoFile'
+              value={laudoFile}
             />
           </div>
 

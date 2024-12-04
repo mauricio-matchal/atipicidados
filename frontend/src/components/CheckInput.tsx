@@ -72,6 +72,7 @@ export default function CheckInput({ options, title, onChange, ...props }: Check
       <div className="bg-indigo-400/[0.4] flex flex-col px-4 py-3 rounded-xl gap-1">
         <label htmlFor="" className="text-base font-semibold">{title}</label>
         <div className="flex flex-row justify-between">
+          <button onClick={() => { console.log(localOptions) }}></button>
           <div className="flex flex-row gap-3.5 justify-normal">
             {localOptions.map((item, index) => (
               <div key={index} className="flex flex-row gap-1.5 items-center">

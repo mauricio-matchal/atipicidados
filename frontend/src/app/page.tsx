@@ -69,20 +69,17 @@ export default function Home() {
     }
     try {
       const response = await fetch(url, {
-        method: "POST", 
-        body: JSON.stringify({
-          email: loginData.email,
-          password: loginData.password
-        }),
-        headers: {
-          'Content-Type': 'application/json', 
-        },
-        credentials: 'include' 
+        method: "POST",
+        body: JSON.stringify({ email: loginData.email, password: loginData.password }),
+        headers: { 'Content-Type': 'application/json' },
+        credentials:'include'
       });
 
       if (!response.ok) {
         throw new Error('Login failed');
       }
+      const cookies = document.cookie;
+    
 
       const data = await response.json();
       console.log(data);
