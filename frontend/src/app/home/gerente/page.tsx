@@ -23,6 +23,7 @@ export default function Home() {
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   // selectedFilters = [Colaborador, Atendido, Gerente]
   const [searchBy, setSearchBy] = useState("");
+<<<<<<< HEAD
   const { ids } = useParams();
 
   console.log(ids, 'oiiiiiiiiiiiiiiiiiiiiii'); // Exibe o id no console
@@ -51,6 +52,12 @@ export default function Home() {
     let filtered = allMembers;
 
 
+=======
+
+  useEffect(() => {
+    let filtered = allMembers;
+
+>>>>>>> 8d3058b6fd0dda204991b0f30da84f0f16f2593b
     // Filter by search term
     if (searchBy.length > 0) {
       filtered = filtered.filter((member) =>
@@ -84,8 +91,16 @@ export default function Home() {
     if (!colaboradores.length) {
       fetchColaboradores();
     }
+<<<<<<< HEAD
     
   }, [email, id, searchBy, selectedFilters, pacientes, gerentes, colaboradores]);
+=======
+  }, [email, id, searchBy, selectedFilters, pacientes, gerentes, colaboradores]);
+    fetchPacientes();
+    fetchGerentes();
+    fetchColaboradores();
+  }, []);
+>>>>>>> 8d3058b6fd0dda204991b0f30da84f0f16f2593b
 
   const fetchGerenteData = async (id: any) => {
     try {
@@ -102,7 +117,17 @@ export default function Home() {
 
   const fetchPacientes = async () => {
     try {
+<<<<<<< HEAD
       const response = await fetch("http://localhost:3002/pacientes/all");
+=======
+      const response = await fetch("http://localhost:3002/pacientes/all",{
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+>>>>>>> 8d3058b6fd0dda204991b0f30da84f0f16f2593b
       if (!response.ok) {
         throw new Error("Failed to fetch pacientes data");
       }
@@ -115,8 +140,17 @@ export default function Home() {
   };
   const fetchGerentes = async () => {
     try {
+<<<<<<< HEAD
       const response = await fetch(`http://localhost:3002/gerentes/getall/${id}`,{credentials:'include'});
        
+=======
+      const response = await fetch("http://localhost:3002/gerentes/all",{
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }      });
+>>>>>>> 8d3058b6fd0dda204991b0f30da84f0f16f2593b
       if (!response.ok) {
         throw new Error("Failed to fetch gerentes data");
       }
@@ -133,7 +167,7 @@ export default function Home() {
         throw new Error("Failed to fetch colaboradores data");
       }
       const data = await response.json();
-      setColaboradores(data.colaboradores);
+      fetchColaboradores(data.colaboradores);
     } catch (error) {
       console.error("Error fetching gerentes data:", error);
     }
@@ -274,7 +308,10 @@ export default function Home() {
 
         <div className="mt-[28px] grid grid-cols-4 gap-2 w-full max-w-full">
           {filteredMembers.map((member) => (
+<<<<<<< HEAD
             // eslint-disable-next-line react/jsx-key
+=======
+>>>>>>> 8d3058b6fd0dda204991b0f30da84f0f16f2593b
             <button onClick={() => { urlToMemberPage(member) }} className="text-left">
               <Card key={member.id} title={member.nome} cpf={member.cpf} acesso={member.type} />
             </button>

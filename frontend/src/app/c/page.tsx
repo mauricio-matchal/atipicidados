@@ -1,146 +1,221 @@
 "use client";
+
 import Image from "next/image";
-import NavBar from "@/components/NavBarPaciente";
-import perfil from "../../../public/images/perfil.png";
-import { Card } from "@/components/Card";
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import NavBarGerente from "@/components/NavBarGerente";
-import NavBarColaborador from "@/components/NavBarColaborador";
-import NavBarPaciente from "@/components/NavBarPaciente";
+import logos from "../../public/images/logos.svg";
+import { SlashedEyeIcon, OpenEyeIcon } from "../../public/icons/Icons";
+import { useState } from "react";
+import Link from "next/link";
+import Checkbox from "@/components/Checkbox";
+import { useRouter } from "next/navigation";
+import Loading from "@/components/Loading";
+import Banner from "../../public/pexels-fabiano-cardoso-1671860-5654263.png";
 
 export default function Home() {
-    // const searchParams = useSearchParams();
-    // const id = searchParams.get("id");
-    // const acesso = searchParams.get("acs");
+  const [userType, setUserType] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [id, setID] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
-    const [userrEmail, setUserrEmail] = useState("");
-    const [userID, setUserID] = useState("");
-    const [pacienteInfo, setPacienteInfo] = useState<any | null>(null);
-    const [homeLink, setHomeLink] = useState("");
-    const [unidade, setUnidade] = useState<any | null>(null);
+  const [errorMessage, setErrorMessage] = useState("");
 
-    const [memberID, setMemberID] = useState("");
-    const [acesso, setAcesso] = useState("");
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+  const [loginData, setLoginData] = useState({
+    email: "",
+    password: ""
+  });
 
-    useEffect(() => {
-        const email = localStorage.getItem("userEmail");
-        // const id = localStorage.getItem("userID");
-        const memberId = localStorage.getItem("memberId");
-        const acs = localStorage.getItem("acs");
-        const homeLink = localStorage.getItem("homeLink");
-        if (email) setUserrEmail(email);
-        if (memberId) {
-            setMemberID(memberId);
-            fetchPacienteData(memberId);
-            localStorage.removeItem("memberId")
-        };
-        if (acs) {
-            setAcesso(acs)
-            localStorage.removeItem("acs");
-        };
-        if (homeLink) setHomeLink(homeLink);
-        if (pacienteInfo && pacienteInfo.unidadeId) fetchUnidadeData();
-    })
+  const handleInputChange = (key: string, value: string) => {
+    setLoginData((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
+  };
 
-    const fetchPacienteData = async (id: any) => {
-        try {
-            const response = await fetch(`http://localhost:3002/colaboradores/id/${id}`);
-            if (!response.ok) {
-                throw new Error("Failed to fetch gerente data");
-            }
-            const data = await response.json();
-            setPacienteInfo(data);
-        } catch (error) {
-            console.error("Error fetching gerente data:", error);
-        }
-    };
+  const handleCheckboxChange = (value: string) => {
+    setUserType(value);
+  }
 
-    const fetchUnidadeData = async () => {
-        try {
-            const response = await fetch(`http://localhost:3002/unidades/getUnidadeById/${pacienteInfo.unidadeId}`);
-            if (!response.ok) {
-                throw new Error("Failed to fetch unidades data");
-            }
-            const data = await response.json();
-            setUnidade(data);
-        } catch (error) {
-            console.error("Error fetching unidades data:", error);
-        }
-    };
+  const revealLogin = () => {
+    console.log(loginData);
+  }
 
+  const revealUserType = () => {
+    console.log(userType);
+  }
 
-    // Se a pessoa que clicou no card for um gerente, ou seja "acs" = "g" recebe navbar de gerente, caso contrario colaborador
-    const getAcesso = () => {
-        if(acesso === "g") return <NavBarGerente />
-        if(acesso === "c") return <NavBarColaborador />
-        if(acesso === "p") return <NavBarPaciente />
+  const handleLogin = async (userType: any) => {
+    setIsLoading(true);
+    let url = ""
+    switch (userType) {
+      case ("Gerente"):
+        url = "http://localhost:3002/gerentes/login";
+        localStorage.setItem(userType, 'gerente');
+        break;
+      case ("Colaborador"):
+        url = "http://localhost:3002/colaboradores/login"
+        localStorage.setItem(userType, 'colaborador');
+        break;
+      case ("Paciente"):
+        url = "http://localhost:3002/pacientes/login"
+        localStorage.setItem(userType, 'paciente');
+        break;
+      default:
+        console.error("Unknown user type");
+        setIsLoading(false);
+        return;
     }
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({ email: loginData.email, password: loginData.password }),
+        headers: { 'Content-Type': 'application/json' }
+      });
 
-    return (
-        <main className="flex flex-col min-h-screen">
-            {getAcesso()}
-            {/* <button onClick={() => { console.log(pacienteInfo) }}>Mostrar pacienteInfo</button> */}
-            <div className="flex flex-col gap-[20px] px-[108px] pt-[33px] pb-[50px] text-[14px]">
-                <div className="flex gap-[20px]">
-                    <div className="box w-full flex flex-col gap-7">
-                        <h2>Cadastro de {pacienteInfo ? pacienteInfo.nome : "Nome"}</h2>
+      if (!response.ok) {
+        throw new Error('Login failed');
+      }
 
-                        <div className="flex flex-col gap-8 pb-2">
-                            <div className="flex items-center gap-[20px]">
-                                <Image
-                                    src={perfil}
-                                    alt='foto de perfil <nome do usuario>'
-                                    width={68}
-                                    height={68} />
+      const data = await response.json();
+      console.log(data);
+      const gerente = data.gerente
+      setID(gerente.id);
+      localStorage.setItem("userEmail", loginData.email);
+      localStorage.setItem("userID", gerente.id);
+      const homeLink = `/home/${userType.toLowerCase()}?email=${encodeURIComponent(loginData.email)}&id=${encodeURIComponent(gerente.id)}`
+      localStorage.setItem("homeLink", homeLink)
 
-                                <div>
-                                    <p className="titulo">Nome e Sobrenome:</p>
-                                    <p>{pacienteInfo ? pacienteInfo.nome : "Nome"}</p>
-                                </div>
-                            </div>
+      router.push(`/home/${userType.toLowerCase()}?email=${encodeURIComponent(loginData.email)}&id=${encodeURIComponent(gerente.id)}`);
+    } catch (error: any) {
+      console.log("Erro em seu login", error);
+      setErrorMessage(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-                            <div className="flex gap-6">
-                                <div className="flex flex-col gap-6">
-                                    <div>
-                                        <p className="titulo">RG:</p>
-                                        <p>{pacienteInfo ? pacienteInfo.rg : "RG"}</p>
-                                    </div>
+  return (
+    <main className={`flex min-h-screen ${isLoading && ""}`}>
+      {errorMessage && (
+        <>
+          <div className="fixed z-40 place-self-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-800 p-5 text-white flex-row">
+            <button className="text-white" onClick={() => { setErrorMessage("") }}>Voltar</button>
+            <p>Erro ao fazer login. Tente novamente.</p> 
+          </div>
+          <div className="fixed inset-0 bg-black/30 z-30" />
+        </>
+      )}
 
-                                    <div>
-                                        <p className="titulo">CPF:</p>
-                                        <p>{pacienteInfo ? pacienteInfo.cpf : "CPF"}</p>
-                                    </div>
-                                </div>
+      {isLoading && (
+        <>
+          <div className="fixed z-40 place-self-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <Loading />
+          </div>
+          <div className="fixed inset-0 bg-black/30 z-30" />
+        </>
+      )}
 
-                                <div className="flex flex-col gap-6">
-                                    <div>
-                                        <p className="titulo">E-mail:</p>
-                                        <p>{pacienteInfo ? pacienteInfo.email : "Email não encontrado"}</p>
-                                    </div>
+      <div className="flex w-[60%] justify-center items-center">
+        <Image
+          src={Banner}
+          alt="logos atipicidades"
+          className="h-full object-cover w-full"
+        />
+      </div>
 
-                                    <div>
-                                        <p className="titulo">Telefone:</p>
-                                        <p>{pacienteInfo ? pacienteInfo.telefone : "Telefone não encontrado"}</p>
-                                    </div>
-                                </div>
+      <div className="flex bg-blue-100 w-[40%] flex-col justify-center items-center gap-10">
+        <Image
+          src={logos}
+          alt="logos atipicidades"
+        />
 
-                                <div className="flex flex-col gap-6">
-                                    <div>
-                                        <p className="titulo">Unidade vinculada:</p>
-                                        <p>{unidade ? unidade.nome : "Unidade não encontrada"}</p>
-                                    </div>
+        <form className="flex flex-col justify-center items-center gap-9">
+          <h1>Acesse sua conta</h1>
+          <div className="flex flex-row gap-4">
+            <label className="flex items-center">
+              <Checkbox
+                value="Gerente"
+                onChange={(e) => handleCheckboxChange(e.target.value)}
+                checked={userType === "Gerente"}
+              />
 
-                                    <div>
-                                        <p className="titulo">Raça:</p>
-                                        <p>{pacienteInfo ? pacienteInfo.raca : "Raça não encontrada"}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+              Gerente
+            </label>
+            <label className="flex items-center">
+              <Checkbox
+                value="Colaborador"
+                onChange={(e) => handleCheckboxChange(e.target.value)}
+                checked={userType === "Colaborador"}
+              />
+
+              Colaborador
+            </label>
+            <label className="flex items-center">
+              <Checkbox
+                value="Paciente"
+                onChange={(e) => handleCheckboxChange(e.target.value)}
+                checked={userType === "Paciente"}
+              />
+
+              Paciente
+            </label>
+          </div>
+          <div className="flex flex-col gap-[10px] w-full">
+            <input
+              className="login"
+              type="text"
+              name="email"
+              placeholder="Insira seu e-mail"
+              value={loginData.email}
+              onChange={(e) => handleInputChange("email", e.target.value)}
+              required />
+
+            <div className="relative w-full">
+              <input
+                type={passwordVisible ? 'text' : 'password'}
+                className="login"
+                name="senha"
+                placeholder="Insira sua senha"
+                value={loginData.password}
+                onChange={(e) => handleInputChange("password", e.target.value)}
+                required
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute inset-y-0 right-0 px-4 py-2 bg-gray-300 rounded-r-md"
+              >
+                {passwordVisible ? <SlashedEyeIcon /> : <OpenEyeIcon />}
+              </button>
             </div>
-        </main>
-    );
+
+            <div className="flex px-[10px] text-[14px] justify-end w-full">
+              <Link href='/recuperarsenha'>
+                <p className="font-semibold text-blue-800 cursor-pointer">Esqueceu a senha?</p>
+              </Link>
+            </div>
+          </div>
+          {/* <button type="button" onClick={revealLogin}>Mostrar Dados do Login</button>
+          <button type="button" onClick={revealUserType}>Mostrar Tipo de Usuário</button> */}
+          <div className="flex flex-col gap-2 w-full">
+            <button
+              type="button"
+              className="entrar botao"
+              onClick={() => handleLogin(userType)}
+            >
+              Entrar
+            </button>
+            <Link href='/precadastro'>
+              <button
+                className="botaoreverse w-full">
+                Fazer o pré-cadastro
+              </button>
+            </Link>
+          </div>
+        </form>
+      </div>
+    </main>
+  );
 }
