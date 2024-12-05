@@ -14,7 +14,6 @@ export default function Home() {
 
       <div className="mt-[44px] flex flex-col gap-[37px]">
         <h2 className="ml-[147px]">Faça o seu pré-cadastro</h2>
-
         <Form />
       </div>
     </main>

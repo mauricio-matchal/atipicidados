@@ -74,7 +74,7 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateMae: (
 
   return (
     <div className='flex flex-col gap-[162px] w-screen'>
-      <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
+      <div className='flex flex-col gap-[42px] px-5 lg:w-[840px] place-self-center'>
 
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Mãe</h4>
@@ -82,13 +82,13 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateMae: (
 
           <TextInput placeholder="Nome completo da mãe" value={Step21.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <DateInput value={Step21.data} onChange={(e) => handleInputChange1("data", e.target.value)} />
             <TextInput type='rg' placeholder='RG da mãe' className='min-w-[220px]' value={Step21.rg} onChange={(e) => handleInputChange1("rg", e.target.value)} />
             <TextInput type='cpf' placeholder='CPF da mãe' className='min-w-[220px]' value={Step21.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
           </div>
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
               placeholder={"Escolaridade"}
               options={[
@@ -111,13 +111,13 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateMae: (
 
           <TextInput placeholder="Nome completo do pai" value={Step22.nome} onChange={(e) => handleInputChange2("nome", e.target.value)} />
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <DateInput value={Step22.data} onChange={(e) => handleInputChange2("data", e.target.value)} />
             <TextInput type='rg' placeholder='RG do pai' className='min-w-[220px]' value={Step22.rg} onChange={(e) => handleInputChange2("rg", e.target.value)} />
             <TextInput type='cpf' placeholder='CPF do pai' className='min-w-[220px]' value={Step22.cpf} onChange={(e) => handleInputChange2("cpf", e.target.value)} />
           </div>
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
               placeholder={"Escolaridade"}
               options={[
@@ -147,13 +147,13 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateMae: (
 
               <TextInput placeholder="Nome completo do responsável" />
 
-              <div className='flex w-full gap-[12px]'>
+              <div className='flex flex-col md:flex-row w-full gap-[12px]'>
                 <DateInput />
                 <TextInput placeholder='RG do responsável' className='min-w-[220px]' />
                 <TextInput placeholder='CPF do responsável' className='min-w-[220px]' />
               </div>
 
-              <div className='flex w-full gap-[12px]'>
+              <div className='flex flex-col md:flex-row w-full gap-[12px]'>
                 <SelectInput placeholder={"Escolaridade"} options={["Ensino fundamental incompleto", "Ensino fundamental completo", "Ensino médio completo", "Técnico/profissionalizante", "Cursando ensino superior", "Ensino superior completo"]} />
                 <NumberInput placeholder="Telefone de contato" />
                 <TextInput placeholder="E-mail" />
@@ -165,10 +165,10 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateMae: (
       </div>
 
       {/* Rodapé */}
-      <div className='relative flex flex-row justify-between items-center mx-[147px]'>
+      <div className='relative text-[13px] md:text-[16px] flex flex-row justify-between items-center mx-[147px]'>
         <button onClick={prevStep} className='botao'>Página anterior</button>
 
-        <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+        <div className='hidden md:flex absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
           2 de 4
         </div>
 

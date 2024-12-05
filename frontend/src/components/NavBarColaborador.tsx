@@ -10,7 +10,7 @@ type Colaborador = {
     nome: string;
     rg: string;
     cpf: string;
-}
+};
 
 interface NavBarProps {
     userEmail?: string | null;
@@ -23,6 +23,7 @@ export default function NavBar({ userEmail, userName }: NavBarProps) {
     const [userID, setUserID] = useState("");
     const [colaboradorInfo, setColaboradorInfo] = useState<Colaborador | null>(null);
     const [homeLink, setHomeLink] = useState("");
+    const [menuOpen, setMenuOpen] = useState(false);
 
     useEffect(() => {
         const email = localStorage.getItem("userEmail");
@@ -32,65 +33,111 @@ export default function NavBar({ userEmail, userName }: NavBarProps) {
         if (id) {
             setUserID(id);
             fetchColaboradorData(id);
-        };
+        }
         if (homeLink) setHomeLink(homeLink);
-    })
+    }, []);
 
     const fetchColaboradorData = async (id: any) => {
         try {
             const response = await fetch(`http://localhost:3002/colaboradores/id/${id}`);
             if (!response.ok) {
-                throw new Error("Failed to fetch gerente data");
+                throw new Error("Failed to fetch colaborador data");
             }
             const data = await response.json();
             setColaboradorInfo(data);
         } catch (error) {
-            console.error("Error fetching gerente data:", error);
+            console.error("Error fetching colaborador data:", error);
         }
+    };
+
+    const toggleMenu = () => {
+        setMenuOpen((prev) => !prev);
     };
 
     return (
         <div className="w-full relative">
-            <nav className="absolute flex items-center px-[10px] py-[10px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                <ul className="flex gap-4 font-semibold text-[14px]">
-                    <li className={`relative`}>
-                        <Link href={homeLink} className={`flex items-center px-3 py-2.5 pt-2 ${currentPath.startsWith('/home') ? 'text-blue-800 font-bold bg-blue-800/15 rounded-lg' : 'text-gray-700'}`}>
-                            Página inicial
-                        </Link>
-                    </li>
-                    <li className={`relative`}>
-                        <Link href='/unidadescolaborador' className={`flex items-center px-3 py-2.5 pt-2 ${currentPath === '/unidadescolaborador' ? 'text-blue-800 font-bold bg-blue-800/15 rounded-lg' : 'text-gray-700'}`}>
-                            Unidades
-                        </Link>
-                    </li>
-                </ul>
-            </nav>
-            <div className="flex justify-between fundo w-full h-[76px] py-2 px-[97px]">
+            {/* Header */}
+            <div className="flex justify-between fundo w-full h-[76px] py-2 px-[20px] sm:px-[97px]">
+                {/* Logo */}
                 <Link href={homeLink}>
                     <Image
                         src={logo}
                         alt="logo atipicidades"
-                        width={60} />
+                        width={60}
+                        height={60}
+                    />
                 </Link>
 
+                {/* Menu - Large and Medium Screens */}
+                <nav className="hidden sm:flex items-center gap-8 font-semibold text-[14px]">
+                    <Link href={homeLink} className={`px-3 py-2.5 ${currentPath.startsWith('/home') ? 'text-blue-800 font-bold bg-blue-800/15 rounded-lg' : 'text-gray-700'}`}>
+                        Página inicial
+                    </Link>
+                    <Link href="/unidadescolaborador" className={`px-3 py-2.5 ${currentPath === '/unidadescolaborador' ? 'text-blue-800 font-bold bg-blue-800/15 rounded-lg' : 'text-gray-700'}`}>
+                        Unidades
+                    </Link>
+                </nav>
 
-
+                {/* Right-side Actions */}
                 <div className="flex items-center gap-8">
-                    <Link href='/meucadastro' className="flex gap-4 items-center">
-                        <div className='flex flex-col items-end gap-[2px] font-medium text-[14px] leading-[17px]'>
+                    {/* User Info */}
+                    <Link href='/meucadastro' className="hidden sm:flex gap-4 items-center">
+                        <div className='flex flex-col items-end gap-[2px] font-medium text-[14px] leading-[17px] text-black'>
                             <p>{colaboradorInfo?.nome}</p>
                             <p className="opacity-60">{userrEmail}</p>
                         </div>
                         <div className="rounded-full w-11 h-11 bg-blue-800"></div>
                     </Link>
 
-                    <Link href="/configuracoes">
+                    {/* Config Icon */}
+                    <Link href="/configuracoes" className="hidden sm:block">
                         <ConfigIcon />
                     </Link>
 
-                    {/* <button onClick={() => { console.log(gerenteInfo) }}>Mostrar gerenteInfo</button> */}
+                    {/* Menu Button for Small Screens */}
+                    <button className="sm:hidden" onClick={toggleMenu}>
+                        <div className="w-6 h-[3px] bg-black mb-1"></div>
+                        <div className="w-6 h-[3px] bg-black mb-1"></div>
+                        <div className="w-6 h-[3px] bg-black"></div>
+                    </button>
                 </div>
             </div>
+
+            {/* Fullscreen Menu - Small Screens */}
+            {menuOpen && (
+                <div className="fixed inset-0 fundo bg-opacity-90 z-50 flex items-center justify-center">
+                    <nav className="text-center">
+                        <ul className="flex flex-col gap-8 text-black font-bold text-2xl">
+                            <li>
+                                <Link href={homeLink} onClick={toggleMenu}>
+                                    Página inicial
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/unidadescolaborador" onClick={toggleMenu}>
+                                    Unidades
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/meucadastro" onClick={toggleMenu}>
+                                    Meu Cadastro
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/configuracoes" onClick={toggleMenu}>
+                                    Configurações
+                                </Link>
+                            </li>
+                        </ul>
+                        <button
+                            onClick={toggleMenu}
+                            className="mt-10 text-black text-lg underline"
+                        >
+                            Fechar
+                        </button>
+                    </nav>
+                </div>
+            )}
         </div>
-    )
+    );
 }

@@ -157,17 +157,17 @@ const Step4: React.FC<{
 
   return (
     <div className='flex flex-col gap-[162px] w-screen'>
-      <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
+      <div className='flex flex-col gap-[42px] px-5 lg:w-[840px] place-self-center'>
 
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Informações de saúde</h4>
           {/* <button onClick={reveal}>reveal</button> */}
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
               value={Step4.diagnostico}
               options={["Sim, tem diagnóstico", "Não tem diagnóstico"]}
               placeholder={"Tem diagnóstico?"}
-              className='min-w-[300px]'
+              className='min-w-[280px]'
               onChange={handleDiagnosticoChange}
             />
             <DateInput
@@ -178,12 +178,12 @@ const Step4: React.FC<{
             />
           </div>
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
               value={Step4.medicacao}
               options={["Sim, toma alguma medicação", "Não toma alguma medicação"]}
               placeholder={"Toma alguma medicação?"}
-              className='min-w-[300px]'
+              className='min-w-[280px]'
               onChange={handleMedicacaoChange}
             />
             <TextInput
@@ -195,7 +195,7 @@ const Step4: React.FC<{
             />
           </div>
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <TextInput
               placeholder="Médico responsável"
               className={`transition-opacity duration-300 w-full ${Step4.medicacao ? 'opacity-100' : 'opacity-40'} ${Step4.medicacao ? '' : 'cursor-not-allowed'}`}
@@ -205,7 +205,7 @@ const Step4: React.FC<{
             />
             <NumberInput
               placeholder="Contato do médico responsável"
-              className={`transition-opacity duration-300 min-w-[300px] ${Step4.medicacao ? 'opacity-100' : 'opacity-40'} ${Step4.medicacao ? '' : 'cursor-not-allowed'}`}
+              className={`transition-opacity duration-300 min-w-[280px] ${Step4.medicacao ? 'opacity-100' : 'opacity-40'} ${Step4.medicacao ? '' : 'cursor-not-allowed'}`}
               disabled={!Step4.medicacao}
               style={{ pointerEvents: Step4.medicacao ? 'auto' : 'none' }}
               value={Step4.medicocontato} onChange={(e) => { handleInputChange("medicocontato", e.target.value) }}
@@ -220,12 +220,12 @@ const Step4: React.FC<{
             value={Step4.objetivo} onChange={(e) => { handleInputChange("objetivo", e.target.value) }}
           />
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
               value={Step4.comorbidade}
               options={["Sim, possui alguma comorbidade", "Não possui alguma comorbidade"]}
               placeholder={"Possui alguma comorbidade?"}
-              className='min-w-[300px]'
+              className='min-w-[280px]'
               onChange={handleComorbidadeChange} />
             <TextInput
               placeholder='Qual(is) comorbidade(s)?'
@@ -241,12 +241,12 @@ const Step4: React.FC<{
           <CheckInput title='Possui alguma doença?' options={["Diabetes", "Pressão alta", "Nenhuma"]} onChange={handleDoencaChange} />
           <CheckInput title='Possui alguma alergia?' options={["Rinite", "Sinusite", "Nenhuma"]} onChange={handleAlergiaChange} />
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
               value={Step4.asma}
               options={["Sim, tem asma", "Não tem asma"]}
               placeholder={"Tem asma?"}
-              className='min-w-[300px]'
+              className='min-w-[280px]'
               onChange={handleAsmaChange} />
             <FileInput
               placeholder="Relatório do diagnóstico"
@@ -263,7 +263,7 @@ const Step4: React.FC<{
 
         </div>
 
-        <div className="flex items-center ml-[14px]">
+        <div className="flex text-[13px] md:text-[16px] items-center ml-[14px]">
           <input
             type="checkbox"
             className="
@@ -283,10 +283,10 @@ const Step4: React.FC<{
       </div>
 
       {/* Rodapé */}
-      <div className='relative flex flex-row justify-between items-center mx-[147px]'>
+      <div className='relative text-[13px] md:text-[16px] flex flex-row justify-between items-center mx-[147px]'>
         <button onClick={prevStep} className='botao'>Página anterior</button>
 
-        <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+        <div className='hidden md: flex absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
           4 de 4
         </div>
 

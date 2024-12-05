@@ -129,22 +129,22 @@ const Form: React.FC<FormProps> = ({ id }) => {
         await putData(formData.saudeinfo, id, "saudeinfo");
       }
 
-      if(formData.rgdocfile) {
+      if (formData.rgdocfile) {
         await putData(formData.rgdocfile, id, "rgdocfile")
       }
-      if(formData.fotofile) {
+      if (formData.fotofile) {
         await putData(formData.rgdocfile, id, "fotofile")
       }
-      if(formData.compresfile) {
+      if (formData.compresfile) {
         await putData(formData.rgdocfile, id, "compresfile")
       }
-      if(formData.laudofile) {
+      if (formData.laudofile) {
         await putData(formData.rgdocfile, id, "laudofile")
       }
-      if(formData.relescolar) {
+      if (formData.relescolar) {
         await putData(formData.rgdocfile, id, "relescolar")
       }
-      
+
       console.log("All updates completed successfully");
     } catch (error) {
       console.error("Error during the update process:", error);

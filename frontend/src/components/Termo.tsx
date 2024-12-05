@@ -12,9 +12,16 @@ const Termo: React.FC<TermoProps> = ({ isVisible, onClose }) => {
       
     return (
         <div className="fixed top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.2)] flex justify-center items-center z-[1000]">
-            <div className="flex flex-col bg-white max-w-[902px] max-h-[698px] px-10 py-[34px] rounded-[40px] relative w-full h-full shadow-[0_2px_10px_rgba(0,0,0,0.1)] justify-between items-center">
-                <div className='flex justify-between w-full pb-[34px]'>
+            <div className="flex flex-col mx-5 h-[500px] bg-white max-w-[902px] lg:h-[698px] px-5 py-5 lg:px-10 lg:py-[34px] rounded-[20px] lg:rounded-[40px] relative w-full h-full shadow-[0_2px_10px_rgba(0,0,0,0.1)] justify-between items-center">
+                <div className='hidden lg:flex justify-between w-full pb-[34px]'>
                     <h2 className="Titulo">Termo de Compromisso e Privacidade</h2>
+                    <button onClick={onClose} className='flex w-9 h-9 rounded-[50%] bg-[rgba(0,0,0,0.1)] items-center justify-center'>
+                        <CloseButton/>
+                    </button>
+                </div>
+
+								<div className='flex lg:hidden justify-between w-full pb-5'>
+                    <h3 className="Titulo">Termo de Compromisso e Privacidade</h3>
                     <button onClick={onClose} className='flex w-9 h-9 rounded-[50%] bg-[rgba(0,0,0,0.1)] items-center justify-center'>
                         <CloseButton/>
                     </button>

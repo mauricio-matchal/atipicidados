@@ -57,13 +57,13 @@ const Step1: React.FC<{
 
   return (
     <div className='flex flex-col gap-[162px] w-screen'>
-      <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
+      <div className='flex flex-col gap-[42px] px-5 md:w-[600px] lg:w-[840px] place-self-center'>
         <div className='flex flex-col gap-[12px]'>
           <h2 className='font-bold'>Nova Unidade</h2>
 
           <div className='flex flex-col gap-[12px]'>
 
-            <div className='flex w-full gap-[12px]'>
+            <div className='flex flex-col md:flex-row w-full gap-[12px]'>
               <TextInput placeholder='Nome da unidade' value={Step11.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
               <TextInput placeholder='Endereço' value={Step11.endereco} onChange={(e) => handleInputChange1("endereco", e.target.value)} />
             </div>
@@ -71,7 +71,7 @@ const Step1: React.FC<{
           </div>
 
         </div>
-        <div className="flex items-center ml-[14px]">
+        <div className="flex items-center text-[13px] md:text-[16px] ml-[14px]">
           <input
             type="checkbox"
             className="
@@ -91,7 +91,7 @@ const Step1: React.FC<{
       </div>
 
       {/* Rodapé */}
-      <div className='relative flex flex-row justify-between items-center mx-[147px]'>
+      <div className='relative text-[13px] md:text-[16px] flex flex-row justify-between items-center mx-[147px]'>
         <button></button>
 
         <button className='botao' type='submit' onClick={handleSubmit}>Enviar</button>

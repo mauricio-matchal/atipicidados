@@ -16,6 +16,8 @@ export default function CheckInput({ value, options, title, onChange, ...props }
   const [localOptions, setLocalOptions] = useState<string[]>(options);
   const ref = useRef<HTMLDivElement>(null);
 
+  const [isInitialRender, setIsInitialRender] = useState(true);
+
   const toggleOpen = () => {
     setIsOpen(!isOpen);
   };
@@ -44,11 +46,11 @@ export default function CheckInput({ value, options, title, onChange, ...props }
   //   });
   // };  
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (ref.current && !ref.current.contains(event.target as Node)) {
-      setIsOpen(false);
-    }
-  };
+  // const handleClickOutside = (event: MouseEvent) => {
+  //   if (ref.current && !ref.current.contains(event.target as Node)) {
+  //     setIsOpen(false);
+  //   }
+  // };
 
   const handleAddOption = () => {
     if (inputValue.trim() !== '' && !localOptions.includes(inputValue)) {
@@ -60,28 +62,18 @@ export default function CheckInput({ value, options, title, onChange, ...props }
   };
 
   useEffect(() => {
-    if (value) {
-      if (broughtOptions.length === 0) setBroughtOptions(value);
-    };
-  }, [value])
+    if (isInitialRender && value) {
+      setIsInitialRender(false);
+      setBroughtOptions(value);
+    }
+  }, []);
 
   useEffect(() => {
-    if (onChange && selectedOptions.concat(broughtOptions)) {
-      onChange(selectedOptions.concat(broughtOptions));
+    if (onChange) {
+      const combinedOptions = selectedOptions.concat(broughtOptions);
+      onChange(combinedOptions);
     }
-  }, [selectedOptions.concat(broughtOptions)]);
-
-  useEffect(() => {
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isOpen]);
+  }, [selectedOptions]);
 
   return (
     <div className="relative inline-block" {...props}>
@@ -132,9 +124,15 @@ export default function CheckInput({ value, options, title, onChange, ...props }
               onChange={(e) => setInputValue(e.target.value)}
             />
           </div>
-          <div className="w-full flex justify-end p-2">
+          <div className="w-full flex gap-2 justify-end p-2">
             <button
               className="block w-min text-right px-2 py-1.5 text-sm bg-blue-800/[0.2] hover:bg-blue-800/[0.3] rounded-lg focus:outline-none focus:bg-black/[0.07] font-medium "
+              onClick={toggleOpen}
+            >
+              Cancelar
+            </button>
+            <button
+              className="block w-min text-right px-2 py-1.5 text-sm text-white bg-blue-800 hover:bg-blue-800/[0.6] rounded-lg focus:outline-none focus:bg-black/[0.06] font-medium "
               onClick={handleAddOption}
             >
               Confirmar

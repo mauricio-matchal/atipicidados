@@ -67,7 +67,7 @@ export default function Home() {
           <div className="flex flex-col space-y-10">
             <h2 className="mb-7">Configurações</h2>
 
-            <div className="flex flex-col gap-10 min-w-[280px]">
+            <div className="flex flex-col gap-10 min-w-[288px]">
               {/* <button 
                 className="botao mt-4 max-w-[220px]" 
                 onClick={() => setChangePasswordIsVisible(!changePasswordIsVisible)}
