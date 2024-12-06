@@ -6,6 +6,7 @@ import FileInput from '../FileInput';
 import DateInput from '../DateInput';
 import Termo from '../Termo';
 import NumberInput from '../NumberInput';
+import { type } from 'os';
 
 const validateEmail = (email: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -23,6 +24,8 @@ type Step11State = {
   rg: string;
   unidadeId: number;
   raca: string;
+  nascimento: string;
+  genero:string,
 };
 
 const Step1: React.FC<{
@@ -45,9 +48,12 @@ const Step1: React.FC<{
     rg: "",
     unidadeId: 0,
     raca: "",
+    nascimento:"2024-12-04T00:00:00Z",
+    genero:'masculino',
   });
 
   const [error, setError] = useState<string | null>(null);
+  console.log(typeof(Step11.unidadeId))
 
   const handleLoginChange: any = (key: string, value: string) => {
     setLogin((prevState) => {
@@ -70,16 +76,19 @@ const Step1: React.FC<{
       return updatedForm;
     });
   };
+  
 
   const [fotoFile, setFotoFile] = useState<File | null>(null);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleFotoFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
+    if (e.target.files && e.target.files[0]) {
       setFotoFile(e.target.files[0]);
+      updateForm({ fotofile: e.target.files[0]}); 
     }
   };
+  
 
   const handleTermoClick = () => {
     setIsModalVisible(true);
@@ -104,22 +113,23 @@ const Step1: React.FC<{
     }
 
     handleFormDataSubmit();
+    
   };
 
   return (
-    <div className='flex flex-col gap-[162px] w-screen'>
+    <div className='flex flex-col gap-[162px]  '>
       <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
         <div className='flex flex-col gap-[12px]'>
           <h2 className='font-bold'>Novo Gerente</h2>
 
           <h4 className='pl-2 place-self-start mt-10'>Crie um login e senha para o Gerente</h4>
           <div className='flex w-full gap-3'>
-            <TextInput className='w-[400px]' placeholder='E-mail' value={login.email} onChange={(e) => handleLoginChange("email", e.target.value)} />
-            <TextInput className='w-[400px]' placeholder='Confirmar e-mail' value={login.confirmarEmail} onChange={(e) => handleLoginChange("confirmarEmail", e.target.value)} />
+            <TextInput className='w-[400px] cursor-pointer' placeholder='E-mail' value={login.email} onChange={(e) => handleLoginChange("email", e.target.value)} />
+            <TextInput className='w-[400px] cursor-pointer' placeholder='Confirmar e-mail' value={login.confirmarEmail} onChange={(e) => handleLoginChange("confirmarEmail", e.target.value)} />
           </div>
           <div className='flex w-full gap-3'>
-            <TextInput className='w-[400px]' placeholder='Senha' value={login.senha} onChange={(e) => handleLoginChange("senha", e.target.value)} />
-            <TextInput className='w-[400px]' placeholder='Confirmar senha' value={login.confirmarSenha} onChange={(e) => handleLoginChange("confirmarSenha", e.target.value)} />
+            <TextInput className='w-[400px] cursor-pointer' placeholder='Senha' value={login.senha} onChange={(e) => handleLoginChange("senha", e.target.value)} />
+            <TextInput className='w-[400px] cursor-pointer' placeholder='Confirmar senha' value={login.confirmarSenha} onChange={(e) => handleLoginChange("confirmarSenha", e.target.value)} />
           </div>
           {error && <div className="text-[#FF0F00] font-medium">{error}</div>}
           <div className='mb-10'></div>
@@ -128,7 +138,7 @@ const Step1: React.FC<{
             <button onClick={() => { console.log(fotoFile) }}>Mostrar Foto</button>
 
             <div className='flex w-full gap-[12px]'>
-              <FileInput placeholder='Foto 3x4' className='min-w-[260px]' onChange={handleFotoFileChange} name='fotoFile' />
+              <FileInput id='fotoFile' placeholder='Foto 3x4' onChange={handleFotoFileChange} name='fotofile' />
               <NumberInput placeholder="Telefone de contato" value={Step11.telefone} onChange={(e) => handleInputChange1("telefone", e.target.value)} />
             </div>
 
@@ -146,26 +156,26 @@ const Step1: React.FC<{
                   let formattedValue = "";
                   switch (value) {
                     case "Amarelo":
-                      formattedValue = "AMARELA";
+                      formattedValue = "amarela";
                       break;
                     case "Branco":
-                      formattedValue = "BRANCA";
+                      formattedValue = "branca";
                       break;
                     case "Indígena":
-                      formattedValue = "INDIGENA";
+                      formattedValue = "indigena";
                       break;
                     case "Preto":
-                      formattedValue = "NEGRA";
+                      formattedValue = "negra";
                       break;
                     case "Outra":
-                      formattedValue = "OUTRA";
+                      formattedValue = "outra";
                       break;
                     default:
                       formattedValue = value;
                   }
                   handleInputChange1("raca", formattedValue);
                 }} />
-              <TextInput placeholder='Unidade Vinculada (Número)' value={Step11.unidadeId.toString()} onChange={(e) => handleInputChange1("unidadeId", e.target.value)} />
+              <TextInput placeholder='Unidade Vinculada (Número)' value={(Step11.unidadeId)} onChange={(e) => handleInputChange1("unidadeId", e.target.value)} />
             </div>
           </div>
         </div>
