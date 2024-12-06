@@ -73,24 +73,35 @@ export default function Home() {
         method: "POST",
         body: JSON.stringify({ email: loginData.email, password: loginData.password }),
         headers: { 'Content-Type': 'application/json' },
-        credentials:'include'
+        credentials: 'include'
       });
 
       if (!response.ok) {
         throw new Error('Login failed');
       }
-    
+
 
       const data = await response.json();
       console.log(data);
-      const gerente = data.gerente
-      setID(gerente.id);
+      let usuario: { id: string } = { id: "" };
+
+      if (userType.toLowerCase() === 'gerente') {
+        usuario = data.gerente;
+      }
+      if (userType.toLowerCase() === 'colaborador') {
+        usuario = data.colaborador;
+      }
+      if (userType.toLowerCase() === 'paciente') {
+        usuario = data.paciente;
+      }
+
+      setID(usuario.id);
       localStorage.setItem("userEmail", loginData.email);
-      localStorage.setItem("userID", gerente.id);
-      const homeLink = `/home/${userType.toLowerCase()}?email=${encodeURIComponent(loginData.email)}&id=${encodeURIComponent(gerente.id)}`
+      localStorage.setItem("userID", usuario.id);
+      const homeLink = `/home/${userType.toLowerCase()}?email=${encodeURIComponent(loginData.email)}&id=${encodeURIComponent(usuario.id)}`
       localStorage.setItem("homeLink", homeLink)
 
-      router.push(`/home/${userType.toLowerCase()}?email=${encodeURIComponent(loginData.email)}&id=${encodeURIComponent(gerente.id)}`);
+      router.push(`/home/${userType.toLowerCase()}?email=${encodeURIComponent(loginData.email)}&id=${encodeURIComponent(usuario.id)}`);
     } catch (error: any) {
       console.log("Erro em seu login", error);
       setErrorMessage(error);
@@ -104,8 +115,8 @@ export default function Home() {
       {errorMessage && (
         <>
           <div className="fixed z-40 place-self-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-800 p-5 text-white flex-row">
-          <button className="text-white" onClick={() => { setErrorMessage("") }}><CloseButton/></button>
-            <p>Erro ao fazer login. Tente novamente.</p> 
+            <button className="text-white" onClick={() => { setErrorMessage("") }}><CloseButton /></button>
+            <p>Erro ao fazer login. Tente novamente.</p>
           </div>
           <div className="fixed inset-0 bg-black/30 z-30" />
         </>

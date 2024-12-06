@@ -79,12 +79,13 @@ const Form: React.FC = () => {
 
       const data = await response.json();
       console.log(data);
-      const paciente = data.gerente
+      const usuario = data.paciente
+      
       if (formData.email) localStorage.setItem("userEmail", formData.email);
-      localStorage.setItem("userID", paciente.id);
+      localStorage.setItem("userID", usuario.id);
 
       if (formData.email) {
-        const homeLink = `/home/paciente?email=${encodeURIComponent(formData.email)}&id=${encodeURIComponent(paciente.id)}`
+        const homeLink = `/home/paciente?email=${encodeURIComponent(formData.email)}&id=${encodeURIComponent(usuario.id)}`
         localStorage.setItem("homeLink", homeLink)
         router.push(homeLink);
       }

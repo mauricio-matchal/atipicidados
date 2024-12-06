@@ -13,7 +13,7 @@ export default function Home() {
   const email = searchParams.get("email");
   const id = searchParams.get("id");
   const [userEmail, setUserEmail] = useState("");
-  const [userID, setUserID] = useState("");
+  const [userID, setUserID] = useState<string | number>("");
   const [gerenteInfo, setGerenteInfo] = useState<any | null>(null);
   const [pacientes, setPacientes] = useState<any[]>([]);
   const [gerentes, setGerentes] = useState<any[]>([]);
@@ -28,10 +28,10 @@ export default function Home() {
     const checkAuth = async () => {
       try {
         const response = await fetch(`http://localhost:3002/gerentes/token/${id}`, {
-          method: "POST", 
+          method: "POST",
           credentials: "include",
         });
-  
+
         if (!response.ok) {
           router.push("/");
           return;
@@ -40,7 +40,7 @@ export default function Home() {
         console.error("Error:", error.message);
       }
     };
-  
+
     checkAuth();
   }, []);
 
@@ -99,7 +99,7 @@ export default function Home() {
 
   const fetchPacientes = async () => {
     try {
-      const response = await fetch("http://localhost:3002/pacientes/all");
+      const response = await fetch("http://localhost:3002/pacientes/getall");
       if (!response.ok) {
         throw new Error("Failed to fetch pacientes data");
       }
@@ -112,7 +112,7 @@ export default function Home() {
   };
   const fetchGerentes = async () => {
     try {
-      const response = await fetch(`http://localhost:3002/gerentes/getall/${id}`,{credentials:'include'});
+      const response = await fetch(`http://localhost:3002/gerentes/getall/${id}`, { credentials: 'include' });
       if (!response.ok) {
         throw new Error("Failed to fetch gerentes data");
       }
@@ -124,7 +124,7 @@ export default function Home() {
   };
   const fetchColaboradores = async () => {
     try {
-      const response = await fetch("http://localhost:3002/colaboradores/all");
+      const response = await fetch("http://localhost:3002/colaboradores/getall");
       if (!response.ok) {
         throw new Error("Failed to fetch colaboradores data");
       }
@@ -199,7 +199,7 @@ export default function Home() {
                   </Link>
                 </button>
               </div>
-          </div>
+            </div>
             <h3 className="mt-[28px] mb-[22px]">Membros cadastrados</h3>
             <div className="relative w-[280px] md:w-[340px]">
               <input
