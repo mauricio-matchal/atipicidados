@@ -2,20 +2,13 @@
 import Image from "next/image";
 import NavBar from "@/components/NavBarPaciente";
 import perfil from "../../../../public/images/perfil.png";
-import { Card } from "@/components/Card";
 import { useEffect, useState } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import NavBarGerente from "@/components/NavBarGerente";
 import NavBarColaborador from "@/components/NavBarColaborador";
 import NavBarPaciente from "@/components/NavBarPaciente";
 
-
-
-export default function Home(Gerente:any) {
-  // const searchParams = useSearchParams();
-  // const id = searchParams.get("id");
-  // const acesso = searchParams.get("acs");
-
+export default function Home() {
   const params = useParams();
   const id = params.id;
 
@@ -23,61 +16,64 @@ export default function Home(Gerente:any) {
   const [pacienteInfo, setPacienteInfo] = useState<any | null>(null);
   const [homeLink, setHomeLink] = useState("");
   const [unidade, setUnidade] = useState<any | null>(null);
-
+  const [imagemData, setImageData] = useState<string>("");
   const [acesso, setAcesso] = useState("");
 
   useEffect(() => {
     const email = localStorage.getItem("userEmail");
-    // const id = localStorage.getItem("userID");
     const acs = localStorage.getItem("acs");
     const homeLink = localStorage.getItem("homeLink");
 
     if (email) setUserrEmail(email);
 
     if (id) fetchPacienteData(id);
-
     if (homeLink) setHomeLink(homeLink);
     if (acs) {
-      setAcesso(acs)
+      setAcesso(acs);
       localStorage.removeItem("acs");
-    };
-    if (pacienteInfo && pacienteInfo.unidadeId) fetchUnidadeData();
-  },[])
+    }
+  }, [id]);
 
   const fetchPacienteData = async (id: any) => {
     try {
       const response = await fetch(`http://localhost:3002/gerentes/id/${id}`);
       if (!response.ok) {
-        throw new Error("Failed to fetch gerente data");
+        throw new Error("Failed to fetch paciente data");
       }
       const data = await response.json();
       setPacienteInfo(data.gerente);
-      console.log(data)
-
     } catch (error) {
-      console.error("Error fetching gerente data:", error);
+      console.error("Error fetching paciente data:", error);
     }
   };
 
-  const fetchUnidadeData = async () => {
+  useEffect(() => {
+    if (pacienteInfo?.fotofile) {
+      const fotoNome = pacienteInfo.fotofile.slice(8); 
+      fetchFotoData(fotoNome);
+    }
+  }, [pacienteInfo]);
+
+  const fetchFotoData = async (fotoNome: string) => {
     try {
-      const response = await fetch(`http://localhost:3002/unidades/getUnidadeById/${pacienteInfo?.cpf}`);
+      const response = await fetch(`http://localhost:3002/imagens/${fotoNome}`);
       if (!response.ok) {
-        throw new Error("Failed to fetch unidades data");
+        throw new Error('Fetch falhou');
       }
-      const data = await response.json();
-      setUnidade(data);
+
+      const imageBlob = await response.blob();
+      const imageUrl = URL.createObjectURL(imageBlob);
+      setImageData(imageUrl); 
     } catch (error) {
-      console.error("Error fetching unidades data:", error);
+      console.error('Erro ao buscar imagem:', error);
     }
   };
 
-  // Se a pessoa que clicou no card for um gerente, ou seja "acs" = "g" recebe navbar de gerente, caso contrario colaborador
   const getAcesso = () => {
-    if (acesso === "g") return <NavBarGerente />
-    if (acesso === "c") return <NavBarColaborador />
-    if (acesso === "p") return <NavBarPaciente />
-  }
+    if (acesso === "g") return <NavBarGerente />;
+    if (acesso === "c") return <NavBarColaborador />;
+    if (acesso === "p") return <NavBarPaciente />;
+  };
 
   return (
     <main className="flex flex-col min-h-screen">
@@ -85,15 +81,17 @@ export default function Home(Gerente:any) {
       <div className="flex flex-col gap-[20px] px-[108px] pt-[33px] pb-[50px] text-[14px]">
         <div className="flex gap-[20px]">
           <div className="box w-full flex flex-col gap-7">
-            <h2>Cadastro de {pacienteInfo ? pacienteInfo.nome: "Nome"}</h2>
+            <h2>Cadastro de {pacienteInfo ? pacienteInfo.nome : "Nome"}</h2>
 
             <div className="flex flex-col gap-8 pb-2">
               <div className="flex items-center gap-[20px]">
                 <Image
-                  src={perfil}
-                  alt='foto de perfil <nome do usuario>'
+                  src={imagemData || perfil} // Se a imagem não foi carregada, exibe a imagem padrão
+                  alt="foto de perfil"
                   width={68}
-                  height={68} />
+                  height={68}
+                  className="rounded-full"
+                />
 
                 <div>
                   <p className="titulo">Nome e Sobrenome:</p>
@@ -129,7 +127,7 @@ export default function Home(Gerente:any) {
                 <div className="flex flex-col gap-6">
                   <div>
                     <p className="titulo">Unidade vinculada:</p>
-                    <p>{ pacienteInfo.unidadeId }</p>
+                    <p>{pacienteInfo?.unidadeId}</p>
                   </div>
 
                   <div>
