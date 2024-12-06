@@ -151,17 +151,27 @@ export default function Home() {
     <main className="flex flex-col min-h-screen">
       <NavBarColaborador />
       {/* <button onClick={() => {console.log(pacientesAutenticados)}}>Mostrar pacientes autenticado</button> */}
-      <div className="px-[84px] py-[40px]">
-        <div className="flex justify-between">
-          <div className="flex flex-col w-[700px]">
-            <h2 className="mb-7">Página inicial</h2>
+      <div className="px-5 md:px-[84px] py-[40px]">
+        <div className="flex flex-col">
+          <div className="flex w-full justify-between">
+              <h2 className="mb-7">Página inicial</h2>
+              <div className="flex text-[13px] md:text-[16px] gap-[10px]">
+                <button className="botao">
+                  <Link href='/cadastro/paciente' className="flex flex-row gap-1 items-center">
+                    <PlusIcon style={{ color: 'var(--texto-botao)' }} />
+                    <p>Novo Cadastro</p>
+                  </Link>
+                </button>
+              </div>
+            </div>
+          <div className="flex flex-col w-full">
             <div className="flex flex-col gap-2 mb-4">
               <h3>Minha unidade (Nome da Unidade)</h3>
               <Link href='/unidade'>
                 <p className="font-semibold text-blue-800 cursor-pointer">Mais informações</p>
               </Link>
             </div>
-            <div className="relative w-[340px]">
+            <div className="relative w-[280px] md:w-[340px]">
               <input
                 type="text"
                 className='input w-full h-[35px] mb-2 pb-1'
@@ -178,7 +188,7 @@ export default function Home() {
               </button>
             </div>
 
-            <div className="flex gap-[18px]">
+            <div className="flex text-[13px] lg:text-[16px] flex-wrap gap-3 md:gap-[18px]">
               <label className="flex items-center">
                 <input
                   type="checkbox"
@@ -255,15 +265,6 @@ export default function Home() {
                 Não autenticado
               </label>
             </div>
-          </div>
-
-          <div className="flex gap-[10px]">
-            <button className="botao">
-              <Link href='/cadastro/paciente' className="flex flex-row gap-1 items-center">
-                <PlusIcon style={{ color: 'var(--texto-botao)' }} />
-                <p>Novo Cadastro</p>
-              </Link>
-            </button>
           </div>
         </div>
 

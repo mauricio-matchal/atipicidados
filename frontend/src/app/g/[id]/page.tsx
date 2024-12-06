@@ -13,6 +13,7 @@ export default function Home() {
   const id = params.id;
 
   const [userrEmail, setUserrEmail] = useState("");
+  const [userID, setUserID] = useState("");
   const [pacienteInfo, setPacienteInfo] = useState<any | null>(null);
   const [homeLink, setHomeLink] = useState("");
   const [unidade, setUnidade] = useState<any | null>(null);
@@ -78,7 +79,7 @@ export default function Home() {
   return (
     <main className="flex flex-col min-h-screen">
       {getAcesso()}
-      <div className="flex flex-col gap-[20px] px-[108px] pt-[33px] pb-[50px] text-[14px]">
+      <div className="flex flex-col gap-[20px] px-5 md:px-[108px] pt-[33px] pb-[50px] text-[14px]">
         <div className="flex gap-[20px]">
           <div className="box w-full flex flex-col gap-7">
             <h2>Cadastro de {pacienteInfo ? pacienteInfo.nome : "Nome"}</h2>
@@ -99,7 +100,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="flex gap-6">
+              <div className="flex flex-col md:flex-row gap-6">
                 <div className="flex flex-col gap-6">
                   <div>
                     <p className="titulo">RG:</p>

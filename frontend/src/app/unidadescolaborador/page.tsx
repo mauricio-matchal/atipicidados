@@ -72,7 +72,7 @@ export default function Home() {
 
       <div className="px-[84px] pt-[40px]">
         <div className="flex justify-between">
-          <div className="flex flex-col w-[340px]">
+          <div className="flex flex-col w-[280px] md:w-[340px]">
             <h2 className="mb-7">Unidades</h2>
 
             <div className="relative w-full">

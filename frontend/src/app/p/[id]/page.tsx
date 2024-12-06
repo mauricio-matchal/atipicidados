@@ -23,6 +23,7 @@ export default function Home() {
   const router = useRouter();
 
   const [userrEmail, setUserrEmail] = useState("");
+  const [userID, setUserID] = useState("");
   const [pacienteInfo, setPacienteInfo] = useState<any | null>(null);
   const [homeLink, setHomeLink] = useState("");
 
@@ -63,13 +64,6 @@ export default function Home() {
     if (acesso === "g") return <NavBarGerente />
     if (acesso === "c") return <NavBarColaborador />
     if (acesso === "p") return <NavBarPaciente />
-  }
-
-  const jumpToPage = () => {
-    localStorage.removeItem("memberId");
-    localStorage.setItem("memberId", memberID);
-
-    router.push("/autenticacao")
   }
 
   return (

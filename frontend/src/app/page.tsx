@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import logos from "../../public/images/logos.svg";
+import logoDesktop from "../../public/images/logos.svg";
+import logoMobile from '../../public/images/logo.png';
 import { SlashedEyeIcon, OpenEyeIcon, CloseButton } from "../../public/icons/Icons";
 import { useState } from "react";
 import Link from "next/link";
@@ -103,7 +104,7 @@ export default function Home() {
       {errorMessage && (
         <>
           <div className="fixed z-40 place-self-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-800 p-5 text-white flex-row">
-            <button className="text-white" onClick={() => { setErrorMessage("") }}><CloseButton/></button>
+          <button className="text-white" onClick={() => { setErrorMessage("") }}><CloseButton/></button>
             <p>Erro ao fazer login. Tente novamente.</p> 
           </div>
           <div className="fixed inset-0 bg-black/30 z-30" />
@@ -119,7 +120,7 @@ export default function Home() {
         </>
       )}
 
-      <div className="flex w-[60%] justify-center items-center">
+      <div className="hidden lg:flex w-[60%] justify-center items-center">
         <Image
           src={Banner}
           alt="logos atipicidades"
@@ -127,15 +128,23 @@ export default function Home() {
         />
       </div>
 
-      <div className="flex bg-blue-100 w-[40%] flex-col justify-center items-center gap-10">
-        <Image
-          src={logos}
-          alt="logos atipicidades"
-        />
+      <div className="flex bg-blue-100 w-full lg:w-[40%] flex-col justify-center items-center gap-10">
+        <div className="flex flex-col w-full justify-center items-center">
+          <Image
+            src={logoDesktop}
+            alt="logosDesktop atipicidades"
+            className="hidden md:flex"
+          />
+          <Image
+            src={logoMobile}
+            alt="logosDesktop atipicidades"
+            className="flex md:hidden"
+          />
+        </div>
 
         <form className="flex flex-col justify-center items-center gap-9">
           <h1>Acesse sua conta</h1>
-          <div className="flex flex-row gap-4">
+          <div className="flex flex-row text-[13px] md:text-[16px] gap-4">
             <label className="flex items-center">
               <Checkbox
                 value="Gerente"
@@ -193,7 +202,7 @@ export default function Home() {
               </button>
             </div>
 
-            <div className="flex px-[10px] text-[14px] justify-end w-full">
+            <div className="flex px-[10px] text-[12px] md:text-[14px] justify-end w-full">
               <Link href='/recuperarsenha'>
                 <p className="font-semibold text-blue-800 cursor-pointer">Esqueceu a senha?</p>
               </Link>
