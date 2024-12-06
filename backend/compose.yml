@@ -1,0 +1,70 @@
+version: '3.9'
+
+services:
+  db:
+    container_name: db
+    image: postgres:12
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+
+  backend:
+    container_name: backend
+    image: backend
+    build:
+      context: ../backend
+      dockerfile: backend.dockerfile
+    ports:
+      - "3002:3002"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres?schema=public
+      - TZ=America/Sao_Paulo 
+    depends_on:
+      - db
+    volumes:
+     - ./uploads:/backend/uploads
+     - /etc/localtime:/etc/localtime:ro
+     - /etc/timezone:/etc/timezone:ro
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:latest
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+
+  frontend:
+    container_name: frontend
+    image: frontend
+    build:
+      context: ../frontend
+      dockerfile: frontend.dockerfile 
+    ports:
+      - "3000:3000"  
+    depends_on:
+      - backend  
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+
+volumes:
+  pgdata:
+
+networks:
+  app-network:
+    driver: bridge

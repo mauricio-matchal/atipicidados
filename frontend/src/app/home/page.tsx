@@ -1,15 +1,29 @@
+"use client";
 import PlusIcon from "@/assets/icons/plus";
 import SearchIcon from "@/assets/icons/search";
 import { Card } from "@/components/Card";
 import NavBar from "@/components/NavBar";
+import NavBarPaciente from "@/components/NavBarPaciente";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const searchParams = useSearchParams();
+  const email = searchParams.get("email");
+  const [userEmail, setUserEmail] = useState("");
+
+  useEffect(() => {
+    if (email) {
+      setUserEmail(decodeURIComponent(email));
+    }
+  }, [email]);
+  
   return (
     <main className="flex flex-col min-h-screen">
-      <NavBar />
-
-      <div className="px-[137px] pt-[30px]">
+      <NavBarPaciente />
+      PACIENTE
+      <div className="px-[84px] py-[30px]">
         <div className="flex justify-between">
           <div className="flex flex-col w-[340px]">
             <h2 className="mb-7">Página inicial</h2>
@@ -54,6 +68,12 @@ export default function Home() {
           </div>
 
           <div className="flex gap-[10px]">
+            <button className="botao">
+              <Link href='/cadastro/paciente' className="flex flex-row gap-1 items-center">
+                <PlusIcon style={{ color: 'var(--texto-botao)' }} />
+                <p>Novo Paciente</p>
+              </Link>
+            </button>
             <button className="botao">
               <Link href='/cadastro/colaborador' className="flex flex-row gap-1 items-center">
                 <PlusIcon style={{ color: 'var(--texto-botao)' }} />

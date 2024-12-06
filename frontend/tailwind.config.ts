@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     colors: {
       transparent: 'transparent',
-      white: '#FFFFFF',
+      white: '#F0F0F3',
       black: '#000000',
       blue: {
         100: '#E5E7F6',
@@ -29,6 +29,7 @@ const config: Config = {
     },
     dropShadow: {
       button: '0 4px 14px rgba(0, 0, 0, 0.25)',
+      menu: '0 4px 50px rgba(0, 0, 0, 0.4)',
     }
   },
   plugins: [],
