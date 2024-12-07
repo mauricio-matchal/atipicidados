@@ -13,18 +13,21 @@ type Gerente = {
 }
 
 interface NavBarProps {
+    id?: string;
     userEmail?: string | null;
     userName?: string | null;
 }
 
-export default function NavBar({ userEmail, userName }: NavBarProps) {
+export default function NavBar({ userEmail, userName, ...props }: NavBarProps) {
     const currentPath = usePathname().split('?')[0];
     const [userrEmail, setUserrEmail] = useState("");
     const [userID, setUserID] = useState("");
-    const [gerenteInfo, setGerenteInfo] = useState<Gerente | null>(null);
+    const [gerenteInfo, setGerenteInfo] = useState<any | null>(null);
     const [homeLink, setHomeLink] = useState("");
     const [nome, setNome] = useState("");
     const [menuOpen, setMenuOpen] = useState(false);
+
+    const [imagemData, setImageData] = useState<string>("");
 
     useEffect(() => {
         const email = localStorage.getItem("userEmail");
@@ -37,6 +40,8 @@ export default function NavBar({ userEmail, userName }: NavBarProps) {
             setUserID(decodedID);
             fetchGerenteData(decodedID);
         }
+        console.log(props.id);
+        fetchGerenteData(props.id);
         if (nome) setNome(nome);
         if (homeLink) setHomeLink(homeLink);
     }, []);
@@ -48,9 +53,31 @@ export default function NavBar({ userEmail, userName }: NavBarProps) {
                 throw new Error("Failed to fetch gerente data");
             }
             const data = await response.json();
-            setGerenteInfo(data);
+            setGerenteInfo(data.gerente);
         } catch (error) {
             console.error("Error fetching gerente data:", error);
+        }
+    };
+
+    useEffect(() => {
+        if (gerenteInfo?.fotofile) {
+            const fotoNome = gerenteInfo.fotofile.slice(8);
+            fetchFotoData(fotoNome);
+        }
+    }, [gerenteInfo]);
+
+    const fetchFotoData = async (fotoNome: string) => {
+        try {
+            const response = await fetch(`http://localhost:3002/imagens/${fotoNome}`);
+            if (!response.ok) {
+                throw new Error('Fetch falhou');
+            }
+
+            const imageBlob = await response.blob();
+            const imageUrl = URL.createObjectURL(imageBlob);
+            setImageData(imageUrl);
+        } catch (error) {
+            console.error('Erro ao buscar imagem:', error);
         }
     };
 
@@ -85,10 +112,16 @@ export default function NavBar({ userEmail, userName }: NavBarProps) {
                 <div className="flex items-center gap-8">
                     <Link href='/meucadastro' className="hidden sm:flex gap-4 items-center">
                         <div className='flex flex-col items-end gap-[2px] font-medium text-[14px] leading-[17px] text-black'>
-                            <p>{gerenteInfo?.nome}</p>
+                            <p>{gerenteInfo?.nome || "Nome não encontrado"}</p>
                             <p className="opacity-60">{userrEmail}</p>
                         </div>
-                        <div className="rounded-full w-11 h-11 bg-blue-800"></div>
+                        <Image
+                            src={imagemData || logo}
+                            alt="logo atipicidades"
+                            width={44}
+                            height={44}
+                            className="rounded-full"
+                        />
                     </Link>
 
                     <button className="sm:hidden" onClick={toggleMenu}>

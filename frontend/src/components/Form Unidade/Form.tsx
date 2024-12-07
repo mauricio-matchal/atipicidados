@@ -2,8 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import Step1 from './Step1';
 import { FormData } from './types';
+import { useRouter } from 'next/navigation';
 
 const Form: React.FC = () => {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     nome: null,
@@ -30,6 +32,7 @@ const Form: React.FC = () => {
       })
       const response = await teste.json();
       console.log(response);
+      router.push("/");
     } catch {
 
     }

@@ -24,7 +24,7 @@ type paiState = {
   presente: string;
 };
 
-const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateMae: (data: maeState) => void; updatePai: (data: paiState) => void }> = ({ nextStep, prevStep, updateMae, updatePai }) => {
+const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateMae: (data: maeState) => void; updatePai: (data: paiState) => void}> = ({ nextStep, prevStep, updateMae, updatePai }) => {
   const [Step21, setStep21] = useState<maeState>({
     nome: "",
     data: "",
@@ -46,16 +46,24 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateMae: (
   });
 
   const handleInputChange1 = (key: string, value: string) => {
-    setStep21((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }));
+    setStep21((prevState) => {
+      const updatedForm = {
+        ...prevState,
+        [key]: value,
+      };
+      updateMae(updatedForm);
+      return updatedForm;
+    });
   };
   const handleInputChange2 = (key: string, value: string) => {
-    setStep22((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }));
+    setStep22((prevState) => {
+      const updatedForm = {
+        ...prevState,
+        [key]: value,
+      };
+      updatePai(updatedForm);
+      return updatedForm;
+    });
   };
 
   const [responsavelOutro, setResponsavelOutro] = useState(false);
@@ -67,8 +75,6 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateMae: (
   };
 
   const handleNext = () => {
-    updateMae(Step21);
-    updatePai(Step22);
     nextStep();
   };
 
@@ -78,14 +84,14 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateMae: (
 
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Mãe</h4>
-          <button onClick={() => { console.log(Step21); console.log(Step22) }}>Mostrar Respostas</button>
+          <button onClick={() => {console.log(Step21);console.log(Step22)}}>Mostrar Respostas</button>
 
           <TextInput placeholder="Nome completo da mãe" value={Step21.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
 
           <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <DateInput value={Step21.data} onChange={(e) => handleInputChange1("data", e.target.value)} />
-            <TextInput type='rg' placeholder='RG da mãe' className='min-w-[220px]' value={Step21.rg} onChange={(e) => handleInputChange1("rg", e.target.value)} />
-            <TextInput type='cpf' placeholder='CPF da mãe' className='min-w-[220px]' value={Step21.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
+            <TextInput placeholder='RG da mãe' className='min-w-[220px]' value={Step21.rg} onChange={(e) => handleInputChange1("rg", e.target.value)} />
+            <TextInput placeholder='CPF da mãe' className='min-w-[220px]' value={Step21.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
           </div>
 
           <div className='flex flex-col md:flex-row w-full gap-[12px]'>
@@ -113,8 +119,8 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateMae: (
 
           <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <DateInput value={Step22.data} onChange={(e) => handleInputChange2("data", e.target.value)} />
-            <TextInput type='rg' placeholder='RG do pai' className='min-w-[220px]' value={Step22.rg} onChange={(e) => handleInputChange2("rg", e.target.value)} />
-            <TextInput type='cpf' placeholder='CPF do pai' className='min-w-[220px]' value={Step22.cpf} onChange={(e) => handleInputChange2("cpf", e.target.value)} />
+            <TextInput placeholder='RG do pai' className='min-w-[220px]' value={Step22.rg} onChange={(e) => handleInputChange2("rg", e.target.value)} />
+            <TextInput placeholder='CPF do pai' className='min-w-[220px]' value={Step22.cpf} onChange={(e) => handleInputChange2("cpf", e.target.value)} />
           </div>
 
           <div className='flex flex-col md:flex-row w-full gap-[12px]'>
@@ -145,18 +151,18 @@ const Step2: React.FC<{ nextStep: () => void; prevStep: () => void; updateMae: (
             <div className='flex flex-col gap-[12px]'>
               <h4 className='pl-2'>Informações do responsável</h4>
 
-              <TextInput placeholder="Nome completo do responsável" value={undefined} />
+              <TextInput placeholder="Nome completo do responsável" />
 
               <div className='flex flex-col md:flex-row w-full gap-[12px]'>
                 <DateInput />
-                <TextInput placeholder='RG do responsável' className='min-w-[220px]' value={undefined} />
-                <TextInput placeholder='CPF do responsável' className='min-w-[220px]' value={undefined} />
+                <TextInput placeholder='RG do responsável' className='min-w-[220px]' />
+                <TextInput placeholder='CPF do responsável' className='min-w-[220px]' />
               </div>
 
               <div className='flex flex-col md:flex-row w-full gap-[12px]'>
                 <SelectInput placeholder={"Escolaridade"} options={["Ensino fundamental incompleto", "Ensino fundamental completo", "Ensino médio completo", "Técnico/profissionalizante", "Cursando ensino superior", "Ensino superior completo"]} />
                 <NumberInput placeholder="Telefone de contato" />
-                <TextInput placeholder="E-mail" value={undefined} />
+                <TextInput placeholder="E-mail" />
               </div>
 
             </div>

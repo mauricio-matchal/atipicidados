@@ -40,17 +40,25 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
   });
 
   const handleInputChange = (key: string, value: string) => {
-    setStep3((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }));
+    setStep3((prevState) => {
+      const updatedForm = {
+        ...prevState,
+        [key]: value,
+      };
+      updateMaisInfo(updatedForm);
+      return updatedForm;
+    });
   };
 
   const handleInputChangeList = (key: string, value: string[]) => {
-    setStep3((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }));
+    setStep3((prevState) => {
+      const updatedForm = {
+        ...prevState,
+        [key]: value,
+      };
+      updateMaisInfo(updatedForm);
+      return updatedForm;
+    });
   };
 
   const handleTest = async () => {
@@ -68,6 +76,7 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
   }
 
   const handlePasseLivreChange = (options: string[]) => {
+    setSelectedCheckboxOptions(options.filter(option => option !== 'Pai' && option !== 'Mãe'));
     handleInputChangeList("passelivre", options);
   };
 
@@ -87,7 +96,6 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
   };
 
   const handleNext = () => {
-    updateMaisInfo(Step3);
     nextStep();
   };
 
@@ -96,7 +104,7 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
       <div className='flex flex-col gap-[42px] px-5 lg:w-[840px] place-self-center'>
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Mais informações</h4>
-          <button onClick={() => { console.log(Step3) }}>Mostrar Respostas</button>
+          <button onClick={() => {console.log(Step3)}}>Mostrar Respostas</button>
           <button onClick={handleTest}>teste</button>
 
           <div className='flex flex-col md:flex-row w-full gap-[12px]'>
@@ -174,12 +182,12 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
             <div key={index} className='flex flex-col gap-[12px] mt-4'>
               <h4 className='pl-2'>Informações {responsavel}</h4>
 
-              <TextInput placeholder="Nome completo" value={undefined} />
+              <TextInput placeholder="Nome completo" />
 
               <div className='flex flex-col md:flex-row w-full gap-[12px]'>
                 <DateInput />
-                <TextInput placeholder='RG' className='min-w-[220px]' value={undefined} />
-                <TextInput placeholder='CPF' className='min-w-[220px]' value={undefined} />
+                <TextInput placeholder='RG' className='min-w-[220px]' />
+                <TextInput placeholder='CPF' className='min-w-[220px]' />
               </div>
 
               <div className='flex flex-col md:flex-row w-full gap-[12px]'>
@@ -188,7 +196,7 @@ const Step3: React.FC<{ nextStep: () => void; prevStep: () => void; updateMaisIn
                   options={["Ensino fundamental incompleto", "Ensino fundamental completo", "Ensino médio completo", "Técnico/profissionalizante", "Cursando ensino superior", "Ensino superior completo"]}
                 />
                 <NumberInput placeholder="Telefone de contato" />
-                <TextInput placeholder="E-mail" value={undefined} />
+                <TextInput placeholder="E-mail" />
               </div>
             </div>
           ))}

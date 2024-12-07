@@ -13,7 +13,7 @@ export default function Home() {
   const email = searchParams.get("email");
   const id = searchParams.get("id");
   const [userEmail, setUserEmail] = useState("");
-  const [userID, setUserID] = useState<string | number>("");
+  const [userID, setUserID] = useState<string>("");
   const [gerenteInfo, setGerenteInfo] = useState<any | null>(null);
   const [pacientes, setPacientes] = useState<any[]>([]);
   const [gerentes, setGerentes] = useState<any[]>([]);
@@ -173,7 +173,7 @@ export default function Home() {
 
   return (
     <main className="flex flex-col min-h-screen">
-      <NavBarGerente />
+      <NavBarGerente id={userID} />
       <div className="px-5 md:px-[84px] py-[40px]">
         <div className="flex justify-between">
           <div className="flex flex-col w-full">
@@ -271,7 +271,7 @@ export default function Home() {
           {filteredMembers.map((member) => (
             // eslint-disable-next-line react/jsx-key
             <button onClick={() => { urlToMemberPage(member) }} className="text-left">
-              <Card key={member.id} title={member.nome} cpf={member.cpf} acesso={member.type} />
+              <Card key={member.id} id={member.id} title={member.nome} cpf={member.cpf} acesso={member.type} />
             </button>
           ))}
         </div>

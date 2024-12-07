@@ -30,6 +30,8 @@ export default function Home() {
   const [memberID, setMemberID] = useState("");
   const [acesso, setAcesso] = useState("");
 
+  const [imagemData, setImageData] = useState<string>("");
+
   useEffect(() => {
     const email = localStorage.getItem("userEmail");
     // const id = localStorage.getItem("userID");
@@ -56,6 +58,28 @@ export default function Home() {
       setPacienteInfo(data);
     } catch (error) {
       console.error("Error fetching gerente data:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (pacienteInfo?.fotofile) {
+      const fotoNome = pacienteInfo.fotofile.slice(8); 
+      fetchFotoData(fotoNome);
+    }
+  }, [pacienteInfo]);
+
+  const fetchFotoData = async (fotoNome: string) => {
+    try {
+      const response = await fetch(`http://localhost:3002/imagens/${fotoNome}`);
+      if (!response.ok) {
+        throw new Error('Fetch falhou');
+      }
+
+      const imageBlob = await response.blob();
+      const imageUrl = URL.createObjectURL(imageBlob);
+      setImageData(imageUrl); 
+    } catch (error) {
+      console.error('Erro ao buscar imagem:', error);
     }
   };
 

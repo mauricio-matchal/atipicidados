@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StepProps } from './types';
 import SelectInput from '../SelectInput';
 import TextInput from '../TextInput';
@@ -53,7 +53,7 @@ const Step1: React.FC<{
 
   const [Step11, setStep11] = useState<Step11State>({
     nome: "",
-    nascimento: "",
+    nascimento: "2024-12-04T00:00:00Z",
     cpf: "",
     rg: "",
     telefone: "",
@@ -73,7 +73,11 @@ const Step1: React.FC<{
     formacao: "",
   });
 
+  const errorRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isCpfMissing, setIsCpfMissing] = useState(false);
+  const [isEmailMissing, setIsEmailMissing] = useState(false);
+  const [isSenhaMissing, setIsSenhaMissing] = useState(false);
 
   const handleLoginChange: any = (key: string, value: string) => {
     setLogin((prevState) => {
@@ -97,13 +101,20 @@ const Step1: React.FC<{
     });
   };
 
+  useEffect(() => {
+    if (error && errorRef.current) {
+      errorRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [error]);
+
   const [fotoFile, setFotoFile] = useState<File | null>(null);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleFotoFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
+    if (e.target.files && e.target.files[0]) {
       setFotoFile(e.target.files[0]);
+      updateForm({ fotofile: e.target.files[0] });
     }
   };
 
@@ -116,19 +127,40 @@ const Step1: React.FC<{
   };
 
   const handleSubmit = () => {
-    if (login.email !== login.confirmarEmail || login.senha !== login.confirmarSenha) {
-      setError("Os campos de e-mail e senha precisam ser iguais.");
+    setError(null);
+    setIsCpfMissing(false);
+    setIsEmailMissing(false);
+    setIsSenhaMissing(false);
+
+    if (!Step11.cpf || !login.email || !login.senha) {
+      setIsCpfMissing(!Step11.cpf);
+      setIsEmailMissing(!login.email);
+      setIsSenhaMissing(!login.senha);
+      setError("Preencha todos os campos obrigatórios");
+      return;
+    }
+
+    if (login.email !== login.confirmarEmail) {
+      setError("Os campos de e-mail precisam ser iguais.");
+      setIsEmailMissing(true);
+      return;
+    }
+    if (login.senha !== login.confirmarSenha) {
+      setError("Os campos de senha precisam ser iguais.");
+      setIsSenhaMissing(true);
       return;
     }
     if (!validateEmail(login.email)) {
       setError("O e-mail inserido não é válido.");
+      setIsEmailMissing(true);
       return;
     }
     if (!validatePassword(login.senha)) {
       setError("A senha precisa ter no mínimo 8 caracteres.");
+      setIsSenhaMissing(true);
       return;
     }
-  
+
     handleFormDataSubmit();
   };
 
@@ -136,31 +168,31 @@ const Step1: React.FC<{
     <div className='flex flex-col gap-[162px] w-screen'>
       <div className='flex flex-col gap-[42px] px-5 md:w-[600px] lg:w-[840px] place-self-center'>
         <div className='flex flex-col gap-[12px]'>
-
+          {error && <div ref={errorRef} className="text-[#FFF] font-medium text-center mt-4 bg-[#e13c31] py-3 rounded-xl">{error}</div>}
           <h4 className='pl-2 place-self-start mt-10'>Crie um login e senha para o Colaborador</h4>
           <div className='flex flex-col md:flex-row w-full gap-3'>
-            <TextInput className='md:w-1/2' placeholder='E-mail' value={login.email} onChange={(e) => handleLoginChange("email", e.target.value)} />
-            <TextInput className='md:w-1/2' placeholder='Confirmar e-mail' value={login.confirmarEmail} onChange={(e) => handleLoginChange("confirmarEmail", e.target.value)} />
+            <TextInput error={isEmailMissing} className='md:w-1/2' placeholder='E-mail' value={login.email} onChange={(e) => handleLoginChange("email", e.target.value)} />
+            <TextInput error={isEmailMissing} className='md:w-1/2' placeholder='Confirmar e-mail' value={login.confirmarEmail} onChange={(e) => handleLoginChange("confirmarEmail", e.target.value)} />
           </div>
           <div className='flex flex-col md:flex-row w-full gap-3'>
-            <TextInput className='md:w-1/2' placeholder='Senha' value={login.senha} onChange={(e) => handleLoginChange("senha", e.target.value)} />
-            <TextInput className='md:w-1/2' placeholder='Confirmar senha' value={login.confirmarSenha} onChange={(e) => handleLoginChange("confirmarSenha", e.target.value)} />
+            <TextInput error={isSenhaMissing} className='md:w-1/2' placeholder='Senha' value={login.senha} onChange={(e) => handleLoginChange("senha", e.target.value)} />
+            <TextInput error={isSenhaMissing} className='md:w-1/2' placeholder='Confirmar senha' value={login.confirmarSenha} onChange={(e) => handleLoginChange("confirmarSenha", e.target.value)} />
           </div>
-          {error && <div className="text-[#FF0F00] font-medium">{error}</div>}
           <div className='mb-10'></div>
 
           <div className='flex flex-col gap-[12px]'>
             <button onClick={() => { console.log(fotoFile) }}>Mostrar Foto</button>
 
             <div className='flex flex-col md:flex-row w-full gap-[12px]'>
-              <FileInput placeholder='Foto 3x4' className='min-w-[260px]' onChange={handleFotoFileChange} name='fotoFile' />
+              <FileInput placeholder='Foto 3x4' onChange={handleFotoFileChange} name='fotoFile' />
               <NumberInput placeholder="Telefone de contato" value={Step11.telefone} onChange={(e) => handleInputChange1("telefone", e.target.value)} />
             </div>
 
             <TextInput placeholder='Nome completo' value={Step11.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
 
             <div className='flex flex-col md:flex-row w-full gap-[12px]'>
-              <TextInput placeholder='CPF' className='min-w-[220px]' value={Step11.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
+              <TextInput type="cpf" error={isCpfMissing} placeholder='CPF' value={Step11.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
+              <TextInput type="rg" placeholder='RG' value={Step11.rg} onChange={(e) => handleInputChange1("rg", e.target.value)} />
               <DateInput value={Step11.nascimento} onChange={(e) => handleInputChange1("nascimento", e.target.value)} />
             </div>
 
@@ -170,8 +202,57 @@ const Step1: React.FC<{
             </div> */}
 
             <div className='flex flex-col md:flex-row w-full gap-[12px]'>
-              <SelectInput options={["Masculino", "Feminino", "Intersexo", "Outro sexo", "Prefiro não dizer o sexo"]} placeholder={"Sexo"} onChange={(value) => handleInputChange1("sexo", value)} />
-              <SelectInput options={["Amarelo", "Branco", "Indígena", "Pardo", "Preto"]} placeholder={"Raça/cor"} onChange={(value) => handleInputChange1("raca", value)} />
+              <SelectInput
+                options={["Masculino", "Feminino", "Prefiro não dizer o sexo"]}
+                placeholder={"Sexo"}
+                onChange={(value) => {
+                  let formattedValue = "";
+                  switch (value) {
+                    case "Masculino":
+                      formattedValue = "masculino";
+                      break;
+                    case "Feminino":
+                      formattedValue = "feminino";
+                      break;
+                    case "Prefiro não dizer o sexo":
+                      formattedValue = "prefiro_nao_informar";
+                      break;
+                    default:
+                      formattedValue = value;
+                  }
+                  handleInputChange1("genero", formattedValue)
+                }} />
+              <SelectInput
+                options={["Amarelo", "Branco", "Indígena", "Preto", "Outra"]}
+                placeholder={"Raça/cor"}
+                onChange={(value) => {
+                  let formattedValue = "";
+                  switch (value) {
+                    case "Amarelo":
+                      formattedValue = "AMARELA";
+                      formattedValue = "amarela";
+                      break;
+                    case "Branco":
+                      formattedValue = "BRANCA";
+                      formattedValue = "branca";
+                      break;
+                    case "Indígena":
+                      formattedValue = "INDIGENA";
+                      formattedValue = "indigena";
+                      break;
+                    case "Preto":
+                      formattedValue = "NEGRA";
+                      formattedValue = "negra";
+                      break;
+                    case "Outra":
+                      formattedValue = "OUTRA";
+                      formattedValue = "outra";
+                      break;
+                    default:
+                      formattedValue = value;
+                  }
+                  handleInputChange1("raca", formattedValue);
+                }} />
             </div>
 
             <div className='mb-4'></div>

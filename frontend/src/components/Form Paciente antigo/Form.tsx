@@ -4,35 +4,10 @@ import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
 import Step4 from './Step4';
-import { useRouter } from "next/navigation";
-import Loading from '../Loading';
-
-type Geral = {
-  nome?: string;
-  rg?: string;
-  cpf?: string;
-};
-
-type FormData = {
-  email: string | null;
-  password: string | null;
-  geral: Geral | null;
-  escola: any | null;
-  mae: any | null;
-  pai: any | null;
-  maisinfo: any | null;
-  saudeinfo: any | null;
-  fotofile: File | null;
-  relescolar: File | null;
-  laudofile: File | null;
-  rgdocfile: File | null;
-  compresfile: File | null;
-};
 
 const Form: React.FC = () => {
-  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState({
     email: null,
     password: null,
     geral: null,
@@ -51,12 +26,41 @@ const Form: React.FC = () => {
   const nextStep = () => setCurrentStep(currentStep + 1);
   const prevStep = () => setCurrentStep(currentStep - 1);
 
-  const updateDataAt = (data: any, type: string) => {
+  // ARQUIVOS //
+
+  const updateFoto = (data: any) => {
     setFormData((prevData) => ({
       ...prevData,
-      [type]: data,
-    }))
+      [`fotofile`]: data,
+    }));
   }
+  const updateRelatorio = (data: any) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [`relescolar`]: data,
+    }));
+  }
+  const updateLaudoFile = (data: any) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [`laudofile`]: data,
+    }));
+  }
+  const updateRG = (data: any) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [`rgdocfile`]: data,
+    }));
+  }
+  const updateResidencia = (data: any) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [`compresfile`]: data,
+    }));
+  }
+
+  ///////////
+
   const updateLogin = (data: any) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -65,21 +69,53 @@ const Form: React.FC = () => {
     }));
   };
 
+  const updateGeral = (data: any) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [`geral`]: data,
+    }));
+  };
+  const updateEscola = (data: any) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [`escola`]: data,
+    }));
+  };
+  const updateMae = (data: any) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [`mae`]: data,
+    }));
+  };
+  const updatePai = (data: any) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [`pai`]: data,
+    }));
+  };
+  const updateMaisInfo = (data: any) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [`maisinfo`]: data,
+    }));
+  };
+  const updateInfoSaude = (data: any) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [`saudeinfo`]: data,
+    }));
+  };
+
   const handleUserCreation = async () => {
-    setIsLoading(true);
     const data = new FormData();
 
-    if (formData.geral?.nome) data.append('nome', formData.geral.nome);
-    if (formData.geral?.rg) data.append('rg', formData.geral.rg);
-    if (formData.geral?.cpf) data.append('cpf', formData.geral.cpf);
-    if (formData.password) data.append('password', formData.password);
-    if (formData.email) data.append('email', formData.email);
+    data.append('email', JSON.stringify(formData.email));
+    data.append('password', JSON.stringify(formData.password));
     data.append('geral', JSON.stringify(formData.geral));
     data.append('mae', JSON.stringify(formData.mae));
     data.append('pai', JSON.stringify(formData.pai));
     data.append('maisinfo', JSON.stringify(formData.maisinfo));
     data.append('escola', JSON.stringify(formData.escola));
-    data.append('saudeinfo', JSON.stringify(formData.saudeinfo));
 
     if (formData.fotofile) {
       data.append('fotofile', formData.fotofile);
@@ -113,15 +149,10 @@ const Form: React.FC = () => {
       })
       const result = await response.json();
       console.log(result);
-
     } catch (error) {
       console.error("Erro ao criar usuário:", error);
-    } finally {
-      setIsLoading(false);
     }
   }
-
-  const[isLoading, setIsLoading] = useState(false);
 
   switch (currentStep) {
     case 1:
@@ -130,43 +161,41 @@ const Form: React.FC = () => {
         <Step1
           nextStep={nextStep}
           updateLogin={(data) => updateLogin(data)}
-          updateGeral={(data) => updateDataAt(data, "geral")}
-          updateEscola={(data) => updateDataAt(data, "escola")}
-          updateFoto={(data) => updateDataAt(data, "fotofile")}
-          updateRelatorio={(data) => updateDataAt(data, "relescolar")}
-          updateRG={(data) => updateDataAt(data, "rgdocfile")}
-          updateResidencia={(data) => updateDataAt(data, "compresfile")}
+          updateGeral={(data) => updateGeral(data)}
+          updateEscola={(data) => updateEscola(data)}
+          updateFoto={(data) => updateFoto(data)}
+          updateRelatorio={(data) => updateRelatorio(data)}
+          updateRG={(data) => updateRG(data)}
+          updateResidencia={(data) => updateResidencia(data)}
         />;
       </>
     case 2:
-      return <Step2
-        nextStep={nextStep}
-        prevStep={prevStep}
-        updateMae={(data) => updateDataAt(data, "mae")}
-        updatePai={(data) => updateDataAt(data, "pai")}
-      />;
+      return <>
+        <button onClick={() => { console.log(formData) }}>Mostrar formData</button>
+        <Step2
+          nextStep={nextStep}
+          prevStep={prevStep}
+          updateMae={(data) => updateMae(data)}
+          updatePai={(data) => updatePai(data)}
+        />;
+      </>
     case 3:
-      return <Step3
-        nextStep={nextStep}
-        prevStep={prevStep}
-        updateMaisInfo={(data) => updateDataAt(data, "maisinfo")}
-      />;
+      return <>
+        <button onClick={() => { console.log(formData) }}>Mostrar formData</button>
+        <Step3
+          nextStep={nextStep}
+          prevStep={prevStep}
+          updateMaisInfo={(data) => updateMaisInfo(data)}
+        />;
+      </>
     case 4:
       return <>
-        {isLoading && (
-          <>
-            <div className="fixed z-40 place-self-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              <Loading />
-            </div>
-            <div className="fixed inset-0 bg-black/30 z-30" />
-          </>
-        )}
         <button onClick={() => { console.log(formData) }}>Mostrar formData</button>
         <Step4
           prevStep={prevStep}
-          updateInfoSaude={(data) => updateDataAt(data, "saudeinfo")}
-          updateLaudoFile={(data) => updateDataAt(data, "laudofile")}
+          updateInfoSaude={(data) => updateInfoSaude(data)}
           handleFormDataSubmit={handleUserCreation}
+          updateLaudoFile={(data) => updateLaudoFile(data)}
         />;
       </>
     default:

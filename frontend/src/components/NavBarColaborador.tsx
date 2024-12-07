@@ -13,6 +13,7 @@ type Colaborador = {
 };
 
 interface NavBarProps {
+    id?: string;
     userEmail?: string | null;
     userName?: string | null;
 }
@@ -21,9 +22,11 @@ export default function NavBar({ userEmail, userName }: NavBarProps) {
     const currentPath = usePathname().split('?')[0];
     const [userrEmail, setUserrEmail] = useState("");
     const [userID, setUserID] = useState("");
-    const [colaboradorInfo, setColaboradorInfo] = useState<Colaborador | null>(null);
+    const [colaboradorInfo, setColaboradorInfo] = useState<any | null>(null);
     const [homeLink, setHomeLink] = useState("");
     const [menuOpen, setMenuOpen] = useState(false);
+
+    const [imagemData, setImageData] = useState<string>("");
 
     useEffect(() => {
         const email = localStorage.getItem("userEmail");
@@ -47,6 +50,28 @@ export default function NavBar({ userEmail, userName }: NavBarProps) {
             setColaboradorInfo(data);
         } catch (error) {
             console.error("Error fetching colaborador data:", error);
+        }
+    };
+
+    useEffect(() => {
+        if (colaboradorInfo?.fotofile) {
+            const fotoNome = colaboradorInfo.fotofile.slice(8);
+            fetchFotoData(fotoNome);
+        }
+    }, [colaboradorInfo]);
+
+    const fetchFotoData = async (fotoNome: string) => {
+        try {
+            const response = await fetch(`http://localhost:3002/imagens/${fotoNome}`);
+            if (!response.ok) {
+                throw new Error('Fetch falhou');
+            }
+
+            const imageBlob = await response.blob();
+            const imageUrl = URL.createObjectURL(imageBlob);
+            setImageData(imageUrl);
+        } catch (error) {
+            console.error('Erro ao buscar imagem:', error);
         }
     };
 
@@ -86,7 +111,13 @@ export default function NavBar({ userEmail, userName }: NavBarProps) {
                             <p>{colaboradorInfo?.nome}</p>
                             <p className="opacity-60">{userrEmail}</p>
                         </div>
-                        <div className="rounded-full w-11 h-11 bg-blue-800"></div>
+                        <Image
+                            src={imagemData || logo}
+                            alt="logo atipicidades"
+                            width={44}
+                            height={44}
+                            className="rounded-full"
+                        />
                     </Link>
 
                     {/* Config Icon */}

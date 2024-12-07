@@ -21,6 +21,7 @@ export default function Home() {
   const [userID, setUserID] = useState("");
   const [pacienteInfo, setPacienteInfo] = useState<any | null>(null);
   const [homeLink, setHomeLink] = useState("");
+  const [imagemData, setImageData] = useState<string>("");
   const [unidade, setUnidade] = useState<any | null>(null);
 
   const [memberID, setMemberID] = useState("");
@@ -66,6 +67,28 @@ export default function Home() {
       setUnidade(data);
     } catch (error) {
       console.error("Error fetching unidades data:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (pacienteInfo?.fotofile) {
+      const fotoNome = pacienteInfo.fotofile.slice(8); 
+      fetchFotoData(fotoNome);
+    }
+  }, [pacienteInfo]);
+
+  const fetchFotoData = async (fotoNome: string) => {
+    try {
+      const response = await fetch(`http://localhost:3002/imagens/${fotoNome}`);
+      if (!response.ok) {
+        throw new Error('Fetch falhou');
+      }
+
+      const imageBlob = await response.blob();
+      const imageUrl = URL.createObjectURL(imageBlob);
+      setImageData(imageUrl); 
+    } catch (error) {
+      console.error('Erro ao buscar imagem:', error);
     }
   };
 
