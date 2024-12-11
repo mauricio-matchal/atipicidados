@@ -27,15 +27,15 @@ export default function Home() {
 
   const fetchData = async () => {
     try {
-      const responseColaborador = await fetch("http://localhost:3002/colaboradores/all");
+      const responseColaborador = await fetch(`http://localhost:3002/colaboradores/getall/${id}`,{credentials:'include'});
       const dataColaborador = await responseColaborador.json();
       setColaboradores(dataColaborador.colaboradores);
 
-      const responsePaciente = await fetch("http://localhost:3002/pacientes/all");
+      const responsePaciente = await fetch("http://localhost:3002/pacientes/getall");
       const dataPaciente = await responsePaciente.json();
       setPacientes(dataPaciente.pacientes);
 
-      const responseGerente = await fetch("http://localhost:3002/gerentes/all");
+      const responseGerente = await fetch(`http://localhost:3002/gerentes/getall/${id}`,{credentials:'include'});
       const dataGerente = await responseGerente.json();
       setGerentes(dataGerente.gerentes);
     } catch (error) {
@@ -87,7 +87,10 @@ export default function Home() {
     );
   };
 
-  const handleSearchBar = (e: any) => setSearchBy(e.target.value);
+  const handleSearchBar = (e: any) => {
+    const value = e.target.value
+    setSearchBy(value);
+  }
 
   const urlToMemberPage = (member: any) => {
     localStorage.removeItem("acs");

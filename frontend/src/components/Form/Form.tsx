@@ -32,6 +32,7 @@ type FormData = {
 const Form: React.FC = () => {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     email: null,
     password: null,
@@ -80,7 +81,7 @@ const Form: React.FC = () => {
       const data = await response.json();
       console.log(data);
       const usuario = data.paciente
-      
+
       if (formData.email) localStorage.setItem("userEmail", formData.email);
       localStorage.setItem("userID", usuario.id);
 
@@ -136,14 +137,19 @@ const Form: React.FC = () => {
     console.log(data);
 
     try {
-
       const response = await fetch("http://localhost:3002/pacientes/", {
         method: "POST",
         body: data, // mudar caso queira colocar o blob para body: formDataToSend, 
-        // headers: { 'Content-Type': 'application/json' }
       })
-      const result = await response.json();
-      console.log(result);
+      const responseText = await response.text();
+      console.log('Resposta do servidor:', responseText);
+
+      if (response.ok) {
+        const result = JSON.parse(responseText);
+        console.log('Resultado:', result);
+      } else {
+        console.log('Erro do servidor:', responseText);
+      }
 
       handleLogin();
     } catch (error) {
@@ -151,7 +157,6 @@ const Form: React.FC = () => {
     }
   }
 
-  const[isLoading, setIsLoading] = useState(false);
 
   switch (currentStep) {
     case 1:

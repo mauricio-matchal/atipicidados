@@ -48,15 +48,11 @@ export default function Home() {
   useEffect(() => {
     let filtered = allMembers;
 
-
-    // Filter by search term
     if (searchBy.length > 0) {
       filtered = filtered.filter((member) =>
         member.nome?.toLowerCase().includes(searchBy.toLowerCase())
       );
     }
-
-    // Filter by selected filters
     if (selectedFilters.length > 0) {
       filtered = filtered.filter((member) => selectedFilters.includes(member.type));
     }
@@ -99,7 +95,7 @@ export default function Home() {
 
   const fetchPacientes = async () => {
     try {
-      const response = await fetch("http://localhost:3002/pacientes/getall");
+      const response = await fetch(`http://localhost:3002/pacientes/getall/${id}`, { credentials: 'include' });
       if (!response.ok) {
         throw new Error("Failed to fetch pacientes data");
       }

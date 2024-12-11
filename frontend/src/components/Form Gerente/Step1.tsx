@@ -51,6 +51,7 @@ const Step1: React.FC<{
     nascimento:"2024-12-04T00:00:00Z",
     genero:'masculino'
     
+
   });
 
   const errorRef = useRef<HTMLDivElement>(null);
@@ -75,7 +76,7 @@ const Step1: React.FC<{
     setStep11((prevState) => {
       const updatedForm = {
         ...prevState,
-        [key]: key === 'unidadeId' ? parseInt(value, 10) : value,
+        [key]: value,
       };
       updateForm(updatedForm);
       return updatedForm;
@@ -193,14 +194,15 @@ const Step1: React.FC<{
                     default:
                       formattedValue = value;
                   }
-                  handleInputChange1("sexo", formattedValue)
+                  handleInputChange1("genero", formattedValue)
                 }} />
             </div>
 
 
             <div className='flex flex-col md:flex-row w-full gap-[12px]'>
-              <TextInput type="cpf" placeholder='CPF' className='md:w-1/2' value={Step11.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
-              <TextInput type="rg" placeholder='RG' className='md:w-1/2' value={Step11.rg} onChange={(e) => handleInputChange1("rg", e.target.value)} />
+              <TextInput type="cpf" placeholder='CPF' className='md:w-1/3' value={Step11.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
+              <TextInput type="rg" placeholder='RG' className='md:w-1/3' value={Step11.rg} onChange={(e) => handleInputChange1("rg", e.target.value)} />
+              <DateInput value={Step11.nascimento} className='md:w-1/3' onChange={(e) => handleInputChange1("nascimento", e.target.value)} />
             </div>
             <div className='flex flex-col md:flex-row w-full gap-[12px]'>
               <SelectInput

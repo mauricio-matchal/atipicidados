@@ -20,7 +20,7 @@ const Form: React.FC = () => {
     formacao: null,
     genero: null,
     raca: null,
-    // unidadeId: null,
+    unidadeId: 0,
   });
 
   const updateForm = (data: any) => {
@@ -75,6 +75,8 @@ const Form: React.FC = () => {
     if (formData.formacao) {
       data.append('formacao', formData.formacao)
     }
+    
+    console.log(data);
 
     try {
       const response = await fetch("http://localhost:3002/colaboradores/", {

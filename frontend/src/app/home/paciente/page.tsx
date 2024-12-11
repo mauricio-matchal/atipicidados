@@ -10,6 +10,7 @@ export default function Home() {
     const [userID, setUserID] = useState("");
     const [pacienteInfo, setPacienteInfo] = useState<any | null>(null);
     const [homeLink, setHomeLink] = useState("");
+    const [imagemData, setImageData] = useState<string>("");
 
     useEffect(() => {
         const email = localStorage.getItem("userEmail");
@@ -36,6 +37,28 @@ export default function Home() {
         }
     };
 
+    useEffect(() => {
+        if (pacienteInfo?.fotofile) {
+            const fotoNome = pacienteInfo.fotofile.slice(8);
+            fetchFotoData(fotoNome);
+        }
+    }, [pacienteInfo]);
+
+    const fetchFotoData = async (fotoNome: string) => {
+        try {
+            const response = await fetch(`http://localhost:3002/imagens/${fotoNome}`);
+            if (!response.ok) {
+                throw new Error('Fetch falhou');
+            }
+
+            const imageBlob = await response.blob();
+            const imageUrl = URL.createObjectURL(imageBlob);
+            setImageData(imageUrl);
+        } catch (error) {
+            console.error('Erro ao buscar imagem:', error);
+        }
+    };
+
     const fallback = "Não encontrado";
 
     return (
@@ -49,10 +72,12 @@ export default function Home() {
                         <div className="flex flex-col gap-8">
                             <div className="flex items-center gap-[20px]">
                                 <Image
-                                    src={perfil}
+                                    src={imagemData || perfil}
                                     alt="foto de perfil <nome do usuario>"
                                     width={68}
-                                    height={68} />
+                                    height={68}
+                                    className="rounded-full"
+                                />
 
                                 <div>
                                     <p className="titulo">Nome e Sobrenome:</p>
@@ -104,36 +129,36 @@ export default function Home() {
                         <h3>Mãe</h3>
                         <p className="titulo">{pacienteInfo?.mae?.nome || fallback}</p>
 
-												<div className="flex gap-5 md:gap-1 lg:hidden">
-													<div className="flex flex-col gap-[18px]">
-																<div>
+                        <div className="flex gap-5 md:gap-1 lg:hidden">
+                            <div className="flex flex-col gap-[18px]">
+                                <div>
                                     <p className="titulo">RG:</p>
                                     <p>{pacienteInfo?.mae?.rg || fallback}</p>
                                 </div>
-																<div>
+                                <div>
                                     <p className="titulo">Data de nascimento:</p>
                                     <p>{pacienteInfo?.mae?.data || fallback}</p>
                                 </div>
-																<div>
+                                <div>
                                     <p className="titulo">Escolaridade:</p>
                                     <p>{pacienteInfo?.mae?.escolaridade || fallback}</p>
                                 </div>
-													</div>
-													<div className="flex flex-col gap-[18px]">
-																<div>
+                            </div>
+                            <div className="flex flex-col gap-[18px]">
+                                <div>
                                     <p className="titulo">CPF:</p>
                                     <p>{pacienteInfo?.mae?.cpf || fallback}</p>
                                 </div>
-																<div>
+                                <div>
                                     <p className="titulo">Endereço:</p>
                                     <p>{pacienteInfo?.mae?.endereco || fallback}</p>
                                 </div>
-																<div>
+                                <div>
                                     <p className="titulo">Contato:</p>
                                     <p>{pacienteInfo?.mae?.telefone || fallback}</p>
                                 </div>
-													</div>
-												</div>
+                            </div>
+                        </div>
                         <div className="hidden lg:flex flex-row gap-[18px] items-center">
                             <div className="flex flex-col gap-5">
                                 <div>
@@ -176,37 +201,37 @@ export default function Home() {
                     <div className="gap-[18px] box w-full">
                         <h3>Pai</h3>
                         <p className="titulo">{pacienteInfo?.pai?.nome || fallback}</p>
-												
-												<div className="flex gap5 md:gap-1 lg:hidden">
-													<div className="flex flex-col gap-[18px]">
-																<div>
+
+                        <div className="flex gap5 md:gap-1 lg:hidden">
+                            <div className="flex flex-col gap-[18px]">
+                                <div>
                                     <p className="titulo">RG:</p>
                                     <p>{pacienteInfo?.pai?.rg || fallback}</p>
                                 </div>
-																<div>
+                                <div>
                                     <p className="titulo">Data de nascimento:</p>
                                     <p>{pacienteInfo?.pai?.data || fallback}</p>
                                 </div>
-																<div>
+                                <div>
                                     <p className="titulo">Escolaridade:</p>
                                     <p>{pacienteInfo?.pai?.escolaridade || fallback}</p>
                                 </div>
-													</div>
-													<div className="flex flex-col gap-[18px]">
-																<div>
+                            </div>
+                            <div className="flex flex-col gap-[18px]">
+                                <div>
                                     <p className="titulo">CPF:</p>
                                     <p>{pacienteInfo?.pai?.cpf || fallback}</p>
                                 </div>
-																<div>
+                                <div>
                                     <p className="titulo">Endereço:</p>
                                     <p>{pacienteInfo?.pai?.endereco || fallback}</p>
                                 </div>
-																<div>
+                                <div>
                                     <p className="titulo">Contato:</p>
                                     <p>{pacienteInfo?.pai?.telefone || fallback}</p>
                                 </div>
-													</div>
-												</div>
+                            </div>
+                        </div>
                         <div className="hidden md:flex flex-row gap-[18px] items-center">
                             <div className="flex flex-col gap-5">
                                 <div>
