@@ -90,7 +90,7 @@ export default function Home() {
                   alt="foto de perfil"
                   width={68}
                   height={68}
-                  className="rounded-full"
+                  className=" object-cover rounded-full"
                 />
 
                 <div>
