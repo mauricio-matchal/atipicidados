@@ -29,14 +29,12 @@ export default function Home() {
   useEffect(() => {
     let filtered = allMembers;
 
-    // Filter by search term
     if (searchBy.length > 0) {
       filtered = filtered.filter((member) =>
         member.nome.toLowerCase().includes(searchBy.toLowerCase())
       );
-    }
 
-    // Filter by selected filters
+    }
     if (selectedFilters.length > 0) {
       filtered = filtered.filter((member) => selectedFilters.includes(member.type));
     }
@@ -54,9 +52,15 @@ export default function Home() {
       setUserID(decodedID);
       fetchColaboradorData(decodedID);
     }
-    fetchPacientes();
-    fetchGerentes();
-    fetchColaboradores();
+    if (!pacientes.length) {
+      fetchPacientes();
+    }
+    if (!gerentes.length) {
+      fetchGerentes();
+    }
+    if (!colaboradores.length) {
+      fetchColaboradores();
+    }
   }, [email, id, searchBy, selectedFilters, pacientes, gerentes, colaboradores]);
 
   const fetchColaboradorData = async (id: any) => {
@@ -74,7 +78,7 @@ export default function Home() {
 
   const fetchPacientes = async () => {
     try {
-      const response = await fetch("http://localhost:3002/pacientes/all");
+      const response = await fetch("http://localhost:3002/pacientes/getall");
       if (!response.ok) {
         throw new Error("Failed to fetch pacientes data");
       }
@@ -89,7 +93,7 @@ export default function Home() {
   };
   const fetchGerentes = async () => {
     try {
-      const response = await fetch("http://localhost:3002/gerentes/all");
+      const response = await fetch(`http://localhost:3002/gerentes/getall/${id}`, { credentials: 'include' });
       if (!response.ok) {
         throw new Error("Failed to fetch gerentes data");
       }
@@ -102,7 +106,7 @@ export default function Home() {
   };
   const fetchColaboradores = async () => {
     try {
-      const response = await fetch("http://localhost:3002/colaboradores/all");
+      const response = await fetch("http://localhost:3002/colaboradores/getall");
       if (!response.ok) {
         throw new Error("Failed to fetch colaboradores data");
       }
@@ -128,7 +132,10 @@ export default function Home() {
     );
   };
 
-  const handleSearchBar = (e: any) => setSearchBy(e.target.value);
+  const handleSearchBar = (e: any) => {
+    const value = e.target.value
+    setSearchBy(value);
+  }
 
   // Seleciona a url certa caso o card seja de um paciente, gerente ou colaborador para enviar para a pagina certa
   const urlToMemberPage = (member: any) => {

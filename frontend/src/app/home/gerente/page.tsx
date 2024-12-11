@@ -48,15 +48,11 @@ export default function Home() {
   useEffect(() => {
     let filtered = allMembers;
 
-
-    // Filter by search term
     if (searchBy.length > 0) {
       filtered = filtered.filter((member) =>
         member.nome?.toLowerCase().includes(searchBy.toLowerCase())
       );
     }
-
-    // Filter by selected filters
     if (selectedFilters.length > 0) {
       filtered = filtered.filter((member) => selectedFilters.includes(member.type));
     }
