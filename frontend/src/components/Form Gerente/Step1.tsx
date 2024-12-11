@@ -41,7 +41,9 @@ const Step1: React.FC<{
     confirmarSenha: "",
   });
 
-  const [Step11, setStep11] = useState<Step11State>({
+  const [Step11, setStep11] = useState<Step11State>(
+    {
+    
     nome: "",
     cpf: "",
     telefone: "",

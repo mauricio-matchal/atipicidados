@@ -53,7 +53,8 @@ const Form: React.FC = () => {
       data.append('fotofile', formData.fotofile)
     }
     if (formData.nascimento) {
-      data.append('nascimento', formData.nascimento)
+      data.append('nascimento', new Date(formData.nascimento).toISOString());
+      console.log(formData.nascimento)
     }
     if (formData.password) {
       data.append('password', formData.password)
@@ -74,7 +75,6 @@ const Form: React.FC = () => {
       });
       const result = await response.json();
       console.log(result);
-      router.push("/");
     } catch (error) {
       console.error("Erro ao criar gerente:", error);
     }

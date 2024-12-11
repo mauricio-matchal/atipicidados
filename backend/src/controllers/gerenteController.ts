@@ -115,7 +115,7 @@ export const getUserGerenteId = async (request: Request, response: Response) => 
             });
         }
 
-        return response.status(200).json(userGerente);
+        return response.status(200).json({gerente: userGerente});
     } catch (error: any) {
         return response.status(500).json({ error: error.message });
     }
