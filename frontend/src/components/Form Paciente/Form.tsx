@@ -105,7 +105,6 @@ const Form: React.FC = () => {
     console.log(data);
 
     try {
-
       const response = await fetch("http://localhost:3002/pacientes/", {
         method: "POST",
         body: data, // mudar caso queira colocar o blob para body: formDataToSend, 
@@ -113,7 +112,8 @@ const Form: React.FC = () => {
       })
       const result = await response.json();
       console.log(result);
-
+      
+      router.push("/");
     } catch (error) {
       console.error("Erro ao criar usuário:", error);
     } finally {

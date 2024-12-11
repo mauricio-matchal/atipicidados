@@ -48,7 +48,7 @@ const Step1: React.FC<{
     rg: "",
     unidadeId: 0,
     raca: "",
-    nascimento: "",
+    nascimento: "2000-02-01T00:00:00Z",
     genero: "",
   });
 
