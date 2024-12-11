@@ -80,22 +80,74 @@ const Form: React.FC<FormProps> = ({ id }) => {
     }));
   };
 
+  const putData = async (data: any, id: string, type: string) => {
+    try {
+      // se o tipo for analise o body eh apenas o id, pois ele so troca de true pra false 
+      // ja se for alguma seção precisamos dos dados da seção 
+      const body: Record<string, any> = { id };
 
-  const reveal = () => {
-    console.log(formData);
+      if (type !== "analise") {
+        body[type] = JSON.stringify(data);
+      }
+
+      const response = await fetch(`http://localhost:3002/pacientes/put${type}`, {
+        method: "PUT",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to update data");
+      }
+
+      const updatedPaciente = await response.json();
+      console.log("Data updated successfully:", updatedPaciente);
+      return updatedPaciente;
+    } catch (error) {
+      console.error("Error updating data:", error);
+    }
   }
 
-  const handleUserCreation = async () => {
+  const handleUserEdition = async () => {
     try {
-      const teste = await fetch("http://localhost:3002/pacientes/", {
-        method: "POST",
-        body: JSON.stringify(formData),
-        headers: { 'Content-Type': 'application/json' }
-      })
-      const response = await teste.json();
-      console.log(response);
-    } catch {
+      if (formData.geral) {
+        await putData(formData.geral, id, "geral");
+      }
+      if (formData.escola) {
+        await putData(formData.escola, id, "escola");
+      }
+      if (formData.mae) {
+        await putData(formData.mae, id, "mae");
+      }
+      if (formData.pai) {
+        await putData(formData.pai, id, "pai");
+      }
+      if (formData.maisinfo) {
+        await putData(formData.maisinfo, id, "maisinfo");
+      }
+      if (formData.saudeinfo) {
+        await putData(formData.saudeinfo, id, "saudeinfo");
+      }
 
+      if (formData.rgdocfile) {
+        await putData(formData.rgdocfile, id, "rgdocfile")
+      }
+      if (formData.fotofile) {
+        await putData(formData.rgdocfile, id, "fotofile")
+      }
+      if (formData.compresfile) {
+        await putData(formData.rgdocfile, id, "compresfile")
+      }
+      if (formData.laudofile) {
+        await putData(formData.rgdocfile, id, "laudofile")
+      }
+      if (formData.relescolar) {
+        await putData(formData.rgdocfile, id, "relescolar")
+      }
+
+      console.log("All updates completed successfully");
+    } catch (error) {
+      console.error("Error during the update process:", error);
     }
   };
 

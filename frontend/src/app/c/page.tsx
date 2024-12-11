@@ -96,34 +96,35 @@ export default function Home() {
     }
   };
 
-  return (
-    <main className={`flex min-h-screen ${isLoading && ""}`}>
-      {errorMessage && (
-        <>
-          <div className="fixed z-40 place-self-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-800 p-5 text-white flex-row">
-            <button className="text-white" onClick={() => { setErrorMessage("") }}>Voltar</button>
-            <p>Erro ao fazer login. Tente novamente.</p> 
-          </div>
-          <div className="fixed inset-0 bg-black/30 z-30" />
-        </>
-      )}
+    return (
+        <main className="flex flex-col min-h-screen">
+            {getAcesso()}
+            {/* <button onClick={() => { console.log(pacienteInfo) }}>Mostrar pacienteInfo</button> */}
+            <div className="flex flex-col gap-[20px] px-5 md:px-[108px] pt-[33px] pb-[50px] text-[14px]">
+                <div className="flex gap-[20px]">
+                    <div className="box w-full flex flex-col gap-7">
+                        <h2>Cadastro de {pacienteInfo ? pacienteInfo.nome : "Nome"}</h2>
 
-      {isLoading && (
-        <>
-          <div className="fixed z-40 place-self-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <Loading />
-          </div>
-          <div className="fixed inset-0 bg-black/30 z-30" />
-        </>
-      )}
+                        <div className="flex flex-col gap-8 pb-2">
+                            <div className="flex items-center gap-[20px]">
+                                <Image
+                                    src={perfil}
+                                    alt='foto de perfil <nome do usuario>'
+                                    width={68}
+                                    height={68} />
 
-      <div className="flex w-[60%] justify-center items-center">
-        <Image
-          src={Banner}
-          alt="logos atipicidades"
-          className="h-full object-cover w-full"
-        />
-      </div>
+                                <div>
+                                    <p className="titulo">Nome e Sobrenome:</p>
+                                    <p>{pacienteInfo ? pacienteInfo.nome : "Nome"}</p>
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col md:flex-row gap-6">
+                                <div className="flex flex-col gap-6">
+                                    <div>
+                                        <p className="titulo">RG:</p>
+                                        <p>{pacienteInfo ? pacienteInfo.rg : "RG"}</p>
+                                    </div>
 
       <div className="flex bg-blue-100 w-[40%] flex-col justify-center items-center gap-10">
         <Image

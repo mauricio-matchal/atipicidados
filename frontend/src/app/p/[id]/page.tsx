@@ -23,11 +23,14 @@ export default function Home() {
   const router = useRouter();
 
   const [userrEmail, setUserrEmail] = useState("");
+  const [userID, setUserID] = useState("");
   const [pacienteInfo, setPacienteInfo] = useState<any | null>(null);
   const [homeLink, setHomeLink] = useState("");
 
   const [memberID, setMemberID] = useState("");
   const [acesso, setAcesso] = useState("");
+
+  const [imagemData, setImageData] = useState<string>("");
 
   useEffect(() => {
     const email = localStorage.getItem("userEmail");
@@ -58,18 +61,33 @@ export default function Home() {
     }
   };
 
+  useEffect(() => {
+    if (pacienteInfo?.fotofile) {
+      const fotoNome = pacienteInfo.fotofile.slice(8); 
+      fetchFotoData(fotoNome);
+    }
+  }, [pacienteInfo]);
+
+  const fetchFotoData = async (fotoNome: string) => {
+    try {
+      const response = await fetch(`http://localhost:3002/imagens/${fotoNome}`);
+      if (!response.ok) {
+        throw new Error('Fetch falhou');
+      }
+
+      const imageBlob = await response.blob();
+      const imageUrl = URL.createObjectURL(imageBlob);
+      setImageData(imageUrl); 
+    } catch (error) {
+      console.error('Erro ao buscar imagem:', error);
+    }
+  };
+
   // Se a pessoa que clicou no card for um gerente, ou seja "acs" = "g" recebe navbar de gerente, caso contrario colaborador
   const getAcesso = () => {
     if (acesso === "g") return <NavBarGerente />
     if (acesso === "c") return <NavBarColaborador />
     if (acesso === "p") return <NavBarPaciente />
-  }
-
-  const jumpToPage = () => {
-    localStorage.removeItem("memberId");
-    localStorage.setItem("memberId", memberID);
-
-    router.push("/autenticacao")
   }
 
   return (

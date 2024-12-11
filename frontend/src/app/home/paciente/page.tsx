@@ -41,9 +41,9 @@ export default function Home() {
     return (
         <main className="flex flex-col min-h-screen">
             <NavBar />
-            <div className="flex flex-col gap-[20px] px-[108px] pt-[33px] pb-[50px] text-[14px]">
-                <div className="flex gap-[20px]">
-                    <div className="box w-3/5 flex flex-col gap-7">
+            <div className="flex flex-col gap-[20px] mx-5 md:mx-[54px] lg:mx-[108px] mt-[33px] text-[14px]">
+                <div className="flex flex-col md:flex-row gap-[20px]">
+                    <div className="box w-full md:w-3/5 flex flex-col gap-7">
                         <h2>Meu cadastro</h2>
 
                         <div className="flex flex-col gap-8">
@@ -88,7 +88,7 @@ export default function Home() {
                         </div>
                     </div>
 
-                    <div className="box w-2/5">
+                    <div className="box w-full md:w-2/5">
                         <h3>Profissionais que me acompanham</h3>
 
                         <div className="flex flex-col">
@@ -99,12 +99,42 @@ export default function Home() {
                     </div>
                 </div>
 
-                <div className="flex gap-[20px]">
+                <div className="flex flex-col md:flex-row gap-[20px]">
                     <div className="gap-[18px] box w-full">
                         <h3>Mãe</h3>
                         <p className="titulo">{pacienteInfo?.mae?.nome || fallback}</p>
 
-                        <div className="flex flex-row gap-[18px] items-center">
+												<div className="flex gap-5 md:gap-1 lg:hidden">
+													<div className="flex flex-col gap-[18px]">
+																<div>
+                                    <p className="titulo">RG:</p>
+                                    <p>{pacienteInfo?.mae?.rg || fallback}</p>
+                                </div>
+																<div>
+                                    <p className="titulo">Data de nascimento:</p>
+                                    <p>{pacienteInfo?.mae?.data || fallback}</p>
+                                </div>
+																<div>
+                                    <p className="titulo">Escolaridade:</p>
+                                    <p>{pacienteInfo?.mae?.escolaridade || fallback}</p>
+                                </div>
+													</div>
+													<div className="flex flex-col gap-[18px]">
+																<div>
+                                    <p className="titulo">CPF:</p>
+                                    <p>{pacienteInfo?.mae?.cpf || fallback}</p>
+                                </div>
+																<div>
+                                    <p className="titulo">Endereço:</p>
+                                    <p>{pacienteInfo?.mae?.endereco || fallback}</p>
+                                </div>
+																<div>
+                                    <p className="titulo">Contato:</p>
+                                    <p>{pacienteInfo?.mae?.telefone || fallback}</p>
+                                </div>
+													</div>
+												</div>
+                        <div className="hidden lg:flex flex-row gap-[18px] items-center">
                             <div className="flex flex-col gap-5">
                                 <div>
                                     <p className="titulo">RG:</p>
@@ -146,8 +176,38 @@ export default function Home() {
                     <div className="gap-[18px] box w-full">
                         <h3>Pai</h3>
                         <p className="titulo">{pacienteInfo?.pai?.nome || fallback}</p>
-
-                        <div className="flex flex-row gap-[18px] items-center">
+												
+												<div className="flex gap5 md:gap-1 lg:hidden">
+													<div className="flex flex-col gap-[18px]">
+																<div>
+                                    <p className="titulo">RG:</p>
+                                    <p>{pacienteInfo?.pai?.rg || fallback}</p>
+                                </div>
+																<div>
+                                    <p className="titulo">Data de nascimento:</p>
+                                    <p>{pacienteInfo?.pai?.data || fallback}</p>
+                                </div>
+																<div>
+                                    <p className="titulo">Escolaridade:</p>
+                                    <p>{pacienteInfo?.pai?.escolaridade || fallback}</p>
+                                </div>
+													</div>
+													<div className="flex flex-col gap-[18px]">
+																<div>
+                                    <p className="titulo">CPF:</p>
+                                    <p>{pacienteInfo?.pai?.cpf || fallback}</p>
+                                </div>
+																<div>
+                                    <p className="titulo">Endereço:</p>
+                                    <p>{pacienteInfo?.pai?.endereco || fallback}</p>
+                                </div>
+																<div>
+                                    <p className="titulo">Contato:</p>
+                                    <p>{pacienteInfo?.pai?.telefone || fallback}</p>
+                                </div>
+													</div>
+												</div>
+                        <div className="hidden md:flex flex-row gap-[18px] items-center">
                             <div className="flex flex-col gap-5">
                                 <div>
                                     <p className="titulo">RG:</p>

@@ -13,7 +13,7 @@ export default function Home() {
   const email = searchParams.get("email");
   const id = searchParams.get("id");
   const [userEmail, setUserEmail] = useState("");
-  const [userID, setUserID] = useState("");
+  const [userID, setUserID] = useState<string>("");
   const [gerenteInfo, setGerenteInfo] = useState<any | null>(null);
   const [pacientes, setPacientes] = useState<any[]>([]);
   const [gerentes, setGerentes] = useState<any[]>([]);
@@ -28,10 +28,10 @@ export default function Home() {
     const checkAuth = async () => {
       try {
         const response = await fetch(`http://localhost:3002/gerentes/token/${id}`, {
-          method: "POST", 
+          method: "POST",
           credentials: "include",
         });
-  
+
         if (!response.ok) {
           router.push("/");
           return;
@@ -40,7 +40,7 @@ export default function Home() {
         console.error("Error:", error.message);
       }
     };
-  
+
     checkAuth();
   }, []);
 
@@ -99,7 +99,7 @@ export default function Home() {
 
   const fetchPacientes = async () => {
     try {
-      const response = await fetch("http://localhost:3002/pacientes/all");
+      const response = await fetch("http://localhost:3002/pacientes/getall");
       if (!response.ok) {
         throw new Error("Failed to fetch pacientes data");
       }
@@ -112,7 +112,7 @@ export default function Home() {
   };
   const fetchGerentes = async () => {
     try {
-      const response = await fetch(`http://localhost:3002/gerentes/getall/${id}`,{credentials:'include'});
+      const response = await fetch(`http://localhost:3002/gerentes/getall/${id}`, { credentials: 'include' });
       if (!response.ok) {
         throw new Error("Failed to fetch gerentes data");
       }
@@ -124,7 +124,7 @@ export default function Home() {
   };
   const fetchColaboradores = async () => {
     try {
-      const response = await fetch("http://localhost:3002/colaboradores/all");
+      const response = await fetch("http://localhost:3002/colaboradores/getall");
       if (!response.ok) {
         throw new Error("Failed to fetch colaboradores data");
       }
@@ -154,7 +154,7 @@ export default function Home() {
     setSearchBy(value);
   }
 
-  // Seleciona a url certa caso o card seja de um paciente, gerente ou colaborador para enviar para a pagina certa
+  // seleciona a url certa caso o card seja de um paciente, gerente ou colaborador para enviar para a pagina certa
   const urlToMemberPage = (member: any) => {
     //p de paciente g de gerente e c de colaborador, dps recebe qual eh o acesso ("acs") da pessoa que esta 
     localStorage.removeItem("acs");
@@ -173,13 +173,35 @@ export default function Home() {
 
   return (
     <main className="flex flex-col min-h-screen">
-      <NavBarGerente />
-      <div className="px-[84px] py-[40px]">
+      <NavBarGerente id={userID} />
+      <div className="px-5 md:px-[84px] py-[40px]">
         <div className="flex justify-between">
-          <div className="flex flex-col w-[340px]">
-            <h2 className="mb-7">Página inicial</h2>
-            <h3 className="mb-[22px]">Membros cadastrados</h3>
-            <div className="relative w-full">
+          <div className="flex flex-col w-full">
+            <div className="flex flex-col w-full md:flex-row md:justify-between">
+              <h2 className="mb-7">Página inicial</h2>
+              <div className="flex text-[13px] md:text-[16px] flex-wrap gap-[10px]">
+                <button className="botao">
+                  <Link href='/cadastro/colaborador' className="flex flex-row gap-1 items-center">
+                    <PlusIcon style={{ color: 'var(--texto-botao)' }} />
+                    <p>Colaborador</p>
+                  </Link>
+                </button>
+                <button className="botao">
+                  <Link href='/cadastro/unidade' className="flex flex-row gap-1 items-center">
+                    <PlusIcon style={{ color: 'var(--texto-botao)' }} />
+                    <p>Unidade</p>
+                  </Link>
+                </button>
+                <button className="botao">
+                  <Link href='/cadastro/gerente' className="flex flex-row gap-1 items-center">
+                    <PlusIcon style={{ color: 'var(--texto-botao)' }} />
+                    <p>Gerente</p>
+                  </Link>
+                </button>
+              </div>
+            </div>
+            <h3 className="mt-[28px] mb-[22px]">Membros cadastrados</h3>
+            <div className="relative w-[280px] md:w-[340px]">
               <input
                 type="text"
                 className='input w-full h-[35px] mb-2 pb-1'
@@ -195,7 +217,7 @@ export default function Home() {
               </button>
             </div>
 
-            <div className="flex gap-[18px]">
+            <div className="flex text-[13px] md:text-[16px] flex-wrap gap-3 md:gap-[18px]">
               <label className="flex items-center">
                 <input
                   type="checkbox"
@@ -243,34 +265,13 @@ export default function Home() {
               </label>
             </div>
           </div>
-
-          <div className="flex gap-[10px]">
-            <button className="botao">
-              <Link href='/cadastro/colaborador' className="flex flex-row gap-1 items-center">
-                <PlusIcon style={{ color: 'var(--texto-botao)' }} />
-                <p>Colaborador</p>
-              </Link>
-            </button>
-            <button className="botao">
-              <Link href='/cadastro/unidade' className="flex flex-row gap-1 items-center">
-                <PlusIcon style={{ color: 'var(--texto-botao)' }} />
-                <p>Unidade</p>
-              </Link>
-            </button>
-            <button className="botao">
-              <Link href='/cadastro/gerente' className="flex flex-row gap-1 items-center">
-                <PlusIcon style={{ color: 'var(--texto-botao)' }} />
-                <p>Gerente</p>
-              </Link>
-            </button>
-          </div>
         </div>
 
         <div className="mt-[28px] grid grid-cols-4 gap-2 w-full max-w-full">
           {filteredMembers.map((member) => (
             // eslint-disable-next-line react/jsx-key
             <button onClick={() => { urlToMemberPage(member) }} className="text-left">
-              <Card key={member.id} title={member.nome} cpf={member.cpf} acesso={member.type} />
+              <Card key={member.id} id={member.id} title={member.nome} cpf={member.cpf} acesso={member.type} />
             </button>
           ))}
         </div>

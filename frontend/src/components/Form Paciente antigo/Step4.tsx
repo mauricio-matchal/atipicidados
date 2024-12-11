@@ -26,7 +26,12 @@ type Step4State = {
 };
 
 
-const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State) => void; handleFormDataSubmit: () => void }> = ({ prevStep, updateInfoSaude, handleFormDataSubmit }) => {
+const Step4: React.FC<{
+  prevStep: () => void;
+  updateLaudoFile: (data: any) => void; 
+  updateInfoSaude: (data: Step4State) => void; 
+  handleFormDataSubmit: () => void 
+}> = ({ prevStep, updateInfoSaude, handleFormDataSubmit, updateLaudoFile }) => {
   const [selectedCheckboxOptions, setSelectedCheckboxOptions] = useState<string[]>([]);
 
   const [Step4, setStep4] = useState<Step4State>({
@@ -54,10 +59,14 @@ const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleInputChange = (key: string, value: string) => {
-    setStep4((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }));
+    setStep4((prevState) => {
+      const updatedForm = {
+        ...prevState,
+        [key]: value,
+      };
+      updateInfoSaude(updatedForm);
+      return updatedForm;
+    });
   };
 
   const handleInputChangeList = (key: string, value: string[]) => {
@@ -66,6 +75,14 @@ const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State
       [key]: value,
     }));
   };
+
+  const [laudoFile, setLaudoFile] = useState<File | null>(null);
+
+  const handleLaudoFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setLaudoFile(e.target.files[0]);
+    }
+  }
 
   const handleDoencaChange = (options: string[]) => {
     setSelectedCheckboxOptions(options);
@@ -107,23 +124,18 @@ const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State
     setIsModalVisible(false);
   };
 
-  const reveal = () => {
-    console.log(Step4);
-  }
-
   const handleSubmit = () => {
-    updateInfoSaude(Step4);
     handleFormDataSubmit();
   };
 
   return (
     <div className='flex flex-col gap-[162px] w-screen'>
-      <div className='flex flex-col gap-[42px] px-5 w-[840px] place-self-center'>
+      <div className='flex flex-col gap-[42px] px-5 lg:w-[840px] place-self-center'>
 
         <div className='flex flex-col gap-[12px]'>
           <h4 className='pl-2'>Informações de saúde</h4>
-          <button onClick={reveal}>reveal</button>
-          <div className='flex w-full gap-[12px]'>
+          <button onClick={() => {console.log(Step4)}}>Mostrar Respostas</button>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
               options={["Sim, tem diagnóstico", "Não tem diagnóstico"]}
               placeholder={"Tem diagnóstico?"}
@@ -138,7 +150,7 @@ const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State
             />
           </div>
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
               options={["Sim, toma alguma medicação", "Não toma alguma medicação"]}
               placeholder={"Toma alguma medicação?"}
@@ -154,7 +166,7 @@ const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State
             />
           </div>
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <TextInput
               placeholder="Médico responsável"
               className={`transition-opacity duration-300 w-full ${hasMedicacao ? 'opacity-100' : 'opacity-40'} ${hasMedicacao ? '' : 'cursor-not-allowed'}`}
@@ -179,7 +191,7 @@ const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State
             value={Step4.objetivo} onChange={(e) => { handleInputChange("objetivo", e.target.value) }}
           />
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
               options={["Sim, possui alguma comorbidade", "Não possui alguma comorbidade"]}
               placeholder={"Possui alguma comorbidade?"}
@@ -199,7 +211,7 @@ const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State
           <CheckInput title='Possui alguma doença?' options={["Diabetes", "Pressão alta", "Nenhuma"]} onChange={handleDoencaChange} />
           <CheckInput title='Possui alguma alergia?' options={["Rinite", "Sinusite", "Nenhuma"]} onChange={handleAlergiaChange} />
 
-          <div className='flex w-full gap-[12px]'>
+          <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput
               options={["Sim, tem asma", "Não tem asma"]}
               placeholder={"Tem asma?"}
@@ -210,6 +222,8 @@ const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State
               className={`transition-opacity duration-300 w-full ${hasAsma ? 'opacity-100' : 'opacity-40'} ${hasAsma ? '' : 'cursor-not-allowed'}`}
               disabled={!hasAsma}
               style={{ pointerEvents: hasAsma ? 'auto' : 'none' }}
+              name='laudofile'
+              onChange={handleLaudoFileChange}
             />
           </div>
 
@@ -217,7 +231,7 @@ const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State
 
         </div>
 
-        <div className="flex items-center ml-[14px]">
+        <div className="flex text-[13px] md:text-[16px] items-center ml-[14px]">
           <input
             type="checkbox"
             className="
@@ -237,10 +251,10 @@ const Step4: React.FC<{ prevStep: () => void; updateInfoSaude: (data: Step4State
       </div>
 
       {/* Rodapé */}
-      <div className='relative flex flex-row justify-between items-center mx-[147px]'>
+      <div className='relative text-[13px] md:text-[16px] flex flex-row justify-between items-center mx-[147px]'>
         <button onClick={prevStep} className='botao'>Página anterior</button>
 
-        <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+        <div className='hidden md:flex absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
           4 de 4
         </div>
 

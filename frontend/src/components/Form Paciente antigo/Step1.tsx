@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { StepProps } from './types';
 import SelectInput from '../SelectInput';
 import TextInput from '../TextInput';
@@ -76,11 +76,7 @@ const Step1: React.FC<{
     confirmarSenha: "",
   });
 
-  const errorRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isCpfMissing, setIsCpfMissing] = useState(false);
-  const [isEmailMissing, setIsEmailMissing] = useState(false);
-  const [isSenhaMissing, setIsSenhaMissing] = useState(false);
 
   const handleLoginChange: any = (key: string, value: string) => {
     setLogin((prevState) => {
@@ -92,18 +88,25 @@ const Step1: React.FC<{
       return updatedForm;
     });
   };
-
   const handleInputChange1 = (key: string, value: string) => {
-    setStep11((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }));
+    setStep11((prevState) => {
+      const updatedForm = {
+        ...prevState,
+        [key]: value,
+      };
+      updateGeral(updatedForm);
+      return updatedForm;
+    });
   };
   const handleInputChange2 = (key: string, value: string) => {
-    setStep12((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }));
+    setStep12((prevState) => {
+      const updatedForm = {
+        ...prevState,
+        [key]: value,
+      };
+      updateEscola(updatedForm);
+      return updatedForm;
+    });
   };
 
   const [hasRelatorio, setHasRelatorio] = useState(false);
@@ -113,12 +116,6 @@ const Step1: React.FC<{
     handleInputChange2("possuiRelatorio", selectedOption);
   };
 
-  useEffect(() => {
-    if (error && errorRef.current) {
-      errorRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  }, [error]);
-
   // ARQUIVOS //
 
   const [fotoFile, setFotoFile] = useState<File | null>(null);
@@ -127,25 +124,22 @@ const Step1: React.FC<{
   const [residenciaFile, setResidenciaFile] = useState<File | null>(null);
 
   const handleFotoFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.name === "fotoFile") {
+    if (e.target.files) {
       setFotoFile(e.target.files[0]);
     }
   };
-
   const handleRelatorioFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.name === "relatorioFile") {
+    if (e.target.files) {
       setRelatorioFile(e.target.files[0]);
     }
   };
-
   const handleRGFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.name === "rgFile") {
+    if (e.target.files) {
       setRGFile(e.target.files[0]);
     }
   };
-
   const handleResidenciaFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.name === "residenciaFile") {
+    if (e.target.files) {
       setResidenciaFile(e.target.files[0]);
     }
   };
@@ -153,42 +147,18 @@ const Step1: React.FC<{
   //////////
 
   const handleNext = () => {
-    setError(null);
-    setIsCpfMissing(false);
-    setIsEmailMissing(false);
-    setIsSenhaMissing(false);
-
-    if (!Step11.cpf || !login.email || !login.senha) {
-      setIsCpfMissing(!Step11.cpf);
-      setIsEmailMissing(!login.email);
-      setIsSenhaMissing(!login.senha);
-      setError("Preencha todos os campos obrigatórios");
-      return;
-    }
-
-    if (login.email !== login.confirmarEmail) {
-      setError("Os campos de e-mail precisam ser iguais.");
-      setIsEmailMissing(true);
-      return;
-    }
-    if (login.senha !== login.confirmarSenha) {
-      setError("Os campos de senha precisam ser iguais.");
-      setIsSenhaMissing(true);
+    if (login.email !== login.confirmarEmail || login.senha !== login.confirmarSenha) {
+      setError("Os campos de e-mail e senha precisam ser iguais.");
       return;
     }
     if (!validateEmail(login.email)) {
       setError("O e-mail inserido não é válido.");
-      setIsEmailMissing(true);
       return;
     }
     if (!validatePassword(login.senha)) {
       setError("A senha precisa ter no mínimo 8 caracteres.");
-      setIsSenhaMissing(true);
       return;
     }
-
-    updateGeral(Step11);
-    updateEscola(Step12);
 
     updateFoto(fotoFile);
     updateRelatorio(relatorioFile);
@@ -202,43 +172,43 @@ const Step1: React.FC<{
     <div className='flex flex-col gap-[162px] w-screen'>
       <div className='flex flex-col gap-[42px] px-5 lg:w-[840px] place-self-center'>
         <div className='flex flex-col gap-[12px]'>
-          {error && <div ref={errorRef} className="text-[#FFF] font-medium text-center mt-4 bg-[#e13c31] py-3 rounded-xl">{error}</div>}
-          <h4 className='pl-2 place-self-start mt-8'>Crie seu login e senha</h4>
+          <h2 className="font-bold">Novo Paciente</h2>
+
+          <h4 className='pl-2 place-self-start mt-10'>Crie um login e senha para o paciente</h4>
           <div className='flex flex-col md:flex-row w-full gap-3'>
-            <TextInput error={isEmailMissing} className='md:w-1/2' placeholder='E-mail' value={login.email} onChange={(e) => handleLoginChange("email", e.target.value)} />
-            <TextInput error={isEmailMissing} className='md:w-1/2' placeholder='Confirmar e-mail' value={login.confirmarEmail} onChange={(e) => handleLoginChange("confirmarEmail", e.target.value)} />
+            <TextInput className='md:w-1/2' placeholder='E-mail' value={login.email} onChange={(e) => handleLoginChange("email", e.target.value)} />
+            <TextInput className='md:w-1/2' placeholder='Confirmar e-mail' value={login.confirmarEmail} onChange={(e) => handleLoginChange("confirmarEmail", e.target.value)} />
           </div>
-          <div className='flex w-full gap-3'>
-            <TextInput error={isSenhaMissing} className='md:w-1/2' placeholder='Senha' value={login.senha} onChange={(e) => handleLoginChange("senha", e.target.value)} />
-            <TextInput error={isSenhaMissing} className='md:w-1/2' placeholder='Confirmar senha' value={login.confirmarSenha} onChange={(e) => handleLoginChange("confirmarSenha", e.target.value)} />
+          <div className='flex flex-col md:flex-row w-full gap-3'>
+            <TextInput className='md:w-1/2' placeholder='Senha' value={login.senha} onChange={(e) => handleLoginChange("senha", e.target.value)} />
+            <TextInput className='md:w-1/2' placeholder='Confirmar senha' value={login.confirmarSenha} onChange={(e) => handleLoginChange("confirmarSenha", e.target.value)} />
           </div>
+          {error && <div className="text-[#FF0F00] font-medium">{error}</div>}
 
-          <div className='mb-4'></div>
-
+          <div className='mb-10'></div>
           <h4 className='pl-2'>Geral</h4>
-          {/* <button onClick={() => { console.log(Step11); console.log(Step12) }}>Mostrar Respostas</button> */}
-          {/* <button onClick={() => { console.log(fotoFile) }}>Mostrar Foto</button> */}
+          <button onClick={() => { console.log(Step11); console.log(Step12) }}>Mostrar Respostas</button>
+          <button onClick={() => { console.log(fotoFile) }}>Mostrar Foto</button>
           <div className='flex flex-col md:flex-row w-full gap-[12px]'>
-            <FileInput placeholder='Foto 3x4' onChange={handleFotoFileChange} name='fotoFile' id='fotoFile' />
-            <TextInput placeholder='Nome completo' className='md:w-2/3' value={Step11.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
+            <FileInput placeholder='Foto 3x4' className='md:w-1/3' onChange={handleFotoFileChange} name='fotoFile' />
+            <TextInput className='md:w-2/3' placeholder='Nome completo' value={Step11.nome} onChange={(e) => handleInputChange1("nome", e.target.value)} />
           </div>
 
           <div className='flex flex-col md:flex-row w-full gap-[12px]'>
-            <FileInput placeholder='Foto do RG' onChange={handleRGFileChange} name='rgFile' id='rgFile' />
-            <FileInput placeholder='Comprovante de residência' onChange={handleResidenciaFileChange} name='residenciaFile' id='residenciaFile' />
+            <FileInput placeholder='Foto do RG' onChange={handleRGFileChange} name='rgFile' />
+            <FileInput placeholder='Comprovante de residência' onChange={handleResidenciaFileChange} name='residenciaFile' />
           </div>
 
           <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <DateInput value={Step11.data} onChange={(e) => handleInputChange1("data", e.target.value)} />
-            <TextInput placeholder='RG' type='rg' className='min-w-[220px]' value={Step11.rg} onChange={(e) => handleInputChange1("rg", e.target.value)} />
-            <TextInput error={isCpfMissing} placeholder='CPF' type='cpf' className='min-w-[220px]' value={Step11.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
+            <TextInput placeholder='RG' className='min-w-[220px]' value={Step11.rg} onChange={(e) => handleInputChange1("rg", e.target.value)} />
+            <TextInput placeholder='CPF' className='min-w-[220px]' value={Step11.cpf} onChange={(e) => handleInputChange1("cpf", e.target.value)} />
           </div>
-
 
           <div className='flex flex-col md:flex-row w-full gap-[12px]'>
             <SelectInput options={["Masculino", "Feminino", "Intersexo", "Outro sexo", "Prefiro não dizer o sexo"]} placeholder={"Sexo"} onChange={(value) => handleInputChange1("sexo", value)} />
             <SelectInput options={["Amarelo", "Branco", "Indígena", "Pardo", "Preto"]} placeholder={"Raça/cor"} onChange={(value) => handleInputChange1("cor", value)} />
-            <TextInput placeholder='CEP' type="cep" className='min-w-[220px]' value={Step11.cep} onChange={(e) => handleInputChange1("cep", e.target.value)} />
+            <TextInput placeholder='CEP' className='min-w-[220px]' value={Step11.cep} onChange={(e) => handleInputChange1("cep", e.target.value)} />
           </div>
 
           <div className='flex flex-col md:flex-row w-full gap-[12px]'>
@@ -275,11 +245,11 @@ const Step1: React.FC<{
             />
             <FileInput
               placeholder="Relatório Escolar"
-              className={`transition-opacity duration-300 ${hasRelatorio ? 'relative inline-block text-left w-full' : 'opacity-40 cursor-not-allowed pointer-events-none inline-block w-full'}`}
+              className={`transition-opacity duration-300 w-full ${hasRelatorio ? 'opacity-100' : 'opacity-40'} ${hasRelatorio ? '' : 'cursor-not-allowed'}`}
               disabled={!hasRelatorio}
+              style={{ pointerEvents: hasRelatorio ? 'auto' : 'none' }}
               name='relatorioFile'
               onChange={handleRelatorioFileChange}
-              id='relatorioFile'
             />
           </div>
         </div>

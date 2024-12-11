@@ -54,13 +54,13 @@ export default function Home() {
   return (
     <main className="flex flex-col min-h-screen">
       {getAcesso()}
-      <div className="px-[137px] pt-[30px]">
-        <div className="flex flex-col w-[340px] justify-between">
+      <div className="px-5 md:px-[84px] lg:px-[137px] pt-[30px]">
+        <div className="flex flex-col w-full justify-between">
           <h2 className="mb-2">{unidade ? unidade.nome : "Nome não encontrado"}</h2>
           <button className="flex justify-start">
             <h4 className="mb-[32px] text-blue-800">Mais informações</h4>
           </button>
-          <div className="relative w-full">
+          <div className="relative w-[280px] md:w-[340px]">
             <input
               type="text"
               className='input w-full h-[35px] mb-2 pb-1'
@@ -74,7 +74,7 @@ export default function Home() {
             </button>
           </div>
 
-          <div className="flex justify-around">
+          <div className="flex justify-start text-[13px] md:text-[16px]">
             <div className="flex gap-[18px]">
               <label className="flex items-center">
                 <input

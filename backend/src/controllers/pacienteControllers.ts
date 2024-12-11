@@ -12,7 +12,7 @@ const prisma = new PrismaClient();
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, 'uploads/')); 
+    cb(null, path.join(__dirname, 'uploads/'));
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`);
@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 export const createPaciente = [
-  upload.fields([ 
+  upload.fields([
     { name: 'rgdocfile', maxCount: 1 },
     { name: 'fotofile', maxCount: 1 },
     { name: 'compresfile', maxCount: 1 },
@@ -38,7 +38,7 @@ export const createPaciente = [
 
       // Lidar com arquivos enviados
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      console.log(req.files); 
+      console.log(req.files);
 
       const paciente = await prisma.paciente.create({
         data: {
@@ -104,25 +104,25 @@ export const pacienteLogin = async (request: Request, response: Response) => {
     }
     const token = jwt.sign({
       userId: userPaciente.id
-  }, JWT_SECRET,{
-      expiresIn:'10s'
-  });
- 
-  response.cookie('token', token, {
+    }, JWT_SECRET, {
+      expiresIn: '10s'
+    });
+
+    response.cookie('token', token, {
       httpOnly: true,
-      secure: false, 
+      secure: false,
       sameSite: 'lax',
       path: '/',
-  });
+    });
 
-  const generateRefreshToken = new GenerateRefreshToken();
-  const refresh_token = await generateRefreshToken.execute(userPaciente.id,'paciente');
+    const generateRefreshToken = new GenerateRefreshToken();
+    const refresh_token = await generateRefreshToken.execute(userPaciente.id, 'paciente');
 
-  response.cookie('refresh_token', refresh_token.id, {
+    response.cookie('refresh_token', refresh_token.id, {
       httpOnly: true,
-      secure:false,
+      secure: false,
       sameSite: 'lax',
-  });
+    });
 
     return response.status(200).json({
       error: false,
@@ -133,7 +133,7 @@ export const pacienteLogin = async (request: Request, response: Response) => {
     });
 
   } catch (error: any) {
-    return response.status(500).json({ error:error.message});
+    return response.status(500).json({ error: error.message });
   }
 };
 
@@ -161,11 +161,11 @@ export const getPaciente = async (request: Request, response: Response) => {
     }
 
     response.status(200).json({
-      error: false, 
+      error: false,
       message: `O paciente ${paciente?.nome} de cpf: ${paciente.cpf ? paciente.cpf : '(Não possui CPF cadastrado)'} foi encontrado`
     });
-  } catch (error:any) {
-    response.status(500).json({ error: error.message});
+  } catch (error: any) {
+    response.status(500).json({ error: error.message });
   }
 };
 
@@ -194,7 +194,7 @@ export const getPacientes = async (_: Request, response: Response) => {
       return response.status(204).json({ error: true, message: 'Nenhum paciente foi encontrado' });
     }
     return response.status(200).json({
-      error: false, 
+      error: false,
       message: 'Segue a lista de todos pacientes',
       pacientes
     });
@@ -209,7 +209,7 @@ export const ChangePasswordForModel = async (request: Request, response: Respons
 
   try {
     const paciente = await prisma.paciente.findUnique({
-      where: { id } 
+      where: { id }
     });
 
     if (!paciente) {
@@ -239,7 +239,7 @@ export const ChangePasswordForModel = async (request: Request, response: Respons
       message: 'Senha alterada com sucesso'
     });
 
-  } catch (error:any) {
+  } catch (error: any) {
     return response.status(500).json({
       error: error.message
     });
@@ -259,7 +259,7 @@ export const updatePacienteGestacao = [
       } = req.body;
 
       const paciente = await prisma.paciente.update({
-        where: { id:(id) },
+        where: { id: (id) },
         data: {
           gestacao: gestacao ? JSON.parse(gestacao) : null,
         }
@@ -588,7 +588,7 @@ export const updatePacienteFoto = [
       const { id } = req.params;
 
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      console.log(req.files); 
+      console.log(req.files);
 
       const paciente = await prisma.paciente.update({
         where: { id: (id) },
@@ -647,7 +647,7 @@ export const updatePacienteLaudo = [
       const { id } = req.params;
 
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      console.log(req.files); 
+      console.log(req.files);
 
       const paciente = await prisma.paciente.update({
         where: { id: (id) },
@@ -674,7 +674,7 @@ export const updatePacienteRelescolar = [
       const { id } = req.params;
 
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      console.log(req.files); 
+      console.log(req.files);
 
       const paciente = await prisma.paciente.update({
         where: { id: (id) },
