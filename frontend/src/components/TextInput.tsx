@@ -53,6 +53,18 @@ export default function TextInput({ placeholder, type, ...props }: JSX.Intrinsic
       </div>
     )
   }
+  if (type === "email") {
+    return (
+      <div className="w-full" {...props}>
+      <input
+        type="email"
+        value={props.value}
+        className={`inline-block w-full py-[9px] leading-[19px] px-3 text-sm bg-transparent border-2 ${props.error ? "border-[#e13c31]" : "border-[#7481F6] border-opacity-70"} rounded-xl focus:outline-none focus:border-blue-800`}
+        placeholder={placeholder}
+      />
+    </div>
+    )
+  }
   return (
     <div className="w-full" {...props}>
       <input

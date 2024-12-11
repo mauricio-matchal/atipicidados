@@ -22,95 +22,45 @@ export default function Home() {
   const [gerentes, setGerentes] = useState<any[]>([]);
   const [colaboradores, setColaboradores] = useState<any[]>([]);
 
-  const [filteredMembers, setFilteredMembers] = useState<any[]>([]);
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [searchBy, setSearchBy] = useState("");
 
+  const fetchData = async () => {
+    try {
+      const responseColaborador = await fetch("http://localhost:3002/colaboradores/all");
+      const dataColaborador = await responseColaborador.json();
+      setColaboradores(dataColaborador.colaboradores);
+
+      const responsePaciente = await fetch("http://localhost:3002/pacientes/all");
+      const dataPaciente = await responsePaciente.json();
+      setPacientes(dataPaciente.pacientes);
+
+      const responseGerente = await fetch("http://localhost:3002/gerentes/all");
+      const dataGerente = await responseGerente.json();
+      setGerentes(dataGerente.gerentes);
+    } catch (error) {
+      console.error("Erro ao buscar dados:", error);
+    }
+  };
+
   useEffect(() => {
-    let filtered = allMembers;
-
-    // Filter by search term
-    if (searchBy.length > 0) {
-      filtered = filtered.filter((member) =>
-        member.nome.toLowerCase().includes(searchBy.toLowerCase())
-      );
+    const emailFromStorage = localStorage.getItem("userEmail");
+    const idFromStorage = localStorage.getItem("userID");
+    if (emailFromStorage) setUserEmail(decodeURIComponent(emailFromStorage));
+    if (idFromStorage) {
+      setUserID(decodeURIComponent(idFromStorage));
+      fetchColaboradorData(decodeURIComponent(idFromStorage));
     }
+    fetchData();
+  }, []);
 
-    // Filter by selected filters
-    if (selectedFilters.length > 0) {
-      filtered = filtered.filter((member) => selectedFilters.includes(member.type));
-    }
-
-    setFilteredMembers(filtered);
-
-    const email = localStorage.getItem("userEmail");
-    const id = localStorage.getItem("userID");
-    const homeLink = localStorage.getItem("homeLink");
-    if (email) {
-      setUserEmail(decodeURIComponent(email));
-    }
-    if (id) {
-      const decodedID = decodeURIComponent(id);
-      setUserID(decodedID);
-      fetchColaboradorData(decodedID);
-    }
-    fetchPacientes();
-    fetchGerentes();
-    fetchColaboradores();
-  }, [email, id, searchBy, selectedFilters, pacientes, gerentes, colaboradores]);
-
-  const fetchColaboradorData = async (id: any) => {
+  const fetchColaboradorData = async (id: string) => {
     try {
       const response = await fetch(`http://localhost:3002/colaboradores/id/${id}`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch gerente data");
-      }
       const data = await response.json();
       setColaboradorInfo(data);
     } catch (error) {
-      console.error("Error fetching gerente data:", error);
-    }
-  };
-
-  const fetchPacientes = async () => {
-    try {
-      const response = await fetch("http://localhost:3002/pacientes/all");
-      if (!response.ok) {
-        throw new Error("Failed to fetch pacientes data");
-      }
-      const data = await response.json();
-      const autenticados = data.pacientes.filter((paciente: any) => paciente.analise);
-      console.log(data.pacientes);
-      setPacientes(data.pacientes);
-      // setPacientesAutenticados(autenticados);
-    } catch (error) {
-      console.error("Error fetching pacientes data:", error);
-    }
-  };
-  const fetchGerentes = async () => {
-    try {
-      const response = await fetch("http://localhost:3002/gerentes/all");
-      if (!response.ok) {
-        throw new Error("Failed to fetch gerentes data");
-      }
-      const data = await response.json();
-      console.log(data.gerentes);
-      setGerentes(data.gerentes);
-    } catch (error) {
-      console.error("Error fetching gerentes data:", error);
-    }
-  };
-  const fetchColaboradores = async () => {
-    try {
-      const response = await fetch("http://localhost:3002/colaboradores/all");
-      if (!response.ok) {
-        throw new Error("Failed to fetch colaboradores data");
-      }
-      const data = await response.json();
-      console.log(data.colaboradores);
-      setColaboradores(data.colaboradores);
-    } catch (error) {
-      console.error("Error fetching gerentes data:", error);
+      console.error("Erro ao buscar colaborador:", error);
     }
   };
 
@@ -119,6 +69,15 @@ export default function Home() {
     ...gerentes.map((gerente) => ({ ...gerente, type: "Gerente" })),
     ...colaboradores.map((colaborador) => ({ ...colaborador, type: "Colaborador" }))
   ];
+
+  const filteringMembers = allMembers
+    .filter((member) =>
+      member.nome.toLowerCase().includes(searchBy.toLowerCase())
+    )
+    .filter((member) => {
+      if (selectedFilters.length === 0) return true;
+      return selectedFilters.includes(member.type);
+    });
 
   const handleFilterChange = (filter: string) => {
     setSelectedFilters((prevFilters) =>
@@ -130,23 +89,20 @@ export default function Home() {
 
   const handleSearchBar = (e: any) => setSearchBy(e.target.value);
 
-  // Seleciona a url certa caso o card seja de um paciente, gerente ou colaborador para enviar para a pagina certa
   const urlToMemberPage = (member: any) => {
-    //p de paciente g de gerente e c de colaborador, dps recebe o id, e qual eh o acesso ("acs") da pessoa que esta 
     localStorage.removeItem("acs");
     localStorage.setItem("acs", "g");
 
     if (member.type === "Paciente") {
       router.push(`/p/${member.id}`);
-    };
+    }
     if (member.type === "Gerente") {
       router.push(`/g/${member.id}`);
-    };
+    }
     if (member.type === "Colaborador") {
       router.push(`/c/${member.id}`);
     }
-  }
-
+  };
   return (
     <main className="flex flex-col min-h-screen">
       <NavBarColaborador />
@@ -269,7 +225,7 @@ export default function Home() {
         </div>
 
         <div className="mt-[28px] grid grid-cols-4 gap-2 w-full max-w-full">
-          {filteredMembers.map((member) => (
+          {filteringMembers.map((member) => (
             <button type="button" onClick={() => { urlToMemberPage(member) }} key={member.id} className="text-left">
               <Card key={member.id} title={member.nome} cpf={member.cpf} acesso={member.type} />
             </button>
